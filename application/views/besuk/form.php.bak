@@ -1,0 +1,60 @@
+<script type="text/javascript">
+	$(document).ready(function(){
+/*
+	    $('input[type=text]').keyup(function() {
+	        $(this).val($(this).val().toUpperCase());
+	    });
+
+	    $('input[type=email]').keyup(function() {
+	        $(this).val($(this).val().toLowerCase());
+	    });
+
+	    $('textarea').keyup(function() {
+	        $(this).val($(this).val().toUpperCase());
+	    });
+*/
+	});
+</script>
+<?php
+	$this->load->view('besuk/jemaat');
+?>
+<hr>
+<?php
+	@$query=mysql_query("SELECT *, DATE_FORMAT(besukdate,'%d-%m-%Y') besukdate,
+		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon FROM tblbesuk WHERE besukid=".$besukid." LIMIT 0,1");
+	@$row=mysql_fetch_array($query);
+?>
+<input type="hidden" name="besukid" value="<?php echo @$row['besukid'] ?>">
+<table class="table table-condensed" cellpadding="0" cellspacing="0">
+	<tr>
+		<td>recno</td>
+		<td>: <input type="text" class="inputmedium" value="<?php echo @$recno ?>" name="recno" id="recno" readonly></td>
+	</tr>
+	<tr>
+		<td>besukdate</td>
+		<td>: 
+			<script type="text/javascript">
+				$(document).ready(function(){
+					$("#besukdate<?php echo $recno;?>").datepicker({dateFormat: 'dd-mm-yy'});  
+				});
+			</script>
+			<input type="text" class="inputmedium" value="<?php echo @$row['besukdate'] ?>" name="besukdate" id="besukdate<?php echo $recno;?>">
+        </td>
+	</tr>
+	<tr>
+		<td>pembesuk</td>
+		<td>: <input type="text" class="inputmedium" value="<?php echo @$row['pembesuk'] ?>" name="pembesuk" id="pembesuk"><span id="tip"></span></td>
+	</tr>
+	<tr>
+		<td>pembesukdari</td>
+		<td>: <input type="text" class="inputmedium" value="<?php echo @$row['pembesukdari'] ?>" name="pembesukdari" id="pembesukdari"></td>
+	</tr>
+	<tr>
+		<td>remark</td>
+		<td>: <input type="text" class="inputmedium" value="<?php echo @$row['remark'] ?>" name="remark" id="remark"></td>
+	</tr>
+	<tr>
+		<td>besuklanjutan</td>
+		<td>: <input type="text" class="inputmedium" value="<?php echo @$row['besuklanjutan'] ?>" name="besuklanjutan" id="besuklanjutan"></td>
+	</tr>
+</table>

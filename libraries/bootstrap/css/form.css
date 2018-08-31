@@ -1,0 +1,16 @@
+input[type=text].inputmedium,textarea{
+text-transform: uppercase;
+width: 200px;
+}
+input[type=email]{
+text-transform: lowercase;
+width: 200px;
+}*/
+input[type=file]{
+text-transform: lowercase;
+width: 200px;
+}
+
+#blah{
+	border: 1px solid rgb(200,200,200);
+}

@@ -1,0 +1,29 @@
+.icon-home{
+	background:url('icons_ext/house.png') no-repeat center center;
+}
+.icon-master{
+	background:url('icons_ext/application_home.png') no-repeat center center;
+}
+.icon-pengguna{
+	background:url('icons_ext/user_add.png') no-repeat center center;
+}
+.icon-zoom{
+	background:url('icons_ext/zoom.png') no-repeat center center;
+}
+.icon-out{
+	background:url('icons_ext/door_out.png') no-repeat center center;
+}
+.icon-image{
+	background:url('icons_ext/image.png') no-repeat center center;
+}
+.icon-view_detail{
+	background:url('icons_ext/application_view_detail.png') no-repeat center center;
+}
+
+.icon-group_gear{
+	background:url('icons_ext/group_gear.png') no-repeat center center;
+}
+
+.icon-application{
+	background:url('icons_ext/application.png') no-repeat center center;
+}
