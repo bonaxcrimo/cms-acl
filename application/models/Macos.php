@@ -21,7 +21,7 @@ class Macos extends MY_Model{
         }
     }
     public function getByMultiId($ids){
-        $acos = $this->db->where_in('id',$ids)
+        $acos = $this->db->where_in('acosid',$ids)
                 ->from($this->table)
                 ->get()
                 ->result_array();

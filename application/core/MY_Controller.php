@@ -11,11 +11,11 @@ class MY_Controller extends CI_Controller{
         $data['loggedUser'] = $acl->getLoggedInUser();
         if(!$data['loggedUser']==""){
             $data['sqlmenu'] = $this->mmenutop->get_data();
-            $this->load->view('header');
+            $this->load->view('partials/header');
             $this->load->view('navbar',$data);
         }
         $this->load->view($this->getLayout(),['template'=>$page,'data'=>$data]);
-        $this->load->view('footer');
+        $this->load->view('partials/footer');
     }
     protected function setLayout($layout){
         $this->layout = $layout;

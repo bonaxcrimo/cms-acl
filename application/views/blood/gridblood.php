@@ -9,9 +9,9 @@
         $('#dlg').dialog({
             closed:false,
             title:'Tambah data',
-            href:'<?php echo base_url(); ?>blood/form2/add2/0',
+            href:'<?php echo base_url(); ?>blood/form/add/0',
             onLoad:function(){
-                 url = '<?= base_url() ?>blood/crud2';
+                 url = '<?= base_url() ?>blood/crud';
             }
         });
     }
@@ -22,9 +22,9 @@
             $('#dlg').dialog({
                 closed:false,
                 title:'Edit Blood',
-                href:'<?php echo base_url(); ?>blood/form2/edit2/'+row,
+                href:'<?php echo base_url(); ?>blood/form/edit2/'+row,
                 onLoad:function(){
-                    url = '<?= base_url() ?>blood/crud2';
+                    url = '<?= base_url() ?>blood/crud';
                 }
             });
         }else{
@@ -37,9 +37,9 @@
             $('#dlgView').dialog({
                 closed:false,
                 title:'View data',
-                href:'<?php echo base_url(); ?>blood/form2/delete/'+row,
+                href:'<?php echo base_url(); ?>blood/form/delete/'+row,
                 onLoad:function(){
-                    url = '<?= base_url() ?>blood/crud2/'+row;
+                    url = '<?= base_url() ?>blood/crud/'+row;
                 }
             });
 
@@ -53,9 +53,9 @@
             $('#dlg').dialog({
                 closed:false,
                 title:'Delete data',
-                href:'<?php echo base_url(); ?>blood/form2/delete/'+row,
+                href:'<?php echo base_url(); ?>blood/form/delete/'+row,
                 onLoad:function(){
-                    url = '<?= base_url() ?>blood/crud2/'+row;
+                    url = '<?= base_url() ?>blood/crud/'+row;
                 }
             });
 
@@ -106,13 +106,13 @@
                 singleSelect:true,
                 remoteSort:true,
                 clientPaging: false,
-                url:"<?= base_url() ?>blood/grid",
                 method:'get',
                 onClickRow:function(index,row){
                     $(this).datagrid('selectRow',index);
                  }
             });
-        var pager = dg.datagrid('getPager');    // get the pager of datagrid
+        dg.datagrid('columnMoving');
+        var pager = dg.datagrid('getPager');
         pager.pagination({
             buttons:[{
                 iconCls:'icon-add',
@@ -146,7 +146,7 @@
 </script>
 <div class="easyui-tabs" style="height:auto">
     <div title="Data blood" style="padding:10px">
-         <table id="dgBlood" title="Blood" class="easyui-datagrid" style="width:100%;height:250px"
+         <table id="dgBlood" title="Blood" class="easyui-datagrid" style="width:100%;height:250px" url="<?= $link ?>"
                 >
             <thead>
                 <tr>

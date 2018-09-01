@@ -7,7 +7,7 @@ class Mroles extends MY_Model{
         $table= $this->table;
         $alias = $this->alias;
         $this->db->from($table.' as '.$alias);
-        $select = "$alias.id, $alias.rolename , (select GROUP_CONCAT(tblacl.acoid SEPARATOR ',') from tblacl where tblacl.roleid= $alias.roleid) as acos";
+        $select = "$alias.roleid, $alias.rolename , (select GROUP_CONCAT(tblacl.acoid SEPARATOR ',') from tblacl where tblacl.roleid= $alias.roleid) as acos";
         if(!empty($conditions)){
             $this->db->where($conditions);
         }
@@ -17,6 +17,7 @@ class Mroles extends MY_Model{
         if($count===true){
             return $this->db->get()->num_rows();
         }else{
+            $this->db->select($select);
             return $this->db->get()->result_array();
         }
     }
@@ -35,6 +36,7 @@ class Mroles extends MY_Model{
             'rolename' =>'Guest'
         ];
         $group = $this->getList($conditions);
+        print_r($group);
         if(!empty($group)){
             $group = $group[0];
             $this->load->model('Macos');

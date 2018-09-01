@@ -29,10 +29,10 @@ class Login extends MY_Controller {
         $this->render('login',['error'=>$error]);
 	}
 	public function logout(){
-		$this->session->unset_userdata('user',$user['userpk']);
-		$this->session->unset_userdata('userpk',$user['userpk']);
-		$this->session->unset_userdata('dashboard',$user['dashboard']);
-		$this->session->unset_userdata('logged_in',true);
+		$this->session->unset_userdata('user');
+		$this->session->unset_userdata('userpk');
+		$this->session->unset_userdata('dashboard');
+		$this->session->unset_userdata('logged_in');
 		redirect('login');
 	}
 	// public function proses(){

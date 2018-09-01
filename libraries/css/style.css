@@ -133,3 +133,16 @@ input .textbox-text{
 .textbox-readonly .textbox-text{
     background: #ddd;
 }
+.gray{
+	background: #ddd !important;
+}
+.menu-item{
+	height: 20px !important;
+}
+.menu-item .menu-text{
+	line-height: 20px !important;
+	height: 20px !important;
+}
+.textbox-label{
+	width: 100px !important;
+}
