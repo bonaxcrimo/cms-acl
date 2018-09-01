@@ -56,9 +56,38 @@ class blood extends MY_Controller {
 		echo json_encode($response);
 	}
 
-	function form($form,$bloodid){
+	function form($form,$parameter_key){
 		$data["parameter_key"] = $parameter_key;
 		$this->load->view('blood/'.$form,$data);
+	}
+	public function view($parameter_key=0){
+		$data["data"] = $this->mblood->getListAll('tblparameter',['parameter_key'=>$parameter_key]);
+		$this->load->view('blood/view',$data);
+	}
+	public function add(){
+		$data=[];
+		if($this->input->server('REQUEST_METHOD') == 'POST' ){
+			$data = $this->input->post();
+			$cek = $this->_save($data);
+			$status = $cek?"sukses":"gagal";
+			$hasil = array(
+		        'status' => $status
+		    );
+		    echo json_encode($hasil);
+		}else{
+			$data = $this->input->post();
+		}
+		$this->load->view('blood/add',['data'=>$data]);
+	}
+	private function _save($data){
+		@$form = array(
+			'parametergrpid' =>'BLOOD',
+			'parameterid' =>  strtoupper(@$data['parametertext']),
+			'parametertext' => strtoupper(@$data['parametertext']),
+			'modifiedby' => $_SESSION['username'],
+			'modifiedon' => date("Y-m-d H:i:s")
+		);
+		return $this->mblood->save($form);
 	}
 	function crud($id=0){
 		$_POST = array_map("strtoupper", $_POST);

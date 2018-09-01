@@ -28,6 +28,24 @@ class MY_Model extends CI_Model{
             return false;
         }
     }
+    public function getListAll($table,$conditions=[],$count=false,$limit=0,$offset=0,$object=true){
+        $this->db->from($table);
+        if(!empty($conditions)){
+            $this->db->where($conditions);
+        }
+        if(!empty($limit)){
+            $this->db->limit($limit,$offset);
+        }
+        if($count===true){
+            return $this->db->get()->num_rows();
+        }else{
+            if($object===false){
+                return $this->db->get()->result_array();
+            }else{
+                return $this->db->get()->result_object();
+            }
+        }
+    }
     protected function removeBatch($conditions){
         foreach($conditions as $condition){
             $this->db->delete($this->table,$condition);

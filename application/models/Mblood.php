@@ -1,7 +1,14 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Mblood extends MY_Model {
+	protected $insert_id;
+	protected $table = 'tblparameter';
 	function __construct() {
         parent::__construct();
+    }
+    public function save($data){
+    	// unset($data['oper']);
+    	$result = $this->db->insert($this->table,$data);
+    	return $result;
     }
 	function count($where){
 		if(strlen($where)==0){

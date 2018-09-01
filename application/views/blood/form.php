@@ -1,11 +1,8 @@
-<input type="hidden" name="bloodid" value="<?php echo @$data->bloodid ?>">
-<table class="table table-condensed" border="0" cellpadding="0" cellspacing="0">
-	<tr>
-		<td>bloodid</td>
-		<td>: <input type="text" class="inputmedium" value="<?php echo @$data->bloodid ?>" name="bloodid" id="bloodid"><span id="tip"></span></td>
-	</tr>
-	<tr>
-		<td>bloodname</td>
-		<td>: <input type="text" class="inputmedium" value="<?php echo @$data->bloodname ?>" name="bloodname" id="bloodname"></td>
-	</tr>
-</table>
+<?php
+    @$sql="SELECT * FROM tblparameter WHERE parameter_key='".$parameter_key."' LIMIT 0,1";
+    @$data = queryCustom($sql);
+?>
+<input type="hidden" name="parameter_key" value="<?= @$data->parameter_key ?>">
+<div style="margin-bottom:10px">
+    <input name="parametertext" class="easyui-textbox" required="true" labelPosition="top"  value="<?= @$data->parametertext ?>"  label="Blood Name:" style="width:100%">
+</div>

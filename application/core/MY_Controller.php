@@ -17,6 +17,7 @@ class MY_Controller extends CI_Controller{
         $this->load->view($this->getLayout(),['template'=>$page,'data'=>$data]);
         $this->load->view('partials/footer');
     }
+
     protected function setLayout($layout){
         $this->layout = $layout;
         return $this;

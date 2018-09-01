@@ -9,9 +9,9 @@
         $('#dlg').dialog({
             closed:false,
             title:'Tambah data',
-            href:'<?php echo base_url(); ?>blood/form/add/0',
+            href:'<?php echo base_url(); ?>blood/add',
             onLoad:function(){
-                 url = '<?= base_url() ?>blood/crud';
+                 url = '<?= base_url() ?>blood/add';
             }
         });
     }
@@ -37,10 +37,7 @@
             $('#dlgView').dialog({
                 closed:false,
                 title:'View data',
-                href:'<?php echo base_url(); ?>blood/form/delete/'+row,
-                onLoad:function(){
-                    url = '<?= base_url() ?>blood/crud/'+row;
-                }
+                href:'<?php echo base_url(); ?>blood/view/'+row
             });
 
         }else{
@@ -71,16 +68,17 @@
                 return $(this).form('validate');
             },
             success: function(result){
-                var result = eval('('+result+')');
-                if (result.status=="gagal"){
-                    $.messager.show({
-                        title: 'Error',
-                        msg: result.status
-                    });
-                } else {
-                    $('#dlg').dialog('close');
-                    $('#dgBlood').datagrid('reload');
-                }
+                // var result = eval('('+result+')');
+                // if (result.status=="gagal"){
+                //     $.messager.show({
+                //         title: 'Error',
+                //         msg: result.status
+                //     });
+                // } else {
+                //     $('#dlg').dialog('close');
+                //     $('#dgBlood').datagrid('reload');
+                // }
+                console.log(result);
             },error:function(error){
                  console.log($(this).serialize());
             }
