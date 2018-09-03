@@ -79,60 +79,52 @@ class blood extends MY_Controller {
 		}
 		$this->load->view('blood/add',['data'=>$data]);
 	}
+	public function edit($id){
+		$data = $this->mblood->getById($id);
+        if(empty($data)){
+            redirect('blood');
+        }
+		if($this->input->server('REQUEST_METHOD') == 'POST' ){
+			$data = $this->input->post();
+			$data['parameter_key'] = $this->input->post('parameter_key');
+			$cek = $this->_save($data);
+			$status = $cek?"sukses":"gagal";
+			$hasil = array(
+		        'status' => $status
+		    );
+		    echo json_encode($hasil);
+		}
+		$this->load->view('blood/edit',['data'=>$data]);
+	}
+	public function delete($id){
+		$data = $this->mblood->getById($id);
+		if(empty($data)){
+			redirect('blood');
+		}
+		if($this->input->server('REQUEST_METHOD') == 'POST'){
+			$data['parameter_key'] = $this->input->post('parameter_key');
+			$cek = $this->mblood->delete($data['parameter_key']);
+			$status = $cek?"sukses":"gagal";
+			$hasil = array(
+		        'status' => $status
+		    );
+		    echo json_encode($hasil);
+		}
+		$this->load->view('blood/delete',['data'=>$data]);
+	}
 	private function _save($data){
 		@$form = array(
 			'parametergrpid' =>'BLOOD',
+			'parameter_key' => @$data['parameter_key'],
 			'parameterid' =>  strtoupper(@$data['parametertext']),
 			'parametertext' => strtoupper(@$data['parametertext']),
-			'modifiedby' => $_SESSION['username'],
+			'modifiedby' =>$this->session->userdata('username'),
 			'modifiedon' => date("Y-m-d H:i:s")
 		);
 		return $this->mblood->save($form);
 	}
-	function crud($id=0){
-		$_POST = array_map("strtoupper", $_POST);
-		@$paramkey = @($_REQUEST['parameter_key']);
-		@$paramtext = @($_REQUEST['parametertext']);
-		@$oper= @$_REQUEST['oper'];
-		@$data = array(
-			'parametergrpid' =>'BLOOD',
-			'parameterid' =>  strtoupper(@$paramtext),
-			'parametertext' => strtoupper(@$paramtext),
-			'modifiedby' => $_SESSION['username'],
-			'modifiedon' => date("Y-m-d H:i:s")
-		);
-		switch ($oper) {
-	        case 'add':
-				$cek = $this->mblood->add("tblparameter",$data);
-				$status = $cek?"sukses":"gagal";
-				$hasil = array(
-			        'status' => $status
-			    );
-			    echo json_encode($hasil);
-	            break;
-            case 'del':
-				$cek = $this->mblood->del("tblparameter",$paramkey);
-				$status = $cek?"sukses":"gagal";
-				$hasil = array(
-			        'status' => $status
-			    );
-			    echo json_encode($hasil);
-	            break;
-	        case 'edit':
-				$cek = $this->mblood->edit("tblparameter",$data,$paramkey);
-				$status = $cek?"sukses":"gagal";
-				$hasil = array(
-			        'status' => $status
-			    );
-			    echo json_encode($hasil);
-	            break;
-	        default :
-	        	$hasil = array(
-			        'status' => 'Not Operation'
-			    );
-			    echo json_encode($hasil);
-	           break;
-		}
+	public function excel(){
+		echo "excel";
 	}
 
 }

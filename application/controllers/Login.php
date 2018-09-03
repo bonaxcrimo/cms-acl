@@ -19,6 +19,7 @@ class Login extends MY_Controller {
         	if(!empty($user)){
         		$this->session->set_userdata('user',$user['userpk']);
         		$this->session->set_userdata('userpk',$user['userpk']);
+                $this->session->set_userdata('username',$user['username']);
         		$this->session->set_userdata('dashboard',$user['dashboard']);
         		$this->session->set_userdata('logged_in',true);
         		redirect("home");

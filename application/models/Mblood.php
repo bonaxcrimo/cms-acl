@@ -2,13 +2,45 @@
 class Mblood extends MY_Model {
 	protected $insert_id;
 	protected $table = 'tblparameter';
-	function __construct() {
-        parent::__construct();
+
+    public function getList($conditions = [],$count=false,$limit=0,$offset=0){
+    	$table = $this->table;
+    	$this->db->from($table);
+    	if(!empty($conditions)){
+    		$this->db->where($conditions);
+    	}
+    	if(!empty($limit)){
+    		$this->db->limit($limit,$offset);
+    	}
+    	if($count===true){
+    		return $this->db->get()->num_rows();
+    	}else{
+    		return $this->db->get()->result();
+    	}
+    }
+    public function getById($id){
+    	$conditions = ['parameter_key'=>$id];
+    	$blood = $this->getList($conditions);
+    	if(!empty($blood)){
+    		$blood = $blood[0];
+    		return $blood;
+    	}
+    	return [];
     }
     public function save($data){
-    	// unset($data['oper']);
-    	$result = $this->db->insert($this->table,$data);
+    	if(isset($data['parameter_key']) && !empty($data['parameter_key'])){
+    		$id = $data['parameter_key'];
+    		unset($data['parameter_key']);
+    		$this->db->where("parameter_key",$id);
+    		$result = $this->db->update($this->table,$data);
+    	}else{
+	    	$result = $this->db->insert($this->table,$data);
+    	}
     	return $result;
+    }
+    public function delete($id){
+    	$this->db->where(['parameter_key'=>$id]);
+    	return $this->db->delete($this->table);
     }
 	function count($where){
 		if(strlen($where)==0){

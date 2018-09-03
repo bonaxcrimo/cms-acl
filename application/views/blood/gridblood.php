@@ -17,14 +17,13 @@
     }
     function editBlood(parameter_key){
         var row = parameter_key==undefined?$('#dgBlood').datagrid('getSelected').parameter_key:parameter_key;
-        console.log(row);
         if (row!=''){
             $('#dlg').dialog({
                 closed:false,
                 title:'Edit Blood',
-                href:'<?php echo base_url(); ?>blood/form/edit2/'+row,
+                href:'<?php echo base_url(); ?>blood/edit/'+row,
                 onLoad:function(){
-                    url = '<?= base_url() ?>blood/crud';
+                    url = '<?= base_url() ?>blood/edit/'+row;
                 }
             });
         }else{
@@ -50,9 +49,9 @@
             $('#dlg').dialog({
                 closed:false,
                 title:'Delete data',
-                href:'<?php echo base_url(); ?>blood/form/delete/'+row,
+                href:'<?php echo base_url(); ?>blood/delete/'+row,
                 onLoad:function(){
-                    url = '<?= base_url() ?>blood/crud/'+row;
+                    url = '<?= base_url() ?>blood/delete/'+row;
                 }
             });
 
@@ -68,17 +67,9 @@
                 return $(this).form('validate');
             },
             success: function(result){
-                // var result = eval('('+result+')');
-                // if (result.status=="gagal"){
-                //     $.messager.show({
-                //         title: 'Error',
-                //         msg: result.status
-                //     });
-                // } else {
-                //     $('#dlg').dialog('close');
-                //     $('#dgBlood').datagrid('reload');
-                // }
-                console.log(result);
+                $('#dlg').dialog('close');
+                $('#dgBlood').datagrid('reload');
+
             },error:function(error){
                  console.log($(this).serialize());
             }
