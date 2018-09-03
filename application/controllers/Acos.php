@@ -6,6 +6,11 @@ class Acos extends MY_Controller {
         parent::__construct();
         $this->load->model('Macos');
     }
+
+    /**
+     * ambil controller dan method disimpan didatabase
+     * @AclName Acos Fetch
+     */
     public function fetch() {
 
         $this->listFolderFiles();
@@ -33,16 +38,13 @@ class Acos extends MY_Controller {
                     $methods = $this->get_class_methods($class, true);
                     foreach($methods as $method){
                         if(isset($method['docComment']['AclName'])){
+                            echo "masuk";
                             $this->Macos->save(['class'=>$class, 'method'=>$method['name'], 'displayname'=>$method['docComment']['AclName']]);
                         }
                     }
 
                 }
             }
-            if ($i > 5)
-                break;
-            else
-                $i++;
         }
 
     }
@@ -65,7 +67,6 @@ class Acos extends MY_Controller {
         $methods = array();
 
         foreach($r->getMethods() AS $m){
-            print_r($m);
             if($m->class == $class){
                 $arr = ['name'=>$m->name];
                 if($comment === true){

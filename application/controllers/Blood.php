@@ -8,10 +8,18 @@ class blood extends MY_Controller {
 			'mblood'
 		]);
 	}
+	/**
+     * tampilan awal dari blood
+     * @AclName List Blood
+     */
 	function index(){
 		$link = base_url()."blood/grid";
 		$this->render('blood/gridblood',['link'=>$link]);
 	}
+	/**
+     * Merupakan Grid dari Blood
+     * @AclName Grid Blood
+     */
 	function grid(){
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
@@ -56,10 +64,6 @@ class blood extends MY_Controller {
 		echo json_encode($response);
 	}
 
-	function form($form,$parameter_key){
-		$data["parameter_key"] = $parameter_key;
-		$this->load->view('blood/'.$form,$data);
-	}
 	public function view($parameter_key=0){
 		$data["data"] = $this->mblood->getListAll('tblparameter',['parameter_key'=>$parameter_key]);
 		$this->load->view('blood/view',$data);
@@ -123,6 +127,10 @@ class blood extends MY_Controller {
 		);
 		return $this->mblood->save($form);
 	}
+	/**
+     * Fungsi untuk export excel
+     * @AclName Export Excel Blood
+     */
 	public function excel(){
 		echo "excel";
 	}

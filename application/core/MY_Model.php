@@ -20,8 +20,8 @@ class MY_Model extends CI_Model{
             return false;
         }
     }
-    protected function update($update,$id){
-        $condition = ['ID'=>$id];
+    protected function update($update,$id,$field){
+        $condition = [$field=>$id];
         if($this->db->update($this->table,$update,$condition)){
             return true;
         }else{

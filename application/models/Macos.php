@@ -34,8 +34,8 @@ class Macos extends MY_Model{
         ];
         if($this->getBy($conditions,true) > 0){
             $result = $this->getBy($conditions);
-            $id = $result[0]['id'];
-            return $this->update($data,$id);
+            $id = $result[0]['acosid'];
+            return $this->update($data,$id,'acosid');
         }else{
             return $this->insert($data);
         }
