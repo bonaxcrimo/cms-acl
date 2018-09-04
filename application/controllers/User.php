@@ -1,7 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-
 class User extends MY_Controller {
-
 	public function __construct(){
 		parent::__construct();
 		$this->load->model([
@@ -15,8 +13,53 @@ class User extends MY_Controller {
 		$this->render('user/griduser',['link'=>$link]);
 	}
 	public function grid(){
+		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+        $rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
+        $sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'userpk';
+        $order = isset($_GET['order']) ? strval($_GET['order']) : 'asc';
+
+        $filterRules = isset($_GET['filterRules']) ? ($_GET['filterRules']) : '';
+        $cond = '';
+        if (!empty($filterRules)){
+            $cond = ' where   1=1 ';
+            $filterRules = json_decode($filterRules);
+
+            foreach($filterRules as $rule){
+                $rule = get_object_vars($rule);
+                $field = $rule['field'];
+                $op = $rule['op'];
+                $value = $rule['value'];
+                if (!empty($value)){
+                    if ($op == 'contains'){
+                        $cond .= " and ($field like '%$value%')";
+                    } else if ($op == 'greater'){
+                        $cond .= " and $field>$value";
+                    }
+                }
+            }
+        }
+        $where='';
+        $sql = $this->muser->count($cond);
+        $total = $sql->num_rows();
+        $offset = ($page - 1) * $rows;
+        $data = $this->muser->get($cond,$sort,$order,$rows,$offset)->result();
+        $response = new stdClass;
+        $response->total=$total;
+        $response->rows = $data;
+        $_SESSION['exceluser']= "asc|offering_key|";
+        echo json_encode($response);
 
 	}
+    public function view(){
+
+    }
+    public function add(){
+        $data=[];
+        if($this->input->server('REQUEST_METHOD')=='POST'){
+            $data = $this->input->post();
+        }
+        $this->load->view('user/add',['data'=>$data]);
+    }
 
 	function grid2(){
 		$acl = $this->hakakses('user');

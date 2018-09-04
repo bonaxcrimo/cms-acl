@@ -66,7 +66,8 @@ class blood extends MY_Controller {
      * @AclName View Blood
      */
 	public function view($parameter_key=0){
-		$data["data"] = $this->mblood->getListAll('tblparameter',['parameter_key'=>$parameter_key]);
+		// $data["data"] = $this->mblood->getListAll('tblparameter',['parameter_key'=>$parameter_key]);
+		$data['data'] = $this->mblood->getById('tblparameter','parameter_key',$parameter_key);
 		$this->load->view('blood/view',$data);
 	}
 	/**
