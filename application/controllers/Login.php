@@ -6,7 +6,10 @@ class Login extends MY_Controller {
 		parent::__construct();
 		$this->load->model('mlogin');
 	}
-
+    /**
+     * Fungsi awal login
+     * @AclName Login
+     */
 	public function index(){
 		$adminId = $this->session->userdata('userpk');
         if(!empty($adminId)){
@@ -29,6 +32,10 @@ class Login extends MY_Controller {
         }
         $this->render('login',['error'=>$error]);
 	}
+    /**
+     * Fungsi logout
+     * @AclName Logout
+     */
 	public function logout(){
 		$this->session->unset_userdata('user');
 		$this->session->unset_userdata('userpk');
@@ -36,27 +43,5 @@ class Login extends MY_Controller {
 		$this->session->unset_userdata('logged_in');
 		redirect('login');
 	}
-	// public function proses(){
-	// 	$userid = $this->input->post('userid');
-	// 	$password = md5($this->input->post('password'));
-	// 	$cek = $this->mlogin->login($userid,$password);
-
-	// 	if($cek!=""){
-	// 		foreach ($cek->result() as $row){
-	// 			$_SESSION['userpk']=$row->userpk;
-	// 			$_SESSION['userid']=$row->userid;
-	// 			$_SESSION['username']=$row->username;
-	// 			$_SESSION['userlevel']=$row->userlevel;
-	// 			$_SESSION['password']=$row->password;
-	// 			$_SESSION['dashboard']=$row->dashboard;
-	// 		}
-	// 		redirect("home");
-	// 	}
-	// 	else{
-	// 		$data["error"]="Kombinasi userid Atau Password Salah";
-	// 		$this->load->view('login',$data);
-	// 		session_destroy();
-	// 	}
-	// }
 }
 

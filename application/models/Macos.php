@@ -15,10 +15,17 @@ class Macos extends MY_Model{
             $this->db->limit($limit,$offet);
         }
         if($count===true){
-            $this->db->get()->num_rows();
+            return $this->db->get()->num_rows();
         }else{
-            $this->db->get()->result_array();
+            $this->db->order_by('class','asc');
+            return $this->db->get()->result();
         }
+    }
+    public function getGroup(){
+        $table =$this->table;
+        $this->db->from($table);
+        $this->db->group_by('class');
+        return $this->db->get()->result();
     }
     public function getByMultiId($ids){
         $acos = $this->db->where_in('acosid',$ids)

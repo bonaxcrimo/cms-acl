@@ -4,29 +4,11 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class profile extends CI_Controller {
     public function __construct(){
         parent::__construct();
-        $this->load->library('session');
         $this->load->model([
-            'mlogin',
-            'mbesuk',
-            'mprofile',
-            'mmenutop'
+            'mprofile'
         ]);
-        $this->load->helper('my_helper');
-        $cek = $this->mlogin->cek();
-        if($cek==""){
-            redirect("");
-            session_destroy();
-        }
-        date_default_timezone_set("Asia/Jakarta");
-        ini_set('memory_limit', '-1');
     }
     function index(){
-        $data['acl'] = $this->hakakses('profile');
-        $data['sqlmenu'] = $this->mmenutop->get_data();
-        $this->load->view('partials/header');
-        $this->load->view('navbar',$data);
-        $this->load->view('profile/gridprofile');
-        $this->load->view('partials/footer');
     }
     function jemaat(){
         if(empty($_SESSION['member_key'])){

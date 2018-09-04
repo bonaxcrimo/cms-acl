@@ -27,7 +27,8 @@ class Macl extends MY_Model{
                 foreach($data['acos'] as $aco){
                     $insert[] = [
                         'roleid'=>$data['roleid'],
-                        'acoid'=>$aco
+                        'acoid'=>$aco,
+                        'modifiedby'=>$this->session->userdata('username')
                     ];
                 }
                 return $this->insertBatch($insert);
@@ -42,7 +43,8 @@ class Macl extends MY_Model{
                     foreach($inserts as $val){
                         $insert[]=[
                             'roleid'=>$data['roleid'],
-                            'acoid'=>$val
+                            'acoid'=>$val,
+                            'modifiedby'=>$this->session->userdata('username')
                         ];
                     }
                     $this->insertBatch($insert);
@@ -52,7 +54,8 @@ class Macl extends MY_Model{
                     foreach($removes as $val){
                         $remove[] = [
                             'roleid' =>$data['roleid'],
-                            'acoid'=>$val
+                            'acoid'=>$val,
+                            'modifiedby'=>$this->session->userdata('username')
                         ];
                     }
                     $this->removeBatch($remove);
@@ -63,7 +66,7 @@ class Macl extends MY_Model{
         return false;
     }
     protected function getListByGroup($conditions){
-        $this->db->select('GROUP CONCAT('.$this->alias.'.acoid SEPARATOR "," as acos ')
+        $this->db->select('GROUP_CONCAT('.$this->alias.'.acoid SEPARATOR "," ) as acos ')
             ->where($conditions)
             ->from($this->table.' as '.$this->alias);
 

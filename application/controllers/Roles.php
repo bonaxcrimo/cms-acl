@@ -19,13 +19,12 @@ class Roles extends MY_Controller{
      * Merupakan Grid dari Roles
      * @AclName Grid Roles
      */
-    function grid(){
+    public function grid(){
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
         $sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'roleid';
         $order = isset($_GET['order']) ? strval($_GET['order']) : 'asc';
         $filterRules = isset($_GET['filterRules']) ? ($_GET['filterRules']) : '';
-
         $cond = '';
         if (!empty($filterRules)){
             $cond = ' where 1=1 ';
@@ -49,7 +48,84 @@ class Roles extends MY_Controller{
         $response = new stdClass;
         $response->total=$total;
         $response->rows = $data;
-        $_SESSION['excelblood']= "asc|parameter_key|".$cond;
+        $_SESSION['excelroles']= "asc|parameter_key|".$cond;
         echo json_encode($response);
+    }
+    /**
+     * Fungsi tambah roles
+     * @AclName Tambah Roles
+     */
+    public function add(){
+        $data = [];
+        $acos = $this->Macos->getList();
+        $groups = $this->Macos->getGroup();
+        if($this->input->server('REQUEST_METHOD') == "POST"){
+            if($this->_validateForm()){
+                $data = $this->input->post();
+                $this->_save($data);
+                redirect('roles');
+            }else{
+                $data = $this->input->post();
+            }
+        }
+        $this->render('roles/add',['data'=>$data,'acos'=>$acos,'groups'=>$groups]);
+    }
+    /**
+     * Fungsi edit roles
+     * @AclName Edit Roles
+     */
+    public function edit($id){
+        $acos = $this->Macos->getList();
+        $data = $this->Mroles->getByIdRoles($id);
+        if(empty($data)){
+            redirect('roles');
+        }
+        $data->role_permission = strpos($data->acos,',')===false?[$data->acos]:explode(', ',$data->acos);
+        if($this->input->server('REQUEST_METHOD') == "POST"){
+            if($this->_validateForm()){
+                $data = $this->input->post();
+                $data['roleid']=$id;
+                $this->_save($data);
+                redirect('roles');
+            }else{
+                $data = $this->input->post();
+            }
+        }
+        $this->render('roles/edit',['data'=>$data,'acos'=>$acos]);
+    }
+    private function _save($data){
+        $this->Mroles->save($data);
+    }
+    private function _validateForm(){
+        //defines the rules for register form
+        $rules = [
+            [
+                'field' => 'rolename',
+                'label' => 'rolename',
+                'rules' => 'trim|required|max_length[50]|callback_validateName'
+            ],
+            [
+                'field' => 'role_permission[]|numeric',
+                'label' => 'Roles',
+                'rules' => 'required'
+            ]
+        ];
+        //set the rules for register form
+        $this->form_validation->set_rules($rules);
+        //return validation value in boolean
+        return $this->form_validation->run();
+    }
+     public function validateName($name){
+        //get id from the url
+        $id = $this->uri->segment('3');
+        $exist = $this->Mroles->isNameExists($name, $id);
+
+        if($exist === false){
+            //name does not exists in table
+            return true;
+        }
+        //name exists and throw error
+        $this->form_validation->set_message(__FUNCTION__, "{field} $name is already exists.");
+        return false;
     }
 }

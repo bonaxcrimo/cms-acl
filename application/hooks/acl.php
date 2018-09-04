@@ -17,18 +17,19 @@ class ACL{
             return true;
         }
         $user = $this->getLoggedInUser();
-        if(!$this->_validateActionPermission($user['acl'])){
+        if(!empty($user)){
+
+        }else{
+            redirect('/login');
+        }
+        if(!$this->_validateActionPermission($user['acl']) && $CI->session->userdata('username')!='admin'){
             if(empty($user)){
                 redirect('/login');
             }else{
                 exit('unauthorized');
             }
         }
-        if(!empty($user)){
 
-        }else{
-            redirect('/login');
-        }
     }
     public function getLoggedInUser(){
         $CI = $this->CI;

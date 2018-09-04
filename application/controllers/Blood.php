@@ -12,7 +12,7 @@ class blood extends MY_Controller {
      * tampilan awal dari blood
      * @AclName List Blood
      */
-	function index(){
+	public function index(){
 		$link = base_url()."blood/grid";
 		$this->render('blood/gridblood',['link'=>$link]);
 	}
@@ -20,7 +20,7 @@ class blood extends MY_Controller {
      * Merupakan Grid dari Blood
      * @AclName Grid Blood
      */
-	function grid(){
+	public function grid(){
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
 		$sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'parameterid';

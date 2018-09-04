@@ -25,8 +25,18 @@ class Mroles extends MY_Model{
             return $this->db->get()->num_rows();
         }else{
             $this->db->select($select);
-            return $this->db->get()->result_array();
+            return $this->db->get()->result();
         }
+    }
+    public function getByIdRoles($id){
+        $conditions = [
+            'roleid' =>$id
+        ];
+        $roles = $this->getList($conditions);
+        if(!empty($roles)){
+            $roles = $roles[0];
+        }
+        return $roles;
     }
     public function getGuestGroup(){
         $conditions= [
@@ -48,7 +58,7 @@ class Mroles extends MY_Model{
             $this->alias.'.rolename'=>$name
         ];
         if(!empty($id) && is_numeric($id)){
-            $conditions[$this->alias.'roleid !='] = $id;
+            $conditions[$this->alias.'.roleid !='] = $id;
         }
         $count = $this->getList($conditions,true);
         if($count>0)
@@ -62,7 +72,7 @@ class Mroles extends MY_Model{
         ];
         if(isset($data['roleid']) && !empty($data['roleid'])){
             $id = $data['roleid'];
-            $result = $this->update($save,$id);
+            $result = $this->update($save,$id,'roleid');
             if($result===true){
                 $this->saveRolePermission($id,$data['role_permission']);
             }else{
@@ -86,7 +96,7 @@ class Mroles extends MY_Model{
     }
     public function saveRolePermission($roleid,$acos){
         $this->load->model('Macos');
-        $result = $this->Macos->saveBatch(['roleid'=>$roleid,'acos'=>$acos]);
+        $result = $this->Macl->saveBatch(['roleid'=>$roleid,'acos'=>$acos]);
         return $result;
     }
     public function delete($id){

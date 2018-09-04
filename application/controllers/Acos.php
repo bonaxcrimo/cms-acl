@@ -12,9 +12,8 @@ class Acos extends MY_Controller {
      * @AclName Acos Fetch
      */
     public function fetch() {
-
         $this->listFolderFiles();
-        redirect('login');
+        // redirect('login');
     }
     public function listFolderFiles($dir = null) {
         if ($dir === null){
