@@ -1,36 +1,24 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class User extends CI_Controller {
+class User extends MY_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->library('session'); // session_start()
-		$this->load->model('mlogin');
-		$cek = $this->mlogin->cek();
-		if($cek==""){
-			redirect("");
-			session_destroy();
-		}
-		date_default_timezone_set("Asia/Jakarta");
-		ini_set('memory_limit', '-1');
-		$this->load->model('mmenutop');
-        $this->load->helper('my_helper');
-
-		$this->load->model('muser');
-		$this->load->model('musermenu');
+		$this->load->model([
+			'muser',
+			'musermenu'
+		]);
 	}
 
-	function index(){
-		$data['acl'] = $this->hakakses("user");
-		$data['sqlmenu'] = $this->mmenutop->get_data();
+	public function index(){
+		$link = base_url()."user/grid";
+		$this->render('user/griduser',['link'=>$link]);
+	}
+	public function grid(){
 
-		$this->load->view('header');
-		$this->load->view('navbar',$data);
-		$this->load->view('user/griduser',$data);
-		$this->load->view('footer');
 	}
 
-	function grid(){
+	function grid2(){
 		$acl = $this->hakakses('user');
 		@$page = $_POST['page'];
 		@$limit = $_POST['rows'];
@@ -239,24 +227,4 @@ class User extends CI_Controller {
 		return $where;
 	}
 
-	function excel(){
-		$excel = $_SESSION['exceluser'];
-		$splitexcel = explode("|",$excel);
-		$sord = $splitexcel[0];
-		$sidx= $splitexcel[1];
-		$where = $splitexcel[2];
-		$data['sql']=$this->db->query("SELECT *,
-		DATE_FORMAT(dob,'%d-%m-%Y') dob,
-		DATE_FORMAT(tglbesuk,'%d-%m-%Y') tglbesuk,
-		DATE_FORMAT(baptismdate,'%d-%m-%Y') baptismdate,
-		DATE_FORMAT(modifiedon,'%d-%m-%Y') modifiedon,
-		DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') as umur
-		FROM tbluser " . $where . " ORDER BY $sidx $sord");
-		$this->load->view('user/excel',$data);
-	}
-
-	function hakakses($x){
-		$x = $this->mmenutop->get_menuid($x);
-		return $x;
-	}
 }

@@ -93,11 +93,22 @@ class Roles extends MY_Controller{
         }
         $this->render('roles/edit',['data'=>$data,'acos'=>$acos]);
     }
+    /**
+     * Fungsi delete roles
+     * @AclName Delete Roles
+     */
+    public function delete($id){
+        $role = $this->Mroles->getByIdRoles($id);
+        if(empty($role)){
+            redirect('roles');
+        }
+        $this->Mroles->delete($id);
+        redirect('roles');
+    }
     private function _save($data){
         $this->Mroles->save($data);
     }
     private function _validateForm(){
-        //defines the rules for register form
         $rules = [
             [
                 'field' => 'rolename',
@@ -110,9 +121,7 @@ class Roles extends MY_Controller{
                 'rules' => 'required'
             ]
         ];
-        //set the rules for register form
         $this->form_validation->set_rules($rules);
-        //return validation value in boolean
         return $this->form_validation->run();
     }
      public function validateName($name){
@@ -125,7 +134,7 @@ class Roles extends MY_Controller{
             return true;
         }
         //name exists and throw error
-        $this->form_validation->set_message(__FUNCTION__, "{field} $name is already exists.");
+        $this->form_validation->set_message(__FUNCTION__, "{field} '$name' is already exists.");
         return false;
     }
 }

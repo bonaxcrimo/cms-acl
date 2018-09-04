@@ -35,9 +35,9 @@ class Macl extends MY_Model{
             }else{
                 $records = $this->getListByGroup(['roleid'=>$data['roleid']]);
                 $acos = strpos($records[0]['acos'],',')===false?[$records[0]['acos']]:explode(', ',$records[0]['acos']);
+
                 $inserts = array_diff($data['acos'],$acos);
                 $removes = array_diff($acos,$data['acos']);
-
                 if(!empty($inserts)){
                     $insert= [];
                     foreach($inserts as $val){
@@ -54,8 +54,7 @@ class Macl extends MY_Model{
                     foreach($removes as $val){
                         $remove[] = [
                             'roleid' =>$data['roleid'],
-                            'acoid'=>$val,
-                            'modifiedby'=>$this->session->userdata('username')
+                            'acoid'=>$val
                         ];
                     }
                     $this->removeBatch($remove);

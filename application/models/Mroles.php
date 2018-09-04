@@ -95,7 +95,7 @@ class Mroles extends MY_Model{
         }
     }
     public function saveRolePermission($roleid,$acos){
-        $this->load->model('Macos');
+        $this->load->model('Macl');
         $result = $this->Macl->saveBatch(['roleid'=>$roleid,'acos'=>$acos]);
         return $result;
     }

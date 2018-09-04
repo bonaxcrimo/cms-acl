@@ -23,7 +23,6 @@ foreach($acos as $aco){
     }
     ?>
                 <li> <?php
-                echo $aco->acosid."=";
                 $checked = isset($data->role_permission) && in_array($aco->acosid, $data->role_permission)?true:false;
                 echo form_checkbox('role_permission[]', $aco->acosid, $checked); echo form_label($aco->method); ?>  </li>
                 <?php

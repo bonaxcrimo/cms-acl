@@ -1,6 +1,6 @@
 <?php
 class Muserroles extends MY_Model{
-    protected $table = 'user_roles';
+    protected $table = 'tbluserroles';
     protected $alias = 'ur';
     public function getList($conditions =[],$count = false,$limit=0,$offset=0){
         $table= $this->table;
