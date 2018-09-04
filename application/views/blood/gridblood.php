@@ -16,7 +16,7 @@
         });
     }
     function editBlood(parameter_key){
-        var row = parameter_key==undefined?$('#dgBlood').datagrid('getSelected').parameter_key:parameter_key;
+        var row = parameter_key==undefined?$('#dgBlood').datagrid('getSelected')==undefined?'':$('#dgBlood').datagrid('getSelected').parameter_key:parameter_key;
         if (row!=''){
             $('#dlg').dialog({
                 closed:false,
@@ -31,7 +31,7 @@
         }
     }
     function viewBlood(parameter_key){
-        var row = parameter_key==undefined?$('#dgBlood').datagrid('getSelected').parameter_key:parameter_key;
+        var row = parameter_key==undefined?$('#dgBlood').datagrid('getSelected')==undefined?'':$('#dgBlood').datagrid('getSelected').parameter_key:parameter_key;
         if (row!=''){
             $('#dlgView').dialog({
                 closed:false,
@@ -44,7 +44,7 @@
         }
     }
     function deleteBlood(parameter_key){
-        var row = parameter_key==undefined?$('#dgBlood').datagrid('getSelected').parameter_key:parameter_key;
+        var row = parameter_key==undefined?$('#dgBlood').datagrid('getSelected')==undefined?'':$('#dgBlood').datagrid('getSelected').parameter_key:parameter_key;
         if (row!=''){
             $('#dlg').dialog({
                 closed:false,
@@ -52,13 +52,12 @@
                 href:'<?php echo base_url(); ?>blood/delete/'+row,
                 onLoad:function(){
                     url = '<?= base_url() ?>blood/delete/'+row;
+                    oper="del";
                 }
             });
-
         }else{
              $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
         }
-
     }
     function callSubmit(){
         $('#fm').form('submit',{
@@ -140,20 +139,15 @@
             <thead>
                 <tr>
                     <th field="aksi" width="5%">Aksi</th>
-                    <th field="parameter_key" width="10%" sortable="true" hidden="true"></th>
+                    <th field="parameter_key" width="10%" hidden="true"></th>
                     <th field="parametertext" width="5%" sortable="true">bloodname</th>
                     <th field="modifiedby" width="5%" sortable="true">modifiedby</th>
                     <th field="modifiedon" width="10%" sortable="true">modifiedon</th>
                 </tr>
             </thead>
         </table>
-
-        <div id="dlg" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'" >
-
-        </div>
-        <div id="dlgView" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons1'" >
-
-        </div>
+        <div id="dlg" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'"></div>
+        <div id="dlgView" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons1'"></div>
         <div id="dlg-buttons1">
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgView').dialog('close')" style="width:90px">Cancel</a>
         </div>

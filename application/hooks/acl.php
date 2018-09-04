@@ -76,7 +76,6 @@ class ACL{
         }
         $user = $this->user;
         if(!empty($user) && isset($user['acl'])){
-            echo $this->_validateActionPermission($user['acl'],$class,$method);
             return $this->_validateActionPermission($user['acl'],$class,$method);
         }
         return false;

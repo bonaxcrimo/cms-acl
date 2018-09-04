@@ -2,7 +2,14 @@
 class Mroles extends MY_Model{
     protected $table = 'tblroles';
     protected $alias = 'r';
-
+    function count($where){
+        $sql = $this->db->query("SELECT * FROM tblroles " . $where);
+        return $sql;
+    }
+    function get($where, $sidx, $sord, $limit, $start){
+        $query = "select * from tblroles " . $where." ORDER BY $sidx $sord LIMIT $start , $limit";
+        return $this->db->query($query);
+    }
     public function getList($conditions=[],$count=false,$limit=0,$offset=0){
         $table= $this->table;
         $alias = $this->alias;
@@ -20,16 +27,6 @@ class Mroles extends MY_Model{
             $this->db->select($select);
             return $this->db->get()->result_array();
         }
-    }
-    public function getById($id){
-        $conditions = [
-            'roleid'=>$id
-        ];
-        $roles = $this->getList($conditions);
-        if(!empty($roles)){
-            $roles = $roles[0];
-        }
-        return $roles;
     }
     public function getGuestGroup(){
         $conditions= [

@@ -1,11 +1,11 @@
 <?php
-Class Moffering extends CI_Model{
+Class Moffering extends MY_Model{
 
     function count($where){
         $sql = $this->db->query("SELECT offering_key FROM tbloffering " . $where);
         return $sql;
     }
-    function getM($where, $sidx, $sord, $limit, $start){
+    function get($where, $sidx, $sord, $limit, $start){
         $query = "select *,
         DATE_FORMAT(transdate,'%d-%m-%Y') transdate,
         DATE_FORMAT(inputdate,'%d-%m-%Y') inputdate,

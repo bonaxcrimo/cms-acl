@@ -1,7 +1,29 @@
 <?php
 
 class MY_Model extends CI_Model{
-
+    // public function getList($table,$conditions = [],$count=false,$limit=0,$offset=0){
+    //     $this->db->from($table);
+    //     if(!empty($conditions)){
+    //         $this->db->where($conditions);
+    //     }
+    //     if(!empty($limit)){
+    //         $this->db->limit($limit,$offset);
+    //     }
+    //     if($count===true){
+    //         return $this->db->get()->num_rows();
+    //     }else{
+    //         return $this->db->get()->result();
+    //     }
+    // }
+    public function getById($table,$field,$id){
+        $conditions = [$field=>$id];
+        $data = $this->getListAll($table,$conditions);
+        if(!empty($data)){
+            $data = $data[0];
+            return $data;
+        }
+        return [];
+    }
     public function getBy($conditions=[],$count=false){
         $query = $this->db->where($conditions)->get($this->table);
         if($count==true){

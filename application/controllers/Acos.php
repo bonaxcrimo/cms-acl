@@ -14,7 +14,7 @@ class Acos extends MY_Controller {
     public function fetch() {
 
         $this->listFolderFiles();
-        // redirect('login');
+        redirect('login');
     }
     public function listFolderFiles($dir = null) {
         if ($dir === null){
@@ -38,8 +38,8 @@ class Acos extends MY_Controller {
                     $methods = $this->get_class_methods($class, true);
                     foreach($methods as $method){
                         if(isset($method['docComment']['AclName'])){
-                            echo "masuk";
-                            $this->Macos->save(['class'=>$class, 'method'=>$method['name'], 'displayname'=>$method['docComment']['AclName']]);
+                            // echo "masuk";
+                            $this->Macos->save(['class'=>$class, 'method'=>$method['name'], 'displayname'=>$method['docComment']['AclName'],'modifiedby'=>$this->session->userdata('username')]);
                         }
                     }
 

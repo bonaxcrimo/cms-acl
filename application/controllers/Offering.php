@@ -1,31 +1,20 @@
 <?php
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class offering extends CI_Controller {
+class offering extends MY_Controller {
     public function __construct(){
         parent::__construct();
-        $this->load->library('session');
         $this->load->model([
-            'mlogin',
-            'mmenutop',
             'moffering'
         ]);
-        $this->load->helper('my_helper');
-        $cek = $this->mlogin->cek();
-        if($cek==""){
-            redirect("");
-            session_destroy();
-        }
-        date_default_timezone_set("Asia/Jakarta");
-        ini_set('memory_limit', '-1');
     }
+    /**
+     * tampilan awal dari offering
+     * @AclName List Offering
+     */
     function index(){
-        $data['acl'] = $this->hakakses('offering');
-        $data['sqlmenu'] = $this->mmenutop->get_data();
-        $this->load->view('partials/header');
-        $this->load->view('navbar',$data);
-        $this->load->view('offering/gridoffering');
-        $this->load->view('partials/footer');
+        $link = base_url()."offering/grid";
+        $this->render('offering/gridoffering',['link'=>$link]);
     }
     function jemaat(){
         if(empty($_SESSION['member_key'])){
@@ -134,8 +123,11 @@ class offering extends CI_Controller {
                 break;
         }
     }
-    function grid($member_key){
-        $acl = $this->hakakses('jemaat');
+    /**
+     * Merupakan Grid dari Offering
+     * @AclName Grid Offering
+     */
+    function grid2($member_key){
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
         $sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'offering_key';
@@ -167,20 +159,17 @@ class offering extends CI_Controller {
         $sql = $this->moffering->count($cond);
         $total = $sql->num_rows();
         $offset = ($page - 1) * $rows;
-        $data = $this->moffering->getM($cond,$sort,$order,$rows,$offset)->result();
+        $data = $this->moffering->get($cond,$sort,$order,$rows,$offset)->result();
         foreach($data as $row){
             $view='';
             $edit='';
             $del='';
-            if(substr($acl,0,1)==1){
                 $view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewOffering(\'view\',\''.$row->offering_key.'\',\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ';
-            }
-            if(substr($acl,2,1)==1){
+
                 $edit = '<button id='.$row->member_key.' class="icon-edit" onclick="saveOffering(\'edit\',\''.$row->offering_key.'\',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ';
-            }
-            if(substr($acl,3,1)==1){
+
                 $del = '<button id='.$row->member_key.' class="icon-remove" onclick="delOffering(\'del\','.$row->offering_key.',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button>';
-            }
+
             $print = '<button id='.$row->member_key.' class="icon-print" onclick="reportOffering(\''.$row->offering_key.'\')" style="width:16px;height:16px;border:0"></button> ';
             $row->aksi =$print.$view.$edit.$del;
             $row->offeringid =  $row->offeringid==0?'-':getParameterKey($row->offeringid)->parameterid;
@@ -191,8 +180,7 @@ class offering extends CI_Controller {
         $_SESSION['excel']= "asc|offering_key|";
         echo json_encode($response);
     }
-    function grid2(){
-        $acl = $this->hakakses('offering');
+    function grid(){
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
         $sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'offering_key';
@@ -222,20 +210,17 @@ class offering extends CI_Controller {
         $sql = $this->moffering->count($cond);
         $total = $sql->num_rows();
         $offset = ($page - 1) * $rows;
-        $data = $this->moffering->getM($cond,$sort,$order,$rows,$offset)->result();
+        $data = $this->moffering->get($cond,$sort,$order,$rows,$offset)->result();
         foreach($data as $row){
             $view='';
             $edit='';
             $del='';
-            if(substr($acl,0,1)==1){
                 $view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewOffering(\'view\',\''.$row->offering_key.'\',\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ';
-            }
-            if(substr($acl,2,1)==1){
+
                 $edit = '<button id='.$row->member_key.' class="icon-edit" onclick="saveOffering(\'edit\',\''.$row->offering_key.'\',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ';
-            }
-            if(substr($acl,3,1)==1){
+
                 $del = '<button id='.$row->member_key.' class="icon-remove" onclick="delOffering(\'del\','.$row->offering_key.',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button>';
-            }
+
             $print = '<button id='.$row->member_key.' class="icon-print" onclick="reportOffering(\''.$row->offering_key.'\')" style="width:16px;height:16px;border:0"></button> ';
             $row->aksi =$print.$view.$edit.$del;
             $row->offeringid =  $row->offeringid==0?'-':getParameterKey($row->offeringid)->parameterid;

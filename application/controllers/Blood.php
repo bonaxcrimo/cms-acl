@@ -26,11 +26,11 @@ class blood extends MY_Controller {
 		$sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'parameterid';
 		$order = isset($_GET['order']) ? strval($_GET['order']) : 'asc';
 		$filterRules = isset($_GET['filterRules']) ? ($_GET['filterRules']) : '';
+
 		$cond = '';
 		if (!empty($filterRules)){
 			$cond = ' where 1=1 ';
 			$filterRules = json_decode($filterRules);
-
 			foreach($filterRules as $rule){
 				$rule = get_object_vars($rule);
 				$field = $rule['field'];
@@ -39,35 +39,40 @@ class blood extends MY_Controller {
 				if (!empty($value)){
 					if ($op == 'contains'){
 						$cond .= " and ($field like '%$value%')";
-					} else if ($op == 'greater'){
-						$cond .= " and $field>$value";
 					}
 				}
 			}
 		}
-		$where='';
+
 		$sql = $this->mblood->count($cond);
 		$total = $sql->num_rows();
 		$offset = ($page - 1) * $rows;
-		$data = $this->mblood->getJ($cond,$sort,$order,$rows,$offset)->result();
-		// $total = count($data);
+		$data = $this->mblood->get($cond,$sort,$order,$rows,$offset)->result();
+
 		foreach($data as $row){
-				$view = '<button class="icon-view_detail" onclick="viewBlood(\''.$row->parameter_key.'\')" style="width:16px;height:16px;border:0"></button> ';
-				$edit = '<button class="icon-edit" onclick="editBlood(\''.$row->parameter_key.'\')" style="width:16px;height:16px;border:0"></button> ';
-				$del = '<button class="icon-remove" onclick="deleteBlood(\''.$row->parameter_key.'\')" style="width:16px;height:16px;border:0"></button>';
+			$view = hasPermission('blood','view')?'<button class="icon-view_detail" onclick="viewBlood(\''.$row->parameter_key.'\')" style="width:16px;height:16px;border:0"></button> ':'';
+			$edit = hasPermission('blood','edit')?'<button class="icon-edit" onclick="editBlood(\''.$row->parameter_key.'\')" style="width:16px;height:16px;border:0"></button> ':'';
+			$del = hasPermission('blood','delete')?'<button class="icon-remove" onclick="deleteBlood(\''.$row->parameter_key.'\')" style="width:16px;height:16px;border:0"></button>':'';
 			$row->aksi = $view.$edit.$del;
 		}
 		$response = new stdClass;
 		$response->total=$total;
 		$response->rows = $data;
-		$_SESSION['excel']= "asc|parameter_key|".$cond;
+		$_SESSION['excelblood']= "asc|parameter_key|".$cond;
 		echo json_encode($response);
 	}
-
+	/**
+     * Fungsi view blood
+     * @AclName View Blood
+     */
 	public function view($parameter_key=0){
 		$data["data"] = $this->mblood->getListAll('tblparameter',['parameter_key'=>$parameter_key]);
 		$this->load->view('blood/view',$data);
 	}
+	/**
+     * Fungsi add blood
+     * @AclName Tambah Blood
+     */
 	public function add(){
 		$data=[];
 		if($this->input->server('REQUEST_METHOD') == 'POST' ){
@@ -83,8 +88,12 @@ class blood extends MY_Controller {
 		}
 		$this->load->view('blood/add',['data'=>$data]);
 	}
+	/**
+     * Fungsi edit blood
+     * @AclName Edit Blood
+     */
 	public function edit($id){
-		$data = $this->mblood->getById($id);
+		$data = $this->mblood->getById('tblparameter','parameter_key',$id);
         if(empty($data)){
             redirect('blood');
         }
@@ -100,14 +109,17 @@ class blood extends MY_Controller {
 		}
 		$this->load->view('blood/edit',['data'=>$data]);
 	}
+	/**
+     * Fungsi delete blood
+     * @AclName Delete Blood
+     */
 	public function delete($id){
-		$data = $this->mblood->getById($id);
+		$data = $this->mblood->getById('tblparameter','parameter_key',$id);
 		if(empty($data)){
 			redirect('blood');
 		}
 		if($this->input->server('REQUEST_METHOD') == 'POST'){
-			$data['parameter_key'] = $this->input->post('parameter_key');
-			$cek = $this->mblood->delete($data['parameter_key']);
+			$cek = $this->mblood->delete($this->input->post('parameter_key'));
 			$status = $cek?"sukses":"gagal";
 			$hasil = array(
 		        'status' => $status
@@ -122,7 +134,7 @@ class blood extends MY_Controller {
 			'parameter_key' => @$data['parameter_key'],
 			'parameterid' =>  strtoupper(@$data['parametertext']),
 			'parametertext' => strtoupper(@$data['parametertext']),
-			'modifiedby' =>$this->session->userdata('username'),
+			'modifiedby' => $this->session->userdata('username'),
 			'modifiedon' => date("Y-m-d H:i:s")
 		);
 		return $this->mblood->save($form);

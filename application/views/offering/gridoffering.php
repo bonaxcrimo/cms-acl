@@ -2,7 +2,6 @@
 
 ?>
 <script type="text/javascript">
-    var acl = "<?php echo $acl; ?>";
     $(document).ready(function(){
         var dgOffering = $("#dgOffering").datagrid(
             {
@@ -12,7 +11,7 @@
                 singleSelect:true,
                 remoteSort:true,
                 clientPaging: false,
-                url:"<?php echo base_url()?>offering/grid2",
+                url:"<?php echo base_url()?>offering/grid",
                 method:'get',
                 onClickRow:function(index,row){
                 }
