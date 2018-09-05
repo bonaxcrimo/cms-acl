@@ -43,12 +43,11 @@ class Mroles extends MY_Model{
             'rolename' =>'Guest'
         ];
         $group = $this->getList($conditions);
-        print_r($group);
         if(!empty($group)){
             $group = $group[0];
             $this->load->model('Macos');
-            $ids = strpos($group['acos'],',')===false?$group['acos']:explode(', ',$group['acos']);
-            $group['acos'] = $this->Macos->getByMultiId($ids);
+            $ids = strpos($group->acos,',')===false?$group->acos:explode(', ',$group->acos);
+            $group->acos = $this->Macos->getByMultiId($ids);
             return $group;
         }
         return [];

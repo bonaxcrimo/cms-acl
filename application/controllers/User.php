@@ -4,7 +4,8 @@ class User extends MY_Controller {
 		parent::__construct();
 		$this->load->model([
 			'muser',
-			'musermenu'
+			'musermenu',
+            'mroles'
 		]);
 	}
 
@@ -55,10 +56,17 @@ class User extends MY_Controller {
     }
     public function add(){
         $data=[];
+        $roles = $this->mroles->getList();
+        $tmp = [];
+        foreach($roles as $role){
+            $tmp[$role->roleid] = $role->rolename;
+        }
+        $roles = $tmp;
+        unset($tmp);
         if($this->input->server('REQUEST_METHOD')=='POST'){
             $data = $this->input->post();
         }
-        $this->load->view('user/add',['data'=>$data]);
+        $this->load->view('user/add',['data'=>$data,'roles'=>$roles]);
     }
 
 	function grid2(){

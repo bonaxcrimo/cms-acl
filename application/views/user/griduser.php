@@ -10,6 +10,28 @@
             }
         });
     }
+    function callSubmit(){
+        $("#fm").form('submit',{
+            url:url,
+            onSubmit:function(){
+                console.log($(this).serialize());
+                return $(this).form('validate');
+            },success:function($result){
+                console.log(result);
+                $("#dlg").dialog('close');
+                $("#dgUser").datagrid('reload');
+            },error:function(error){
+                console.log($(this).serialize());
+            }
+        });
+    }
+    function saveUser(){
+        if(oper=="del"){
+
+        }else{
+            callSubmit();
+        }
+    }
     $(document).ready(function(){
         var dgUser = $("#dgUser").datagrid({
             remoteFilter:true,
@@ -53,7 +75,7 @@
         </table>
         <div id="dlg" class="easyui-dialog" style="width: 400px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'"></div>
         <div id="dlg-buttons">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="" style="width:90px">Save</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveUser()" style="width:90px">Save</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
         </div>
     </div>

@@ -52,7 +52,7 @@ class ACL{
             $group = $this->CI->Mroles->getGuestGroup();
             $this->CI->session->set_userdata('groups.guest',$group);
         }
-        return $this->_validateActionPermission($group['acos'],$class,$method);
+        return $this->_validateActionPermission($group->acos,$class,$method);
     }
     private function _validateActionPermission($acos,$class = null,$method = null){
         if(empty($acos)){
@@ -68,6 +68,9 @@ class ACL{
             if(strtolower(trim($aco['class'])) == strtolower(trim($class)) && strtolower(trim($aco['method']))==strtolower(trim($method))){
                 return true;
             }
+        }
+        if($class=="login" && $method !='logout'){
+            return true;
         }
         return false;
     }
