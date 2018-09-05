@@ -10,13 +10,23 @@
             }
         });
     }
+    function editUser(userpk){
+        // $("#dlg").dialog({
+        //     closed:false,
+        //     title:'Edit User',
+        //     href:'<?= base_url()?>user/edit/'+userpk,
+        //     onLoad:function(){
+        //         url ='<?= base_url()?>user/edit/'+userpk;
+        //     }
+        // });
+        window.location ='<?= base_url()?>user/edit/'+userpk;
+    }
     function callSubmit(){
         $("#fm").form('submit',{
             url:url,
             onSubmit:function(){
-                console.log($(this).serialize());
                 return $(this).form('validate');
-            },success:function($result){
+            },success:function(result){
                 console.log(result);
                 $("#dlg").dialog('close');
                 $("#dgUser").datagrid('reload');

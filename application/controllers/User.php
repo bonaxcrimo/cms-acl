@@ -44,6 +44,10 @@ class User extends MY_Controller {
         $total = $sql->num_rows();
         $offset = ($page - 1) * $rows;
         $data = $this->muser->get($cond,$sort,$order,$rows,$offset)->result();
+        foreach($data as $row){
+            $edit = '<button class="icon-edit" onclick="editUser(\''.$row->userpk.'\')" style="width:16px;height:16px;border:0"></button> ';
+            $row->aksi = $edit;
+        }
         $response = new stdClass;
         $response->total=$total;
         $response->rows = $data;
@@ -65,8 +69,36 @@ class User extends MY_Controller {
         unset($tmp);
         if($this->input->server('REQUEST_METHOD')=='POST'){
             $data = $this->input->post();
+            $this->_save($data);
+            redirect('user');
         }
         $this->load->view('user/add',['data'=>$data,'roles'=>$roles]);
+    }
+    public function edit($id){
+        $data=[];
+        $roles = $this->mroles->getList();
+        $tmp = [];
+        foreach($roles as $role){
+            $tmp[$role->roleid] = $role->rolename;
+        }
+        $roles = $tmp;
+        unset($tmp);
+        $data =  $this->muser->getByIdUser($id);
+
+        if(empty($data)){
+            redirect('user');
+        }
+        $data->user_roles = strpos($data->roles,',')===false?$data->roles:explode(', ',$data->roles);
+        if($this->input->server('REQUEST_METHOD')=='POST'){
+            $data = $this->input->post();
+            $data['userpk'] = $id;
+            $this->_save($data);
+            redirect('user');
+        }
+        $this->load->view('user/edit',['data'=>$data,'roles'=>$roles]);
+    }
+    private function _save($data){
+        $this->muser->save($data);
     }
 
 	function grid2(){

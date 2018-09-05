@@ -13,16 +13,16 @@ class Muserroles extends MY_Model{
             $this->db->limit($limit,$offset);
         }
         if($count===true){
-            $this->db->get()->num_rows();
+            return $this->db->get()->num_rows();
         }else{
-            $this->db->get()->result_array();
+            return $this->db->get()->result_array();
         }
     }
     public function getByUserID($user_id){
         return $this->getList(['userpk'=>$user_id]);
     }
     protected function getListByGroup($conditions){
-        $this->db->select('GROUP CONCAT('.$this->alias.'.roleid SEPARATOR ",") as roles')
+        $this->db->select('GROUP_CONCAT('.$this->alias.'.roleid SEPARATOR ",") as roles')
             ->where($conditions)
             ->from($this->table.' as '.$this->alias);
         return $this->db->get()->result_array();
@@ -30,5 +30,53 @@ class Muserroles extends MY_Model{
     public function deleteByRole($role_id){
         $this->db->where(['roleid'=>$role_id])->delete($this->table);
         return true;
+    }
+     public function saveBatch($data) {
+        $insert = [];
+        if (isset($data['roles'])) {
+
+            $records = $this->getList(['userpk' => $data['userpk']], true);
+
+            if (empty($records)) {
+                foreach ($data['roles'] as $role) {
+                    $insert[] = [
+                        'userpk' => $data['userpk'],
+                        'roleid' => $role
+                    ];
+                }
+                return $this->insertBatch($insert);
+            } else {
+                $records = $this->getListByGroup(['userpk' => $data['userpk']]);
+
+                $roles = strpos($records[0]['roles'], ',') === false ? [$records[0]['roles']] : explode(', ', $records[0]['roles']);
+
+                $inserts = array_diff($data['roles'], $roles);
+                $removes = array_diff($roles, $data['roles']);
+
+                if (!empty($inserts)) {
+                    $insert = [];
+                    foreach ($inserts as $val) {
+                        $insert[] = [
+                            'roleid' => $val,
+                            'userpk' => $data['userpk']
+                        ];
+                    }
+                    $this->insertBatch($insert);
+                }
+
+                if (!empty($removes)) {
+                    $remove = [];
+                    foreach ($removes as $val) {
+                        $remove[] = [
+                            'roleid' => $val,
+                            'userpk' => $data['userpk']
+                        ];
+                    }
+                    $this->removeBatch($remove);
+                }
+                return true;
+            }
+        }
+        return false;
     }
 }

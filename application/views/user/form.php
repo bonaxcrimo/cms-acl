@@ -1,3 +1,4 @@
+<?php echo form_open(); ?>
 <input type="hidden" name="userpk" value="<?= @$data->userpk ?>">
 <div style="margin-bottom: 10px">
 	<input name="userid" class="easyui-textbox" required="true" labelPosition="left" value="<?= @$data->userid ?>" label="userid :" style="width:100%;">
@@ -14,7 +15,12 @@
 <div style="margin-bottom: 10px">
     <label for="user_roles" class="textbox-label textbox-label-left">Roles : </label>
     <?php
-        echo form_dropdown('user_roles[]',$roles,$data,['multiple'=>'multiple','required'=>'']);
+        echo form_dropdown('user_roles[]',@$roles,@$data->roles,['multiple'=>'multiple','required'=>'']);
         echo form_error('user_roles');
     ?>
 </div>
+    <?php
+echo form_submit('save','Save');
+echo anchor('roles','Cancel');
+echo form_close();
+?>
