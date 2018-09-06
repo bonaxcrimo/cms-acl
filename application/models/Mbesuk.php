@@ -1,5 +1,5 @@
 <?php
-Class Mbesuk extends CI_Model{
+Class Mbesuk extends MY_Model{
 
 	function count($where){
 		$sql = $this->db->query("SELECT besukid FROM tblbesuk " . $where);

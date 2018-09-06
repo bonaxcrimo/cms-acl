@@ -1,10 +1,7 @@
 <div style="margin:0;padding:20px">
     <input type="hidden" name="member_key" value="<?php echo @$member_key ?>">
     <div  class="row">
-<?php
-	$this->load->view('besuk/jemaat');
-?>
-<hr>
+
 <?php
 	@$query=("SELECT *, DATE_FORMAT(besukdate,'%d-%m-%Y') besukdate,
 		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon FROM tblbesuk WHERE besukid=".$besukid." LIMIT 0,1");

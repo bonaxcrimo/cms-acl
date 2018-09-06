@@ -24,8 +24,6 @@ class offering extends MY_Controller {
             $data['member_key'] = $_SESSION['member_key'];
             $data['sql'] = $this->moffering->getwhere($_SESSION['member_key']);
 
-            $data['statusid'] = $this->uri->segment(2);
-            $data['acl'] = $this->hakakses("jemaat");
 
             $data['sqlmenu'] = $this->mmenutop->get_data();
 
@@ -38,7 +36,6 @@ class offering extends MY_Controller {
             $data['sqlpersekutuan'] =getParameter('PERSEKUTUAN');
             $data['sqlrayon'] =getParameter('RAYON');
             $data['sqloffering'] = getParameter('OFFERING');
-            $data['listTable'] = $this->db->list_fields('tblmember');
 
             $data['statusidv'] = getComboParameter('STATUS');
             $data['blood'] = getComboParameter('BLOOD');
@@ -51,21 +48,40 @@ class offering extends MY_Controller {
             $this->load->view('jemaat/gridoffering',$data);
         }
     }
-    function form($form,$offering_key,$member_key){
+     function form($form,$offering_key,$member_key,$tabs=1){
         $data["offering_key"] = $offering_key;
         $data["member_key"] = $member_key;
         $data['sqloffering'] = getParameter('OFFERING');
         $data['sql'] = @$this->moffering->getwhere($member_key)->result()[0];
         $data['form'] = $form;
-        $this->load->view('offering/'.$form,$data);
+        $view = $tabs==0?'offering/':'jemaat/offering/';
+        $this->load->view($view.$form,$data);
+    }
+    function restoreChecked(){
+        $json = $_POST['dataOffering'];
+        $status = $_POST['status'];
+        $data = json_decode($json);
+        foreach($data as $d){
+            $sql="update tbloffering set row_status = '' where offering_key= ".$d->offering_key;
+            $check = $this->db->query($sql);
+            if(!$check){
+                $gagal=1;
+            }
+        }
+        $hasil = array(
+            'status' => $gagal==0?"Sukses":"Gagal"
+        );
+        return json_encode($hasil);
     }
     function crud(){
         @$oper=@$_POST['oper'];
         $_POST = array_map("strtoupper", $_POST);
         @$offeringid=@$_POST['offeringid'];
+        @$row_status = @$_POST['row_status'];
         @$offering_key = @$_POST['offering_key'];
         @$transdate = $_POST['transdate'];
         @$inputdate = $_POST['inputdate'];
+        @$aliasname2 = $_POST['aliasname2'];
         @$offeringvalue = str_replace(".","",$_POST['offeringvalue']);
         @$exp1 = explode('/',$transdate);
         @$transdate = $exp1[2]."-".$exp1[0]."-".$exp1[1]." ".date("H:i:s");
@@ -93,9 +109,10 @@ class offering extends MY_Controller {
             'offeringno' => @$offeringno,
             'transdate' => @$transdate,
             'inputdate' =>@$inputdate,
+            'aliasname2'=>@$aliasname2,
             'remark' => @$_POST['remark'],
             'offeringvalue' =>$offeringvalue,
-            'row_status'=>'',
+            'row_status'=>@$row_status,
             'modifiedby' => $_SESSION['username'],
             'modifiedon' => date("Y-m-d H:i:s")
             );
@@ -123,22 +140,16 @@ class offering extends MY_Controller {
                 break;
         }
     }
-    /**
-     * Merupakan Grid dari Offering
-     * @AclName Grid Offering
-     */
-    function grid2($member_key){
+    function grid($member_key){
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
         $sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'offering_key';
         $order = isset($_GET['order']) ? strval($_GET['order']) : 'asc';
-
         $filterRules = isset($_GET['filterRules']) ? ($_GET['filterRules']) : '';
         $cond = '';
         if (!empty($filterRules)){
             $cond = ' where member_key = "'.$member_key.'" and  1=1 ';
             $filterRules = json_decode($filterRules);
-
             foreach($filterRules as $rule){
                 $rule = get_object_vars($rule);
                 $field = $rule['field'];
@@ -156,10 +167,10 @@ class offering extends MY_Controller {
             $cond = ' where member_key = "'.$member_key.'" ';
         }
         $where='';
-        $sql = $this->moffering->count($cond);
+        $sql = $this->moffering->count($cond,'');
         $total = $sql->num_rows();
         $offset = ($page - 1) * $rows;
-        $data = $this->moffering->get($cond,$sort,$order,$rows,$offset)->result();
+        $data = $this->moffering->get($cond,$sort,$order,$rows,$offset,'')->result();
         foreach($data as $row){
             $view='';
             $edit='';
@@ -177,10 +188,10 @@ class offering extends MY_Controller {
         $response = new stdClass;
         $response->total=$total;
         $response->rows = $data;
-        $_SESSION['excel']= "asc|offering_key|";
+        $_SESSION['excel']= "asc|offering_key|".$cond;
         echo json_encode($response);
     }
-    function grid(){
+    function grid2($status=""){
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
         $sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'offering_key';
@@ -189,7 +200,7 @@ class offering extends MY_Controller {
         $filterRules = isset($_GET['filterRules']) ? ($_GET['filterRules']) : '';
         $cond = '';
         if (!empty($filterRules)){
-            $cond = ' where   1=1 ';
+            $cond = ' where 1 = 1 ';
             $filterRules = json_decode($filterRules);
 
             foreach($filterRules as $rule){
@@ -207,10 +218,10 @@ class offering extends MY_Controller {
             }
         }
         $where='';
-        $sql = $this->moffering->count($cond);
+        $sql = $this->moffering->count($cond,$status);
         $total = $sql->num_rows();
         $offset = ($page - 1) * $rows;
-        $data = $this->moffering->get($cond,$sort,$order,$rows,$offset)->result();
+        $data = $this->moffering->get($cond,$sort,$order,$rows,$offset,$status)->result();
         foreach($data as $row){
             $view='';
             $edit='';
@@ -229,13 +240,14 @@ class offering extends MY_Controller {
         $response = new stdClass;
         $response->total=$total;
         $response->rows = $data;
-        $_SESSION['excel']= "asc|offering_key|";
+        $_SESSION['excel']= "asc|offering_key|".$cond;
         echo json_encode($response);
     }
     function report($offering_key){
         $this->load->library('Pdf');
         $data['key'] = $offering_key;
         $offering = getOne('offering_key',$offering_key,'tbloffering')[0];
+
         $offering->offeringid =  getParameterKey($offering->offeringid)->parameterid;
         $offering->membername = $this->moffering->getwhere($offering->member_key)->result()[0]->membername;
         $offering->chinesename = $this->moffering->getwhere($offering->member_key)->result()[0]->chinesename;
@@ -247,10 +259,6 @@ class offering extends MY_Controller {
         $data['marginLeft'] = $marginLeft;
         $data['marginTop'] = $marginTop;
         $this->load->view('offering/report',$data);
-    }
-    function hakakses($x){
-        $x = $this->mmenutop->get_menuid($x);
-        return $x;
     }
 }
 ?>

@@ -18,7 +18,6 @@
                 url:"<?= base_url() ?>jemaat/gridBesuk",
                 method:'get',
                 onClickRow:function(index,row){
-                    // $("#member").val(row.member_key);
                     $("#member").textbox('setValue',row.member_key);
                     $("#member_name").textbox('setValue',row.membername);
                     $("#chinese_name").textbox('setValue',row.chinesename);
@@ -27,7 +26,7 @@
                     image1 = image1.replace("small","medium");
                     $("#blah").attr("src",image1);
                     $("#aliasname2").textbox('setValue',row.aliasname2);
-                    $("#dlgView").dialog('close');
+                    $("#dlgViewLookup").dialog('close');
                 },onLoadSuccess:function(data){
                     $("#dgJemaat").datagrid('enableFilter');
                  }

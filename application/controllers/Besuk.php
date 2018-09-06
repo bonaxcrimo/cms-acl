@@ -1,13 +1,10 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Besuk extends CI_Controller {
+class Besuk extends MY_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->library('session');
-		$this->load->helper('my_helper');
 		$this->load->model([
-			'mlogin',
 			'mbesuk',
 			'mgender',
 			'mpstatus',
@@ -15,31 +12,18 @@ class Besuk extends CI_Controller {
 			'mkebaktian',
 			'mpersekutuan',
 			'mrayon',
-			'mmenutop',
 			'mjemaat',
 			'mparameter',
 			'mserving',
 			'mmenu'
 		]);
-		$cek = $this->mlogin->cek();
-		if($cek==""){
-			redirect("");
-			session_destroy();
-		}
-		date_default_timezone_set("Asia/Jakarta");
-		ini_set('memory_limit', '-1');
-		$this->load->helper('my_helper');
 	}
 	function set(){
 		$_SESSION['member_key'] = $_GET['member_key'];
 	}
 	function index(){
-		$data['acl'] = hakakses('besuk');
-		$data['sqlmenu'] = $this->mmenutop->get_data();
-		$this->load->view('partials/header');
-		$this->load->view('navbar',$data);
-		$this->load->view('besuk/gridbesuk');
-		$this->load->view('partials/footer');
+		$link = base_url()."besuk/gridbesuk";
+		$this->render('besuk/gridbesuk',['link'=>$link]);
 	}
 	function jemaat(){
 		if(empty($_SESSION['member_key'])){
@@ -49,10 +33,6 @@ class Besuk extends CI_Controller {
 			$data['member_key'] = $_SESSION['member_key'];
 			$data['sql'] = $this->mbesuk->getwhere($_SESSION['member_key']);
 
-			$data['statusid'] = $this->uri->segment(2);
-			$data['acl'] = hakakses($_GET['op']);
-
-			$data['sqlmenu'] = $this->mmenutop->get_data();
 
 			$data['sqlgender'] = getParameter('GENDER');
 			$data['sqlpstatus'] =getParameter('PSTATUS');
@@ -62,7 +42,6 @@ class Besuk extends CI_Controller {
 			$data['sqlkebaktian'] =getParameter('KEBAKTIAN');
 			$data['sqlpersekutuan'] =getParameter('PERSEKUTUAN');
 			$data['sqlrayon'] =getParameter('RAYON');
-			$data['listTable'] = $this->db->list_fields('tblmember');
 
 			$data['statusidv'] = getComboParameter('STATUS');
 			$data['blood'] = getComboParameter('BLOOD');
@@ -71,12 +50,10 @@ class Besuk extends CI_Controller {
 			$data['kebaktian'] = getComboParameter('KEBAKTIAN');
 			$data['persekutuan'] =getComboParameter('PERSEKUTUAN');
 			$data['rayon'] = getComboParameter('RAYON');
-
 			$this->load->view('jemaat/gridbesuk2',$data);
 		}
 	}
 	function grid2($member_key){
-		$acl = hakakses('jemaat');
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
 		$sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'member_key';
@@ -113,15 +90,12 @@ class Besuk extends CI_Controller {
 			$view='';
 			$edit='';
 			$del='';
-			if(substr($acl,0,1)==1){
 				$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewBesuk(\'view\',\''.$row->besukid.'\',\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ';
-			}
-			if(substr($acl,2,1)==1){
+
 				$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="saveBesuk(\'edit\',\''.$row->besukid.'\',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ';
-			}
-			if(substr($acl,3,1)==1){
+
 				$del = '<button id='.$row->member_key.' class="icon-remove" onclick="delBesuk(\'del\','.$row->besukid.',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button>';
-			}
+
 			$row->aksi =$view.$edit.$del;
 			$row->besukdate=$row->besukdate=="00-00-0000"?"-":$row->besukdate;
 		}
@@ -132,7 +106,6 @@ class Besuk extends CI_Controller {
 		echo json_encode($response);
 	}
 	function grid3(){
-		$acl = hakakses('jemaat');
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
 		$sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'member_key';
@@ -167,15 +140,12 @@ class Besuk extends CI_Controller {
 			$view='';
 			$edit='';
 			$del='';
-			if(substr($acl,0,1)==1){
 				$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewBesuk(\'view\',\''.$row->besukid.'\',\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ';
-			}
-			if(substr($acl,2,1)==1){
+
 				$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="saveBesuk(\'edit\',\''.$row->besukid.'\',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ';
-			}
-			if(substr($acl,3,1)==1){
+
 				$del = '<button id='.$row->member_key.' class="icon-remove" onclick="delBesuk(\'del\','.$row->besukid.',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button>';
-			}
+
 			$row->aksi =$view.$edit.$del;
 			$row->besukdate=$row->besukdate=="00-00-0000"?"-":$row->besukdate;
 		}

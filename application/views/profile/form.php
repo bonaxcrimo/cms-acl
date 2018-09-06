@@ -1,17 +1,38 @@
+<script>
+     $(document).ready(function(){
+        $("#member").textbox({
+             icons:[{
+                iconCls:'icon-pengguna',
+                handler:function(){
+                    $("#dlgViewLookup").dialog({
+                        closed:false,
+                        title:"Pilih Member Data",
+                        height:350,
+                        resizable:true,
+                        autoResize:true
+                    });
+                }
+            }]
+        })
+    });
+</script>
 <div style="margin:0;padding:20px">
-    <input type="hidden" name="member_key" value="<?php echo @$member_key ?>">
     <div  class="row">
 <?php
+
     @$query=("SELECT *, DATE_FORMAT(activitydate,'%d-%m-%Y') activitydate,
         DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon FROM tblprofile WHERE profile_key=".$profile_key." LIMIT 0,1");
     @$row=queryCustom($query);
     @$activity = getParameterKey($row->activityid)->parameterid;
-    @$exp1 = explode('-',$row->activitydate);
+    @$exp1 = explode('-',$datarow->activitydate);
     @$activitydate = $exp1[1]."/".$exp1[0]."/".$exp1[2];
     @$activitydate = @$activitydate == "00/00/0000"?"":@$activitydate;
 
 ?>
         <input type="hidden" name="profile_key" value="<?php echo @$row->profile_key ?>">
+         <div style="margin-bottom:10px">
+            <input name="member_key" id="member" class="easyui-textbox member"  value="<?= @$row->member_key ?>" labelPosition="left"  label="member:" style="width:100%">
+        </div>
         <div style="margin-bottom:10px">
             <input name="activitydate" labelPosition="left" class="easyui-datebox"  value="<?= @$activitydate ?>"  label="activitydate:" style="width:100%">
         </div>

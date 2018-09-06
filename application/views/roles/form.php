@@ -4,8 +4,9 @@
     echo form_error('rolename');
 ?>
 <br>
-
 <label for="">Role Permission</label>
+<br><br>
+<input type="checkbox" id="checkall"><b>CheckAll</b>
 <ul>
 <?php
 $class = '';
@@ -30,7 +31,12 @@ foreach($acos as $aco){
 </li>
 </ul>
     <?php
-// echo form_submit('save','Save');
-// echo anchor('roles','Cancel');
 echo form_close();
 ?>
+<script>
+    $(document).ready(function(){
+         $("#checkall").click(function () {
+             $('input:checkbox').not(this).prop('checked', this.checked);
+         });
+    })
+</script>

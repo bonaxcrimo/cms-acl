@@ -70,7 +70,8 @@ class Mroles extends MY_Model{
     public function save($data){
         $this->db->trans_start();
         $save=[
-            'rolename'=>$data['rolename']
+            'rolename'=>$data['rolename'],
+            'modifiedby'=>$this->session->userdata('username')
         ];
         if(isset($data['roleid']) && !empty($data['roleid'])){
             $id = $data['roleid'];

@@ -1,5 +1,4 @@
 <script type="text/javascript">
-    var acl = "<?php echo $acl; ?>";
     $(document).ready(function(){
         var dgProfile = $("#dgProfile").datagrid(
             {
@@ -27,7 +26,7 @@
         });
     });
     function viewProfile(form,profile_key,member_key){
-        page="<?php echo base_url(); ?>profile/form/"+form+"/"+profile_key+"/"+member_key;
+        page="<?php echo base_url(); ?>profile/form/"+form+"/"+profile_key+"/"+member_key+"/0";
          $("#dlgView").dialog({
             closed:false,
             title:"View Activity",
@@ -38,7 +37,7 @@
         });
     }
     function saveProfile(form,profile_key,member_key){
-        page="<?php echo base_url(); ?>profile/form/"+form+"Profile/"+profile_key+"/"+member_key;
+        page="<?php echo base_url(); ?>profile/form/"+form+"/"+profile_key+"/"+member_key+"/0";
          var opr = form;
         if(opr=="add"){
             var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/add.png'><ul class='title'>Add Data</ul>";
@@ -70,7 +69,7 @@
             }).responseText
     }
     function delProfile(form,profile_key,member_key){
-        page="<?php echo base_url(); ?>profile/form/"+form+"/"+profile_key+"/"+member_key;
+        page="<?php echo base_url(); ?>profile/form/"+form+"/"+profile_key+"/"+member_key+"/0";
         $("#dlgDeleteProfile").dialog({
             closed:false,
             title:"Delete Data",
@@ -116,7 +115,10 @@
                 </tr>
             </thead>
         </table>
-        <div id="dlgView" class="easyui-dialog" style="width:500px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-view'">
+        <div id="dlgViewLookup" class="easyui-dialog" style="width:600px;" data-options="closed:true,modal:true,border:'thin'">
+            <?php $this->load->view('partials/lookupjemaat') ?>
+        </div>
+        <div id="dlgView" class="easyui-dialog" style="width:400px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-view'">
         </div>
          <div id="dlg-buttons-view">
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgView').dialog('close')" style="width:90px">Cancel</a>

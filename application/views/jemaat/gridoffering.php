@@ -121,6 +121,8 @@
             <th sortable="true" field="remark" width="10%">remark</th>
             <th sortable="true" field="modifiedby" width="6%">modifiedby</th>
             <th sortable="true" field="modifiedon" width="10%">modifiedon</th>
+            <th sortable="true" field="printedby" width="6%">printedby</th>
+            <th sortable="true" field="printedon" width="10%">printedon</th>
         </tr>
     </thead>
 </table>

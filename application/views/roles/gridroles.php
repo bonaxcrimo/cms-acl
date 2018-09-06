@@ -1,8 +1,3 @@
-<?php
-     // print_r($this->Mroles->getGuestGroup());
-     // unset($_SESSION['groups.guest']);
-     print_r($_SESSION);
-?>
 <script type="text/javascript">
     var url,oper;
     function excel(){
@@ -33,6 +28,34 @@
              $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
         }
     }
+    function viewData(roleid){
+        var row = roleid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').roleid:roleid;
+        if (row!=''){
+            $('#dlgView').dialog({
+                closed:false,
+                title:'View Data',
+                href:'<?php echo base_url(); ?>roles/view/'+row
+            });
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
+    function deleteData(roleid){
+         var row = roleid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').roleid:roleid;
+         if (row!=''){
+            $('#dlg').dialog({
+                closed:false,
+                title:'Delete data',
+                href:'<?php echo base_url(); ?>roles/delete/'+row,
+                onLoad:function(){
+                    url = '<?= base_url() ?>roles/delete/'+row;
+                    oper="del";
+                }
+            });
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
     function callSubmit(){
         $('#fm').form('submit',{
             url: url,
@@ -41,7 +64,7 @@
             },
             success: function(result){
                 $('#dlg').dialog('close');
-                $('#dgBlood').datagrid('reload');
+                $('#dg').datagrid('reload');
 
             },error:function(error){
                  console.log($(this).serialize());

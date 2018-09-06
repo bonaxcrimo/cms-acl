@@ -1,5 +1,4 @@
 <script type="text/javascript">
-    var acl = "<?php echo $acl; ?>";
     var temp=-1;
     var startTime = Date.now();
      $(function(){
@@ -24,6 +23,7 @@
                     var member_key = row.member_key;
                     besuk(member_key);
                  },onLoadSuccess:function(data){
+
                     var opts = $(this).datagrid('options');
                     var optLength = opts.filterRules.length;
                     if(optLength>0){
@@ -31,17 +31,10 @@
                     }else{
                         $("#removeAll").find('span.icon-cancel').removeClass('icon-cancel').addClass('icon-remove');
                     }
-                    // var endTime = Date.now();
-                    // var dif = startTime - endTime;
-                    // var Seconds_from_T1_to_T2 = dif / 1000;
-                    // var Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
-
-                    // $.messager.show({
-                    //     title:'Info',
-                    //     msg:'Load '+data.total+' records successfully at <span style="color:red; font-weight:bold">' + Seconds_Between_Dates + '</span> seconds'
-                    // });
                  }
             });
+
+        // dg.datagrid('options').loadMsg = 'other message';
         dg.datagrid('options').rowHeight = 40;
         for(var i=0; i<dg.datagrid('getRows').length; i++){
             dg.datagrid('refreshRow', i);
@@ -131,20 +124,6 @@
                         title:'Create Relation',
                         resizable:true,autoResize:true
                     });
-                    // var checkedRows = $('#dgJemaat').datagrid('getChecked');
-                    // var check = 0;
-                    // $.each(checkedRows, function( index, value ) {
-                    //     if(value.relationno !="-"){
-                    //         check++;
-                    //     }
-                    // });
-                    // if(check>0){
-                    //     $.messager.confirm('Confirm','Yakin ingin membuat relasi?Karena ada member yang sudah memiliki relasi',function(r){
-                    //         if (r){
-                    //
-                    //         }
-                    //     });
-                    // }
                 }
 
             }]
@@ -407,11 +386,12 @@
                 if(data.status=='sukses' && data.photofile!="") {
                     $('#loading').html('<img src="<?php echo base_url(); ?>libraries/img/loading.gif">');
                     $.ajaxFileUpload({
-                        url: "<?php echo base_url(); ?>jemaat/upload/"+data.photofile,
+                       url: "<?php echo base_url(); ?>jemaat/uploadWA/"+data.photofile,
                         secureuri: false,
                         fileElementId: "photofile",
                         dataType: "json",
                         success: function (status){
+                            console.log(status);
                             $(".easyui-dialog").dialog('close');
                             $('#dgJemaat').datagrid('reload');
                             $('#dgRelasi').datagrid('reload');
@@ -439,7 +419,6 @@
     function save(form,id,formname,status){
         page="<?php echo base_url(); ?>jemaat/form/"+form+"/"+id+"/"+formname+"/"+status;
         console.log(page);
-        // $('#formInput').html('<img src="<?php echo base_url(); ?>libraries/img/loading.gif">').load(page);
         var opr = form;
         if(opr=="add"){
             var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/add.png'><ul class='title'>Add Data</ul>";

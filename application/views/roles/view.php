@@ -1,5 +1,6 @@
+<div style="padding:20px;">
 <?php
-    echo form_input('rolename',isset($data->rolename)?$data->rolename:'',['placeholder'=>'Role Name','class'=>'easyui-textbox','label'=>'rolename','style'=>'width:300px;']);
+    echo form_input('rolename',isset($data->rolename)?$data->rolename:'',['placeholder'=>'Role Name','readonly'=>'','class'=>'easyui-textbox','label'=>'rolename','style'=>'width:300px;']);
     echo form_error('rolename');
 ?>
 <br>
@@ -21,10 +22,12 @@ foreach($acos as $aco){
     ?>
             <?php
             $checked = isset($data->role_permission) && in_array($aco->acosid, $data->role_permission)?true:false;
-            echo form_checkbox('role_permission[]', $aco->acosid, $checked); echo form_label($aco->method); ?>
+            echo form_checkbox('role_permission[]', $aco->acosid, $checked,['disabled'=>'']); echo form_label($aco->method); ?>
             <?php
 }
 ?>
             </ul>
 </li>
 </ul>
+
+</div>

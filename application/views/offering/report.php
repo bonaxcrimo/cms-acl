@@ -37,7 +37,7 @@ $html = '
         <tr>
             <th align="left">Telah terima dari</th>
             <td>:</td>
-            <td >'.$offering->membername .'</td>
+            <td > '.$offering->aliasname2 .'</td>
         </tr>
         <tr>
             <th align="left">Chinese Name</th>
@@ -74,7 +74,6 @@ $html = '
 </div>
 ';
 $pdf->writeHTML($html, true, false, true, false, '');
-
 
 $pdf->Output('Laporan.pdf', 'I');
 ?>

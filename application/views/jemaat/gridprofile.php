@@ -1,5 +1,4 @@
 <script type="text/javascript">
-    var acl = "<?php echo $acl; ?>";
     $(document).ready(function(){
         var dgProfile = $("#dgProfile").datagrid(
             {

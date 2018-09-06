@@ -1,5 +1,4 @@
 <script type="text/javascript">
-	var acl = "<?php echo $acl; ?>";
     var startTime = Date.now();
     $(document).ready(function(){
 
@@ -35,7 +34,7 @@
     });
 
     function viewBesuk(form,besukid,member_key){
-        page="<?php echo base_url(); ?>besuk/form/"+form+"/"+besukid+"/"+member_key;
+        page="<?php echo base_url(); ?>besuk/form/"+form+"/"+besukid+"/"+member_key+"/0";
          $("#dlgView").dialog({
             closed:false,
             title:"View Besuk",
@@ -46,7 +45,7 @@
         });
     }
     function saveBesuk(form,besukid,member_key){
-        page="<?php echo base_url(); ?>besuk/form/"+form+"Besuk/"+besukid+"/"+member_key;
+        page="<?php echo base_url(); ?>besuk/form/"+form+"/"+besukid+"/"+member_key+"/0";
         // console.log(page);
          var opr = form;
         if(opr=="add"){
@@ -86,7 +85,7 @@
             }).responseText
     }
     function delBesuk(form,besukid,member_key){
-        page="<?php echo base_url(); ?>besuk/form/"+form+"/"+besukid+"/"+member_key;
+        page="<?php echo base_url(); ?>besuk/form/"+form+"/"+besukid+"/"+member_key+"/0";
         $("#dlgDeleteBesuk").dialog({
             closed:false,
             title:"Delete Data",
@@ -135,7 +134,10 @@
         </table>
         <div id="dlgSaveBesuk" class="easyui-dialog" style="width:500px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-besuk'">
         </div>
-        <div id="dlgView" class="easyui-dialog" style="width:500px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-view'">
+        <div id="dlgViewLookup" class="easyui-dialog" style="width:600px;" data-options="closed:true,modal:true,border:'thin'">
+            <?php $this->load->view('partials/lookupjemaat');?>
+        </div>
+        <div id="dlgView" class="easyui-dialog" style="width:400px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-view'">
 
         </div>
          <div id="dlg-buttons-view">

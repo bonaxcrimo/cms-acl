@@ -1,5 +1,5 @@
 <?php
-Class Mprofile extends CI_Model{
+Class Mprofile extends MY_Model{
 
     function count($where){
         $sql = $this->db->query("SELECT profile_key FROM tblprofile " . $where);

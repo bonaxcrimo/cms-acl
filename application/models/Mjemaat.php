@@ -16,13 +16,13 @@ Class Mjemaat extends CI_Model{
 		return $sql;
 	}
 	function getM($where, $sidx, $sord, $limit, $start){
-	
+
 		$query = "select * ,DATE_FORMAT(dob,'%d-%m-%Y') dob,
 		DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') - (DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d')) AS umur,
 		DATE_FORMAT(tglbesuk,'%d-%m-%Y') tglbesuk,
 		DATE_FORMAT(baptismdate,'%d-%m-%Y') baptismdate,
 		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon
-		
+
 		from tblmember  " . $where . " ORDER BY $sidx $sord LIMIT $start , $limit";
 		// echo $query;
 		return $this->db->query($query);

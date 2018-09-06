@@ -204,14 +204,15 @@ $(document).ready(function(){
                         $("#servingid").select2({
                             placeholder: "Select a State"
                         });
+
                     });
                 </script>
                 <label class="textbox-label textbox-label-left">Serving :</label>
-                <select id="servingid" name="servingid[]" multiple="multiple" style="width:204px; font-size:10px;">
+                <select id="servingid" name="servingid[]" multiple="multiple" style="width:198px; font-size:10px;">
                 <option value=""></option>
                 <?php
                     foreach ($sqlserving as $rowform) {
-                        $serving = @$datarow->parametertext;
+                        $serving = @$datarow->parameter_key;
                         $findme = $rowform->parameter_key;
                         $pos = strpos($serving, $findme);
                         ?>

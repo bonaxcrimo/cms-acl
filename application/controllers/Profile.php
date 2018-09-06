@@ -1,14 +1,17 @@
 <?php
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class profile extends CI_Controller {
+class profile extends MY_Controller {
     public function __construct(){
         parent::__construct();
         $this->load->model([
-            'mprofile'
+            'mprofile',
+            'mbesuk'
         ]);
     }
     function index(){
+        $link = base_url()."profile/gridprofile";
+        $this->render('profile/gridprofile',['link'=>$link]);
     }
     function jemaat(){
         if(empty($_SESSION['member_key'])){
@@ -17,11 +20,6 @@ class profile extends CI_Controller {
         else{
             $data['member_key'] = $_SESSION['member_key'];
             $data['sql'] = $this->mbesuk->getwhere($_SESSION['member_key']);
-
-            $data['statusid'] = $this->uri->segment(2);
-            $data['acl'] = $this->hakakses("jemaat");
-
-            $data['sqlmenu'] = $this->mmenutop->get_data();
 
             $data['sqlgender'] = getParameter('GENDER');
             $data['sqlpstatus'] =getParameter('PSTATUS');
@@ -32,7 +30,6 @@ class profile extends CI_Controller {
             $data['sqlpersekutuan'] =getParameter('PERSEKUTUAN');
             $data['sqlrayon'] =getParameter('RAYON');
             $data['sqlactivity'] = getParameter('ACTIVITY');
-            $data['listTable'] = $this->db->list_fields('tblmember');
 
             $data['statusidv'] = getComboParameter('STATUS');
             $data['blood'] = getComboParameter('BLOOD');
@@ -94,7 +91,6 @@ class profile extends CI_Controller {
         }
     }
     function grid($member_key){
-        $acl = $this->hakakses('jemaat');
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
         $sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'profile_key';
@@ -131,15 +127,12 @@ class profile extends CI_Controller {
             $view='';
             $edit='';
             $del='';
-            if(substr($acl,0,1)==1){
                 $view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewProfile(\'view\',\''.$row->profile_key.'\',\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ';
-            }
-            if(substr($acl,2,1)==1){
+
                 $edit = '<button id='.$row->member_key.' class="icon-edit" onclick="saveProfile(\'edit\',\''.$row->profile_key.'\',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ';
-            }
-            if(substr($acl,3,1)==1){
+
                 $del = '<button id='.$row->member_key.' class="icon-remove" onclick="delProfile(\'del\','.$row->profile_key.',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button>';
-            }
+
             $row->aksi =$view.$edit.$del;
             $row->activityid =  $row->activityid==0?'-':getParameterKey($row->activityid)->parameterid;
         }
@@ -150,7 +143,6 @@ class profile extends CI_Controller {
         echo json_encode($response);
     }
     function grid2(){
-        $acl = $this->hakakses('jemaat');
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
         $sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'profile_key';
@@ -185,15 +177,13 @@ class profile extends CI_Controller {
             $view='';
             $edit='';
             $del='';
-            if(substr($acl,0,1)==1){
+
                 $view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewProfile(\'view\',\''.$row->profile_key.'\',\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ';
-            }
-            if(substr($acl,2,1)==1){
+
                 $edit = '<button id='.$row->member_key.' class="icon-edit" onclick="saveProfile(\'edit\',\''.$row->profile_key.'\',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ';
-            }
-            if(substr($acl,3,1)==1){
+
                 $del = '<button id='.$row->member_key.' class="icon-remove" onclick="delProfile(\'del\','.$row->profile_key.',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button>';
-            }
+
             $row->aksi =$view.$edit.$del;
             $row->activityid =  $row->activityid==0?'-':getParameterKey($row->activityid)->parameterid;
         }

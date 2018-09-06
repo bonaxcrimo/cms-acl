@@ -117,12 +117,22 @@ class Roles extends MY_Controller{
      * @AclName Delete Roles
      */
     public function delete($id){
-        $role = $this->Mroles->getByIdRoles($id);
-        if(empty($role)){
+        $acos = $this->Macos->getList();
+        $data = $this->Mroles->getByIdRoles($id);
+        if(empty($data)){
             redirect('roles');
         }
-        $this->Mroles->delete($id);
-        redirect('roles');
+        $data->role_permission = strpos($data->acos,',')===false?[$data->acos]:explode(', ',$data->acos);
+
+        if($this->input->server('REQUEST_METHOD') == 'POST'){
+            $cek = $this->Mroles->delete($id);
+            $status = $cek?"sukses":"gagal";
+            $hasil = array(
+                'status' => $status
+            );
+            echo json_encode($hasil);
+        }
+        $this->load->view('roles/delete',['data'=>$data,'acos'=>$acos]);
     }
     private function _save($data){
         $this->Mroles->save($data);
@@ -147,7 +157,6 @@ class Roles extends MY_Controller{
         //get id from the url
         $id = $this->uri->segment('3');
         $exist = $this->Mroles->isNameExists($name, $id);
-
         if($exist === false){
             //name does not exists in table
             return true;

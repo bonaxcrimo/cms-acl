@@ -5,11 +5,12 @@ Class Moffering extends MY_Model{
         $sql = $this->db->query("SELECT offering_key FROM tbloffering " . $where);
         return $sql;
     }
-    function get($where, $sidx, $sord, $limit, $start){
+    function get($where, $sidx, $sord, $limit, $start,$status){
+        $row_status = $where==''?' where row_status="'.$status.'"':' and row_status="'.$status.'"';
         $query = "select *,
         DATE_FORMAT(transdate,'%d-%m-%Y') transdate,
         DATE_FORMAT(inputdate,'%d-%m-%Y') inputdate,
-        DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon from tbloffering  " . $where . " ORDER BY $sidx $sord LIMIT $start , $limit";
+        DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon from tbloffering  " . $where .$row_status. "  ORDER BY $sidx $sord LIMIT $start , $limit";
         return $this->db->query($query);
     }
     function add($tabel,$data){
@@ -17,6 +18,10 @@ Class Moffering extends MY_Model{
     }
     function edit($tabel,$data,$id){
         $query = $this->db->where("offering_key",$id);
+        $query = $this->db->update($tabel,$data);
+    }
+    function editAll($tabel,$data,$status){
+        $query = $this->db->where("row_status",$status);
         $query = $this->db->update($tabel,$data);
     }
     function getwhere($member_key){

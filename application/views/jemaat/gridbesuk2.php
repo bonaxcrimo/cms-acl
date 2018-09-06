@@ -1,5 +1,4 @@
 <script type="text/javascript">
-	var acl = "<?php echo $acl; ?>";
     var startTime = Date.now();
     $(document).ready(function(){
         $("#dgBesuk").datagrid(
@@ -15,16 +14,6 @@
                 method:'get',
                 onClickRow:function(index,row){
                 },onLoadSuccess:function(data){
-                    var endTime = Date.now();
-                    var dif = startTime - endTime;
-                    var Seconds_from_T1_to_T2 = dif / 1000;
-                    var Seconds_Between_Dates = Math.abs(Seconds_from_T1_to_T2);
-
-                    $.messager.show({
-                        title:'Info',
-                        msg:'Load '+data.total+' records successfully at <span style="color:red; font-weight:bold">' + Seconds_Between_Dates + '</span> seconds'
-                    });
-
 
                 }
             });
@@ -111,10 +100,10 @@
         $.messager.confirm('Confirm','Yakin ingin menghapus data?',function(r){
         if (r){
                return $.ajax({
-                type: $("#formdatabesuk").attr("method"),
-                url: $("#formdatabesuk").attr("action"),
+                type: $("#formdeletedatabesuk").attr("method"),
+                url: $("#formdeletedatabesuk").attr("action"),
                 enctype: 'multipart/form-data',
-                data : $("#formdatabesuk").serialize(),
+                data : $("#formdeletedatabesuk").serialize(),
                 dataType: "json",
                 async: true,
                 success: function(data) {
@@ -127,8 +116,6 @@
     }
 </script>
 <?php  $this->load->view('partials/infojemaat'); ?>
-
-
 <table id="dgBesuk" style="width:100%;height:250px">
     <thead>
         <tr>

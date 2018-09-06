@@ -1,6 +1,3 @@
-<?php
-
-?>
 <script type="text/javascript">
     $(document).ready(function(){
         var dgOffering = $("#dgOffering").datagrid(
@@ -11,12 +8,57 @@
                 singleSelect:true,
                 remoteSort:true,
                 clientPaging: false,
-                url:"<?php echo base_url()?>offering/grid",
+                url:"<?php echo base_url()?>offering/grid2",
                 method:'get',
                 onClickRow:function(index,row){
                 }
             });
+        dgOffering.datagrid('columnMoving');
+        var dgOfferingDeleted = $("#dgOfferingDeleted").datagrid(
+            {
+                remoteFilter:true,
+                pagination:true,
+                rownumbers:true,
+                singleSelect:true,
+                remoteSort:true,
+                checkOnSelect: false,
+                selectOnCheck: false,
+                clientPaging: false,
+                url:"<?php echo base_url()?>offering/grid2/D",
+                method:'get',
+                onClickRow:function(index,row){
+                }
+            });
+        var pagerOfferingDeleted = dgOfferingDeleted.datagrid('getPager');
+        pagerOfferingDeleted.pagination({
+            buttons:[{
+                text:'Restore Checked',
+                handler:function(){
+                    $.messager.confirm('Confirm','Yakin akan mengembalikan semua data yang anda checklist ?',function(r){
+                        if (r){
+                            var checkedRows =dgOfferingDeleted.datagrid('getChecked');
+                            $.ajax({
+                                type: "POST",
+                                url:"<?php echo base_url()?>offering/restoreChecked",
+                                enctype: 'multipart/form-data',
+                                data : {
+                                    dataOffering:JSON.stringify(checkedRows),
+                                    status:'D'
+                                },dataType: "html",
+                                async: true,
+                                success: function(data) {
+                                    dgOfferingDeleted.datagrid('reload');
+                                    dgOffering.datagrid('reload');
+                                },error:function(err){
+                                    console.log(err);
+                                }
+                            });
+                        }
+                    });
 
+                }
+            }]
+        })
         var pagerOffering = dgOffering.datagrid('getPager');    // get the pager of datagrid
         pagerOffering.pagination({
             buttons:[{
@@ -29,7 +71,7 @@
         });
     });
     function viewOffering(form,key,member_key){
-        page="<?php echo base_url(); ?>offering/form/"+form+"Offering/"+key+"/"+member_key;
+        page="<?php echo base_url(); ?>offering/form/"+form+"/"+key+"/"+member_key+"/0";
          $("#dlgView").dialog({
             closed:false,
             title:"View Activity",
@@ -39,8 +81,10 @@
             autoResize:true
         });
     }
+
     function saveOffering(form,key,member_key){
-        page="<?php echo base_url(); ?>offering/form/"+form+"Offering/"+key+"/"+member_key;
+
+        page="<?php echo base_url(); ?>offering/form/"+form+"/"+key+"/"+member_key+"/0";
          var opr = form;
         if(opr=="add"){
             var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/add.png'><ul class='title'>Add Data</ul>";
@@ -70,14 +114,16 @@
                     console.log(data);
                     $("#dlgSaveOffering").dialog('close');
                     $("#dgOffering").datagrid('reload');
+                    $("#dgOfferingDeleted").datagrid('reload');
                 }
             }).responseText
     }
+
     function reportOffering(key){
         window.open("<?php echo base_url(); ?>offering/report/"+key,'_blank');
     }
     function delOffering(form,key,member_key){
-        page="<?php echo base_url(); ?>offering/form/"+form+"Offering/"+key+"/"+member_key;
+        page="<?php echo base_url(); ?>offering/form/"+form+"/"+key+"/"+member_key+"/0";
         $("#dlgDeleteOffering").dialog({
             closed:false,
             title:"Delete Data",
@@ -100,6 +146,7 @@
                 success: function(data) {
                     $("#dlgDeleteOffering").dialog('close');
                     $("#dgOffering").datagrid('reload');
+                    $("#dgOfferingDeleted").datagrid('reload');
                 }
                 }).responseText
             }
@@ -117,15 +164,21 @@
                     <th field="offering_key" hidden="true"></th>
                     <th sortable="true" field="offeringid" width="10%">offeringid</th>
                     <th sortable="true" field="offeringno" width="10%">offeringno</th>
+                    <th sortable="true" field="aliasname2" width="10%">aliasname2</th>
                     <th sortable="true" field="transdate" width="10%">transdate</th>
                     <th sortable="true" field="inputdate" width="10%">inputdate</th>
                     <th sortable="true" field="offeringvalue" width="10%" data-options="formatter:function(value, row){ return new Intl.NumberFormat({ style: 'currency', currency: 'IDR' }).format(value);}" align="right">offeringvalue</th>
                     <th sortable="true" field="remark" width="10%">remark</th>
                     <th sortable="true" field="modifiedby" width="6%">modifiedby</th>
                     <th sortable="true" field="modifiedon" width="10%">modifiedon</th>
+                    <th sortable="true" field="printedby" width="10%">printedby</th>
+                    <th sortable="true" field="printedon" width="6%">printedon</th>
                 </tr>
             </thead>
         </table>
+        <div id="dlgViewLookup" class="easyui-dialog" style="width:600px;" data-options="closed:true,modal:true,border:'thin'">
+            <?php $this->load->view('partials/lookupjemaat');?>
+        </div>
         <div id="dlgView" class="easyui-dialog" style="width:600px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-view'">
         </div>
          <div id="dlg-buttons-view">
@@ -143,5 +196,28 @@
             <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="deleteProsesOffering()" style="width:90px">Proses</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
         </div>
+    </div>
+    <div title="Deleted Offering" style="padding: 10px;">
+        <table id="dgOfferingDeleted" class=" noPadding noMargin" style="width:100%;height:250px">
+            <thead>
+                <tr>
+                    <th field="ck" checkbox="true"></th>
+                    <th field="aksi" width="8%">Aksi</th>
+                    <th  field="member_key" width="8%" hidden="true">Member Key</th>
+                    <th field="offering_key" hidden="true"></th>
+                    <th sortable="true" field="offeringid" width="10%">offeringid</th>
+                    <th sortable="true" field="offeringno" width="10%">offeringno</th>
+                    <th sortable="true" field="aliasname2" width="10%">aliasname2</th>
+                    <th sortable="true" field="transdate" width="10%">transdate</th>
+                    <th sortable="true" field="inputdate" width="10%">inputdate</th>
+                    <th sortable="true" field="offeringvalue" width="10%" data-options="formatter:function(value, row){ return new Intl.NumberFormat({ style: 'currency', currency: 'IDR' }).format(value);}" align="right">offeringvalue</th>
+                    <th sortable="true" field="remark" width="10%">remark</th>
+                    <th sortable="true" field="modifiedby" width="6%">modifiedby</th>
+                    <th sortable="true" field="modifiedon" width="10%">modifiedon</th>
+                    <th sortable="true" field="printedby" width="10%">printedby</th>
+                    <th sortable="true" field="printedon" width="6%">printedon</th>
+                </tr>
+            </thead>
+        </table>
     </div>
 </div>
