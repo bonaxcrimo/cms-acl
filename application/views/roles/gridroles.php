@@ -63,8 +63,14 @@
                 return $(this).form('validate');
             },
             success: function(result){
-                $('#dlg').dialog('close');
-                $('#dg').datagrid('reload');
+                var result = JSON.parse(result);
+
+                if(result.error==0){
+                    $('#dlg').dialog('close');
+                    $('#dg').datagrid('reload');
+                }else{
+                    $.messager.alert('Error',result.message.rolename,'error');
+                }
 
             },error:function(error){
                  console.log($(this).serialize());

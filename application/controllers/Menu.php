@@ -6,11 +6,18 @@ class Menu extends MY_Controller {
 		parent::__construct();
 		$this->load->model('mmenu');
 	}
-
+	/**
+     * Fungsi list menu
+     * @AclName List Menu
+     */
 	function index(){
 		$link = base_url().'menu/grid';
 		$this->render('menu/gridmenu',['link'=>$link]);
 	}
+	/**
+     * Fungsi grid menu
+     * @AclName Grid Menu
+     */
 	function grid(){
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;

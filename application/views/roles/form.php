@@ -33,10 +33,3 @@ foreach($acos as $aco){
     <?php
 echo form_close();
 ?>
-<script>
-    $(document).ready(function(){
-         $("#checkall").click(function () {
-             $('input:checkbox').not(this).prop('checked', this.checked);
-         });
-    })
-</script>

@@ -81,12 +81,17 @@ class Roles extends MY_Controller{
             if($this->_validateForm()){
                 $data = $this->input->post();
                 $this->_save($data);
-                redirect('roles');
+                $error = 0;
+                // redirect('roles');
             }else{
                 $data = $this->input->post();
+                $error = 1;
             }
+            echo json_encode(['error'=>$error,'message'=>$this->form_validation->error_array()]);
+        }else{
+            $this->load->view('roles/form',['data'=>$data,'acos'=>$acos]);
         }
-        $this->load->view('roles/form',['data'=>$data,'acos'=>$acos]);
+
     }
     /**
      * Fungsi edit roles
@@ -109,8 +114,10 @@ class Roles extends MY_Controller{
             }else{
                 $data = $this->input->post();
             }
+        }else{
+            $this->load->view('roles/form',['data'=>$data,'acos'=>$acos]);
         }
-        $this->load->view('roles/form',['data'=>$data,'acos'=>$acos]);
+
     }
     /**
      * Fungsi delete roles
@@ -145,9 +152,9 @@ class Roles extends MY_Controller{
                 'rules' => 'trim|required|max_length[50]|callback_validateName'
             ],
             [
-                'field' => 'role_permission[]|numeric',
+                'field' => 'role_permission[]',
                 'label' => 'Roles',
-                'rules' => 'required'
+                'rules' => 'required|numeric'
             ]
         ];
         $this->form_validation->set_rules($rules);
