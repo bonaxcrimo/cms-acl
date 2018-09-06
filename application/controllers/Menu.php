@@ -1,39 +1,63 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Menu extends CI_Controller {
+class Menu extends MY_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->library('session'); // session_start()
-		$this->load->model('mlogin');
-		$cek = $this->mlogin->cek();
-		if($cek==""){
-			redirect("");
-			session_destroy();
-		}
-		date_default_timezone_set("Asia/Jakarta");
-		ini_set('memory_limit', '-1');
 		$this->load->model('mmenu');
-		$this->load->model('mmenutop');
-        $this->load->helper('my_helper');
-
 	}
 
 	function index(){
-		$data['acl'] = $this->hakakses('menu');
-		$data['sqlmenu'] = $this->mmenutop->get_data();
-		$this->load->view('header');
-		$this->load->view('navbar',$data);
-		$this->load->view('menu/gridmenu');
-		$this->load->view('footer');
+		$link = base_url().'menu/grid';
+		$this->render('menu/gridmenu',['link'=>$link]);
 	}
-	
 	function grid(){
+		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
+		$sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'menuid';
+		$order = isset($_GET['order']) ? strval($_GET['order']) : 'asc';
+		$filterRules = isset($_GET['filterRules']) ? ($_GET['filterRules']) : '';
+
+		$cond = '';
+		if (!empty($filterRules)){
+			$cond = ' where 1=1 ';
+			$filterRules = json_decode($filterRules);
+			foreach($filterRules as $rule){
+				$rule = get_object_vars($rule);
+				$field = $rule['field'];
+				$op = $rule['op'];
+				$value = $rule['value'];
+				if (!empty($value)){
+					if ($op == 'contains'){
+						$cond .= " and ($field like '%$value%')";
+					}
+				}
+			}
+		}
+
+		$sql = $this->mmenu->count($cond);
+		$total = $sql->num_rows();
+		$offset = ($page - 1) * $rows;
+		$data = $this->mmenu->get($cond,$sort,$order,$rows,$offset)->result();
+
+		foreach($data as $row){
+			$view = hasPermission('menu','view')?'<button class="icon-view_detail" onclick="viewData(\''.$row->menuid.'\')" style="width:16px;height:16px;border:0"></button> ':'';
+			$edit = hasPermission('menu','edit')?'<button class="icon-edit" onclick="editData(\''.$row->menuid.'\')" style="width:16px;height:16px;border:0"></button> ':'';
+			$del = hasPermission('menu','delete')?'<button class="icon-remove" onclick="deleteData(\''.$row->menuid.'\')" style="width:16px;height:16px;border:0"></button>':'';
+			$row->aksi = $view.$edit.$del;
+		}
+		$response = new stdClass;
+		$response->total=$total;
+		$response->rows = $data;
+		$_SESSION['excel']= "asc|menuid|".$cond;
+		echo json_encode($response);
+	}
+	function grid2(){
 		$acl = $this->hakakses('menu');
-		@$page = $_POST['page']; 
-		@$limit = $_POST['rows']; 
-		@$sidx = $_POST['sidx']; 
-		@$sord = $_POST['sord']; 
+		@$page = $_POST['page'];
+		@$limit = $_POST['rows'];
+		@$sidx = $_POST['sidx'];
+		@$sord = $_POST['sord'];
 		if (!$sidx)
 		    $sidx = 1;
 		@$totalrows = isset($_POST['totalrows']) ? $_POST['totalrows'] : false;

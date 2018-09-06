@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Mmenu extends CI_Model
+class Mmenu extends MY_Model
 {
 	function count($where){
 		$sql = $this->db->query("SELECT menuid FROM tblmenu " . $where);
@@ -8,11 +8,11 @@ class Mmenu extends CI_Model
 	}
 	function get($where, $sidx, $sord, $limit, $start){
 		$sql = $this->db->query("SELECT *,
-		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedonview
+		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon
 		FROM tblmenu " . $where . " ORDER BY $sidx $sord, menuseq ASC LIMIT $start , $limit");
 		return $sql;
 	}
-	
+
 	function get_where($where){
 		$sql = $this->db->query("SELECT menuid FROM tblmenu " . $where);
 		return $sql;
