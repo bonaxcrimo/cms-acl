@@ -52,6 +52,79 @@ class Menu extends MY_Controller {
 		$_SESSION['excel']= "asc|menuid|".$cond;
 		echo json_encode($response);
 	}
+	/**
+     * Fungsi view Menu
+     * @AclName View Menu
+     */
+	public function view($id){
+		$data = $this->mmenu->getById('tblmenu','menuid',$id);
+        if(empty($data)){
+            redirect('menu');
+        }
+		$this->load->view('menu/view',['data'=>$data]);
+	}
+	/**
+     * Fungsi add Menu
+     * @AclName Tambah Menu
+     */
+	public function add(){
+		$data=[];
+		if($this->input->server('REQUEST_METHOD') == 'POST' ){
+			$data = $this->input->post();
+			$cek = $this->_save($data);
+			$status = $cek?"sukses":"gagal";
+			$hasil = array(
+		        'status' => $status
+		    );
+		    echo json_encode($hasil);
+		}else{
+			$data = $this->input->post();
+		}
+		$this->load->view('menu/form',['data'=>$data]);
+	}
+	/**
+     * Fungsi edit menu
+     * @AclName Edit Menu
+     */
+	public function edit($id){
+		$data = $this->mmenu->getById('tblmenu','menuid',$id);
+        if(empty($data)){
+            redirect('menu');
+        }
+		if($this->input->server('REQUEST_METHOD') == 'POST' ){
+			$data = $this->input->post();
+			$data['menuid'] = $this->input->post('menuid');
+			$cek = $this->_save($data);
+			$status = $cek?"sukses":"gagal";
+			$hasil = array(
+		        'status' => $status
+		    );
+		    echo json_encode($hasil);
+		}
+		$this->load->view('menu/form',['data'=>$data]);
+	}
+	/**
+     * Fungsi delete Menu
+     * @AclName Delete Menu
+     */
+	public function delete($id){
+		$data = $this->mmenu->getById('tblmenu','menuid',$id);
+		if(empty($data)){
+			redirect('menu');
+		}
+		if($this->input->server('REQUEST_METHOD') == 'POST'){
+			$cek = $this->mmenu->delete($this->input->post('menuid'));
+			$status = $cek?"sukses":"gagal";
+			$hasil = array(
+		        'status' => $status
+		    );
+		    echo json_encode($hasil);
+		}
+		$this->load->view('menu/delete',['data'=>$data]);
+	}
+	private function _save($data){
+        $this->mmenu->save($data);
+    }
 	function grid2(){
 		$acl = $this->hakakses('menu');
 		@$page = $_POST['page'];

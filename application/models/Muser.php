@@ -30,7 +30,7 @@ Class Muser extends MY_Model{
 		}
 		return [];
 	}
-	 public function save($data) {
+	public function save($data) {
         $this->db->trans_start();
         $data['modifiedon'] =  date("Y-m-d H:i:s");
         $data['modifiedby'] = $this->session->userdata('username');

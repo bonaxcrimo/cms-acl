@@ -7,7 +7,7 @@ class Roles extends MY_Controller{
             'Macos'
         ]);
     }
-    /*
+    /**
      * tampilan awal dari roles
      * @AclName List Roles
      */
