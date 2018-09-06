@@ -35,7 +35,6 @@ class Macl extends MY_Model{
             }else{
                 $records = $this->getListByGroup(['roleid'=>$data['roleid']]);
                 $acos = strpos($records[0]['acos'],',')===false?[$records[0]['acos']]:explode(', ',$records[0]['acos']);
-
                 $inserts = array_diff($data['acos'],$acos);
                 $removes = array_diff($acos,$data['acos']);
                 if(!empty($inserts)){

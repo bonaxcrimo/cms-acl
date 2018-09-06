@@ -17,7 +17,7 @@ class Macos extends MY_Model{
         if($count===true){
             return $this->db->get()->num_rows();
         }else{
-            $this->db->order_by('class','asc');
+            $this->db->order_by('class asc');
             return $this->db->get()->result();
         }
     }
@@ -28,11 +28,15 @@ class Macos extends MY_Model{
         return $this->db->get()->result();
     }
     public function getByMultiId($ids){
-        $acos = $this->db->where_in('acosid',$ids)
-                ->from($this->table)
-                ->get()
-                ->result_array();
-        return $acos;
+        if(!empty($ids)){
+            $acos = $this->db->where_in('acosid',$ids)
+                    ->from($this->table)
+                    ->get()
+                    ->result_array();
+            return $acos;
+        }
+        return [];
+
     }
     public function save($data){
         $conditions = [

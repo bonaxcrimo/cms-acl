@@ -1,8 +1,66 @@
-
+<?php
+     // print_r($this->Mroles->getGuestGroup());
+     // unset($_SESSION['groups.guest']);
+     print_r($_SESSION);
+?>
 <script type="text/javascript">
+    var url,oper;
+    function excel(){
 
+    };
+    function newData(){
+        $('#dlg').dialog({
+            closed:false,
+            title:'Tambah data',
+            href:'<?php echo base_url(); ?>roles/add',
+            onLoad:function(){
+                 url = '<?= base_url() ?>roles/add';
+            }
+        });
+    }
+    function editData(roleid){
+        var row = roleid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').roleid:roleid;
+        if (row!=''){
+            $('#dlg').dialog({
+                closed:false,
+                title:'Edit Data',
+                href:'<?php echo base_url(); ?>roles/edit/'+row,
+                onLoad:function(){
+                    url = '<?= base_url() ?>roles/edit/'+row;
+                }
+            });
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
+    function callSubmit(){
+        $('#fm').form('submit',{
+            url: url,
+            onSubmit: function(){
+                return $(this).form('validate');
+            },
+            success: function(result){
+                $('#dlg').dialog('close');
+                $('#dgBlood').datagrid('reload');
+
+            },error:function(error){
+                 console.log($(this).serialize());
+            }
+        });
+    }
+    function saveData(){
+        if(oper=="del"){
+             $.messager.confirm('Confirm','Yakin akan menghapus data ?',function(r){
+                if (r){
+                    callSubmit();
+                }
+            });
+        }else{
+            callSubmit();
+        }
+    }
     $(function(){
-        var dg = $("#dgRoles").datagrid(
+        var dg = $("#dg").datagrid(
             {
                 remoteFilter:true,
                 pagination:true,
@@ -16,17 +74,31 @@
                  }
             });
         dg.datagrid('columnMoving');
-
         dg.datagrid('enableFilter', [{
             field:'aksi',
             type:'label'
         }]);
+        var pager = dg.datagrid('getPager');
+        pager.pagination({
+            buttons:[{
+                iconCls:'icon-add',
+                handler:function(){
+                    newData();
+                }
+            },{
+                iconCls:'icon-edit',
+                handler:function(){
+                    editData();
+                }
+            }]
+        });
+
     })
 
 </script>
 <div class="easyui-tabs" style="height:auto">
     <div title="Data Roles" style="padding:10px">
-         <table id="dgRoles" title="Roles" class="easyui-datagrid" style="width:100%;height:250px" url="<?= $link ?>"
+         <table id="dg" title="Roles" class="easyui-datagrid" style="width:100%;height:250px" url="<?= $link ?>"
                 >
             <thead>
                 <tr>
@@ -38,6 +110,15 @@
                 </tr>
             </thead>
         </table>
+        <div id="dlg" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons',resizable:true"></div>
+        <div id="dlgView" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttonsView'"></div>
+        <div class="dlg-buttonsView">
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgView').dialog('close')" style="width:90px">Cancel</a>
+        </div>
+        <div id="dlg-buttons">
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px">Proses</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
+        </div>
 
     </div>
 </div>

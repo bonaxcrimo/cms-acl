@@ -38,9 +38,12 @@ class Login extends MY_Controller {
      */
 	public function logout(){
 		$this->session->unset_userdata('user');
+        $this->session->unset_userdata('username');
+        $this->session->unset_userdata('excel');
 		$this->session->unset_userdata('userpk');
 		$this->session->unset_userdata('dashboard');
 		$this->session->unset_userdata('logged_in');
+        $this->session->unset_userdata('groups.guest');
 		redirect('login');
 	}
 }

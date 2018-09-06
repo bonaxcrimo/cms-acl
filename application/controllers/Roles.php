@@ -7,13 +7,26 @@ class Roles extends MY_Controller{
             'Macos'
         ]);
     }
-    /**
+    /*
      * tampilan awal dari roles
      * @AclName List Roles
      */
     public function index(){
         $link = base_url().'roles/grid';
         $this->render('roles/gridroles',['link'=>$link]);
+    }
+    /**
+     * Fungsi view Roles
+     * @AclName View Roles
+     */
+    public function view($id){
+        $acos = $this->Macos->getList();
+        $data = $this->Mroles->getByIdRoles($id);
+        if(empty($data)){
+            redirect('roles');
+        }
+        $data->role_permission = strpos($data->acos,',')===false?[$data->acos]:explode(', ',$data->acos);
+        $this->load->view('roles/view',['data'=>$data,'acos'=>$acos]);
     }
     /**
      * Merupakan Grid dari Roles
@@ -45,10 +58,16 @@ class Roles extends MY_Controller{
         $total = $sql->num_rows();
         $offset = ($page - 1) * $rows;
         $data = $this->Mroles->get($cond,$sort,$order,$rows,$offset)->result();
+        foreach($data as $row){
+            $view = hasPermission('roles','view')?'<button class="icon-view_detail" onclick="viewData(\''.$row->roleid.'\')" style="width:16px;height:16px;border:0"></button> ':'';
+            $edit = hasPermission('roles','edit')?'<button class="icon-edit" onclick="editData(\''.$row->roleid.'\')" style="width:16px;height:16px;border:0"></button> ':'';
+            $del = hasPermission('roles','delete')?'<button class="icon-remove" onclick="deleteData(\''.$row->roleid.'\')" style="width:16px;height:16px;border:0"></button>':'';
+            $row->aksi = $view.$edit.$del;
+        }
         $response = new stdClass;
         $response->total=$total;
         $response->rows = $data;
-        $_SESSION['excelroles']= "asc|parameter_key|".$cond;
+        $_SESSION['excel']= "asc|parameter_key|".$cond;
         echo json_encode($response);
     }
     /**
@@ -58,7 +77,6 @@ class Roles extends MY_Controller{
     public function add(){
         $data = [];
         $acos = $this->Macos->getList();
-        $groups = $this->Macos->getGroup();
         if($this->input->server('REQUEST_METHOD') == "POST"){
             if($this->_validateForm()){
                 $data = $this->input->post();
@@ -68,7 +86,7 @@ class Roles extends MY_Controller{
                 $data = $this->input->post();
             }
         }
-        $this->render('roles/add',['data'=>$data,'acos'=>$acos,'groups'=>$groups]);
+        $this->load->view('roles/form',['data'=>$data,'acos'=>$acos]);
     }
     /**
      * Fungsi edit roles
@@ -81,6 +99,7 @@ class Roles extends MY_Controller{
             redirect('roles');
         }
         $data->role_permission = strpos($data->acos,',')===false?[$data->acos]:explode(', ',$data->acos);
+
         if($this->input->server('REQUEST_METHOD') == "POST"){
             if($this->_validateForm()){
                 $data = $this->input->post();
@@ -91,7 +110,7 @@ class Roles extends MY_Controller{
                 $data = $this->input->post();
             }
         }
-        $this->render('roles/edit',['data'=>$data,'acos'=>$acos]);
+        $this->load->view('roles/form',['data'=>$data,'acos'=>$acos]);
     }
     /**
      * Fungsi delete roles

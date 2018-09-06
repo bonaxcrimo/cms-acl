@@ -18,13 +18,12 @@ class ACL{
         }
         $user = $this->getLoggedInUser();
         if(!empty($user)){
-
         }else{
-            redirect('/login');
+            redirect('login');
         }
         if(!$this->_validateActionPermission($user['acl']) && $CI->session->userdata('username')!='admin'){
             if(empty($user)){
-                redirect('/login');
+                redirect('login');
             }else{
                 exit('unauthorized');
             }
@@ -46,6 +45,7 @@ class ACL{
         return $user;
     }
     public function _checkQuestAccess($class = null,$method=null){
+
         $group = $this->CI->session->userdata('groups.guest');
         if(empty($group)){
             $this->CI->load->model('Mroles');
@@ -55,23 +55,26 @@ class ACL{
         return $this->_validateActionPermission($group->acos,$class,$method);
     }
     private function _validateActionPermission($acos,$class = null,$method = null){
-        if(empty($acos)){
-            return false;
-        }
+        //acos gk boleh kosong
+
         if(empty($class)){
             $class = $this->CI->router->fetch_class();
         }
         if(empty($method)){
             $method = $this->CI->router->fetch_method();
         }
+        if($class=="login" && $method !='logout'){
+            return true;
+        }
+        if(empty($acos)){
+            return false;
+        }
         foreach($acos as $aco){
             if(strtolower(trim($aco['class'])) == strtolower(trim($class)) && strtolower(trim($aco['method']))==strtolower(trim($method))){
                 return true;
             }
         }
-        if($class=="login" && $method !='logout'){
-            return true;
-        }
+
         return false;
     }
     public function hasPermission($class,$method){
