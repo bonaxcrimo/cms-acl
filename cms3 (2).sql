@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 03, 2018 at 09:57 AM
+-- Generation Time: Sep 06, 2018 at 10:01 AM
 -- Server version: 5.6.34-log
 -- PHP Version: 7.2.1
 
@@ -96,19 +96,30 @@ CREATE TABLE `tblacl` (
 
 INSERT INTO `tblacl` (`aclid`, `acoid`, `roleid`, `modifiedby`, `modifiedon`) VALUES
 (1, 1, 1, 'admin', '0000-00-00 00:00:00'),
-(2, 2, 1, 'admin', '0000-00-00 00:00:00'),
-(3, 3, 1, 'admin', '0000-00-00 00:00:00'),
-(4, 4, 1, 'admin', '0000-00-00 00:00:00'),
-(5, 5, 2, 'admin', '0000-00-00 00:00:00'),
-(6, 6, 1, 'admin', '0000-00-00 00:00:00'),
-(7, 6, 2, 'admin', '0000-00-00 00:00:00'),
-(8, 5, 1, 'admin', '0000-00-00 00:00:00'),
-(9, 8, 1, 'admin', '0000-00-00 00:00:00'),
-(10, 9, 1, 'admin', '0000-00-00 00:00:00'),
+(2, 8, 1, 'admin', '0000-00-00 00:00:00'),
+(3, 7, 1, 'admin', '0000-00-00 00:00:00'),
+(4, 6, 1, 'admin', '0000-00-00 00:00:00'),
+(5, 5, 1, 'admin', '0000-00-00 00:00:00'),
+(6, 4, 1, 'admin', '0000-00-00 00:00:00'),
+(7, 3, 1, 'admin', '0000-00-00 00:00:00'),
+(8, 2, 1, 'admin', '0000-00-00 00:00:00'),
+(9, 9, 1, 'admin', '0000-00-00 00:00:00'),
+(10, 11, 1, 'admin', '0000-00-00 00:00:00'),
 (11, 10, 1, 'admin', '0000-00-00 00:00:00'),
-(12, 11, 1, 'admin', '0000-00-00 00:00:00'),
-(13, 12, 1, 'admin', '0000-00-00 00:00:00'),
-(14, 13, 1, 'admin', '0000-00-00 00:00:00');
+(12, 12, 1, 'admin', '0000-00-00 00:00:00'),
+(13, 13, 1, 'admin', '0000-00-00 00:00:00'),
+(14, 14, 1, 'admin', '0000-00-00 00:00:00'),
+(15, 15, 1, 'admin', '0000-00-00 00:00:00'),
+(16, 16, 1, 'admin', '0000-00-00 00:00:00'),
+(17, 17, 1, 'admin', '0000-00-00 00:00:00'),
+(18, 18, 1, 'admin', '0000-00-00 00:00:00'),
+(19, 20, 1, 'admin', '0000-00-00 00:00:00'),
+(20, 19, 1, 'admin', '0000-00-00 00:00:00'),
+(21, 21, 1, 'admin', '0000-00-00 00:00:00'),
+(22, 24, 1, 'admin', '0000-00-00 00:00:00'),
+(23, 23, 1, 'admin', '0000-00-00 00:00:00'),
+(24, 25, 1, 'admin', '0000-00-00 00:00:00'),
+(25, 22, 1, 'admin', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -130,18 +141,31 @@ CREATE TABLE `tblacos` (
 --
 
 INSERT INTO `tblacos` (`acosid`, `class`, `method`, `displayname`, `modifiedby`, `modifiedon`) VALUES
-(1, 'Home', 'index', 'List', 'admin', '2018-08-31 00:00:00'),
-(2, 'Home', 'bumi', 'Bumi', 'admin', '0000-00-00 00:00:00'),
-(3, 'blood', 'index', 'List Blood', '0', '0000-00-00 00:00:00'),
-(4, 'blood', 'grid', 'Grid Blood', 'admin', '0000-00-00 00:00:00'),
-(5, 'Login', 'index', 'Login', '0', '0000-00-00 00:00:00'),
-(6, 'Login', 'logout', 'Logout', '0', '0000-00-00 00:00:00'),
-(8, 'Blood', 'view', 'View', 'admin', '0000-00-00 00:00:00'),
-(9, 'Blood', 'add', 'Tambah', 'admin', '0000-00-00 00:00:00'),
-(10, 'Blood', 'edit', 'Edit', 'admin', '0000-00-00 00:00:00'),
-(11, 'Blood', 'delete', 'Delete', 'admin', '0000-00-00 00:00:00'),
-(12, 'blood', 'excel', 'Export Excel Blood', 'admin', '0000-00-00 00:00:00'),
-(13, 'Acos', 'fetch', 'Acos Fetch\r', 'admin', '0000-00-00 00:00:00');
+(1, 'Acos', 'fetch', 'Acos Fetch\r', 'admin', '0000-00-00 00:00:00'),
+(2, 'blood', 'index', 'List Blood', 'admin', '0000-00-00 00:00:00'),
+(3, 'blood', 'grid', 'Grid Blood', 'admin', '0000-00-00 00:00:00'),
+(4, 'blood', 'view', 'View Blood', 'admin', '0000-00-00 00:00:00'),
+(5, 'blood', 'add', 'Tambah Blood', 'admin', '0000-00-00 00:00:00'),
+(6, 'blood', 'edit', 'Edit Blood', 'admin', '0000-00-00 00:00:00'),
+(7, 'blood', 'delete', 'Delete Blood', 'admin', '0000-00-00 00:00:00'),
+(8, 'blood', 'excel', 'Export Excel Blood', 'admin', '0000-00-00 00:00:00'),
+(9, 'Home', 'index', 'Home', 'admin', '0000-00-00 00:00:00'),
+(10, 'Login', 'index', 'Login', 'admin', '0000-00-00 00:00:00'),
+(11, 'Login', 'logout', 'Logout', 'admin', '0000-00-00 00:00:00'),
+(12, 'offering', 'index', 'List Offering\r', 'admin', '0000-00-00 00:00:00'),
+(13, 'offering', 'grid2', 'Grid Offering\r', 'admin', '0000-00-00 00:00:00'),
+(14, 'Roles', 'view', 'View Roles\r', 'admin', '0000-00-00 00:00:00'),
+(15, 'Roles', 'grid', 'Grid Roles\r', 'admin', '0000-00-00 00:00:00'),
+(16, 'Roles', 'add', 'Tambah Roles\r', 'admin', '0000-00-00 00:00:00'),
+(17, 'Roles', 'edit', 'Edit Roles\r', 'admin', '0000-00-00 00:00:00'),
+(18, 'Roles', 'delete', 'Delete Roles\r', 'admin', '0000-00-00 00:00:00'),
+(19, 'Menu', 'view', 'View Menu\r', 'admin', '0000-00-00 00:00:00'),
+(20, 'Menu', 'add', 'Tambah Menu\r', 'admin', '0000-00-00 00:00:00'),
+(21, 'Menu', 'edit', 'Edit Menu\r', 'admin', '0000-00-00 00:00:00'),
+(22, 'Roles', 'index', 'List Roles\r', 'admin', '0000-00-00 00:00:00'),
+(23, 'Menu', 'index', 'List Menu\r', 'admin', '0000-00-00 00:00:00'),
+(24, 'Menu', 'grid', 'Grid Menu\r', 'admin', '0000-00-00 00:00:00'),
+(25, 'Menu', 'delete', 'Delete Menu\r', 'admin', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -11093,17 +11117,17 @@ INSERT INTO `tblmenu` (`menuid`, `menuname`, `menuseq`, `menuparent`, `menuicon`
 (2, 'Master', 20, 0, 'icon-master', 0, '', '0000-00-00 00:00:00'),
 (3, 'Pengguna', 40, 0, 'icon-pengguna', 0, 'admin', '2015-04-19 13:01:43'),
 (4, 'Data Jemaat', 30, 2, 'icon-pengguna', 0, '', '0000-00-00 00:00:00'),
-(5, 'Data Gender', 20, 2, 'icon-group_gear', 0, '', '0000-00-00 00:00:00'),
+(5, 'Data Gender', 20, 40, 'icon-group_gear', 0, 'admin', '2018-09-06 09:24:22'),
 (8, 'Profil', 10, 3, 'icon-pengguna', 0, 'ADMIN', '2014-04-01 15:24:25'),
-(10, 'Logout', 60, 0, 'icon-out', 6, 'admin', '2015-08-19 17:07:45'),
+(10, 'Logout', 60, 0, 'icon-out', 11, 'admin', '2018-09-06 09:08:29'),
 (7, 'Data User', 60, 2, 'icon-pengguna', 0, 'admin', '2014-04-02 10:36:27'),
-(6, 'Kebaktian', 70, 2, 'icon-pengguna', 0, 'admin2', '2014-04-02 14:16:38'),
+(6, 'Kebaktian', 70, 40, 'icon-pengguna', 0, 'admin', '2018-09-06 09:26:54'),
 (9, 'Menu', 80, 2, 'icon-pengguna', 0, 'admin2', '2014-04-02 14:20:59'),
-(11, 'Serving', 130, 2, 'icon-pengguna', 0, 'admin', '2014-04-02 13:02:16'),
-(12, 'Pstatus', 110, 2, 'icon-pengguna', 0, 'admin', '2014-04-02 12:59:57'),
-(13, 'Blood', 10, 2, 'icon-pengguna', 3, 'admin2', '2014-04-02 14:39:58'),
-(14, 'Persekutuan', 100, 2, 'icon-pengguna', 0, 'admin2', '2014-04-02 14:40:43'),
-(15, 'Rayon', 120, 2, 'icon-pengguna', 0, 'admin', '2014-04-02 11:09:23'),
+(11, 'Serving', 130, 40, 'icon-pengguna', 0, 'admin', '2018-09-06 09:24:50'),
+(12, 'Pstatus', 110, 40, 'icon-pengguna', 0, 'admin', '2018-09-06 09:24:45'),
+(13, 'Blood', 10, 40, 'icon-pengguna', 2, 'admin', '2018-09-06 09:24:40'),
+(14, 'Persekutuan', 100, 40, 'icon-pengguna', 0, 'admin', '2018-09-06 09:24:54'),
+(15, 'Rayon', 120, 40, 'icon-pengguna', 0, 'admin', '2018-09-06 09:24:58'),
 (40, 'Parameter', 90, 2, 'icon-pengguna', 0, 'admin', '2014-04-10 12:03:48'),
 (41, 'Data Jemaat Meninggal', 40, 2, 'icon-pengguna', 0, 'admin', '2014-04-10 12:07:36'),
 (42, 'Data Objek PI', 50, 2, 'icon-pengguna', 0, 'admin', '2014-04-12 11:46:37'),
@@ -11115,7 +11139,7 @@ INSERT INTO `tblmenu` (`menuid`, `menuname`, `menuseq`, `menuparent`, `menuicon`
 (50, 'Besuk', 20, 2, 'icon-pengguna', 0, 'admin', '2018-08-16 09:00:28'),
 (51, 'Activity', 10, 2, 'icon-pengguna', 0, 'admin', '2018-08-18 11:30:21'),
 (52, 'Offering', 90, 2, 'icon-pengguna', 0, 'admin', '2018-08-20 09:23:33'),
-(53, 'Bumi', 10, 1, 'icon-pengguna', 2, 'ADMIN', '0000-00-00 00:00:00');
+(54, 'Roles', 10, 0, 'icon-pengguna', 22, 'admin', '2018-09-06 09:15:30');
 
 -- --------------------------------------------------------
 
@@ -11134,19 +11158,29 @@ CREATE TABLE `tbloffering` (
   `offeringvalue` double DEFAULT NULL,
   `row_status` char(1) DEFAULT NULL,
   `modifiedon` datetime DEFAULT NULL,
-  `modifiedby` varchar(15) DEFAULT NULL
+  `modifiedby` varchar(15) DEFAULT NULL,
+  `aliasname2` varchar(50) DEFAULT NULL,
+  `printedon` datetime DEFAULT NULL,
+  `printedby` varchar(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `tbloffering`
 --
 
-INSERT INTO `tbloffering` (`offering_key`, `member_key`, `offeringid`, `offeringno`, `transdate`, `inputdate`, `remark`, `offeringvalue`, `row_status`, `modifiedon`, `modifiedby`) VALUES
-(1, 5, 155, '001/2018-08-27', '2018-08-27 13:00:43', '2018-08-27 13:00:43', 'DSA', 23131, '', '2018-08-28 13:00:43', 'admin'),
-(4, 5, 154, '002/2018-08-27', '2018-08-27 09:17:59', '2018-08-27 09:17:59', 'DSADA', 121212, '', '2018-08-27 09:17:59', 'admin'),
-(5, 5, 155, '003/2018-08-27', '2018-08-27 10:04:05', '2018-08-27 10:04:05', 'REMARK', 500000, '', '2018-08-27 10:04:05', 'admin'),
-(11, 6, 154, '001/2018-08-28', '2018-08-28 13:25:34', '2018-08-28 13:25:34', 'GJGHJ', 120000, '', '2018-08-28 13:25:34', 'admin'),
-(12, 5, 157, '002/2018-08-28', '2018-08-28 13:26:07', '2018-08-28 13:26:07', 'JANJI IMAN', 5000000, '', '2018-08-28 13:26:07', 'admin');
+INSERT INTO `tbloffering` (`offering_key`, `member_key`, `offeringid`, `offeringno`, `transdate`, `inputdate`, `remark`, `offeringvalue`, `row_status`, `modifiedon`, `modifiedby`, `aliasname2`, `printedon`, `printedby`) VALUES
+(1, 5, 155, '001/2018-08-27', '2018-08-27 16:14:18', '2018-08-27 16:14:18', 'DSA', 23131, '', '2018-08-29 16:14:18', 'admin', 'NN', NULL, NULL),
+(4, 5, 154, '002/2018-08-27', '2018-08-27 09:17:59', '2018-08-27 09:17:59', 'DSADA', 121212, '', '2018-08-27 09:17:59', 'admin', NULL, NULL, NULL),
+(5, 5, 155, '003/2018-08-27', '2018-08-27 10:04:05', '2018-08-27 10:04:05', 'REMARK', 500000, '', '2018-08-27 10:04:05', 'admin', NULL, NULL, NULL),
+(11, 6, 154, '001/2018-08-28', '2018-08-28 13:25:34', '2018-08-28 13:25:34', 'GJGHJ', 120000, '', '2018-08-28 13:25:34', 'admin', NULL, NULL, NULL),
+(12, 5, 157, '002/2018-08-28', '2018-08-28 13:26:07', '2018-08-28 13:26:07', 'JANJI IMAN', 5000000, '', '2018-08-28 13:26:07', 'admin', NULL, NULL, NULL),
+(13, 66, 157, '001/2018-08-29', '2018-08-29 10:24:19', '2018-08-29 10:24:19', '', 250000, '', '2018-08-29 10:24:19', 'admin', NULL, NULL, NULL),
+(14, 13, 156, '002/2018-08-29', '2018-08-29 10:25:48', '2018-08-29 10:25:48', '', 200000, '', '2018-08-29 11:16:21', 'admin', NULL, NULL, NULL),
+(15, 120, 155, '003/2018-08-29', '2018-08-29 14:55:28', '2018-08-29 14:55:28', 'DASDA\r\nDASDAS\r\nDASDASD', 300000, '', '2018-08-29 14:55:28', 'admin', NULL, NULL, NULL),
+(16, 8, 156, '001/2018-08-30', '2018-08-30 08:42:32', '2018-08-30 08:42:32', 'JHKSDJHDS\r\nDSLKHDSLDS', 300000, '', '2018-08-30 08:42:32', 'admin', 'AAASS', NULL, NULL),
+(18, 5, 156, '002/2018-08-30', '2018-08-30 08:13:08', '2018-08-30 08:13:08', 'GOOD', 100000, '', '2018-09-06 08:13:08', 'admin', 'NAME', NULL, NULL),
+(19, 38, 157, '003/2018-08-30', '2018-08-30 10:48:46', '2018-08-30 10:48:46', ' PEMBANGUNAN', 50000000, '', '2018-08-30 10:48:46', 'admin', '888', NULL, NULL),
+(20, 8, 157, '001/2018-09-04', '2018-09-04 16:25:41', '2018-09-04 16:25:41', '', 0, 'D', '2018-09-04 16:25:41', 'admin', '', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -11193,7 +11227,7 @@ INSERT INTO `tblparameter` (`parameter_key`, `parametergrpid`, `parameterid`, `p
 (37, 'GENDER', 'M', 'MALE', NULL, NULL, NULL),
 (36, 'GENDER', 'F', 'FEMALE', NULL, NULL, NULL),
 (35, 'BLOOD', 'AB', 'AB', NULL, 'admin', '2018-08-11 13:15:04'),
-(33, 'BLOOD', 'B', 'B', NULL, 'admin', '2018-08-14 08:58:21'),
+(33, 'BLOOD', 'B', 'B', NULL, 'admin', '2018-09-04 02:54:03'),
 (32, 'BLOOD', 'A', 'A', NULL, 'admin', '2018-08-11 08:45:36'),
 (41, 'RAYON', 'DLL', 'DLL', NULL, NULL, NULL),
 (42, 'RAYON', 'HAMBA TUHAN', 'HAMBA TUHAN', NULL, NULL, NULL),
@@ -11366,7 +11400,7 @@ CREATE TABLE `tblroles` (
 
 INSERT INTO `tblroles` (`roleid`, `rolename`, `modifiedby`, `modifiedon`) VALUES
 (1, 'superadmin', 'admin', '2018-08-24 07:24:43'),
-(2, 'Guest', 'admin', '2018-08-31 08:54:31');
+(3, 'Guest', 'admin', '2018-09-06 06:25:29');
 
 -- --------------------------------------------------------
 
@@ -11417,7 +11451,10 @@ INSERT INTO `tbluser` (`userpk`, `userid`, `username`, `password`, `modifiedby`,
 (97, 'Ong Lie Yong', 'Ong Lie Yong', '827ccb0eea8a706c4c34a16891f84e7b', 'BENNY', '2016-06-29 22:45:06', 'home/view'),
 (98, 'Kety', 'Kety Eteng', '827ccb0eea8a706c4c34a16891f84e7b', 'BENNY', '2016-06-29 22:46:29', 'home/view'),
 (99, 'Oei Kim Lie', 'Oei Kim Lie', '827ccb0eea8a706c4c34a16891f84e7b', 'BENNY', '2016-06-29 22:47:36', 'home/view'),
-(101, 'tb', 'tb', 'e44d967f3e8a44f6a7fee562af4d82f4', 'admin', '2017-01-13 09:38:12', 'home/viewtb');
+(101, 'tb', 'tb', 'e44d967f3e8a44f6a7fee562af4d82f4', 'admin', '2017-01-13 09:38:12', 'home/viewtb'),
+(116, 'bona', 'bona', 'a235ece82e18ffd625d9b9846e1b07fe', 'admin', '2018-09-05 09:53:37', 'dashboard1'),
+(115, 'd', 'd', '8277e0910d750195b448797616e091ad', 'admin', '2018-09-05 07:28:49', 'd'),
+(118, 'budi', 'budi', '00dfc53ee86af02e742515cdcf075ed3', 'admin', '2018-09-05 09:59:39', 'budi');
 
 -- --------------------------------------------------------
 
@@ -12031,7 +12068,8 @@ CREATE TABLE `tbluserroles` (
 --
 
 INSERT INTO `tbluserroles` (`userrolesid`, `userpk`, `roleid`, `modifiedby`, `modifiedon`) VALUES
-(1, 47, 1, 'admin', '2018-08-31 00:00:00');
+(1, 47, 1, 'admin', '2018-08-31 00:00:00'),
+(13, 118, 1, '0', '0000-00-00 00:00:00');
 
 --
 -- Indexes for dumped tables
@@ -12123,12 +12161,12 @@ ALTER TABLE `tbluserroles`
 -- AUTO_INCREMENT for table `tblacl`
 --
 ALTER TABLE `tblacl`
-  MODIFY `aclid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `aclid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 --
 -- AUTO_INCREMENT for table `tblacos`
 --
 ALTER TABLE `tblacos`
-  MODIFY `acosid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `acosid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 --
 -- AUTO_INCREMENT for table `tblbesuk`
 --
@@ -12148,17 +12186,17 @@ ALTER TABLE `tblmember2`
 -- AUTO_INCREMENT for table `tblmenu`
 --
 ALTER TABLE `tblmenu`
-  MODIFY `menuid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=54;
+  MODIFY `menuid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 --
 -- AUTO_INCREMENT for table `tbloffering`
 --
 ALTER TABLE `tbloffering`
-  MODIFY `offering_key` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `offering_key` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT for table `tblparameter`
 --
 ALTER TABLE `tblparameter`
-  MODIFY `parameter_key` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=193;
+  MODIFY `parameter_key` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=196;
 --
 -- AUTO_INCREMENT for table `tblprofile`
 --
@@ -12168,12 +12206,12 @@ ALTER TABLE `tblprofile`
 -- AUTO_INCREMENT for table `tblroles`
 --
 ALTER TABLE `tblroles`
-  MODIFY `roleid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `roleid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `tbluser`
 --
 ALTER TABLE `tbluser`
-  MODIFY `userpk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=102;
+  MODIFY `userpk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
 --
 -- AUTO_INCREMENT for table `tblusermenu`
 --
@@ -12183,7 +12221,7 @@ ALTER TABLE `tblusermenu`
 -- AUTO_INCREMENT for table `tbluserroles`
 --
 ALTER TABLE `tbluserroles`
-  MODIFY `userrolesid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;COMMIT;
+  MODIFY `userrolesid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
