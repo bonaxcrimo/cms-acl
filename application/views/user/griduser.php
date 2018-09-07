@@ -78,6 +78,7 @@
                     <th field="userid" width="10%" sortable="true"> userid</th>
                     <th field="username" width="10%" sortable="true"> username</th>
                     <th field="dashboard" width="10%" sortable="true"> dashboard</th>
+                    <th field="rolename" width="10%" sortable="true">roles</th>
                     <th field="modifiedby" width="10%" sortable="true">modifiedby </th>
                     <th field="modifiedon" width="10%" sortable="true"> modifiedon</th>
                 </tr>

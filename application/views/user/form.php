@@ -15,7 +15,7 @@
 <div style="margin-bottom: 10px">
     <label for="user_roles" class="textbox-label textbox-label-left">Roles : </label>
     <?php
-        echo form_dropdown('user_roles[]',@$roles,@$data->roles,['multiple'=>'multiple','required'=>'']);
+        echo form_dropdown('user_roles[]',@$roles,@$data->user_roles,['multiple'=>'multiple','required'=>'']);
         echo form_error('user_roles');
     ?>
 </div>

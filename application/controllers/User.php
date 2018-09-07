@@ -45,8 +45,10 @@ class User extends MY_Controller {
         $offset = ($page - 1) * $rows;
         $data = $this->muser->get($cond,$sort,$order,$rows,$offset)->result();
         foreach($data as $row){
+            $rolename =  $this->muser->getByIdUser($row->userpk)->roles_name;
             $edit = '<button class="icon-edit" onclick="editUser(\''.$row->userpk.'\')" style="width:16px;height:16px;border:0"></button> ';
             $row->aksi = $edit;
+            $row->rolename= $rolename;
         }
         $response = new stdClass;
         $response->total=$total;

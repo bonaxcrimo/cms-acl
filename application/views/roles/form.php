@@ -1,7 +1,6 @@
 <?php
     echo form_open('','style="padding:20px;" id="fm"');
     echo form_input('rolename',isset($data->rolename)?$data->rolename:'',['placeholder'=>'Role Name','class'=>'easyui-textbox','label'=>'rolename','style'=>'width:300px;']);
-    echo form_error('rolename');
 ?>
 <br>
 <label for="">Role Permission</label>
@@ -33,3 +32,10 @@ foreach($acos as $aco){
     <?php
 echo form_close();
 ?>
+<script>
+    $(document).ready(function(){
+         $('#checkall').click(function () {
+             $('input:checkbox').prop('checked', this.checked);
+         });
+    })
+</script>

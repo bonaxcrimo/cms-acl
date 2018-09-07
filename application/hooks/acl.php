@@ -25,7 +25,7 @@ class ACL{
             if(empty($user)){
                 redirect('login');
             }else{
-                exit('unauthorized');
+                exit('anda tidak punya akses');
             }
         }
 

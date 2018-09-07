@@ -104,20 +104,20 @@ class Roles extends MY_Controller{
             redirect('roles');
         }
         $data->role_permission = strpos($data->acos,',')===false?[$data->acos]:explode(', ',$data->acos);
-
+        $error = 0;
         if($this->input->server('REQUEST_METHOD') == "POST"){
             if($this->_validateForm()){
                 $data = $this->input->post();
                 $data['roleid']=$id;
                 $this->_save($data);
-                redirect('roles');
             }else{
                 $data = $this->input->post();
+                $error =1;
             }
+            echo json_encode(['error'=>$error,'message'=>$this->form_validation->error_array()]);
         }else{
             $this->load->view('roles/form',['data'=>$data,'acos'=>$acos]);
         }
-
     }
     /**
      * Fungsi delete roles

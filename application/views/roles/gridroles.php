@@ -63,13 +63,21 @@
                 return $(this).form('validate');
             },
             success: function(result){
+                console.log(result);
                 var result = JSON.parse(result);
 
                 if(result.error==0){
                     $('#dlg').dialog('close');
                     $('#dg').datagrid('reload');
                 }else{
-                    $.messager.alert('Error',result.message.rolename,'error');
+                    var htmlerror = "";
+                    if(result.message !=undefined){
+                        $.each(result.message,function(i,item){
+                            htmlerror += item+"<br>";
+                        });
+                        $.messager.alert('Error',htmlerror,'error');
+                    }
+
                 }
 
             },error:function(error){
