@@ -7,7 +7,11 @@ class UserAcl extends MY_Controller{
             'Macos'
         ]);
     }
-    public function user(){
+    /**
+     * Fungsi list awal
+     * @AclName List Awal
+     */
+    public function index(){
         if(empty($_SESSION['userpk'])){
             echo "Empty";
         }
@@ -16,7 +20,6 @@ class UserAcl extends MY_Controller{
             $this->load->view('user/griduseracl',$data);
         }
     }
-
     /**
      * Fungsi edit user acl
      * @AclName Edit User Acl
@@ -43,6 +46,9 @@ class UserAcl extends MY_Controller{
             $this->load->view('user/useracl/form',['data'=>$data,'acos'=>$acos,'userpk'=>$userpk]);
         }
     }
+    private function _save($data){
+        $this->Museracl->save($data);
+    }
     private function _validateForm(){
         $rules = [
             [
@@ -59,7 +65,7 @@ class UserAcl extends MY_Controller{
         $this->form_validation->set_rules($rules);
         return $this->form_validation->run();
     }
-    public function griduser($userpk){
+    public function grid($userpk){
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
         $sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'useraclid';

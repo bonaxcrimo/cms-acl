@@ -48,7 +48,78 @@ class Museracl extends MY_Model{
         }
         return $data;
     }
-    function get($where, $sidx, $sord, $limit, $start){
+    public function save($data){
+        $this->db->trans_start();
+        if(isset($data['userpk']) && !empty($data['userpk'])){
+            $id = $data['userpk'];
+            $this->saveRolePermission($id,$data['role_permission']);
+        }
+        if($this->db->trans_status() === false){
+            $this->db->trans_rollback();
+            return false;
+        }else{
+            $this->db->trans_commit();
+            return true;
+        }
+    }
+    public function saveRolePermission($userpk,$acos){
+        $result = $this->saveBatch(['userpk'=>$userpk,'acos'=>$acos]);
+        return $result;
+    }
+    public function saveBatch($data){
+        $insert= [];
+        if(isset($data['acos'])){
+            $records = $this->getListAll('tbluseracl',['userpk'=>$data['userpk']],true);
+            if(empty($records)){
+                foreach($data['acos'] as $aco){
+                    $insert[] = [
+                        'userpk'=>$data['userpk'],
+                        'acoid'=>$aco,
+                        'modifiedby'=>$this->session->userdata('username'),
+                        'modifiedon'=>date("Y-m-d H:i:s")
+                    ];
+                }
+                return $this->insertBatch($insert);
+            }else{
+                $records = $this->getListByGroup(['userpk'=>$data['userpk']]);
+                $acos = strpos($records[0]['acos'],',')===false?[$records[0]['acos']]:explode(', ',$records[0]['acos']);
+                $inserts = array_diff($data['acos'],$acos);
+                $removes = array_diff($acos,$data['acos']);
+                if(!empty($inserts)){
+                    $insert= [];
+                    foreach($inserts as $val){
+                        $insert[]=[
+                            'userpk'=>$data['userpk'],
+                            'acoid'=>$val,
+                            'modifiedby'=>$this->session->userdata('username'),
+                            'modifiedon'=>date("Y-m-d H:i:s")
+                        ];
+                    }
+                    $this->insertBatch($insert);
+                }
+                if(!empty($removes)){
+                    $remove =[];
+                    foreach($removes as $val){
+                        $remove[] = [
+                            'userpk' =>$data['userpk'],
+                            'acoid'=>$val
+                        ];
+                    }
+                    $this->removeBatch($remove);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+    protected function getListByGroup($conditions){
+        $this->db->select('GROUP_CONCAT('.$this->alias.'.acoid SEPARATOR "," ) as acos ')
+            ->where($conditions)
+            ->from($this->table.' as '.$this->alias);
+
+        return $this->db->get()->result_array();
+    }
+    public function get($where, $sidx, $sord, $limit, $start){
         $query = "select * from tbluseracl " . $where." ORDER BY $sidx $sord LIMIT $start , $limit";
         return $this->db->query($query);
     }

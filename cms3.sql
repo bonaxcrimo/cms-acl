@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 06, 2018 at 10:01 AM
+-- Generation Time: Sep 07, 2018 at 09:10 AM
 -- Server version: 5.6.34-log
 -- PHP Version: 7.2.1
 
@@ -119,7 +119,26 @@ INSERT INTO `tblacl` (`aclid`, `acoid`, `roleid`, `modifiedby`, `modifiedon`) VA
 (22, 24, 1, 'admin', '0000-00-00 00:00:00'),
 (23, 23, 1, 'admin', '0000-00-00 00:00:00'),
 (24, 25, 1, 'admin', '0000-00-00 00:00:00'),
-(25, 22, 1, 'admin', '0000-00-00 00:00:00');
+(25, 22, 1, 'admin', '0000-00-00 00:00:00'),
+(27, 2, 4, 'admin', '0000-00-00 00:00:00'),
+(28, 3, 4, 'admin', '0000-00-00 00:00:00'),
+(29, 4, 4, 'admin', '0000-00-00 00:00:00'),
+(30, 5, 4, 'admin', '0000-00-00 00:00:00'),
+(31, 6, 4, 'admin', '0000-00-00 00:00:00'),
+(33, 8, 4, 'admin', '0000-00-00 00:00:00'),
+(34, 9, 4, 'admin', '0000-00-00 00:00:00'),
+(35, 10, 4, 'admin', '0000-00-00 00:00:00'),
+(36, 11, 4, 'admin', '0000-00-00 00:00:00'),
+(37, 24, 4, 'admin', '0000-00-00 00:00:00'),
+(38, 23, 4, 'admin', '0000-00-00 00:00:00'),
+(40, 20, 4, 'admin', '0000-00-00 00:00:00'),
+(41, 19, 4, 'admin', '0000-00-00 00:00:00'),
+(42, 25, 4, 'admin', '0000-00-00 00:00:00'),
+(43, 12, 4, 'admin', '0000-00-00 00:00:00'),
+(44, 13, 4, 'admin', '0000-00-00 00:00:00'),
+(48, 15, 4, 'admin', '0000-00-00 00:00:00'),
+(50, 22, 4, 'admin', '0000-00-00 00:00:00'),
+(52, 7, 4, 'admin', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -165,7 +184,15 @@ INSERT INTO `tblacos` (`acosid`, `class`, `method`, `displayname`, `modifiedby`,
 (22, 'Roles', 'index', 'List Roles\r', 'admin', '0000-00-00 00:00:00'),
 (23, 'Menu', 'index', 'List Menu\r', 'admin', '0000-00-00 00:00:00'),
 (24, 'Menu', 'grid', 'Grid Menu\r', 'admin', '0000-00-00 00:00:00'),
-(25, 'Menu', 'delete', 'Delete Menu\r', 'admin', '0000-00-00 00:00:00');
+(25, 'Menu', 'delete', 'Delete Menu\r', 'admin', '0000-00-00 00:00:00'),
+(26, 'User', 'index', 'List User\r', 'admin', '0000-00-00 00:00:00'),
+(27, 'User', 'grid', 'Grid User\r', 'admin', '0000-00-00 00:00:00'),
+(28, 'User', 'view', 'View User\r', 'admin', '0000-00-00 00:00:00'),
+(29, 'User', 'add', 'Tambah User\r', 'admin', '0000-00-00 00:00:00'),
+(30, 'User', 'edit', 'Edit User\r', 'admin', '0000-00-00 00:00:00'),
+(31, 'User', 'delete', 'Delete User\r', 'admin', '0000-00-00 00:00:00'),
+(32, 'UserAcl', 'index', 'List Awal\r', 'admin', '0000-00-00 00:00:00'),
+(33, 'UserAcl', 'edit', 'Edit User Acl\r', 'admin', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -11400,7 +11427,8 @@ CREATE TABLE `tblroles` (
 
 INSERT INTO `tblroles` (`roleid`, `rolename`, `modifiedby`, `modifiedon`) VALUES
 (1, 'superadmin', 'admin', '2018-08-24 07:24:43'),
-(3, 'Guest', 'admin', '2018-09-06 06:25:29');
+(3, 'Guest', 'admin', '2018-09-06 06:25:29'),
+(4, 'editor', 'admin', '2018-09-07 01:59:47');
 
 -- --------------------------------------------------------
 
@@ -11431,7 +11459,7 @@ INSERT INTO `tbluser` (`userpk`, `userid`, `username`, `password`, `modifiedby`,
 (92, 'SannyLam', 'Sanny Lam', '827ccb0eea8a706c4c34a16891f84e7b', 'BENNY', '2016-07-01 22:52:06', 'home/view'),
 (59, 'SUNQI', 'SUN QI', '2ca41752ccf4dbdb76d8fe88c488fd44', 'SUNQI', '2012-10-19 14:47:00', 'home/view'),
 (60, 'YOHANNA', 'GI YOHANNA', '47611ffaec374085439325cafa3ec9d0', 'QQ', '2012-09-10 14:19:00', 'home/view'),
-(65, 'johan', 'johan', 'e10adc3949ba59abbe56e057f20f883e', 'admin', '2014-06-29 15:26:22', 'home/view'),
+(65, 'johan', 'johan', '7fedcb034ecf9df4be8c1ea13362053b', 'admin', '2018-09-07 08:55:21', 'home/view'),
 (69, 'Kendro', 'Kendro', '4c839b58ea75ea032bb44874d2bcbae8', 'STEVENLAW', '2014-08-18 23:15:20', 'home/view'),
 (70, 'Lisan', 'Lisan', 'd15171ea584dcc39013bced56f70e60f', 'STEVENLAW', '2014-08-30 11:06:54', 'home/view'),
 (79, 'Indra', 'Indra', '68b4b970315f3049996206e583682204', 'STEVENLAW', '2015-08-02 14:25:13', 'home/view'),
@@ -11454,7 +11482,33 @@ INSERT INTO `tbluser` (`userpk`, `userid`, `username`, `password`, `modifiedby`,
 (101, 'tb', 'tb', 'e44d967f3e8a44f6a7fee562af4d82f4', 'admin', '2017-01-13 09:38:12', 'home/viewtb'),
 (116, 'bona', 'bona', 'a235ece82e18ffd625d9b9846e1b07fe', 'admin', '2018-09-05 09:53:37', 'dashboard1'),
 (115, 'd', 'd', '8277e0910d750195b448797616e091ad', 'admin', '2018-09-05 07:28:49', 'd'),
-(118, 'budi', 'budi', '00dfc53ee86af02e742515cdcf075ed3', 'admin', '2018-09-05 09:59:39', 'budi');
+(119, 'andi', 'andi', '00dfc53ee86af02e742515cdcf075ed3', 'admin', '2018-09-07 03:15:22', 'andi');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbluseracl`
+--
+
+CREATE TABLE `tbluseracl` (
+  `useraclid` int(11) NOT NULL,
+  `acoid` int(11) NOT NULL DEFAULT '0',
+  `userpk` int(11) NOT NULL DEFAULT '0',
+  `modifiedby` varchar(50) DEFAULT '0',
+  `modifiedon` datetime DEFAULT '0000-00-00 00:00:00'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tbluseracl`
+--
+
+INSERT INTO `tbluseracl` (`useraclid`, `acoid`, `userpk`, `modifiedby`, `modifiedon`) VALUES
+(1, 2, 53, 'admin', '0000-00-00 00:00:00'),
+(5, 3, 53, 'admin', '2018-09-07 08:38:31'),
+(6, 4, 53, 'admin', '2018-09-07 08:38:31'),
+(7, 2, 65, 'admin', '2018-09-07 08:55:30'),
+(9, 3, 65, 'admin', '2018-09-07 08:56:41'),
+(13, 4, 65, 'admin', '2018-09-07 09:06:49');
 
 -- --------------------------------------------------------
 
@@ -12069,7 +12123,9 @@ CREATE TABLE `tbluserroles` (
 
 INSERT INTO `tbluserroles` (`userrolesid`, `userpk`, `roleid`, `modifiedby`, `modifiedon`) VALUES
 (1, 47, 1, 'admin', '2018-08-31 00:00:00'),
-(13, 118, 1, '0', '0000-00-00 00:00:00');
+(14, 118, 4, '0', '0000-00-00 00:00:00'),
+(15, 118, 3, '0', '0000-00-00 00:00:00'),
+(17, 119, 3, '0', '0000-00-00 00:00:00');
 
 --
 -- Indexes for dumped tables
@@ -12142,6 +12198,12 @@ ALTER TABLE `tbluser`
   ADD PRIMARY KEY (`userpk`);
 
 --
+-- Indexes for table `tbluseracl`
+--
+ALTER TABLE `tbluseracl`
+  ADD PRIMARY KEY (`useraclid`);
+
+--
 -- Indexes for table `tblusermenu`
 --
 ALTER TABLE `tblusermenu`
@@ -12161,12 +12223,12 @@ ALTER TABLE `tbluserroles`
 -- AUTO_INCREMENT for table `tblacl`
 --
 ALTER TABLE `tblacl`
-  MODIFY `aclid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `aclid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 --
 -- AUTO_INCREMENT for table `tblacos`
 --
 ALTER TABLE `tblacos`
-  MODIFY `acosid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `acosid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 --
 -- AUTO_INCREMENT for table `tblbesuk`
 --
@@ -12211,7 +12273,12 @@ ALTER TABLE `tblroles`
 -- AUTO_INCREMENT for table `tbluser`
 --
 ALTER TABLE `tbluser`
-  MODIFY `userpk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=119;
+  MODIFY `userpk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+--
+-- AUTO_INCREMENT for table `tbluseracl`
+--
+ALTER TABLE `tbluseracl`
+  MODIFY `useraclid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `tblusermenu`
 --
@@ -12221,7 +12288,7 @@ ALTER TABLE `tblusermenu`
 -- AUTO_INCREMENT for table `tbluserroles`
 --
 ALTER TABLE `tbluserroles`
-  MODIFY `userrolesid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;COMMIT;
+  MODIFY `userrolesid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -1,5 +1,5 @@
 <?php
-    echo form_open('','style="padding:20px;" id="fm"');
+    echo form_open('','style="padding:20px;" id="fm1"');
     echo form_input('userpk',@$userpk,['readonly'=>'','class'=>'easyui-textbox','label'=>'userpk','style'=>'width:300px;']);
 ?>
 <br>
