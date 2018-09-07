@@ -2,7 +2,6 @@
 
 function print_recursive_list($data)
 {
-    // print_r($data);
     $str = "";
     foreach($data as $list)
     {
@@ -13,7 +12,6 @@ function print_recursive_list($data)
             $str .= "<div>".$subchild."</div>";
         }
         $str .= "</div>";
-        // echo "masuk";
     }
     return $str;
 }

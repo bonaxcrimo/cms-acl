@@ -16,6 +16,49 @@ class UserAcl extends MY_Controller{
             $this->load->view('user/griduseracl',$data);
         }
     }
+
+    /**
+     * Fungsi edit user acl
+     * @AclName Edit User Acl
+     */
+    public function edit($userpk=null){
+        if(empty($userpk)){
+            redirect('user');
+        }
+        $acos = $this->Macos->getList();
+        $data = $this->Museracl->getByIdUser($userpk);
+        $data->role_permission = strpos($data->acos,',')===false?[$data->acos]:explode(', ',$data->acos);
+        $error = 0;
+        if($this->input->server('REQUEST_METHOD') == "POST"){
+            if($this->_validateForm()){
+                $data = $this->input->post();
+                $data['userpk']=$userpk;
+                $this->_save($data);
+            }else{
+                $data = $this->input->post();
+                $error =1;
+            }
+            echo json_encode(['error'=>$error,'message'=>$this->form_validation->error_array()]);
+        }else{
+            $this->load->view('user/useracl/form',['data'=>$data,'acos'=>$acos,'userpk'=>$userpk]);
+        }
+    }
+    private function _validateForm(){
+        $rules = [
+            [
+                'field' => 'userpk',
+                'label' => 'userpk',
+                'rules' => 'required|numeric'
+            ],
+            [
+                'field' => 'role_permission[]',
+                'label' => 'Roles',
+                'rules' => 'required|numeric'
+            ]
+        ];
+        $this->form_validation->set_rules($rules);
+        return $this->form_validation->run();
+    }
     public function griduser($userpk){
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;

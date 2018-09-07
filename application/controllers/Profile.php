@@ -43,12 +43,13 @@ class profile extends MY_Controller {
             $this->load->view('jemaat/gridprofile',$data);
         }
     }
-    function form($form,$profile_key,$member_key){
+    function form($form,$profile_key,$member_key,$tabs=1){
         $data["profile_key"] = $profile_key;
         $data["member_key"] = $member_key;
         $data['sqlactivity'] = getParameter('ACTIVITY');
         $data['sql'] = $this->mprofile->getwhere($member_key);
-        $this->load->view('profile/'.$form,$data);
+        $view = $tabs==0?'profile/':'jemaat/profile/';
+        $this->load->view($view.$form,$data);
     }
     function crud(){
         @$oper=@$_POST['oper'];

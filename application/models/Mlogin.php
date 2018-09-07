@@ -3,7 +3,7 @@ Class Mlogin extends MY_Model{
 	protected $table = 'tbluser';
 	protected $alias = 'u';
 	protected $insert_id;
-	function login($userid, $password){
+	public function login($userid, $password){
 		$this->db->from('tbluser');
 		$this->db->where('userid', $userid);
 		$this->db->where('password', $password);
@@ -45,6 +45,7 @@ Class Mlogin extends MY_Model{
 		return [];
 	}
 	public function getDetailWithAclById($id){
+		$this->load->model('museracl');
 		$user  = $this->getList(['userpk'=>$id]);
 		if(!empty($user)){
 			$user = $user[0];
@@ -52,6 +53,8 @@ Class Mlogin extends MY_Model{
 			$this->load->model('Macl');
 
 			$user['acl'] = $this->Macl->getByRoles($roles);
+			$useracl=$this->museracl->getByUserPK($id);
+			$user['acl'] =array_merge($user['acl'],$useracl);
 
 		}
 		return $user;

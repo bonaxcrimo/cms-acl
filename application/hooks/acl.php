@@ -40,6 +40,8 @@ class ACL{
         if(is_numeric($user)){
             $CI->load->model('Mlogin');
             $user = $CI->Mlogin->getDetailWithAclById($user);
+            // print_r($user);
+            // exit();
         }
         $this->user = $user;
         return $user;
@@ -63,7 +65,7 @@ class ACL{
         if(empty($method)){
             $method = $this->CI->router->fetch_method();
         }
-        if($class=="login"){
+        if($class=="login" || $class=="home"){
             return true;
         }
         if(empty($acos)){

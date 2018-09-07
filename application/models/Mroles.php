@@ -38,6 +38,7 @@ class Mroles extends MY_Model{
         }
         return $roles;
     }
+
     public function getGuestGroup(){
         $conditions= [
             'rolename' =>'Guest'
