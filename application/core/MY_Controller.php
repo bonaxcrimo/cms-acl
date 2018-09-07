@@ -17,7 +17,9 @@ class MY_Controller extends CI_Controller{
         $this->load->view($this->getLayout(),['template'=>$page,'data'=>$data]);
         $this->load->view('partials/footer');
     }
-
+    public function set(){
+        $_SESSION['userpk'] = $_GET['userpk'];
+    }
     protected function setLayout($layout){
         $this->layout = $layout;
         return $this;
