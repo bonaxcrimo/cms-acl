@@ -1,4 +1,4 @@
-<?php echo form_open(); ?>
+<?php echo form_open('',['id'=>'fm','style'=>'padding:20px']); ?>
 <input type="hidden" name="userpk" value="<?= @$data->userpk ?>">
 <div style="margin-bottom: 10px">
 	<input name="userid" class="easyui-textbox" required="true" labelPosition="left" value="<?= @$data->userid ?>" label="userid :" style="width:100%;">
@@ -19,8 +19,6 @@
         echo form_error('user_roles');
     ?>
 </div>
-    <?php
-echo form_submit('save','Save');
-echo anchor('roles','Cancel');
+<?php
 echo form_close();
 ?>

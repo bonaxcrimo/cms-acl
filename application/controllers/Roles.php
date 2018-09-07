@@ -160,15 +160,15 @@ class Roles extends MY_Controller{
         $this->form_validation->set_rules($rules);
         return $this->form_validation->run();
     }
-     public function validateName($name){
-        //get id from the url
+    public function validateName($name){
+        //ambil id dari url
         $id = $this->uri->segment('3');
         $exist = $this->Mroles->isNameExists($name, $id);
         if($exist === false){
-            //name does not exists in table
+            //nama tidak ada di table
             return true;
         }
-        //name exists and throw error
+        //nama ada kembalikan pesan error
         $this->form_validation->set_message(__FUNCTION__, "{field} '$name' is already exists.");
         return false;
     }

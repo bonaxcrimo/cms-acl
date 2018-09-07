@@ -8,11 +8,18 @@ class User extends MY_Controller {
             'mroles'
 		]);
 	}
-
+    /**
+     * tampilan awal dari user
+     * @AclName List User
+     */
 	public function index(){
 		$link = base_url()."user/grid";
 		$this->render('user/griduser',['link'=>$link]);
 	}
+    /**
+     *  grid user
+     * @AclName Grid User
+     */
 	public function grid(){
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
@@ -46,8 +53,10 @@ class User extends MY_Controller {
         $data = $this->muser->get($cond,$sort,$order,$rows,$offset)->result();
         foreach($data as $row){
             $rolename =  $this->muser->getByIdUser($row->userpk)->roles_name;
-            $edit = '<button class="icon-edit" onclick="editUser(\''.$row->userpk.'\')" style="width:16px;height:16px;border:0"></button> ';
-            $row->aksi = $edit;
+            $edit = '<button class="icon-edit" onclick="editData(\''.$row->userpk.'\')" style="width:16px;height:16px;border:0"></button> ';
+            $view = '<button class="icon-view_detail" onclick="viewData(\''.$row->userpk.'\')" style="width:16px;height:16px;border:0"></button> ';
+            $delete = '<button class="icon-remove" onclick="deleteData(\''.$row->userpk.'\')" style="width:16px;height:16px;border:0"></button> ';
+            $row->aksi = $view.$edit.$delete;
             $row->rolename= $rolename;
         }
         $response = new stdClass;
@@ -57,9 +66,23 @@ class User extends MY_Controller {
         echo json_encode($response);
 
 	}
-    public function view(){
+    /**
+     *  view user
+     * @AclName View User
+     */
+    public function view($id){
+        $data =  $this->muser->getByIdUser($id);
 
+        if(empty($data)){
+            redirect('user');
+        }
+        $data->user_roles = strpos($data->roles,',')===false?$data->roles:explode(', ',$data->roles);
+        $this->load->view('user/view',['data'=>$data]);
     }
+    /**
+     *  tambah user
+     * @AclName Tambah User
+     */
     public function add(){
         $data=[];
         $roles = $this->mroles->getList();
@@ -72,10 +95,13 @@ class User extends MY_Controller {
         if($this->input->server('REQUEST_METHOD')=='POST'){
             $data = $this->input->post();
             $this->_save($data);
-            redirect('user');
         }
-        $this->load->view('user/add',['data'=>$data,'roles'=>$roles]);
+        $this->load->view('user/form',['data'=>$data,'roles'=>$roles]);
     }
+    /**
+     *  edit user
+     * @AclName Edit User
+     */
     public function edit($id){
         $data=[];
         $roles = $this->mroles->getList();
@@ -95,9 +121,28 @@ class User extends MY_Controller {
             $data = $this->input->post();
             $data['userpk'] = $id;
             $this->_save($data);
+            // redirect('user');
+        }
+        $this->load->view('user/form',['data'=>$data,'roles'=>$roles]);
+    }
+    /**
+     * Fungsi delete user
+     * @AclName Delete User
+     */
+    public function delete($id){
+       $data = $this->muser->getByIdUser($id);
+        if(empty($data)){
             redirect('user');
         }
-        $this->load->view('user/edit',['data'=>$data,'roles'=>$roles]);
+        if($this->input->server('REQUEST_METHOD') == 'POST'){
+            $cek = $this->muser->delete($this->input->post('userpk'));
+            $status = $cek?"sukses":"gagal";
+            $hasil = array(
+                'status' => $status
+            );
+            echo json_encode($hasil);
+        }
+        $this->load->view('user/delete',['data'=>$data]);
     }
     private function _save($data){
         $this->muser->save($data);

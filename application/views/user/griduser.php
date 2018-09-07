@@ -1,25 +1,62 @@
 <script type="text/javascript">
     var url,oper;
-    function newUser(){
+    function excel(){
+        window.open("<?php echo base_url(); ?>menu/excel");
+    }
+    function newData(){
         $("#dlg").dialog({
             closed:false,
-            title:'Tambah User',
+            title:'Tambah Data',
             href:'<?= base_url()?>user/add',
             onLoad:function(){
                 url = '<?= base_url() ?>user/add'
             }
         });
     }
-    function editUser(userpk){
-        // $("#dlg").dialog({
-        //     closed:false,
-        //     title:'Edit User',
-        //     href:'<?= base_url()?>user/edit/'+userpk,
-        //     onLoad:function(){
-        //         url ='<?= base_url()?>user/edit/'+userpk;
-        //     }
-        // });
-        window.location ='<?= base_url()?>user/edit/'+userpk;
+    function editData(userpk){
+        var row = userpk==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').userpk:userpk;
+        if (row!=''){
+            $('#dlg').dialog({
+                closed:false,
+                title:'Edit Data',
+                href:'<?php echo base_url(); ?>user/edit/'+row,
+                onLoad:function(){
+                    url = '<?= base_url() ?>user/edit/'+row;
+                }
+            });
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
+    function viewData(userpk){
+        var row = userpk==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').userpk:userpk;
+
+        if (row!=''){
+            $('#dlgView').dialog({
+                closed:false,
+                title:'View data',
+                href:'<?php echo base_url(); ?>user/view/'+row
+            });
+
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
+    function deleteData(userpk){
+        var row = userpk==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').userpk:userpk;
+        if (row!=''){
+            $('#dlg').dialog({
+                closed:false,
+                title:'Delete data',
+                href:'<?php echo base_url(); ?>user/delete/'+row,
+                onLoad:function(){
+                    url = '<?= base_url() ?>user/delete/'+row;
+                    oper="del";
+                }
+            });
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
     }
     function callSubmit(){
         $("#fm").form('submit',{
@@ -27,23 +64,26 @@
             onSubmit:function(){
                 return $(this).form('validate');
             },success:function(result){
-                console.log(result);
                 $("#dlg").dialog('close');
-                $("#dgUser").datagrid('reload');
+                $("#dg").datagrid('reload');
             },error:function(error){
                 console.log($(this).serialize());
             }
         });
     }
-    function saveUser(){
+    function saveData(){
         if(oper=="del"){
-
+             $.messager.confirm('Confirm','Yakin akan menghapus data ?',function(r){
+                if (r){
+                    callSubmit();
+                }
+            });
         }else{
             callSubmit();
         }
     }
     $(document).ready(function(){
-        var dgUser = $("#dgUser").datagrid({
+        var dgUser = $("#dg").datagrid({
             remoteFilter:true,
             pagination:true,
             rownumbers:true,
@@ -61,7 +101,7 @@
             buttons:[{
                 iconCls:'icon-add',
                 handler:function(){
-                    newUser();
+                    newData();
                 }
             }]
         });
@@ -71,7 +111,7 @@
 
 <div class="easyui-tabs" style="height:auto">
     <div title="Data user" style="padding:10px">
-        <table id="dgUser" class="noPadding noMargin" style="width: 100%">
+        <table id="dg" class="noPadding noMargin" style="width: 100%">
             <thead>
                 <tr>
                     <th field="aksi" width="8%" >Aksi</th>
@@ -86,8 +126,12 @@
         </table>
         <div id="dlg" class="easyui-dialog" style="width: 400px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'"></div>
         <div id="dlg-buttons">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveUser()" style="width:90px">Save</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px">Save</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
+        </div>
+        <div id="dlgView" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttonsView'"></div>
+        <div class="dlg-buttonsView">
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgView').dialog('close')" style="width:90px">Cancel</a>
         </div>
     </div>
 </div>
