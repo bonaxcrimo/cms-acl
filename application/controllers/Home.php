@@ -5,7 +5,6 @@ class Home extends MY_Controller {
 	public function __construct(){
 		parent::__construct();
 		$this->load->model('mlogin');
-
 	}
 	/**
      * tampilan home
@@ -13,6 +12,7 @@ class Home extends MY_Controller {
      */
 	public function index(){
 		$users = $this->mlogin->getList();
-		$this->render($_SESSION['dashboard'],['users'=>$users,]);
+        // print_r($_SESSION);
+		$this->render($_SESSION['dashboard'],['users'=>$users]);
 	}
 }

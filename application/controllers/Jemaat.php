@@ -16,6 +16,7 @@ class Jemaat extends MY_Controller {
 			'mmenu'
 		]);
 
+        $this->load->library('pinyin');
 	}
 
 	function download($filename){
@@ -162,7 +163,8 @@ class Jemaat extends MY_Controller {
 			$row->persekutuan_key  = $row->persekutuan_key=='' || $row->persekutuan_key=="-"?'-':getParameterKey($row->persekutuan_key)->parametertext;
 			$row->rayon_key = $row->rayon_key=='' || $row->rayon_key=="-"  ?'-':getParameterKey($row->rayon_key)->parametertext;
 			$row->pstatus_key =  $row->pstatus_key=='' || $row->pstatus_key=="-" ?'-':getParameterKey($row->pstatus_key)->parametertext;
-
+			// if($row->member_key==7)
+			// 	$row->phoneticname = $this->pinyin->pinyin($row->chinesename);
 
 			$jlhbesuk = $this->mjemaat->jlhbesuk($row->member_key);
 			$tglbesukterakhir = $this->mjemaat->tglbesukterakhir($row->member_key);

@@ -1,3 +1,4 @@
+
 <script type="text/javascript">
     var url,oper;
     function excel(){
@@ -63,7 +64,8 @@
                 return $(this).form('validate');
             },
             success: function(result){
-                console.log(result);
+                // console.log($(this).serialize());
+                // console.log(result);
                 var result = JSON.parse(result);
 
                 if(result.error==0){
@@ -142,12 +144,12 @@
                     <th field="aksi" width="5%">Aksi</th>
                     <th field="roleid" width="10%" hidden="true"></th>
                     <th field="rolename" width="5%" sortable="true">rolename</th>
-                    <th field="modifiedby" width="5%" sortable="true">modifiedby</th>
+                    <th field="modifiedby" width="10%" sortable="true">modifiedby</th>
                     <th field="modifiedon" width="10%" sortable="true">modifiedon</th>
                 </tr>
             </thead>
         </table>
-        <div id="dlg" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons',resizable:true"></div>
+        <div id="dlg" class="easyui-dialog" style="width:600px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons',resizable:true"></div>
         <div id="dlgView" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttonsView'"></div>
         <div class="dlg-buttonsView">
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgView').dialog('close')" style="width:90px">Cancel</a>

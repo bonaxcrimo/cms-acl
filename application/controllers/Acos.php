@@ -15,6 +15,41 @@ class Acos extends MY_Controller {
         $this->listFolderFiles();
         // redirect('login');
     }
+    /**
+     * Merupakan Grid dari Acos
+     * @AclName Grid Acos
+     */
+    public function grid(){
+        $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+        $rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
+        $sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'acosid';
+        $order = isset($_GET['order']) ? strval($_GET['order']) : 'asc';
+        $filterRules = isset($_GET['filterRules']) ? ($_GET['filterRules']) : '';
+        $cond = '';
+        if (!empty($filterRules)){
+            $cond = ' where 1=1 ';
+            $filterRules = json_decode($filterRules);
+            foreach($filterRules as $rule){
+                $rule = get_object_vars($rule);
+                $field = $rule['field'];
+                $op = $rule['op'];
+                $value = $rule['value'];
+                if (!empty($value)){
+                    if ($op == 'contains'){
+                        $cond .= " and ($field like '%$value%')";
+                    }
+                }
+            }
+        }
+        $sql = $this->Macos->count($cond);
+        $total = $sql->num_rows();
+        $offset = ($page - 1) * $rows;
+        $data = $this->Macos->get($cond,$sort,$order,$rows,$offset)->result();
+        $response = new stdClass;
+        $response->total=$total;
+        $response->rows = $data;
+        echo json_encode($response);
+    }
     public function listFolderFiles($dir = null) {
         if ($dir === null){
             $dir = constant('APPPATH') . 'controllers/';

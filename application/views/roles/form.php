@@ -1,10 +1,13 @@
 <?php
     echo form_open('','style="padding:20px;" id="fm"');
-    echo form_input('rolename',isset($data->rolename)?$data->rolename:'',['placeholder'=>'Role Name','class'=>'easyui-textbox','label'=>'rolename','style'=>'width:300px;']);
+    echo form_input('rolename',isset($data->rolename)?$data->rolename:'',['placeholder'=>'Role Name','class'=>'easyui-textbox','label'=>'rolename : ','style'=>'width:300px;']);
+
 ?>
 <br>
 <label for="">Role Permission</label>
-<br><br>
+<?php
+    // $this->load->view('roles/gridacos');
+    ?>
 <input type="checkbox" id="checkall"><b>CheckAll</b>
 <ul>
 <?php

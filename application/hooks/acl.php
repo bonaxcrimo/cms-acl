@@ -65,7 +65,7 @@ class ACL{
         if(empty($method)){
             $method = $this->CI->router->fetch_method();
         }
-        if($class=="login" || $class=="home"){
+        if($class=="login" ){
             return true;
         }
         if(empty($acos)){

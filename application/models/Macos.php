@@ -2,7 +2,14 @@
 class Macos extends MY_Model{
     protected $table = 'tblacos';
     protected $alias = 'tblacos';
-
+    function count($where){
+        $sql = $this->db->query("SELECT * FROM tblacos " . $where);
+        return $sql;
+    }
+    function get($where, $sidx, $sord, $limit, $start){
+        $query = "select * from tblacos " . $where." ORDER BY $sidx $sord LIMIT $start , $limit";
+        return $this->db->query($query);
+    }
     public function getList($conditions=[],$count=false,$limit=0,$offset=0){
         $table =$this->table;
         $alias = $this->alias;
