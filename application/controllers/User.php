@@ -16,6 +16,10 @@ class User extends MY_Controller {
 		$link = base_url()."user/grid";
 		$this->render('user/griduser',['link'=>$link]);
 	}
+    public function getRoles(){
+        $role = $this->db->get('tblroles')->result();
+        echo json_encode($role);
+    }
     /**
      *  grid user
      * @AclName Grid User

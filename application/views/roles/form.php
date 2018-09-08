@@ -6,9 +6,9 @@
 <br>
 <label for="">Role Permission</label>
 <?php
-    // $this->load->view('roles/gridacos');
+    $this->load->view('roles/gridacos');
     ?>
-<input type="checkbox" id="checkall"><b>CheckAll</b>
+<!-- <input type="checkbox" id="checkall"><b>CheckAll</b>
 <ul>
 <?php
 $class = '';
@@ -31,7 +31,7 @@ foreach($acos as $aco){
 ?>
             </ul>
 </li>
-</ul>
+</ul> -->
     <?php
 echo form_close();
 ?>

@@ -105,16 +105,17 @@ function getParameter($tipe){
     return $sql->result();
 }
 function getComboParameter($tipe){
-        $data="{value:'',text:'All'},";
-        $sql = getParameter($tipe);
-        foreach ($sql as $key) {
-            $data .="{value:'".$key->parameter_key."',text:'".$key->parametertext."'},";
-        }
-        $data=strrev($data);
-        $data=substr($data,1);
-        $data=strrev($data);
-        return $data;
+    $data="{value:'',text:'All'},";
+    $sql = getParameter($tipe);
+    foreach ($sql as $key) {
+        $data .="{value:'".$key->parameter_key."',text:'".$key->parametertext."'},";
     }
+    $data=strrev($data);
+    $data=substr($data,1);
+    $data=strrev($data);
+    return $data;
+}
+
 function queryCustom($sql){
     @$CI =& get_instance();
     @$data = $CI->db->query($sql)->result()[0];

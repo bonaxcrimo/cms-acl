@@ -2,11 +2,11 @@
 class Mroles extends MY_Model{
     protected $table = 'tblroles';
     protected $alias = 'r';
-    function count($where){
+    public function count($where){
         $sql = $this->db->query("SELECT * FROM tblroles " . $where);
         return $sql;
     }
-    function get($where, $sidx, $sord, $limit, $start){
+    public function get($where, $sidx, $sord, $limit, $start){
         $query = "select * from tblroles " . $where." ORDER BY $sidx $sord LIMIT $start , $limit";
         return $this->db->query($query);
     }
