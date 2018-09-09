@@ -150,11 +150,6 @@ class Roles extends MY_Controller{
                 'field' => 'rolename',
                 'label' => 'rolename',
                 'rules' => 'trim|required|max_length[50]|callback_validateName'
-            ],
-            [
-                'field' => 'role_permission[]',
-                'label' => 'Roles',
-                'rules' => 'required|numeric'
             ]
         ];
         $this->form_validation->set_rules($rules);

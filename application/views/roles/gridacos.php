@@ -14,8 +14,6 @@
                 url:'<?= base_url() ?>acos/grid',
                 onClickRow:function(index,row){
                     $(this).datagrid('selectRow',index);
-                    var checkedRows =$(this).datagrid('getChecked');
-                    console.log(checkedRows);
                  }
             });
     })

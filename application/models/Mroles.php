@@ -69,7 +69,7 @@ class Mroles extends MY_Model{
         return false;
     }
     public function save($data){
-        $this->db->trans_start();
+        $this->db->trans_begin();
         $save=[
             'rolename'=>$data['rolename'],
             'modifiedby'=>$this->session->userdata('username')
@@ -77,14 +77,14 @@ class Mroles extends MY_Model{
         if(isset($data['roleid']) && !empty($data['roleid'])){
             $id = $data['roleid'];
             $result = $this->update($save,$id,'roleid');
-            if($result===true){
+            if($result===true && isset($data['role_permission'])){
                 $this->saveRolePermission($id,$data['role_permission']);
             }else{
                 $this->db->trans_rollback();
             }
         }else{
             $result = $this->insert($save);
-            if($result===true){
+            if($result===true && isset($data['role_permission'])){
                 $this->saveRolePermission($this->db->insert_id(),$data['role_permission']);
             }else{
                 $this->db->trans_rollback();

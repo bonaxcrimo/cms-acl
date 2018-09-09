@@ -57,17 +57,23 @@
              $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
         }
     }
+    function getChecked(){
+        var checkedRows = $("#dgAcos").datagrid('getChecked');
+        var data="";
+        checkedRows.forEach(function(item,index){
+            data += "&role_permission[]="+item.acosid;
+        });
+        return data;
+    }
     function callSubmit(){
-        $('#fm').form('submit',{
+        $.ajax({
+            type: 'POST',
             url: url,
-            onSubmit: function(){
-                return $(this).form('validate');
-            },
-            success: function(result){
-                // console.log($(this).serialize());
-                // console.log(result);
+            data : $("#fm :input[value!='']").serialize()+getChecked(),
+            dataType: "text",
+            async: true,
+            success: function(result) {
                 var result = JSON.parse(result);
-
                 if(result.error==0){
                     $('#dlg').dialog('close');
                     $('#dg').datagrid('reload');
@@ -81,11 +87,39 @@
                     }
 
                 }
-
-            },error:function(error){
-                 console.log($(this).serialize());
+            },error:function(err){
+                console.log(err);
             }
-        });
+        })
+        // $('#fm').form('submit',{
+        //     url: url,
+        //     data:$("#fm :input[value!='']").serialize()+getChecked(),
+        //     onSubmit: function(){
+        //         return $(this).form('validate');
+        //     },
+        //     success: function(result){
+        //         console.log(result);
+        //         // console.log(result);
+        //         // var result = JSON.parse(result);
+
+        //         // if(result.error==0){
+        //         //     $('#dlg').dialog('close');
+        //         //     $('#dg').datagrid('reload');
+        //         // }else{
+        //         //     var htmlerror = "";
+        //         //     if(result.message !=undefined){
+        //         //         $.each(result.message,function(i,item){
+        //         //             htmlerror += item+"<br>";
+        //         //         });
+        //         //         $.messager.alert('Error',htmlerror,'error');
+        //         //     }
+
+        //         // }
+
+        //     },error:function(error){
+        //          console.log($(this).serialize());
+        //     }
+        // });
     }
     function saveData(){
         if(oper=="del"){
