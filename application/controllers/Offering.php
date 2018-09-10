@@ -16,6 +16,10 @@ class offering extends MY_Controller {
         $link = base_url()."offering/grid";
         $this->render('offering/gridoffering',['link'=>$link]);
     }
+    public function prints($no=null){
+        $no = $no;
+        $this->load->view('offering/print',['no'=>$no]);
+    }
     function jemaat(){
         if(empty($_SESSION['member_key'])){
             echo" Empty";
@@ -106,6 +110,9 @@ class offering extends MY_Controller {
         @$data = array(
             'member_key' => @$_POST['member_key'],
             'offeringid' => @$offeringid,
+            'membername'=>@$_POST['member_name'],
+            'chinesename'=>@$_POST['chinese_name'],
+            'address'=>@$_POST['address'],
             'offeringno' => @$offeringno,
             'transdate' => @$transdate,
             'inputdate' =>@$inputdate,

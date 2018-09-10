@@ -12,6 +12,7 @@
                 @$exp2 = explode('-',$row->inputdate);
                 @$inputdate = $exp2[1]."/".$exp2[0]."/".$exp2[2];
                 @$row->offeringid = getParameterKey($row->offeringid)->parameterid;
+
                 // function nl2br2($string) {
                 //     $string = str_replace(array("\r\n", "\r", "\n"), "<br />", $string);
                 //     return $string;

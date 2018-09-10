@@ -33,8 +33,9 @@
     function viewData(roleid){
         var row = roleid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').roleid:roleid;
         if (row!=''){
-            $('#dlgView').dialog({
+            $('#dlg').dialog({
                 closed:false,
+                width:'400px',
                 title:'View Data',
                 href:'<?php echo base_url(); ?>roles/view/'+row
             });
@@ -45,7 +46,7 @@
     function deleteData(roleid){
          var row = roleid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').roleid:roleid;
          if (row!=''){
-            $('#dlg').dialog({
+            $('#dlgView').dialog({
                 closed:false,
                 title:'Delete data',
                 href:'<?php echo base_url(); ?>roles/delete/'+row,

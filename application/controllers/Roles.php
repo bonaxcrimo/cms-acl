@@ -120,6 +120,7 @@ class Roles extends MY_Controller{
             $this->load->view('roles/form',['data'=>$data,'acos'=>$acos]);
         }
     }
+
     /**
      * Fungsi delete roles
      * @AclName Delete Roles

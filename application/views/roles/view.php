@@ -3,11 +3,11 @@
         echo form_input('rolename',isset($data->rolename)?$data->rolename:'',['placeholder'=>'Role Name','readonly'=>'','class'=>'easyui-textbox','label'=>'rolename','style'=>'width:300px;']);
         echo form_error('rolename');
     ?>
-<br>
-<label for="">Role Permission</label>
+<!-- <br> -->
+<!-- <label for="">Role Permission</label> -->
 <?php
-    $this->load->view('roles/gridacos');
-    ?>
+    // $this->load->view('roles/gridacos');
+?>
 <!--
     <ul>
     <?php

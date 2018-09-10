@@ -1,23 +1,41 @@
+<style>
+    table{
+        font-size: 10px;
+    }
+    h1{
+        font-family: 'helvetica';
+        width: 300px;
+        font-size: 24px;
+        text-align: center;
+        border-bottom: 1px dashed red;
+        margin-bottom: 0px;
+    }
+    @page {
+    margin: 0;
+}
+</style>
 <?php
-$pageLayout = array(50, 50);
-// $pdf = new TCPDF('p', 'pt', $pageLayout, true, 'UTF-8', false);
-$pdf = new Pdf('P', 'mm', 'A11', true, 'UTF-8', false);
-$fontname = TCPDF_FONTS::addTTFfont(FCPATH . 'libraries/tcpdf/fonts/DroidSansFallback.ttf', 'TrueTypeUnicode', '', 32);
-// $pdf->addTTFfont();
-$pdf->SetTitle('Bukti');
-$pdf->SetHeaderMargin(0);
-$pdf->SetFooterMargin(0);
-$pdf->setMargins($marginLeft, $marginTop, 0,true);
-$pdf->setPrintHeader(false);
-$pdf->setPrintFooter(false);
-$pdf->AddPage();
-$pdf->SetFont('helvetica','B',18);
-$style = array('width' =>  0.25, 'cap' => 'butt', 'join' => 'miter', 'dash' => '5,5', 'color' => array(255, 0, 0));
-$pdf->Line($marginLeft+3, $marginTop + 9, 80, $marginTop + 9, $style);
-$pdf->Cell(80,6,'GMI GLORIA',0,1,'C');
-$pdf->SetFont('DroidSansFallback', '', 9, '', false);
+// $pageLayout = array(50, 50);
+// // $pdf = new TCPDF('p', 'pt', $pageLayout, true, 'UTF-8', false);
+// $pdf = new Pdf('P', 'mm', 'A11', true, 'UTF-8', false);
+// $fontname = TCPDF_FONTS::addTTFfont(FCPATH . 'libraries/tcpdf/fonts/DroidSansFallback.ttf', 'TrueTypeUnicode', '', 32);
+// // $pdf->addTTFfont();
+// $pdf->SetTitle('Bukti');
+// $pdf->SetHeaderMargin(0);
+// $pdf->SetFooterMargin(0);
+// $pdf->setMargins($marginLeft, $marginTop, 0,true);
+// $pdf->setPrintHeader(false);
+// $pdf->setPrintFooter(false);
+// $pdf->AddPage();
+// $pdf->SetFont('helvetica','B',18);
+// $style = array('width' =>  0.25, 'cap' => 'butt', 'join' => 'miter', 'dash' => '5,5', 'color' => array(255, 0, 0));
+// $pdf->Line($marginLeft+3, $marginTop + 9, 80, $marginTop + 9, $style);
+// $pdf->Cell(80,6,'GMI GLORIA',0,1,'C');
+// $pdf->SetFont('DroidSansFallback', '', 9, '', false);
 $html = '
-<div>
+
+<div class="Section1">
+<h1>GMI GLORIA</h1>
     <table border="0" width="300">
         <tr>
             <td width="90"></td>
@@ -73,10 +91,16 @@ $html = '
 
 </div>
 ';
-$pdf->writeHTML($html, true, false, true, false, '');
-$pdf->IncludeJS("print();window.onfocus=function(){ window.close();}");
-$pdf->Output(__DIR__ .'/Laporan.pdf', 'I');
-// header('Location: https://www.google.com');
-// echo '<script>print();setTimeout("document.location.href = \'http://www.google.com\';",500);</script>';
-// unlink(__DIR__ .'/Laporan.pdf');
+echo $html;
+// $pdf->writeHTML($html, true, false, true, false, '');
+// $pdf->IncludeJS("print();window.onfocus=function(){ window.close();}");
+// $pdf->Output(__DIR__.'/Laporan_'.$offering->offering_key.'.pdf', 'F');
+// redirect('offering/prints/'.$offering->offering_key);
+// echo '<script>printJS("Laporan.pdf");</script>';
 ?>
+<script>
+    window.onload=function(){
+        print();
+        window.close();
+    }
+</script>

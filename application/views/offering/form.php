@@ -7,6 +7,9 @@
             'vMax': '999999999999'
         });
         $("#member").textbox({
+            onChange: function(value){
+                console.log('The value has been changed to ' + value);
+              },
              icons:[{
                 iconCls:'combo-arrow',
                 handler:function(){
@@ -21,11 +24,19 @@
                 }
             }]
         });
+        $("#bukaRead").click(function(){
+            var text= $("#bukaRead").text()=="New"?"Close":"New";
+            var buka= $("#bukaRead").text()=="New"?false:true;
+            $("#bukaRead").linkbutton({text:text});
+            $("#member_name").textbox({readonly:buka});
+            $("#chinese_name").textbox({readonly:buka});
+            $("#address").textbox({readonly:buka});
+        });
     });
 </script>
 <div style="margin:0;padding:20px">
     <div class="row">
-        <div class="col-md-7 noPadding">
+        <div class="col-md-8 noPadding">
 <?php
     @$query=("SELECT *, DATE_FORMAT(transdate,'%d-%m-%Y') transdate,
          DATE_FORMAT(inputdate,'%d-%m-%Y') inputdate,
@@ -35,24 +46,30 @@
     @$transdate = $exp1[1]."/".$exp1[0]."/".$exp1[2];
     @$exp2 = explode('-',$row->inputdate);
     @$inputdate = $exp2[1]."/".$exp2[0]."/".$exp2[2];
+    if(@$row->member_key==0){
+        @$sql->membername = @$row->membername;
+        @$sql->chinesename = @$row->chinesename;
+        @$sql->address = @$row->address;
+    }
 ?>
             <input type="hidden" name="offering_key" value="<?php echo @$row->offering_key ?>">
             <input type="hidden" name="row_status" value="<?= @$row->row_status ?>">
             <div style="margin-bottom:10px">
-                 <label class="textbox-label textbox-label-left">memberkey:</label>
+                <label class="textbox-label textbox-label-left">memberkey:</label>
                 <input name="member_key" id="member" class="easyui-textbox member"  value="<?= @$row->member_key ?>" style="width:226px">
+                <a class="easyui-linkbutton" id="bukaRead" text="New"></a>
             </div>
              <div style="margin-bottom:10px" class="inputHide">
                  <label class="textbox-label textbox-label-left">membername:</label>
-                <input  id="member_name" class="easyui-textbox" readonly="" value="<?= @$sql->membername ?>"  style="width:226px">
+                <input  id="member_name" name="member_name" class="easyui-textbox" readonly="" value="<?= @$sql->membername ?>"  style="width:226px">
             </div>
              <div style="margin-bottom:10px" class="inputHide">
                  <label class="textbox-label textbox-label-left">chinesename:</label>
-                <input  id="chinese_name" class="easyui-textbox" readonly="" value="<?= @$sql->chinesename ?>"   style="width:226px">
+                <input  id="chinese_name" name="chinese_name" class="easyui-textbox" readonly="" value="<?= @$sql->chinesename ?>"   style="width:226px">
             </div>
               <div style="margin-bottom:10px" class="inputHide">
                 <label class="textbox-label textbox-label-left">address:</label>
-                <input  id="address" class="easyui-textbox" readonly="" value="<?= @$sql->address ?>"   style="width:226px">
+                <input  id="address" name="address" class="easyui-textbox" readonly="" value="<?= @$sql->address ?>"   style="width:226px">
             </div>
             <div style="margin-bottom:10px" class="inputHide">
                  <label class="textbox-label textbox-label-left">aliasname:</label>
@@ -91,7 +108,7 @@
                 </span>
             </div>
         </div>
-        <div class="col-md-5 noPadding">
+        <div class="col-md-4 noPadding">
              <?php
                 $url = @$sql->photofile!=""?"medium_".@$sql->photofile:"medium_nofoto.jpg";
             ?>
