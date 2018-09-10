@@ -45,9 +45,11 @@ class Acos extends MY_Controller {
         $total = $sql->num_rows();
         $offset = ($page - 1) * $rows;
         $data = $this->Macos->get($cond,$sort,$order,$rows,$offset)->result();
+
         $response = new stdClass;
         $response->total=$total;
         $response->rows = $data;
+        $response->allData = $this->Macos->get($cond,$sort,$order,$total,$offset)->result();
         echo json_encode($response);
     }
     public function listFolderFiles($dir = null) {

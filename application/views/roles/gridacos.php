@@ -1,5 +1,7 @@
+
 <script type="text/javascript">
     $(function(){
+        // var acos="";
         $("#dgAcos").datagrid(
             {
                 remoteFilter:true,
@@ -16,10 +18,19 @@
                     $(this).datagrid('selectRow',index);
                  },
                  onLoadSuccess:function(data){
+
+                    if(oper!="add"){
+                        var acos = "<?= @$data->acos ?>";
+                    }
                     var rows = $(this).datagrid('getRows');
+                    var allData = $(this).datagrid('getData');
+                    var rows = data.allData;
+                    var ex = acos.split(", ");
                     for(i=0;i<rows.length;i++){
-                        if(rows[i]['acosid']==2){
-                            $(this).datagrid('checkRow',i);
+                        for(j=0;j<ex.length;j++){
+                            if(rows[i]['acosid']==ex[j]){
+                                $(this).datagrid('checkRow',i);
+                            }
                         }
                     }
                  }

@@ -74,6 +74,9 @@ $html = '
 </div>
 ';
 $pdf->writeHTML($html, true, false, true, false, '');
-
-$pdf->Output('Laporan.pdf', 'I');
+$pdf->IncludeJS("print();window.onfocus=function(){ window.close();}");
+$pdf->Output(__DIR__ .'/Laporan.pdf', 'I');
+// header('Location: https://www.google.com');
+// echo '<script>print();setTimeout("document.location.href = \'http://www.google.com\';",500);</script>';
+// unlink(__DIR__ .'/Laporan.pdf');
 ?>

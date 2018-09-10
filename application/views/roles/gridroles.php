@@ -10,6 +10,7 @@
             title:'Tambah data',
             href:'<?php echo base_url(); ?>roles/add',
             onLoad:function(){
+                oper="add";
                  url = '<?= base_url() ?>roles/add';
             }
         });

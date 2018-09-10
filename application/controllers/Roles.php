@@ -103,6 +103,7 @@ class Roles extends MY_Controller{
         if(empty($data)){
             redirect('roles');
         }
+        $temp = $data;
         $data->role_permission = strpos($data->acos,',')===false?[$data->acos]:explode(', ',$data->acos);
         $error = 0;
         if($this->input->server('REQUEST_METHOD') == "POST"){
@@ -139,7 +140,7 @@ class Roles extends MY_Controller{
             );
             echo json_encode($hasil);
         }else{
-            $this->load->view('roles/delete',['data'=>$data,'acos'=>$acos]);            
+            $this->load->view('roles/delete',['data'=>$data,'acos'=>$acos]);
         }
 
     }
