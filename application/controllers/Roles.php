@@ -130,16 +130,18 @@ class Roles extends MY_Controller{
             redirect('roles');
         }
         $data->role_permission = strpos($data->acos,',')===false?[$data->acos]:explode(', ',$data->acos);
-
+        $error = 0;
         if($this->input->server('REQUEST_METHOD') == 'POST'){
             $cek = $this->Mroles->delete($id);
-            $status = $cek?"sukses":"gagal";
+            $error = $cek?0:1;
             $hasil = array(
-                'status' => $status
+                'error' => $error
             );
             echo json_encode($hasil);
+        }else{
+            $this->load->view('roles/delete',['data'=>$data,'acos'=>$acos]);            
         }
-        $this->load->view('roles/delete',['data'=>$data,'acos'=>$acos]);
+
     }
     private function _save($data){
         $this->Mroles->save($data);

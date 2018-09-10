@@ -14,6 +14,14 @@
                 url:'<?= base_url() ?>acos/grid',
                 onClickRow:function(index,row){
                     $(this).datagrid('selectRow',index);
+                 },
+                 onLoadSuccess:function(data){
+                    var rows = $(this).datagrid('getRows');
+                    for(i=0;i<rows.length;i++){
+                        if(rows[i]['acosid']==2){
+                            $(this).datagrid('checkRow',i);
+                        }
+                    }
                  }
             });
     })

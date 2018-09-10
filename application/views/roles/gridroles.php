@@ -73,6 +73,7 @@
             dataType: "text",
             async: true,
             success: function(result) {
+                console.log(result);
                 var result = JSON.parse(result);
                 if(result.error==0){
                     $('#dlg').dialog('close');
@@ -123,11 +124,11 @@
     }
     function saveData(){
         if(oper=="del"){
-             $.messager.confirm('Confirm','Yakin akan menghapus data ?',function(r){
-                if (r){
+             // $.messager.confirm('Confirm','Yakin akan menghapus data ?',function(r){
+             //    if (r){
                     callSubmit();
-                }
-            });
+                // }
+            // });
         }else{
             callSubmit();
         }

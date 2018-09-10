@@ -110,5 +110,6 @@ class Mroles extends MY_Model{
         $this->Macl->deleteByRole($id);
         $this->db->where(['roleid'=>$id]);
         $this->db->delete($this->table);
+        return true;
     }
 }
