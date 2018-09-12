@@ -30,7 +30,7 @@ button span.ui-icon {float: left; margin: 0 4px;}
           <tr>
             <td>User id</td>
               <td>:</td>
-          <td><input type="text" name="userid" value="" id="userid" class="input-teks-login" required="" size="30" placeholder="Masukkan userid....."  /></td>
+          <td><input type="text" name="userid" value="" id="userid" class="input-teks-login" autofocus required="" size="30" placeholder="Masukkan userid....."  /></td>
         </tr>
           <tr>
           <td>Password</td>
@@ -51,7 +51,6 @@ button span.ui-icon {float: left; margin: 0 4px;}
   <p>Copyright &copy; Divisi IT & Multimedia, GMI GLORIA 2013-2017</p>
   <p>Halaman ini dimuat selama <strong>{elapsed_time}</strong> detik</p>
 </div>
-
 </body>
 </html>
 

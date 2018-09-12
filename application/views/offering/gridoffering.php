@@ -120,8 +120,8 @@
             }).responseText
     }
 
-    function reportOffering(key){
-        window.open("<?php echo base_url(); ?>offering/report/"+key,'_blank');
+    function reportOffering(key,no){
+        window.open("<?php echo base_url(); ?>rptjs/rptcoba.php?offering_key="+key+"&no="+no,'_blank');
     }
     function delOffering(form,key,member_key){
         page="<?php echo base_url(); ?>offering/form/"+form+"/"+key+"/"+member_key+"/0";

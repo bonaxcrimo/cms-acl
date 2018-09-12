@@ -4,27 +4,17 @@ class Relasi extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->library('session'); // session_start()
-		$this->load->model('mlogin');
-		$cek = $this->mlogin->cek();
-		if($cek==""){
-			redirect("");
-			session_destroy();
-		}
-		date_default_timezone_set("Asia/Jakarta");
-		ini_set('memory_limit', '-1');
-		$this->load->model('mmenutop');
-		$this->load->helper('my_helper');
-
-		$this->load->model('mjemaat');
-		$this->load->model('mgender');
-		$this->load->model('mserving');
-		$this->load->model('mparameter');
-		$this->load->model('mpstatus');
-		$this->load->model('mblood');
-		$this->load->model('mkebaktian');
-		$this->load->model('mpersekutuan');
-		$this->load->model('mrayon');
+		$this->load->model([
+			'mjemaat',
+			'mgender',
+			'mserving',
+			'mparameter',
+			'mpstatus',
+			'mblood',
+			'mkebaktian',
+			'mpersekutuan',
+			'mrayon'
+		]);
 	}
 
 	function index(){
@@ -64,7 +54,6 @@ class Relasi extends CI_Controller {
 		}
 	}
 	function grid2($relationno){
-		$acl = $this->hakakses('jemaat');
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
 		$sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'member_key';
@@ -113,15 +102,12 @@ class Relasi extends CI_Controller {
 			$view='';
 			$edit='';
 			$del='';
-			if(substr($acl,0,1)==1){
-				$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewJemaat(\'view\',\''.$row->member_key.'\',\'formjemaat\')" style="width:16px;height:16px;border:0"></button> ';
-			}
-			if(substr($acl,2,1)==1){
-				$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="save(\'edit\',\''.$row->member_key.'\',\'formjemaat\',null);" style="width:16px;height:16px;border:0"></button> ';
-			}
-			if(substr($acl,3,1)==1){
-				$del = '<button id='.$row->member_key.' class="icon-remove" onclick="del(\'del\','.$row->member_key.',\'formjemaat\');" style="width:16px;height:16px;border:0"></button>';
-			}
+			$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewJemaat(\'view\',\''.$row->member_key.'\',\'formjemaat\')" style="width:16px;height:16px;border:0"></button> ';
+
+			$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="save(\'edit\',\''.$row->member_key.'\',\'formjemaat\',null);" style="width:16px;height:16px;border:0"></button> ';
+
+			$del = '<button id='.$row->member_key.' class="icon-remove" onclick="del(\'del\','.$row->member_key.',\'formjemaat\');" style="width:16px;height:16px;border:0"></button>';
+
 			$rel="";
 		    $db1 = get_instance()->db->conn_id;
 
@@ -135,7 +121,7 @@ class Relasi extends CI_Controller {
 			else{
 			    $rel = "disabled";
 			}
- 
+
 			$member_key = $row->member_key;
 			$pembesukdari="";
 			$remark="";
@@ -171,7 +157,6 @@ class Relasi extends CI_Controller {
 		echo json_encode($response);
 	}
 	function grid($relationno){
-		$acl = $this->hakakses("jemaat");
 		@$page = $_POST['page'];
 		@$limit = $_POST['rows'];
 		@$sidx = $_POST['sidx'];
@@ -559,8 +544,5 @@ class Relasi extends CI_Controller {
 		$this->load->view('jemaat/excel',$data);
 	}
 
-	function hakakses($x){
-		$x = $this->mmenutop->get_menuid($x);
-		return $x;
-	}
+
 }
