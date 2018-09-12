@@ -31,7 +31,7 @@ require_once 'stimulsoft/helper.php';
 			// args.fileName = "MyReportName";
 		}
 		viewer.onPrintReport = function(event){
-			console.log(event);
+			console.log("<?php session_start(); json_encode($_SESSION) ?>");
 		}
 
 		// var result = (sender as StiReport).PrinterSettings.PrintDialogResult;
