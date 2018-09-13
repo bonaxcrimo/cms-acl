@@ -27,7 +27,6 @@ require_once 'stimulsoft/helper.php';
 		StiJsViewer.prototype.InitializePrintMenu = function() {
 
 	        var A = [];
-	        //ubah
 	        A.push(this.Item("PrintWithoutPreview", this.collections.loc.PrintWithoutPreview, "PrintWithoutPreview.png", "PrintWithoutPreview"));
 	        var t = this.VerticalMenu("printMenu", this.controls.toolbar.controls.Print, "Down", A);
 	        t.action = function(A) {
@@ -42,7 +41,7 @@ require_once 'stimulsoft/helper.php';
 			// args.fileName = "MyReportName";
 		}
 		viewer.onPrintReport = function(event){
-			console.log("<?php session_start(); json_encode($_SESSION) ?>");
+
 		}
 
 

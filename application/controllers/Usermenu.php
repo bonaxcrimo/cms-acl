@@ -4,18 +4,7 @@ class usermenu extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->library('session'); // session_start()
-		$this->load->model('mlogin');
-		$cek = $this->mlogin->cek();
-		if($cek==""){
-			redirect("");
-			session_destroy();
-		}
-		date_default_timezone_set("Asia/Jakarta");
-		ini_set('memory_limit', '-1');
-		$this->load->model('mmenutop');
-        $this->load->helper('my_helper');
-
+		$
 		$this->load->model('musermenu');
 		$this->load->model('mgender');
 		$this->load->model('mpstatus');
@@ -26,7 +15,7 @@ class usermenu extends CI_Controller {
 	}
 
 	function index(){
-		$data['acl'] = $this->hakakses("user");
+
 		if(empty($_GET['userpk'])){
 			echo" Empty";
 		}
@@ -35,13 +24,12 @@ class usermenu extends CI_Controller {
 			$this->load->view('user/gridusermenu',$data);
 		}
 	}
-	
+
 	function grid($userpk){
-		$acl = $this->hakakses('user');
-		@$page = $_POST['page']; 
-		@$limit = $_POST['rows']; 
-		@$sidx = $_POST['sidx']; 
-		@$sord = $_POST['sord']; 
+		@$page = $_POST['page'];
+		@$limit = $_POST['rows'];
+		@$sidx = $_POST['sidx'];
+		@$sord = $_POST['sord'];
 		if (!$sidx)
 		    $sidx = 1;
 		@$totalrows = isset($_POST['totalrows']) ? $_POST['totalrows'] : false;
@@ -118,13 +106,13 @@ class usermenu extends CI_Controller {
 		$data['usermenuid'] = $usermenuid;
 		$data['sqlusermenu'] = $this->musermenu->get_form();
 		$data['usermenu'] = $this->musermenu->get_combo();
-		
+
 		if($userpk!=null || $userpk!=""){
 			$sql= $this->musermenu->getwhere($userpk);
 			$count = $sql->num_rows();
 			$data["userpk"] = $userpk;
 		}
-		
+
 		$this->load->view('usermenu/'.$form,$data);
 	}
 
@@ -132,7 +120,7 @@ class usermenu extends CI_Controller {
 		@$oper=@$_POST['oper'];
 	    @$userpk=@$_POST['userpk'];
 	    @$usermenuid=@$_POST['usermenuid'];
-		
+
 		@$data = array(
 			'userpk' => @$_POST['userpk'],
 			'menuid' => @$_POST['menuid'],
@@ -289,16 +277,12 @@ class usermenu extends CI_Controller {
 		$sidx= $splitexcel[1];
 		$where = $splitexcel[2];
 		$data['sql']=$this->db->query("SELECT *,
-		DATE_FORMAT(dob,'%d-%m-%Y') dob, 
+		DATE_FORMAT(dob,'%d-%m-%Y') dob,
 		DATE_FORMAT(tglbesuk,'%d-%m-%Y') tglbesuk,
 		DATE_FORMAT(baptismdate,'%d-%m-%Y') baptismdate,
 		DATE_FORMAT(modifiedon,'%d-%m-%Y') modifiedon,
 		DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') as umur
 		FROM tblmember " . $where . " ORDER BY $sidx $sord");
 		$this->load->view('user/excel',$data);
-	}
-	function hakakses($x){
-		$x = $this->mmenutop->get_menuid($x);
-		return $x;
 	}
 }

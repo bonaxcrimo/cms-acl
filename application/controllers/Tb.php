@@ -4,17 +4,7 @@ class Tb extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->library('session'); // session_start()
-		$this->load->model('mlogin');
-		$cek = $this->mlogin->cek();
-		if($cek==""){
-			redirect("");
-			session_destroy();
-		}
-		date_default_timezone_set("Asia/Jakarta");
-		ini_set('memory_limit', '-1');
-		$this->load->model('mmenutop');
-		$this->load->helper('my_helper');
+
 
 		$this->load->model('mtb');
 		$this->load->model('mgender');
@@ -58,14 +48,7 @@ class Tb extends CI_Controller {
 	}
 
 	function view(){
-		$data['statusid'] = $this->uri->segment(2);
-		if($this->uri->segment(2)==""){
-			$data['acl'] = $this->hakakses($this->uri->segment(1));
-		}
-		else{
-			$data['acl'] = $this->hakakses($this->uri->segment(1)."/".$this->uri->segment(2));
-		}
-		$data['sqlmenu'] = $this->mmenutop->get_data();
+
 
 		$data['sqlgender'] = getParameter('GENDER');
 		$data['sqlpstatus'] =getParameter('PSTATUS');
@@ -93,7 +76,6 @@ class Tb extends CI_Controller {
 
 	function grid(){
 
-		@$acl = $this->hakakses($this->uri->segment(1));
 		if($this->uri->segment(4)!=false){
 			@$acl = $this->uri->segment(4);
 		}
@@ -572,11 +554,6 @@ class Tb extends CI_Controller {
 		FROM tblmember " . $where . " ORDER BY $sidx $sord");
 		$this->load->view('tb/report',$data);
 
-	}
-
-	function hakakses($x){
-		$x = $this->mmenutop->get_menuid($x);
-		return $x;
 	}
 }
 

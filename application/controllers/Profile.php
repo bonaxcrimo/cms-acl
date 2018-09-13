@@ -194,9 +194,5 @@ class profile extends MY_Controller {
         $_SESSION['excel']= "asc|profile_key|";
         echo json_encode($response);
     }
-    function hakakses($x){
-        $x = $this->mmenutop->get_menuid($x);
-        return $x;
-    }
 }
 ?>

@@ -4,36 +4,24 @@ class Kebaktian extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->library('session'); // session_start()
-		$this->load->model('mlogin');
-		$cek = $this->mlogin->cek();
-		if($cek==""){
-			redirect("");
-			session_destroy();
-		}
-		date_default_timezone_set("Asia/Jakarta");
-		ini_set('memory_limit', '-1');
+
 		$this->load->model('mkebaktian');
-		$this->load->model('mmenutop');
-        $this->load->helper('my_helper');
 
 	}
 
 	function index(){
-		$data['acl'] = $this->hakakses('kebaktian');
-		$data['sqlmenu'] = $this->mmenutop->get_data();
+
 		$this->load->view('header');
 		$this->load->view('navbar',$data);
 		$this->load->view('kebaktian/gridkebaktian');
 		$this->load->view('footer');
 	}
-	
+
 	function grid(){
-		$acl = $this->hakakses('kebaktian');
-		@$page = $_POST['page']; 
-		@$limit = $_POST['rows']; 
-		@$sidx = $_POST['sidx']; 
-		@$sord = $_POST['sord']; 
+		@$page = $_POST['page'];
+		@$limit = $_POST['rows'];
+		@$sidx = $_POST['sidx'];
+		@$sord = $_POST['sord'];
 		if (!$sidx)
 		    $sidx = 1;
 		@$totalrows = isset($_POST['totalrows']) ? $_POST['totalrows'] : false;
@@ -192,20 +180,5 @@ class Kebaktian extends CI_Controller {
 		return $where;
 	}
 
-	function excel(){
-		$excel = $_SESSION['excel'];
-		$splitexcel = explode("|",$excel);
-		$sord = $splitexcel[0];
-		$sidx= $splitexcel[1];
-		$where = $splitexcel[2];
-		$data['sql']=$this->db->query("SELECT *,
-		DATE_FORMAT(modifiedon,'%d-%m-%Y') modifiedon
-		FROM tblkebaktian " . $where . " ORDER BY $sidx $sord");
-		$this->load->view('kebaktian/excel',$data);
-	}
 
-	function hakakses($x){
-		$x = $this->mmenutop->get_menuid($x);
-		return $x;
-	}
 }

@@ -133,7 +133,6 @@ class Menu extends MY_Controller {
         $this->mmenu->save($data);
     }
 	function grid2(){
-		$acl = $this->hakakses('menu');
 		@$page = $_POST['page'];
 		@$limit = $_POST['rows'];
 		@$sidx = $_POST['sidx'];
@@ -305,8 +304,4 @@ class Menu extends MY_Controller {
 		echo "sukses";
 	}
 
-	function hakakses($x){
-		$x = $this->mmenutop->get_menuid($x);
-		return $x;
-	}
 }

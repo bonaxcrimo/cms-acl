@@ -4,36 +4,23 @@ class Gender extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->library('session'); // session_start()
-		$this->load->model('mlogin');
-		$cek = $this->mlogin->cek();
-		if($cek==""){
-			redirect("");
-			session_destroy();
-		}
-		date_default_timezone_set("Asia/Jakarta");
-		ini_set('memory_limit', '-1');
 		$this->load->model('mgender');
-		$this->load->model('mmenutop');
-        $this->load->helper('my_helper');
 
 	}
 
 	function index(){
-		$data['acl'] = $this->hakakses('gender');
-		$data['sqlmenu'] = $this->mmenutop->get_data();
+
 		$this->load->view('header');
 		$this->load->view('navbar',$data);
 		$this->load->view('gender/gridgender');
 		$this->load->view('footer');
 	}
-	
+
 	function grid(){
-		$acl = $this->hakakses('gender');
-		@$page = $_POST['page']; 
-		@$limit = $_POST['rows']; 
-		@$sidx = $_POST['sidx']; 
-		@$sord = $_POST['sord']; 
+		@$page = $_POST['page'];
+		@$limit = $_POST['rows'];
+		@$sidx = $_POST['sidx'];
+		@$sord = $_POST['sord'];
 		if (!$sidx)
 		    $sidx = 1;
 		@$totalrows = isset($_POST['totalrows']) ? $_POST['totalrows'] : false;
@@ -204,8 +191,4 @@ class Gender extends CI_Controller {
 		$this->load->view('gender/excel',$data);
 	}
 
-	function hakakses($x){
-		$x = $this->mmenutop->get_menuid($x);
-		return $x;
-	}
 }
