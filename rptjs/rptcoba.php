@@ -19,10 +19,21 @@ require_once 'stimulsoft/helper.php';
 	<script type="text/javascript">
 		var options = new Stimulsoft.Viewer.StiViewerOptions();
 		options.appearance.fullScreenMode = true;
-		options.toolbar.showSendEmailButton = true;
-
+		options.toolbar.showSendEmailButton = false;
+		// options.toolbar.showPrintButton = false;
+		options.toolbar.showViewModeButton = false;
 		var viewer = new Stimulsoft.Viewer.StiViewer(options, "StiViewer", false);
+		//costum componen
+		StiJsViewer.prototype.InitializePrintMenu = function() {
 
+	        var A = [];
+	        //ubah
+	        A.push(this.Item("PrintWithoutPreview", this.collections.loc.PrintWithoutPreview, "PrintWithoutPreview.png", "PrintWithoutPreview"));
+	        var t = this.VerticalMenu("printMenu", this.controls.toolbar.controls.Print, "Down", A);
+	        t.action = function(A) {
+	            t.changeVisibleState(!1), t.jsObject.postPrint(A.key)
+	        }
+	    }
 		// Process SQL data source
 		viewer.onBeginProcessData = function (event, callback) {
 			<?php StiHelper::createHandler(); ?>
@@ -34,17 +45,6 @@ require_once 'stimulsoft/helper.php';
 			console.log("<?php session_start(); json_encode($_SESSION) ?>");
 		}
 
-		// var result = (sender as StiReport).PrinterSettings.PrintDialogResult;
-		// if (result  == DialogResult.OK || result  == DialogResult.None)
-		// {
-		// 	console.log("Print Selesai");
-		// }
-
-		// Send exported report to server side
-		/*viewer.onEndExportReport = function (event) {
-			event.preventDefault = true; // Prevent client default event handler (save the exported report as a file)
-			<?php StiHelper::createHandler(); ?>
-		}*/
 
 		// Send exported report to Email
 		viewer.onEmailReport = function (event) {
@@ -69,13 +69,23 @@ require_once 'stimulsoft/helper.php';
 		report.dictionary.variables.list.forEach(function(item, i, arr) {
 		    if (typeof vars[item.name] != "undefined") item.valueObject = vars[item.name];
 		});
-
+		// viewer.PrintDestination = "pdf";
 		viewer.report = report;
 		viewer.renderHtml("viewerContent");
+		// var userButton = viewer.jsObject.SmallButton("userButton", "My Button", "emptyImage");
+		// userButton.image.src = "https://www.stimulsoft.com/favicon.png";
+		// userButton.action = function () { alert("My Button Event"); }
 
+		// var toolbarTable = viewer.jsObject.controls.toolbar.firstChild.firstChild;
+		// var buttonsTable = toolbarTable.rows[0].firstChild.firstChild;
+		// console.log(buttonsTable.rows[0].firstChild);
+		// var userButtonCell = buttonsTable.rows[0].insertCell(0);
+
+		// userButtonCell.className = "stiJsViewerClearAllStyles";
+		// userButtonCell.appendChild(userButton);
 	</script>
 	</head>
 <body>
-	<div id="viewerContent"></div>
+	<div id="viewerContent" ></div>
 </body>
 </html>
