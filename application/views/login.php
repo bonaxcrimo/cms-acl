@@ -14,7 +14,6 @@ button span.ui-icon {float: left; margin: 0 4px;}
 </style>
 </head>
 <body>
-
       <div class="blok_header">
           <div class="header_text_bg">
             <div class="clr"></div>

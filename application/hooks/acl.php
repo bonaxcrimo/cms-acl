@@ -19,14 +19,12 @@ class ACL{
         $user = $this->getLoggedInUser();
         if(!empty($user)){
         }else{
-            redirect('login');
+            $class = $CI->router->fetch_class();
+            if($class!='login')
+                redirect('login');
         }
         if(!$this->_validateActionPermission($user['acl']) && $CI->session->userdata('username')!='admin'){
-            if(empty($user)){
-                redirect('login');
-            }else{
-                exit('anda tidak punya akses');
-            }
+            exit('anda tidak punya akses');
         }
 
     }
@@ -35,13 +33,12 @@ class ACL{
         $user = $CI->session->userdata('user');
 
         if(!empty($this->user)){
+            // print_r($this->user);
             return $this->user;
         }
         if(is_numeric($user)){
             $CI->load->model('Mlogin');
             $user = $CI->Mlogin->getDetailWithAclById($user);
-            // print_r($user);
-            // exit();
         }
         $this->user = $user;
         return $user;
@@ -65,12 +62,18 @@ class ACL{
         if(empty($method)){
             $method = $this->CI->router->fetch_method();
         }
+
         if($class=="login" ){
             return true;
         }
-        if(empty($acos)){
+        if($this->CI->session->userdata('logged_in')==null)
+        {
             return false;
         }
+        if(empty($acos) ){
+            return false;
+        }
+
         foreach($acos as $aco){
             if(strtolower(trim($aco['class'])) == strtolower(trim($class)) && strtolower(trim($aco['method']))==strtolower(trim($method))){
                 return true;

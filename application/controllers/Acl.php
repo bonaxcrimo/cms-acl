@@ -40,7 +40,6 @@ class Acl extends MY_Controller{
             else
                 $i++;
         }
-
     }
     public function get_php_classes($php_code,$methods= false){
         $classes = array();
@@ -77,5 +76,4 @@ class Acl extends MY_Controller{
         }
         return $comment;
     }
-
 }

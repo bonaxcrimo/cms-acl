@@ -12,7 +12,7 @@ class Home extends MY_Controller {
      */
 	public function index(){
 		$users = $this->mlogin->getList();
-        // print_r($_SESSION);
+        print_r($_SESSION);
 		$this->render($_SESSION['dashboard'],['users'=>$users]);
 	}
 }

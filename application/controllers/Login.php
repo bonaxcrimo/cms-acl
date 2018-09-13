@@ -11,7 +11,8 @@ class Login extends MY_Controller {
      * @AclName Login
      */
 	public function index(){
-		$adminId = $this->session->userdata('userpk');
+		$adminId = $this->session->userdata('logged_in');
+
         if(!empty($adminId)){
     		redirect('home');
         }
@@ -24,6 +25,7 @@ class Login extends MY_Controller {
         		$this->session->set_userdata('userpk',$user['userpk']);
                 $this->session->set_userdata('username',$user['username']);
         		$this->session->set_userdata('dashboard',$user['dashboard']);
+                $this->session->set_userdata('versi','acl');
         		$this->session->set_userdata('logged_in',true);
         		redirect("home");
         	}else{
