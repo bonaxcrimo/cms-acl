@@ -95,7 +95,14 @@
                 method:'get',
                 onClickRow:function(index,row){
                     $(this).datagrid('selectRow',index);
-                 }
+                 },
+                 onBeforeDropColumn: function(){
+                    $(this).datagrid('disableFilter');
+                },
+                onDropColumn: function(){
+                    $(this).datagrid('enableFilter');
+                    $(this).datagrid('doFilter');
+                }
             });
         dg.datagrid('columnMoving');
         var pager = dg.datagrid('getPager');

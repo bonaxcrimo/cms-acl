@@ -12,6 +12,13 @@
                 url:"<?php echo base_url()?>offering/grid2",
                 method:'get',
                 onClickRow:function(index,row){
+                },
+                onBeforeDropColumn: function(){
+                    $(this).datagrid('disableFilter');
+                },
+                onDropColumn: function(){
+                    $(this).datagrid('enableFilter');
+                    $(this).datagrid('doFilter');
                 }
             });
         dgOffering.datagrid('columnMoving');
@@ -30,6 +37,10 @@
                 onClickRow:function(index,row){
                 }
             });
+        dgOffering.datagrid('enableFilter', [{
+            field:'aksi',
+            type:'label'
+        }]);
         var pagerOfferingDeleted = dgOfferingDeleted.datagrid('getPager');
         pagerOfferingDeleted.pagination({
             buttons:[{

@@ -11,6 +11,13 @@
             href:'<?php echo base_url(); ?>blood/add',
             onLoad:function(){
                  url = '<?= base_url() ?>blood/add';
+            },
+            onBeforeDropColumn: function(){
+                $(this).datagrid('disableFilter');
+            },
+            onDropColumn: function(){
+                $(this).datagrid('enableFilter');
+                $(this).datagrid('doFilter');
             }
         });
     }

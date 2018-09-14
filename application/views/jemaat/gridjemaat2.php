@@ -1,5 +1,18 @@
+<script src="<?= base_url() ?>libraries/js/jquery-hanzi2pinyin.all.js"></script>
+<!-- <input type="text" id="chinese">
+<p id="hasilpinyin"></p> -->
 <script type="text/javascript">
     var temp=-1;
+    $('#chinese').bind('keyup change',function(){
+        $('#chinese').hanzi2pinyin({
+            target: '#hasilpinyin',
+            'case': 'upper',
+            hyphen: ' ',
+            punctuation_marks: 'remove',
+            fullwidth_chars: 'replace',
+            tones: 'none'
+        });
+    });
     var startTime = Date.now();
      $(function(){
 
