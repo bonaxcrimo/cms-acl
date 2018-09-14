@@ -15,7 +15,6 @@
     });
     var startTime = Date.now();
      $(function(){
-
         var dg = $("#dgJemaat").datagrid(
             {
                 remoteFilter:true,
@@ -36,7 +35,6 @@
                     var member_key = row.member_key;
                     besuk(member_key);
                  },onLoadSuccess:function(data){
-
                     var opts = $(this).datagrid('options');
                     var optLength = opts.filterRules.length;
                     if(optLength>0){

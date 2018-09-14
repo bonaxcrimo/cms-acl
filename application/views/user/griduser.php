@@ -120,7 +120,7 @@
         <table id="dg" class="noPadding noMargin" style="width: 100%">
             <thead>
                 <tr>
-                    <th field="aksi" width="8%" >Aksi</th>
+                    <th field="aksi" width="8%">Aksi</th>
                     <th field="userpk" width="10%" hidden="true"></th>
                     <th field="userid" width="10%" sortable="true"> userid</th>
                     <th field="username" width="10%" sortable="true"> username</th>
@@ -141,5 +141,5 @@
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgView').dialog('close')" style="width:90px">Cancel</a>
         </div>
     </div>
-    <!-- <div data-options="closable:false,cache:false,href:'<?php echo base_url(); ?>useracl/index'" title="Data User Acl" style="padding:10px" ></div> -->
+    <div data-options="closable:false,cache:false,href:'<?php echo base_url(); ?>useracl/index'" title="Data User Acl" style="padding:10px" ></div>
 </div>

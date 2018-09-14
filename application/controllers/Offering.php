@@ -16,6 +16,10 @@ class offering extends MY_Controller {
         $link = base_url()."offering/grid";
         $this->render('offering/gridoffering',['link'=>$link]);
     }
+    /**
+     * print offering
+     * @AclName Print Offering
+     */
     public function prints($no=null){
         $no = $no;
         $this->load->view('offering/print',['no'=>$no]);
@@ -147,6 +151,10 @@ class offering extends MY_Controller {
                 break;
         }
     }
+    /**
+     * grid offering
+     * @AclName grid Offering di Jemaat
+     */
     function grid($member_key){
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
@@ -178,17 +186,16 @@ class offering extends MY_Controller {
         $total = $sql->num_rows();
         $offset = ($page - 1) * $rows;
         $data = $this->moffering->get($cond,$sort,$order,$rows,$offset,'')->result();
+
         foreach($data as $row){
             $view='';
             $edit='';
             $del='';
-                $view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewOffering(\'view\',\''.$row->offering_key.'\',\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ';
 
-                $edit = '<button id='.$row->member_key.' class="icon-edit" onclick="saveOffering(\'edit\',\''.$row->offering_key.'\',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ';
-
-                $del = '<button id='.$row->member_key.' class="icon-remove" onclick="delOffering(\'del\','.$row->offering_key.',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button>';
-
-            $print = '<button id='.$row->member_key.' class="icon-print" onclick="reportOffering(\''.$row->offering_key.'\',\''.$row->offeringno.'\')" style="width:16px;height:16px;border:0"></button> ';
+            $view = hasPermission('offering','view')?'<button id='.$row->member_key.' class="icon-view_detail" onclick="viewOffering(\'view\',\''.$row->offering_key.'\',\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ':'';
+            $edit = hasPermission('offering','edit')?'<button id='.$row->member_key.' class="icon-edit" onclick="saveOffering(\'edit\',\''.$row->offering_key.'\',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ':'';
+            $del = hasPermission('offering','delete')?'<button id='.$row->member_key.' class="icon-remove" onclick="delOffering(\'del\','.$row->offering_key.',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button>':'';
+            $print =hasPermission('offering','print')?'<button id='.$row->member_key.' class="icon-print" onclick="reportOffering(\''.$row->offering_key.'\',\''.$row->offeringno.'\')" style="width:16px;height:16px;border:0"></button> ':'';
             $row->aksi =$print.$view.$edit.$del;
             $row->offeringid =  $row->offeringid==0?'-':getParameterKey($row->offeringid)->parameterid;
         }
@@ -198,6 +205,10 @@ class offering extends MY_Controller {
         $_SESSION['excel']= "asc|offering_key|".$cond;
         echo json_encode($response);
     }
+    /**
+     * grid offering
+     * @AclName grid Offering
+     */
     function grid2($status=""){
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
@@ -233,13 +244,12 @@ class offering extends MY_Controller {
             $view='';
             $edit='';
             $del='';
-                $view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewOffering(\'view\',\''.$row->offering_key.'\',\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ';
-
-                $edit = '<button id='.$row->member_key.' class="icon-edit" onclick="saveOffering(\'edit\',\''.$row->offering_key.'\',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ';
-
-                $del = '<button id='.$row->member_key.' class="icon-remove" onclick="delOffering(\'del\','.$row->offering_key.',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button>';
-
-            $print = '<button id='.$row->member_key.' class="icon-print" onclick="reportOffering(\''.$row->offering_key.'\',\''.$row->offeringno.'\')" style="width:16px;height:16px;border:0"></button> ';
+            $jumlah=0;
+            $view =hasPermission('offering','view')?'<button id='.$row->member_key.' class="icon-view_detail" onclick="viewOffering(\'view\',\''.$row->offering_key.'\',\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ':'';
+            $edit = hasPermission('offering','edit')?'<button id='.$row->member_key.' class="icon-edit" onclick="saveOffering(\'edit\',\''.$row->offering_key.'\',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ':'';
+            if($status=="")
+                $del = hasPermission('offering','delete')?'<button id='.$row->member_key.' class="icon-remove" onclick="delOffering(\'del\','.$row->offering_key.',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button>':'';
+            $print = hasPermission('offering','print')?'<button id='.$row->member_key.' class="icon-print" onclick="reportOffering(\''.$row->offering_key.'\',\''.$row->offeringno.'\')" style="width:16px;height:16px;border:0"></button> ':'';
             $row->aksi =$print.$view.$edit.$del;
             $row->offeringid =  $row->offeringid==0?'-':getParameterKey($row->offeringid)->parameterid;
             $row->remark2 = nl2br($row->remark);
@@ -250,7 +260,11 @@ class offering extends MY_Controller {
         $_SESSION['excel']= "asc|offering_key|".$cond;
         echo json_encode($response);
     }
-    function report($offering_key){
+    /**
+     * report offering
+     * @AclName Report Offering
+     */
+    public function report($offering_key){
         $this->load->library('Pdf');
         $data['key'] = $offering_key;
         $offering = getOne('offering_key',$offering_key,'tbloffering')[0];

@@ -20,5 +20,4 @@
         <script type="text/javascript" src="<?= base_url() ?>libraries/jquery-easyui/155/columns-ext.js"></script>
         <script type="text/javascript" src="<?= base_url() ?>libraries/js/main.js"></script>
         <script src="<?php echo base_url()?>libraries/ajaxfileupload/ajaxfileupload.js" type="text/javascript"></script>
-
     </head>

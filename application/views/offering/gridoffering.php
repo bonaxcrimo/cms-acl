@@ -37,6 +37,7 @@
                 onClickRow:function(index,row){
                 }
             });
+        dgOfferingDeleted.datagrid('enableFilter');
         dgOffering.datagrid('enableFilter', [{
             field:'aksi',
             type:'label'

@@ -33,7 +33,14 @@ $.extend($.fn.datagrid.defaults, {
            }
        });
 
-    }
+    },
+      onBeforeDropColumn: function(){
+          $(this).datagrid('disableFilter');
+      },
+      onDropColumn: function(){
+          $(this).datagrid('enableFilter');
+          $(this).datagrid('doFilter');
+      }
   })
 // $.extend($.fn.datagrid.defaults, {
 //     onSelect: function(index, row){
