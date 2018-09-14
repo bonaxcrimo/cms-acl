@@ -6,13 +6,6 @@ $(document).ready(function(){
 		$(this).val($(this).val().toUpperCase());
 	});
 
-/*
-	$('input').focusout(function() {
-		// Uppercase-ize contents
-		this.value = this.value.toLocaleUpperCase();
-	});
-*/
-
     $('input[type=email]').keyup(function() {
         $(this).val($(this).val().toLowerCase());
     });

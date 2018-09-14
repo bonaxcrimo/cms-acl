@@ -1,88 +1,73 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Gender extends CI_Controller {
+class Gender extends MY_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->model('mgender');
-
+		$this->load->model([
+			'mgender'
+		]);
 	}
-
-	function index(){
-
-		$this->load->view('header');
-		$this->load->view('navbar',$data);
-		$this->load->view('gender/gridgender');
-		$this->load->view('footer');
+	/**
+     * tampilan awal dari gender
+     * @AclName List Gender
+     */
+	public function index(){
+		$link = base_url()."gender/grid";
+		$this->render('gender/gridgender',['link'=>$link]);
 	}
-
+	/**
+     * Fungsi view blood
+     * @AclName View Blood
+     */
+	public function view($parameter_key=0){
+		// $data["data"] = $this->mblood->getListAll('tblparameter',['parameter_key'=>$parameter_key]);
+		$data['data'] = $this->mgender->getById('tblparameter','parameter_key',$parameter_key);
+		$this->load->view('gender/view',$data);
+	}
+	/**
+     * grid
+     * @AclName Grid Gender
+     */
 	function grid(){
-		@$page = $_POST['page'];
-		@$limit = $_POST['rows'];
-		@$sidx = $_POST['sidx'];
-		@$sord = $_POST['sord'];
-		if (!$sidx)
-		    $sidx = 1;
-		@$totalrows = isset($_POST['totalrows']) ? $_POST['totalrows'] : false;
-		if (@$totalrows) {
-		   @$limit = $totalrows;
+		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
+		$sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'parameterid';
+		$order = isset($_GET['order']) ? strval($_GET['order']) : 'asc';
+		$filterRules = isset($_GET['filterRules']) ? ($_GET['filterRules']) : '';
+
+		$cond = '';
+		if (!empty($filterRules)){
+			$cond = ' where 1=1 ';
+			$filterRules = json_decode($filterRules);
+			foreach($filterRules as $rule){
+				$rule = get_object_vars($rule);
+				$field = $rule['field'];
+				$op = $rule['op'];
+				$value = $rule['value'];
+				if (!empty($value)){
+					if ($op == 'contains'){
+						$cond .= " and ($field like '%$value%')";
+					}
+				}
+			}
 		}
-		@$filters = $_POST['filters'];
-		@$search = $_POST['_search'];
-			$where = "";
-       		if(($search==true) &&($filters != "")) {
-				$where= $this->operation($filters);
-		    }
-		$sql = $this->mgender->count($where);
-		$count = $sql->num_rows();
-		if ($count > 0) {
-		    @$total_pages = ceil($count / $limit);
-		} else {
-		    $total_pages = 0;
+
+		$sql = $this->mgender->count($cond);
+		$total = $sql->num_rows();
+		$offset = ($page - 1) * $rows;
+		$data = $this->mgender->get($cond,$sort,$order,$rows,$offset)->result();
+		foreach($data as $row){
+			$view = hasPermission('blood','view')?'<button class="icon-view_detail" onclick="viewData(\''.$row->parameter_key.'\')" style="width:16px;height:16px;border:0"></button> ':'';
+			$edit = hasPermission('blood','edit')?'<button class="icon-edit" onclick="editData(\''.$row->parameter_key.'\')" style="width:16px;height:16px;border:0"></button> ':'';
+			$del = hasPermission('blood','delete')?'<button class="icon-remove" onclick="deleteData(\''.$row->parameter_key.'\')" style="width:16px;height:16px;border:0"></button>':'';
+			$row->aksi = $view.$edit.$del;
 		}
-		if ($page > $total_pages)
-		    @$page = $total_pages;
-		if ($limit < 0)
-		    @$limit = 0;
-			$start = $limit * $page - $limit;
-		if ($start < 0)
-		    @$start = 0;
-		$data = $this->mgender->get($where, $sidx, $sord, $limit, $start);
-		$_SESSION['excel']= $sord."|".$sidx."|".$where;
-		@$responce->page = $page;
-		@$responce->total = $total_pages;
-		@$responce->records = $count;
-		$i=0;
-		foreach($data->result() as $row){
-			if(substr($acl,0,1)==1){
-				$view='<a href="#" id='.$row->genderid.' title="view" class="btnview" style="float:left"><span class="ui-icon ui-icon-document"></span></a>';
-			}
-			else{
-				$view='<span style="float:left" class="ui-state-disabled ui-icon ui-icon-document"></span>';
-			}
-			if(substr($acl,2,1)==1){
-				$edit='<a href="#" id='.$row->genderid.' title="Edit" class="btnedit" style="float:left"><span class="ui-icon ui-icon-pencil"></span></a>';
-			}
-			else{
-				$edit='<span style="float:left" class="ui-state-disabled ui-icon ui-icon-pencil"></span>';
-			}
-			if(substr($acl,3,1)==1){
-				$del='<a href="#" id='.$row->genderid.' title="Del" class="btndel" style="float:left"><span class="ui-icon ui-icon-trash"></span></a>';
-			}
-			else{
-				$del='<span class="ui-state-disabled ui-icon ui-icon-trash"></span>';
-			}
-			$responce->rows[$i]['id']   = $row->genderid;
-			$responce->rows[$i]['cell'] = array(
-				$view.$edit.$del,
-				$row->genderid,
-				$row->gendername,
-				$row->modifiedby,
-				$row->modifiedonview
-				);
-			$i++;
-		}
-		echo json_encode($responce);
+		$response = new stdClass;
+		$response->total=$total;
+		$response->rows = $data;
+		$_SESSION['excel']= "asc|parameter_key|".$cond;
+		echo json_encode($response);
 	}
 
 	function form($form,$genderid){
