@@ -55,7 +55,8 @@ class ACL{
     }
     private function _validateActionPermission($acos,$class = null,$method = null){
         //acos gk boleh kosong
-
+        if($this->CI->session->userdata('logged_in')!='' &&$this->CI->session->userdata('username')=='admin' )
+            return true;
         if(empty($class)){
             $class = $this->CI->router->fetch_class();
         }

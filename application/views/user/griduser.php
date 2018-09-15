@@ -141,5 +141,5 @@
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgView').dialog('close')" style="width:90px">Cancel</a>
         </div>
     </div>
-    <div data-options="closable:false,cache:false,href:'<?php echo base_url(); ?>useracl/index'" title="Data User Acl" style="padding:10px" ></div>
+    <!-- <div data-options="closable:false,cache:false,href:'<?php echo base_url(); ?>useracl/index'" title="Data User Acl" style="padding:10px" ></div> -->
 </div>
