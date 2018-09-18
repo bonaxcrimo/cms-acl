@@ -24,15 +24,15 @@ require_once 'stimulsoft/helper.php';
 		options.toolbar.showViewModeButton = false;
 		var viewer = new Stimulsoft.Viewer.StiViewer(options, "StiViewer", false);
 		//costum componen
-		StiJsViewer.prototype.InitializePrintMenu = function() {
+		// StiJsViewer.prototype.InitializePrintMenu = function() {
 
-	        var A = [];
-	        A.push(this.Item("PrintWithoutPreview", this.collections.loc.PrintWithoutPreview, "PrintWithoutPreview.png", "PrintWithoutPreview"));
-	        var t = this.VerticalMenu("printMenu", this.controls.toolbar.controls.Print, "Down", A);
-	        t.action = function(A) {
-	            t.changeVisibleState(!1), t.jsObject.postPrint(A.key)
-	        }
-	    }
+	 //        var A = [];
+	 //        A.push(this.Item("PrintWithoutPreview", this.collections.loc.PrintWithoutPreview, "PrintWithoutPreview.png", "PrintWithoutPreview"));
+	 //        var t = this.VerticalMenu("printMenu", this.controls.toolbar.controls.Print, "Down", A);
+	 //        t.action = function(A) {
+	 //            t.changeVisibleState(!1), t.jsObject.postPrint(A.key)
+	 //        }
+	 //    }
 		// Process SQL data source
 		viewer.onBeginProcessData = function (event, callback) {
 			<?php StiHelper::createHandler(); ?>

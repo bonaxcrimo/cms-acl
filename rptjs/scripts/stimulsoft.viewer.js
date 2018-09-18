@@ -5905,6 +5905,7 @@ var Stimulsoft;
                                             a = new m,
                                             s = new p,
                                             l = new u(s);
+                                        var b= new p;
                                         n.exportMode = r.options.appearance.reportDisplayMode, n.useWatermarkMargins = !1, n.removeEmptySpaceAtBottom = !1, a.exportToAsync(function() {
                                             var e = s.getStringBuilder().toString(),
                                                 t = new Blob([e], {
