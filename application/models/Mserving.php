@@ -1,52 +1,47 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class Mserving extends CI_Model {
-	function __construct() {
-        parent::__construct();
+class Mserving extends MY_Model {
+    protected $table = 'tblparameter';
+	 public function save($data){
+    	if(isset($data['parameter_key']) && !empty($data['parameter_key'])){
+    		$id = $data['parameter_key'];
+    		unset($data['parameter_key']);
+    		$this->db->where("parameter_key",$id);
+    		$result = $this->db->update($this->table,$data);
+    	}else{
+	    	$result = $this->db->insert($this->table,$data);
+    	}
+    	return $result;
+    }
+    public function delete($id){
+    	$this->db->where(['parameter_key'=>$id]);
+    	return $this->db->delete($this->table);
     }
 	function count($where){
-		$sql = $this->db->query("SELECT servingid FROM tblserving " . $where);
+		if(strlen($where)==0){
+			$new = " where parametergrpid='SERVING'";
+		}else{
+			$new = " and parametergrpid='SERVING'";
+		}
+		$sql = $this->db->query("SELECT * FROM tblparameter " . $where.$new);
         return $sql;
 	}
 	function get($where, $sidx, $sord, $limit, $start){
-		$sql = $this->db->query("SELECT *,
-		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedonview
-		FROM tblserving " . $where . " ORDER BY $sidx $sord LIMIT $start , $limit");
-		return $sql;
-	}
-	
-	function get_where($where){
-		$sql = $this->db->query("SELECT servingid FROM tblserving " . $where);
-		return $sql;
+		if(strlen($where)==0){
+            $new = " where parametergrpid='SERVING'";
+        }else{
+            $new = " and parametergrpid='SERVING'";
+        }
+        $query = "select * from tblparameter " . $where.$new." ORDER BY $sidx $sord LIMIT $start , $limit";
+        return $this->db->query($query);
 	}
 
 	function add($tabel,$data){
 		$sql = $this->db->insert($tabel,$data);
+		return $sql;
 	}
 	function edit($tabel,$data,$id){
-		$query = $this->db->where("servingid",$id);
+		$query = $this->db->where("parameter_key",$id);
 		$query = $this->db->update($tabel,$data);
-	}
-	function del($tabel,$id){
-		$query = $this->db->where("servingid",$id);
-		$sql = $this->db->delete($tabel);
-		return $sql;
-	}
-
-	//controller
-	function get_jemaat(){
-		$sql = $this->db->get('tblserving');
-		return $sql;
-	}
-
-	function get_combo(){
-		$serving=":All;";
-		$sqlserving = $this->db->get('tblserving');
-		foreach ($sqlserving->result() as $key) {
-			$serving=$serving.$key->servingid.":".$key->servingid.";";
-		}
-		$serving=strrev($serving);
-		$serving=substr($serving,1);
-		$serving=strrev($serving);
-		return $serving;
+		return $query;
 	}
 }
