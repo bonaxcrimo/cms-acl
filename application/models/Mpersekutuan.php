@@ -1,63 +1,47 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class Mpersekutuan extends CI_Model {
-	function __construct() {
-        parent::__construct();
+class Mpersekutuan extends MY_Model {
+    protected $table = 'tblparameter';
+	 public function save($data){
+    	if(isset($data['parameter_key']) && !empty($data['parameter_key'])){
+    		$id = $data['parameter_key'];
+    		unset($data['parameter_key']);
+    		$this->db->where("parameter_key",$id);
+    		$result = $this->db->update($this->table,$data);
+    	}else{
+	    	$result = $this->db->insert($this->table,$data);
+    	}
+    	return $result;
+    }
+    public function delete($id){
+    	$this->db->where(['parameter_key'=>$id]);
+    	return $this->db->delete($this->table);
     }
 	function count($where){
-		$sql = $this->db->query("SELECT persekutuanid FROM tblpersekutuan " . $where);
+		if(strlen($where)==0){
+			$new = " where parametergrpid='PERSEKUTUAN'";
+		}else{
+			$new = " and parametergrpid='PERSEKUTUAN'";
+		}
+		$sql = $this->db->query("SELECT * FROM tblparameter " . $where.$new);
         return $sql;
 	}
 	function get($where, $sidx, $sord, $limit, $start){
-		$sql = $this->db->query("SELECT *,
-		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedonview
-		FROM tblpersekutuan " . $where . " ORDER BY $sidx $sord LIMIT $start , $limit");
-		return $sql;
-	}
-	
-	function get_where($where){
-		$sql = $this->db->query("SELECT persekutuanid FROM tblpersekutuan " . $where);
-		return $sql;
+		if(strlen($where)==0){
+            $new = " where parametergrpid='PERSEKUTUAN'";
+        }else{
+            $new = " and parametergrpid='PERSEKUTUAN'";
+        }
+        $query = "select * from tblparameter " . $where.$new." ORDER BY $sidx $sord LIMIT $start , $limit";
+        return $this->db->query($query);
 	}
 
 	function add($tabel,$data){
 		$sql = $this->db->insert($tabel,$data);
+		return $sql;
 	}
 	function edit($tabel,$data,$id){
-		$query = $this->db->where("persekutuanid",$id);
+		$query = $this->db->where("parameter_key",$id);
 		$query = $this->db->update($tabel,$data);
-	}
-	function del($tabel,$id){
-		$query = $this->db->where("persekutuanid",$id);
-		$sql = $this->db->delete($tabel);
-		return $sql;
-	}
-
-	//controller
-	function get_jemaat(){
-		$sql = $this->db->get('tblpersekutuan');
-		return $sql;
-	}
-
-	function get_combo(){
-		$persekutuan=":All;";
-		$sqlpersekutuan = $this->db->get('tblpersekutuan');
-		foreach ($sqlpersekutuan->result() as $key) {
-			$persekutuan=$persekutuan.$key->persekutuanid.":".$key->persekutuanid.";";
-		}
-		$persekutuan=strrev($persekutuan);
-		$persekutuan=substr($persekutuan,1);
-		$persekutuan=strrev($persekutuan);
-		return $persekutuan;
-	}
-	function get_combo2(){
-		$persekutuan="{value:'',text:'All'},";
-		$sqlpersekutuan = $this->db->get('tblpersekutuan');
-		foreach ($sqlpersekutuan->result() as $key) {
-			$persekutuan .="{value:'".$key->persekutuanid."',text:'".$key->persekutuanid."'},";
-		}
-		$persekutuan=strrev($persekutuan);
-		$persekutuan=substr($persekutuan,1);
-		$persekutuan=strrev($persekutuan);
-		return $persekutuan;
+		return $query;
 	}
 }
