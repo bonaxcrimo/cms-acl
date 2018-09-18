@@ -1,52 +1,47 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class Mpstatus extends CI_Model {
-	function __construct() {
-        parent::__construct();
+class Mpstatus extends MY_Model {
+    protected $table = 'tblparameter';
+	 public function save($data){
+    	if(isset($data['parameter_key']) && !empty($data['parameter_key'])){
+    		$id = $data['parameter_key'];
+    		unset($data['parameter_key']);
+    		$this->db->where("parameter_key",$id);
+    		$result = $this->db->update($this->table,$data);
+    	}else{
+	    	$result = $this->db->insert($this->table,$data);
+    	}
+    	return $result;
+    }
+    public function delete($id){
+    	$this->db->where(['parameter_key'=>$id]);
+    	return $this->db->delete($this->table);
     }
 	function count($where){
-		$sql = $this->db->query("SELECT pstatusid FROM tblpstatus " . $where);
+		if(strlen($where)==0){
+			$new = " where parametergrpid='PSTATUS'";
+		}else{
+			$new = " and parametergrpid='PSTATUS'";
+		}
+		$sql = $this->db->query("SELECT * FROM tblparameter " . $where.$new);
         return $sql;
 	}
 	function get($where, $sidx, $sord, $limit, $start){
-		$sql = $this->db->query("SELECT *,
-		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedonview
-		FROM tblpstatus " . $where . " ORDER BY $sidx $sord LIMIT $start , $limit");
-		return $sql;
-	}
-	
-	function get_where($where){
-		$sql = $this->db->query("SELECT pstatusid FROM tblpstatus " . $where);
-		return $sql;
+		if(strlen($where)==0){
+            $new = " where parametergrpid='PSTATUS'";
+        }else{
+            $new = " and parametergrpid='PSTATUS'";
+        }
+        $query = "select * from tblparameter " . $where.$new." ORDER BY $sidx $sord LIMIT $start , $limit";
+        return $this->db->query($query);
 	}
 
 	function add($tabel,$data){
 		$sql = $this->db->insert($tabel,$data);
+		return $sql;
 	}
 	function edit($tabel,$data,$id){
-		$query = $this->db->where("pstatusid",$id);
+		$query = $this->db->where("parameter_key",$id);
 		$query = $this->db->update($tabel,$data);
-	}
-	function del($tabel,$id){
-		$query = $this->db->where("pstatusid",$id);
-		$sql = $this->db->delete($tabel);
-		return $sql;
-	}
-
-	//controller
-	function get_jemaat(){
-		$sql = $this->db->get('tblpstatus');
-		return $sql;
-	}
-
-	function get_combo(){
-		$pstatus=":All;";
-		$sqlpstatus = $this->db->get('tblpstatus');
-		foreach ($sqlpstatus->result() as $key) {
-			$pstatus=$pstatus.$key->pstatusid.":".$key->pstatusid.";";
-		}
-		$pstatus=strrev($pstatus);
-		$pstatus=substr($pstatus,1);
-		$pstatus=strrev($pstatus);
-		return $pstatus;
+		return $query;
 	}
 }
