@@ -1,360 +1,168 @@
 <script type="text/javascript">
-    var acl = "<?php echo $acl; ?>";
-    $(document).ready(function(){
-        $(".ui-th-column").live('click',function(){   
-            x = $(this).attr("colModel");
-           // alert("fdf"+x);  
-            //save("edit",kebaktianid);
-        });
-    });
+    var url,oper;
 
-    function fontColorFormat(cellvalue, options, rowObject) {
-        var cellHtml = "<span style='font-size:13px;' originalValue='" + cellvalue + "'>" + cellvalue + "</span>";
-        return cellHtml;
+    function excel(){
+        window.open("<?php echo base_url(); ?>kebaktian/excel");
     }
-
-    $(document).ready(function(){
-        $grid = $("#gridkebaktian");
-        $grid.jqGrid({
-            url:'<?php echo base_url()?>kebaktian/grid',
-            datatype: "json",
-            height: 250,
-            autowidth: true,
-            colNames:[
-            'aksi',
-            'kebaktianid',
-            'kebaktianname',
-            'modifiedby',
-            'modifiedon'
-            ],
-            colModel:[
-                {name:'aksi', index:'aksi', width:50, fixed:true, sortable:false, search: false},
-                {name:'kebaktianid', index:'kebaktianid',width:130, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'kebaktianname', index:'kebaktianname',width:130, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'modifiedby', index:'modifiedby', width:90, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'modifiedon', index:'modifiedon', width:130, fixed:true, searchoptions:{sopt:['cn']}}
-            ],
-            rowNum:10,
-            rowList : [10,20,30,50],
-            loadonce:false,
-            mtype: "POST",
-            rownumbers: true,
-            rownumWidth: 40,
-            gridview: true,
-            pager: '#pgridkebaktian',
-            enctype: "multipart/form-data",
-            viewrecords: true,
-            sortable: true,
-            editurl: "<?php echo base_url()?>kebaktian/crud",
-            caption: "Data kebaktian",
-            altRows:true,
-            altclass:'myAltRowClass',
-            toolbar: [true,"top"],
-            loadComplete: function() {
-            var ids = $grid.jqGrid('getDataIDs');
-                if (ids) {
-                    var sortName = $grid.jqGrid('getGridParam','sortname');
-                    var sortOrder = $grid.jqGrid('getGridParam','sortorder');
-                    for (var i=0;i<ids.length;i++) {
-                        $grid.jqGrid('setCell', ids[i], sortName, '', '',
-                                    {style:(sortOrder==='asc'?'background:rgb(200,200,255);':
-                                                              'background:rgb(200,255,200);')});
-                    }
-                }
+    function newData(){
+        $('#dlg').dialog({
+            closed:false,
+            title:'Tambah data',
+            href:'<?php echo base_url(); ?>kebaktian/add',
+            onLoad:function(){
+                 url = '<?= base_url() ?>kebaktian/add';
+                 oper="";
+            },
+            onBeforeDropColumn: function(){
+                $(this).datagrid('disableFilter');
+            },
+            onDropColumn: function(){
+                $(this).datagrid('enableFilter');
+                $(this).datagrid('doFilter');
             }
         });
-
-        $('#t_' + $.jgrid.jqID($grid[0].id)).append($("<div id='resetFilterOptions'><span id='resetFilterOptions'><i class='ui-icon-plus'></i> Clear Filter</span></div>"));
-           
-        $grid.jqGrid('filterToolbar',{
-            stringResult: true,
-            searchOnEnter : false
-        });
-
-        $grid.navGrid('#pgridkebaktian',{
-            edit:false,
-            add:false,
-            del:false,
-            view: false,
-            search:true,
-            refreshtext: 'Reload&nbsp;&nbsp;',
-            searchtext: 'Find&nbsp;&nbsp;'
-        }
-        ,{}
-        ,{}
-        ,{}
-        ,{
-            multipleSearch: true,
-            multipleGroup:true,
-            caption:"Delete&nbsp;&nbsp;"
-        });
-        $grid.navButtonAdd('#pgridkebaktian',{
-            caption:"Delete&nbsp;&nbsp;", 
-            title : "Del",
-            id:"delkebaktian",
-            buttonicon:"ui-icon-trash", 
-            onClickButton: function(){ 
-                var kebaktianid = jQuery("#gridkebaktian").jqGrid('getGridParam','selrow');
-                if(kebaktianid != null){
-                    del("del",kebaktianid);
-                }
-                else{
-                    alert("Pilih Row")
-                }
-            },
-            position :'first'
-        })
-        .navButtonAdd('#pgridkebaktian',{
-            caption:"Edit&nbsp;&nbsp;", 
-            title:"Edit",
-            id:"editkebaktian",
-            buttonicon:"ui-icon-pencil", 
-            onClickButton: function(){ 
-                var kebaktianid = jQuery("#gridkebaktian").jqGrid('getGridParam','selrow');
-                if(kebaktianid != null){
-                    save("edit",kebaktianid);
-                }
-                else{
-                    alert("Pilih Row")
-                }
-            },
-            position :'first'
-        })
-        .navButtonAdd('#pgridkebaktian',{
-            caption:"Add&nbsp;&nbsp;", 
-            title:"Add",
-            id:"addkebaktian",
-            buttonicon:"ui-icon-plus", 
-            onClickButton: function(){ 
-                save("add",null);
-            },
-            position :'first'
-        })
-        .navButtonAdd('#pgridkebaktian',{
-            caption:"view&nbsp;&nbsp;", 
-            title:"view",
-            id:"viewkebaktian",
-            buttonicon:"ui-icon-document", 
-            onClickButton: function(){ 
-                var kebaktianid = jQuery("#gridkebaktian").jqGrid('getGridParam','selrow');
-                if(kebaktianid != null){
-                    view("view",kebaktianid);
-                }
-                else{
-                    alert("Pilih Row")
-                }
-            },
-            position :'first'
-        })
-        .navButtonAdd('#pgridkebaktian',{
-            caption:"Export To Excel&nbsp;&nbsp;", 
-            title : "Excel",
-            id:"excelkebaktian",
-            buttonicon:"ui-icon-shuffle", 
-            onClickButton: function(){ 
-                excel();
-            }
-        });
-
-        if(acl.substr(0,1)==0){//disable view
-            $('#viewkebaktian').addClass('ui-state-disabled');
-        }
-        if(acl.substr(1,1)==0){//disable add
-            $('#addkebaktian').addClass('ui-state-disabled');
-        }
-        if(acl.substr(2,1)==0){//disable edit
-            $('#editkebaktian').addClass('ui-state-disabled');
-        }
-        if(acl.substr(3,1)==0){//disable del
-            $('#delkebaktian').addClass('ui-state-disabled');
-        }
-        if(acl.substr(6,1)==0){//disable export
-            $('#excelkebaktian').addClass('ui-state-disabled');
-        }
-
-        $("#resetFilterOptions").click(function(){
-            $("#searchText").val("");
-            $('input[id*="gs_"]').val("");
-            $('select[id*="gs_"]').val("ALL");
-            $("#gridkebaktian").jqGrid('setGridParam', { search: false, postData: { "filters": ""} }).trigger("reloadGrid");
-        });
-    });
-
-$(document).ready(function(){
-
-    $(".btnview").live('click',function(){     
-        kebaktianid = $(this).attr("id");
-        view("view",kebaktianid);
-    });
-    $(".btnedit").live('click',function(){     
-        kebaktianid = $(this).attr("id");
-        save("edit",kebaktianid);
-    });
-    $(".btndel").live('click',function(){     
-        kebaktianid = $(this).attr("id");
-        del("del",kebaktianid);
-    });
-});
-
-function view(form,id){
-    page="<?php echo base_url(); ?>kebaktian/form/"+form+"/"+id+"/null";
-    $('#formInput').html('<img src="<?php echo base_url(); ?>libraries/img/loading.gif">').load(page);
-    $("#formInput").dialog({
-        top:50,
-        width:'auto',
-        height:250,
-        modal:false,
-        title:"<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/edit.png'><ul class='title'>View Data</ul>",
-        buttons:[{
-            html:"<img class='icon' src='<?php echo base_url(); ?>libraries/icon/16x16/cancel.png'>Cancel",
-            click:function(){
-                $(this).dialog('close');
-            }
-        }]
-    });
-}
-
-function save(form,id){
-    page="<?php echo base_url(); ?>kebaktian/form/"+form+"/"+id;
-    $('#formInput').html('<img src="<?php echo base_url(); ?>libraries/img/loading.gif">').load(page);
-    var opr = form;
-    if(opr=="add"){
-        var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/add.png'><ul class='title'>Add Data</ul>";
     }
-    else{
-        var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/edit.png'><ul class='title'>Edit Data</ul>";
-    }
-    $("#formInput").dialog({
-        top:50,
-        width:'auto',
-        height:250,
-        modal:false,
-        title:oprtr,
-        buttons:[{
-            html:"<img class='icon' src='<?php echo base_url(); ?>libraries/icon/16x16/ok.png'>Save",
-            click:function(){
-                if($("#kebaktianid").val()==""){
-                    $("#kebaktianid").css("background-color","rgb(255,128,192)");
-                    $("#tip").html("<img class='icon' src='<?php echo base_url(); ?>libraries/icon/16x16/warning.png'>");
-                    $("#kebaktianid").focus();
-                    return false;
+    function editData(parameter_key){
+        var row = parameter_key==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').parameter_key:parameter_key;
+        if (row!=''){
+            $('#dlg').dialog({
+                closed:false,
+                title:'Edit kebaktian',
+                href:'<?php echo base_url(); ?>kebaktian/edit/'+row,
+                onLoad:function(){
+                    url = '<?= base_url() ?>kebaktian/edit/'+row;
+                    oper="";
                 }
-                return $.ajax({
-                    type: $("#form1").attr("method"),
-                    url: $("#form1").attr("action"),
-                    enctype: 'multipart/form-data',
-                    data : $("#form1").serialize(),
-                    dataType: "json",
-                    async: true,
-                    success: function(data) {
-                        $("#formInput").dialog('close');
-                        $('#gridkebaktian').trigger('reloadGrid');
-                        $('#gridrelasi').trigger('reloadGrid');
-                        $('#gridkebaktian').trigger('reloadGrid');
-                    }
-                }).responseText  
-            }
-        },{
-            html:"<img class='icon' src='<?php echo base_url(); ?>libraries/icon/16x16/cancel.png'>Cancel",
-            click:function(){
-                $(this).dialog('close');
-            }
-        }]
-    });
-}
-
-function del(form,id){
-    page="<?php echo base_url(); ?>kebaktian/form/"+form+"/"+id+"/null";
-    $('#formInput').html('<img src="<?php echo base_url(); ?>libraries/img/loading.gif">').load(page);
-    $("#formInput").dialog({
-        top:50,
-        width:'auto',
-        height:250,
-        modal:false,
-        title:"<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/delete.png'><ul class='title'>Delete Data</ul>",
-        buttons:[{
-            html:"<img class='icon' src='<?php echo base_url(); ?>libraries/icon/16x16/delete.png'>Delete",
-            click:function(){
-                var jwb = confirm('Anda Yakin ?');
-                if (jwb==1){ 
-                    return $.ajax({
-                        type: $("#form1").attr("method"),
-                        url: $("#form1").attr("action"),
-                        enctype: 'multipart/form-data',
-                        data : $("#form1").serialize(),
-                        dataType: "json",
-                        async: true,
-                        success: function(data) {
-                            $("#formInput").dialog('close');
-                            $('#gridkebaktian').trigger('reloadGrid');
-                            $('#gridrelasi').trigger('reloadGrid');
-                            $('#gridkebaktian').trigger('reloadGrid');
-                        }
-                    }).responseText
-                }
-            }
-        },{
-            html:"<img class='icon' src='<?php echo base_url(); ?>libraries/icon/16x16/cancel.png'>Cancel",
-            click:function(){
-                $(this).dialog('close');
-            }
-        }]
-    });
-}
-
-
-function excel(){
-    window.open("<?php echo base_url(); ?>kebaktian/excel");
-}
-
-/*keyboard navigasi */
-
-var delay = (function(){
-  var timer = 0;
-  return function(callback, ms){
-    clearTimeout (timer);
-    timer = setTimeout(callback, ms);
-  };
-})();
-
-$(function(){
-    $("#searchText").keyup(function() {
-        delay(function(){
-            var postData = $grid.jqGrid("getGridParam", "postData"),
-                colModel = $grid.jqGrid("getGridParam", "colModel"),
-                rules = [],
-                searchText = $("#searchText").val(),
-                l = colModel.length,
-                i,
-                cm;
-            for (i = 0; i < l; i++) {
-                cm = colModel[i];
-                if (cm.search !== false && (cm.stype === undefined || cm.stype === "text")) {
-                    rules.push({
-                        field: cm.name,
-                        op: "cn",
-                        data: searchText
-                    });
-                }
-            }
-            postData.filters = JSON.stringify({
-                groupOp: "OR",
-                rules: rules
             });
-            console.log(postData.filters);
-            $grid.jqGrid("setGridParam", { search: true });
-            $grid.trigger("reloadGrid", [{page: 1, current: true}]);
-            return false;
-        }, 500 );
-    });
-});
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
+    function viewData(parameter_key){
+        var row = parameter_key==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').parameter_key:parameter_key;
+        if (row!=''){
+            $('#dlgView').dialog({
+                closed:false,
+                title:'View data',
+                href:'<?php echo base_url(); ?>kebaktian/view/'+row
+            });
+
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
+    function deleteData(parameter_key){
+        var row = parameter_key==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').parameter_key:parameter_key;
+        if (row!=''){
+            $('#dlg').dialog({
+                closed:false,
+                title:'Delete data',
+                href:'<?php echo base_url(); ?>kebaktian/delete/'+row,
+                onLoad:function(){
+                    url = '<?= base_url() ?>kebaktian/delete/'+row;
+                    oper="del";
+                }
+            });
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
+    function callSubmit(){
+        $('#fm').form('submit',{
+            url: url,
+            onSubmit: function(){
+                return $(this).form('validate');
+            },
+            success: function(result){
+                $('#dlg').dialog('close');
+                $('#dg').datagrid('reload');
+
+            },error:function(error){
+                 console.log($(this).serialize());
+            }
+        });
+    }
+    function saveData(){
+        if(oper=="del"){
+            $.messager.confirm('Confirm','Yakin akan menghapus data ?',function(r){
+                if (r){
+                    callSubmit();
+                }
+            });
+        }else{
+            callSubmit();
+        }
+    }
+    $(function(){
+        var dg = $("#dg").datagrid(
+            {
+                remoteFilter:true,
+                pagination:true,
+                rownumbers:true,
+                singleSelect:true,
+                remoteSort:true,
+                clientPaging: false,
+                method:'get',
+                onClickRow:function(index,row){
+                    $(this).datagrid('selectRow',index);
+                 }
+            });
+        dg.datagrid('columnMoving');
+        var pager = dg.datagrid('getPager');
+        pager.pagination({
+            buttons:[{
+                iconCls:'icon-add',
+                handler:function(){
+                    newData();
+                }
+            },{
+                iconCls:'icon-edit',
+                handler:function(){
+                   editData();
+                }
+            },{
+                iconCls:'icon-remove',
+                handler:function(){
+                   deleteData();
+                }
+            },{
+                text:'Export Excel',
+                iconCls:'icon-print',
+                handler:function(){
+                   excel();
+                }
+            }]
+        });
+        dg.datagrid('enableFilter', [{
+            field:'aksi',
+            type:'label'
+        }]);
+    })
+
 </script>
 <div class="easyui-tabs" style="height:auto">
     <div title="Data kebaktian" style="padding:10px">
-        <div id="titlesearch">Search : <input type="text" placeHolder="Search" id="searchText"></div>
-        <table id="gridkebaktian"></table>
-        <div id="pgridkebaktian"></div>      
-        <div id="formInput"></div>
+         <table id="dg" title="kebaktian" class="easyui-datagrid" style="width:100%;height:250px" url="<?= $link ?>"
+                >
+            <thead>
+                <tr>
+                    <th field="aksi" width="5%">Aksi</th>
+                    <th field="parameter_key" width="10%" hidden="true"></th>
+                    <th field="parametertext" width="5%" sortable="true">kebaktian</th>
+                    <th field="modifiedby" width="5%" sortable="true">modifiedby</th>
+                    <th field="modifiedon" width="10%" sortable="true">modifiedon</th>
+                </tr>
+            </thead>
+        </table>
+        <div id="dlg" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'"></div>
+        <div id="dlgView" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons1'"></div>
+        <div id="dlg-buttons1">
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgView').dialog('close')" style="width:90px">Cancel</a>
+        </div>
+        <div id="dlg-buttons">
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px">Proses</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
+        </div>
     </div>
 </div>
 

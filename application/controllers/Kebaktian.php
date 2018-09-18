@@ -1,184 +1,150 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Kebaktian extends CI_Controller {
+class Kebaktian extends MY_Controller {
 
 	public function __construct(){
 		parent::__construct();
-
-		$this->load->model('mkebaktian');
-
+		$this->load->model([
+			'mkebaktian'
+		]);
 	}
-
-	function index(){
-
-		$this->load->view('header');
-		$this->load->view('navbar',$data);
-		$this->load->view('kebaktian/gridkebaktian');
-		$this->load->view('footer');
+	/**
+     * tampilan awal dari kebaktian
+     * @AclName List kebaktian
+     */
+	public function index(){
+		$link = base_url()."kebaktian/grid";
+		$this->render('kebaktian/gridkebaktian',['link'=>$link]);
 	}
-
+	/**
+     * Fungsi view kebaktian
+     * @AclName View kebaktian
+     */
+	public function view($parameter_key=0){
+		$data['data'] = $this->mkebaktian->getById('tblparameter','parameter_key',$parameter_key);
+		$this->load->view('kebaktian/view',$data);
+	}
+	/**
+     * Fungsi add kebaktian
+     * @AclName Tambah kebaktian
+     */
+	public function add(){
+		$data=[];
+		if($this->input->server('REQUEST_METHOD') == 'POST' ){
+			$data = $this->input->post();
+			$cek = $this->_save($data);
+			$status = $cek?"sukses":"gagal";
+			$hasil = array(
+		        'status' => $status
+		    );
+		    echo json_encode($hasil);
+		}else{
+			$data = $this->input->post();
+		}
+		$this->load->view('kebaktian/add',['data'=>$data]);
+	}
+	/**
+     * grid
+     * @AclName Grid kebaktian
+     */
 	function grid(){
-		@$page = $_POST['page'];
-		@$limit = $_POST['rows'];
-		@$sidx = $_POST['sidx'];
-		@$sord = $_POST['sord'];
-		if (!$sidx)
-		    $sidx = 1;
-		@$totalrows = isset($_POST['totalrows']) ? $_POST['totalrows'] : false;
-		if (@$totalrows) {
-		   @$limit = $totalrows;
+		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
+		$sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'parameterid';
+		$order = isset($_GET['order']) ? strval($_GET['order']) : 'asc';
+		$filterRules = isset($_GET['filterRules']) ? ($_GET['filterRules']) : '';
+
+		$cond = '';
+		if (!empty($filterRules)){
+			$cond = ' where 1=1 ';
+			$filterRules = json_decode($filterRules);
+			foreach($filterRules as $rule){
+				$rule = get_object_vars($rule);
+				$field = $rule['field'];
+				$op = $rule['op'];
+				$value = $rule['value'];
+				if (!empty($value)){
+					if ($op == 'contains'){
+						$cond .= " and ($field like '%$value%')";
+					}
+				}
+			}
 		}
-		@$filters = $_POST['filters'];
-		@$search = $_POST['_search'];
-			$where = "";
-       		if(($search==true) &&($filters != "")) {
-				$where= $this->operation($filters);
-		    }
-		$sql = $this->mkebaktian->count($where);
-		$count = $sql->num_rows();
-		if ($count > 0) {
-		    @$total_pages = ceil($count / $limit);
-		} else {
-		    $total_pages = 0;
+
+		$sql = $this->mkebaktian->count($cond);
+		$total = $sql->num_rows();
+		$offset = ($page - 1) * $rows;
+		$data = $this->mkebaktian->get($cond,$sort,$order,$rows,$offset)->result();
+		foreach($data as $row){
+			$view = hasPermission('kebaktian','view')?'<button class="icon-view_detail" onclick="viewData(\''.$row->parameter_key.'\')" style="width:16px;height:16px;border:0"></button> ':'';
+			$edit = hasPermission('kebaktian','edit')?'<button class="icon-edit" onclick="editData(\''.$row->parameter_key.'\')" style="width:16px;height:16px;border:0"></button> ':'';
+			$del = hasPermission('kebaktian','delete')?'<button class="icon-remove" onclick="deleteData(\''.$row->parameter_key.'\')" style="width:16px;height:16px;border:0"></button>':'';
+			$row->aksi = $view.$edit.$del;
 		}
-		if ($page > $total_pages)
-		    @$page = $total_pages;
-		if ($limit < 0)
-		    @$limit = 0;
-			$start = $limit * $page - $limit;
-		if ($start < 0)
-		    @$start = 0;
-		$data = $this->mkebaktian->get($where, $sidx, $sord, $limit, $start);
-		$_SESSION['excel']= $sord."|".$sidx."|".$where;
-		@$responce->page = $page;
-		@$responce->total = $total_pages;
-		@$responce->records = $count;
-		$i=0;
-		foreach($data->result() as $row){
-			if(substr($acl,0,1)==1){
-				$view='<a href="#" id='.$row->kebaktianid.' title="view" class="btnview" style="float:left"><span class="ui-icon ui-icon-document"></span></a>';
-			}
-			else{
-				$view='<span style="float:left" class="ui-state-disabled ui-icon ui-icon-document"></span>';
-			}
-			if(substr($acl,2,1)==1){
-				$edit='<a href="#" id='.$row->kebaktianid.' title="Edit" class="btnedit" style="float:left"><span class="ui-icon ui-icon-pencil"></span></a>';
-			}
-			else{
-				$edit='<span style="float:left" class="ui-state-disabled ui-icon ui-icon-pencil"></span>';
-			}
-			if(substr($acl,3,1)==1){
-				$del='<a href="#" id='.$row->kebaktianid.' title="Del" class="btndel" style="float:left"><span class="ui-icon ui-icon-trash"></span></a>';
-			}
-			else{
-				$del='<span class="ui-state-disabled ui-icon ui-icon-trash"></span>';
-			}
-			$responce->rows[$i]['id']   = $row->kebaktianid;
-			$responce->rows[$i]['cell'] = array(
-				$view.$edit.$del,
-				$row->kebaktianid,
-				$row->kebaktianname,
-				$row->modifiedby,
-				$row->modifiedonview
-				);
-			$i++;
-		}
-		echo json_encode($responce);
+		$response = new stdClass;
+		$response->total=$total;
+		$response->rows = $data;
+		$_SESSION['excelkebaktian']= "asc|parameter_key|".$cond;
+		echo json_encode($response);
 	}
 
-	function form($form,$kebaktianid){
-		$data["kebaktianid"] = $kebaktianid;
-		$this->load->view('kebaktian/'.$form,$data);
+	/**
+     * Fungsi edit kebaktian
+     * @AclName Edit kebaktian
+     */
+	public function edit($id){
+		$data = $this->mkebaktian->getById('tblparameter','parameter_key',$id);
+        if(empty($data)){
+            redirect('kebaktian');
+        }
+		if($this->input->server('REQUEST_METHOD') == 'POST' ){
+			$data = $this->input->post();
+			$data['parameter_key'] = $this->input->post('parameter_key');
+			$cek = $this->_save($data);
+			$status = $cek?"sukses":"gagal";
+			$hasil = array(
+		        'status' => $status
+		    );
+		    echo json_encode($hasil);
+		}
+		$this->load->view('kebaktian/edit',['data'=>$data]);
 	}
-
-	function crud(){
-		@$oper=@$_POST['oper'];
-	    @$kebaktianid=@$_POST['kebaktianid'];
-		@$data = array(
-			'kebaktianid' => @$_POST['kebaktianid'],
-			'kebaktianname' => @$_POST['kebaktianname'],
-			'modifiedby' => $_SESSION['username'],
+	/**
+     * Fungsi delete kebaktian
+     * @AclName Delete kebaktian
+     */
+	public function delete($id){
+		$data = $this->mkebaktian->getById('tblparameter','parameter_key',$id);
+		if(empty($data)){
+			redirect('kebaktian');
+		}
+		if($this->input->server('REQUEST_METHOD') == 'POST'){
+			$cek = $this->mkebaktian->delete($this->input->post('parameter_key'));
+			$status = $cek?"sukses":"gagal";
+			$hasil = array(
+		        'status' => $status
+		    );
+		    echo json_encode($hasil);
+		}
+		$this->load->view('kebaktian/delete',['data'=>$data]);
+	}
+	private function _save($data){
+		@$form = array(
+			'parametergrpid' =>'KEBAKTIAN',
+			'parameter_key' => @$data['parameter_key'],
+			'parameterid' =>  strtoupper(@$data['parametertext']),
+			'parametertext' => strtoupper(@$data['parametertext']),
+			'modifiedby' => $this->session->userdata('username'),
 			'modifiedon' => date("Y-m-d H:i:s")
-			);
-	    switch ($oper) {
-	        case 'add':
-				$this->mkebaktian->add("tblkebaktian",$data);
-				$hasil = array(
-			        'status' => 'sukses'
-			    );
-			    echo json_encode($hasil);
-	            break;
-	        case 'edit':
-				$this->mkebaktian->edit("tblkebaktian",$data,$kebaktianid);
-				$hasil = array(
-			        'status' => 'sukses'
-			    );
-			    echo json_encode($hasil);
-	            break;
-	         case 'del':
-				$this->mkebaktian->del("tblkebaktian",$kebaktianid);
-				$hasil = array(
-			        'status' => 'sukses'
-			    );
-			    echo json_encode($hasil);
-	            break;
-	        default :
-	        	$hasil = array(
-			        'status' => 'Not Operation'
-			    );
-			    echo json_encode($hasil);
-	           break;
-		}
+		);
+		return $this->mkebaktian->save($form);
 	}
-
-	function operation($filters){
-        $filters = str_replace('\"','"' ,$filters);
-        $filters = str_replace('"[','[' ,$filters);
-        $filters = str_replace(']"',']' ,$filters);
-		$filters = json_decode($filters);
-		$where = " where ";
-		$whereArray = array();
-		$rules = $filters->rules;
-		$groupOperation = $filters->groupOp;
-		foreach($rules as $rule) {
-		    $fieldName = $rule->field;
-		    $fieldData = escapeString($rule->data);
-			   	switch ($rule->op) {
-					case "eq": $fieldOperation = " = '".$fieldData."'"; break;
-					case "ne": $fieldOperation = " != '".$fieldData."'"; break;
-					case "lt": $fieldOperation = " < '".$fieldData."'"; break;
-					case "gt": $fieldOperation = " > '".$fieldData."'"; break;
-					case "le": $fieldOperation = " <= '".$fieldData."'"; break;
-					case "ge": $fieldOperation = " >= '".$fieldData."'"; break;
-					case "nu": $fieldOperation = " = ''"; break;
-					case "nn": $fieldOperation = " != ''"; break;
-					case "in": $fieldOperation = " IN (".$fieldData.")"; break;
-					case "ni": $fieldOperation = " NOT IN '".$fieldData."'"; break;
-					case "bw": $fieldOperation = " LIKE '".$fieldData."%'"; break;
-					case "bn": $fieldOperation = " NOT LIKE '".$fieldData."%'"; break;
-					case "ew": $fieldOperation = " LIKE '%".$fieldData."'"; break;
-					case "en": $fieldOperation = " NOT LIKE '%".$fieldData."'"; break;
-					case "cn": $fieldOperation = " LIKE '%".$fieldData."%'"; break;
-					case "nc": $fieldOperation = " NOT LIKE '%".$fieldData."%'"; break;
-					default: $fieldOperation = ""; break;
-		        }
-		    if($fieldOperation != "") {
-		    	if($fieldName=="modifiedon"){
-                	$whereArray[] = "DATE_FORMAT(modifiedon,'%d-%m-%Y %T')".$fieldOperation;
-                }
-                else{
-                	$whereArray[] = $fieldName.$fieldOperation;
-                }
-		    }
-		}
-
-		if (count($whereArray)>0) {
-		    $where .= join(" ".$groupOperation." ", $whereArray);
-		} else {
-		    $where = "";
-		}
-		return $where;
+	/**
+     * Fungsi untuk export excel
+     * @AclName Export Excel kebaktian
+     */
+	public function excel(){
+		excel('excelkebaktian','tblparameter','kebaktian/excel');
 	}
-
 
 }
