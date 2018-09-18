@@ -1,7 +1,6 @@
 <script type="text/javascript">
     var startTime = Date.now();
     $(document).ready(function(){
-
         $("#dgBesuk").datagrid(
             {
                 remoteFilter:true,
@@ -10,12 +9,11 @@
                 singleSelect:true,
                 remoteSort:true,
                 clientPaging: false,
-                url:"<?php echo base_url()?>besuk/grid3",
+                url:"<?php echo base_url()?>besuk/grid",
                 method:'get',
                 onClickRow:function(index,row){
                 }
             });
-
             var pagerBesuk = $("#dgBesuk").datagrid('getPager');
             pagerBesuk.pagination({
                 buttons:[{
@@ -23,6 +21,12 @@
                     handler:function(){
                         key=0;
                         saveBesuk("add",null,key);
+                    }
+                },{
+                    text:'Export excel',
+                    iconCls:'icon-print',
+                    handler:function(){
+                        window.location = "besuk/excel";
                     }
                 }]
             });
@@ -46,7 +50,6 @@
     }
     function saveBesuk(form,besukid,member_key){
         page="<?php echo base_url(); ?>besuk/form/"+form+"/"+besukid+"/"+member_key+"/0";
-        // console.log(page);
          var opr = form;
         if(opr=="add"){
             var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/add.png'><ul class='title'>Add Data</ul>";

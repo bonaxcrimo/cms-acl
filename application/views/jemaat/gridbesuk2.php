@@ -10,7 +10,7 @@
                 singleSelect:true,
                 remoteSort:true,
                 clientPaging: false,
-                url:"<?php echo base_url()?>besuk/grid2/<?php echo $member_key; ?>",
+                url:"<?php echo base_url()?>besuk/gridBesukJemaat/<?php echo $member_key; ?>",
                 method:'get',
                 onClickRow:function(index,row){
                 },onLoadSuccess:function(data){

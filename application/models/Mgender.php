@@ -1,5 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Mgender extends MY_Model {
+    protected $table = 'tblparameter';
 	 public function save($data){
     	if(isset($data['parameter_key']) && !empty($data['parameter_key'])){
     		$id = $data['parameter_key'];

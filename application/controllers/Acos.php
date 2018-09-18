@@ -13,7 +13,7 @@ class Acos extends MY_Controller {
      */
     public function fetch() {
         $this->listFolderFiles();
-        // redirect('login');
+        redirect('login');
     }
     /**
      * Merupakan Grid dari Acos

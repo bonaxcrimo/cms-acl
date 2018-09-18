@@ -18,14 +18,14 @@ class Besuk extends MY_Controller {
 			'mmenu'
 		]);
 	}
-	function set(){
+	public function set(){
 		$_SESSION['member_key'] = $_GET['member_key'];
 	}
-	function index(){
+	public function index(){
 		$link = base_url()."besuk/gridbesuk";
 		$this->render('besuk/gridbesuk',['link'=>$link]);
 	}
-	function jemaat(){
+	public function jemaat(){
 		if(empty($_SESSION['member_key'])){
 			echo" Empty";
 		}
@@ -53,7 +53,7 @@ class Besuk extends MY_Controller {
 			$this->load->view('jemaat/gridbesuk2',$data);
 		}
 	}
-	function grid2($member_key){
+	public function gridBesukJemaat($member_key){
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
 		$sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'member_key';
@@ -105,7 +105,7 @@ class Besuk extends MY_Controller {
 		$_SESSION['excelbesuk']= "asc|member_key|".$cond;
 		echo json_encode($response);
 	}
-	function grid3(){
+	public function grid(){
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
 		$sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'member_key';
@@ -155,7 +155,7 @@ class Besuk extends MY_Controller {
 		$_SESSION['excelbesuk']= "asc|member_key|".$cond;
 		echo json_encode($response);
 	}
-	function coba(){
+	public function excel(){
 		excel('excelbesuk','tblbesuk','besuk/excel');
 	}
 	function form($form,$besukid,$member_key){
@@ -205,18 +205,6 @@ class Besuk extends MY_Controller {
 			    echo json_encode($hasil);
 	            break;
 		}
-	}
-
-	function excel(){
-		$excel = $_SESSION['excelbesuk'];
-		$splitexcel = explode("|",$excel);
-		$sord = $splitexcel[0];
-		$sidx= $splitexcel[1];
-		$where = $splitexcel[2];
-		$data['sql']=$this->db->query("SELECT *,
-		DATE_FORMAT(modifiedon,'%d-%m-%Y') modifiedon
-		FROM tblbesuk " . $where . " ORDER BY $sidx $sord");
-		$this->load->view('besuk/excel',$data);
 	}
 
 }

@@ -19,12 +19,10 @@
 </script>
 <?php
     @$query=("SELECT *, DATE_FORMAT(besukdate,'%d-%m-%Y') besukdate,
-        DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon FROM tblbesuk WHERE besukid=".$besukid." LIMIT 0,1");
+        DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon FROM tblbesuk WHERE besukid=".@$besukid." LIMIT 0,1");
     @$row=queryCustom($query);
-    @$exp1 = explode('-',$row->besukdate);
-    if(count(@$row)>0){
-        @$besukdate = $exp1[1]."/".$exp1[0]."/".$exp1[2];
-    }
+    @$exp1 = explode('-',@$row->besukdate);
+    @$besukdate = $exp1[1]."/".$exp1[0]."/".$exp1[2];
 ?>
     <input type="hidden" name="besukid" value="<?php echo @$row->besukid ?>">
     <div style="margin-bottom:10px">

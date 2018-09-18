@@ -11,6 +11,7 @@
             href:'<?php echo base_url(); ?>gender/add',
             onLoad:function(){
                  url = '<?= base_url() ?>gender/add';
+                 oper="";
             },
             onBeforeDropColumn: function(){
                 $(this).datagrid('disableFilter');
@@ -30,6 +31,7 @@
                 href:'<?php echo base_url(); ?>gender/edit/'+row,
                 onLoad:function(){
                     url = '<?= base_url() ?>gender/edit/'+row;
+                    oper="";
                 }
             });
         }else{

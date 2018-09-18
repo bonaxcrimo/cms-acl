@@ -37,7 +37,10 @@
                 onClickRow:function(index,row){
                 }
             });
-        dgOfferingDeleted.datagrid('enableFilter');
+        dgOfferingDeleted.datagrid('enableFilter', [{
+            field:'aksi',
+            type:'label'
+        }]);
         dgOffering.datagrid('enableFilter', [{
             field:'aksi',
             type:'label'
@@ -215,9 +218,10 @@
             <thead>
                 <tr>
                     <th field="ck" checkbox="true"></th>
-                    <th field="aksi" width="8%">Aksi</th>
-                    <th  field="member_key" width="8%" hidden="true">Member Key</th>
+
+                    <th  field="member_key" hidden="true">Member Key</th>
                     <th field="offering_key" hidden="true"></th>
+                    <th field="aksi" width="60">Aksi</th>
                     <th sortable="true" field="offeringid" width="10%">offeringid</th>
                     <th sortable="true" field="offeringno" width="10%">offeringno</th>
                     <th sortable="true" field="aliasname2" width="10%">aliasname2</th>
