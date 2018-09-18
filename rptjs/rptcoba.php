@@ -71,13 +71,12 @@ require_once 'stimulsoft/helper.php';
 		// viewer.PrintDestination = "pdf";
 		viewer.report = report;
 		viewer.renderHtml("viewerContent");
-		// var userButton = viewer.jsObject.SmallButton("userButton", "My Button", "emptyImage");
-		// userButton.image.src = "https://www.stimulsoft.com/favicon.png";
-		// userButton.action = function () { alert("My Button Event"); }
+
+		// var userButton = viewer.jsObject.SmallButton("userButton", "Close", "emptyImage");
+		// userButton.action = function () { viewer.report.print() }
 
 		// var toolbarTable = viewer.jsObject.controls.toolbar.firstChild.firstChild;
 		// var buttonsTable = toolbarTable.rows[0].firstChild.firstChild;
-		// console.log(buttonsTable.rows[0].firstChild);
 		// var userButtonCell = buttonsTable.rows[0].insertCell(0);
 
 		// userButtonCell.className = "stiJsViewerClearAllStyles";
