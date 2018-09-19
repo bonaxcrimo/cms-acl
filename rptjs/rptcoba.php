@@ -1,7 +1,6 @@
 <?php
 require_once 'stimulsoft/helper.php';
 ?>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,15 +23,15 @@ require_once 'stimulsoft/helper.php';
 		options.toolbar.showViewModeButton = false;
 		var viewer = new Stimulsoft.Viewer.StiViewer(options, "StiViewer", false);
 		//costum componen
-		// StiJsViewer.prototype.InitializePrintMenu = function() {
+		StiJsViewer.prototype.InitializePrintMenu = function() {
 
-	 //        var A = [];
-	 //        A.push(this.Item("PrintWithoutPreview", this.collections.loc.PrintWithoutPreview, "PrintWithoutPreview.png", "PrintWithoutPreview"));
-	 //        var t = this.VerticalMenu("printMenu", this.controls.toolbar.controls.Print, "Down", A);
-	 //        t.action = function(A) {
-	 //            t.changeVisibleState(!1), t.jsObject.postPrint(A.key)
-	 //        }
-	 //    }
+	        var A = [];
+	        A.push(this.Item("PrintWitPreview", this.collections.loc.PrintWithPreview, "PrintWithPreview.png", "PrintWithPreview"));
+	        var t = this.VerticalMenu("printMenu", this.controls.toolbar.controls.Print, "Down", A);
+	        t.action = function(A) {
+	            t.changeVisibleState(!1), t.jsObject.postPrint(A.key)
+	        }
+	    }
 		// Process SQL data source
 		viewer.onBeginProcessData = function (event, callback) {
 			<?php StiHelper::createHandler(); ?>
@@ -64,23 +63,21 @@ require_once 'stimulsoft/helper.php';
 		}
 
 		var vars = getUrlVars();
-		// console.log(vars);
 		report.dictionary.variables.list.forEach(function(item, i, arr) {
 		    if (typeof vars[item.name] != "undefined") item.valueObject = vars[item.name];
 		});
-		// viewer.PrintDestination = "pdf";
 		viewer.report = report;
 		viewer.renderHtml("viewerContent");
 
-		// var userButton = viewer.jsObject.SmallButton("userButton", "Close", "emptyImage");
-		// userButton.action = function () { viewer.report.print() }
+		var userButton = viewer.jsObject.SmallButton("userButton", "Close", "emptyImage");
+		userButton.action = function () { window.open('','_parent','');window.close() }
 
-		// var toolbarTable = viewer.jsObject.controls.toolbar.firstChild.firstChild;
-		// var buttonsTable = toolbarTable.rows[0].firstChild.firstChild;
-		// var userButtonCell = buttonsTable.rows[0].insertCell(0);
+		var toolbarTable = viewer.jsObject.controls.toolbar.firstChild.firstChild;
+		var buttonsTable = toolbarTable.rows[0].firstChild.firstChild;
+		var userButtonCell = buttonsTable.rows[0].insertCell(0);
 
-		// userButtonCell.className = "stiJsViewerClearAllStyles";
-		// userButtonCell.appendChild(userButton);
+		userButtonCell.className = "stiJsViewerClearAllStyles";
+		userButtonCell.appendChild(userButton);
 	</script>
 	</head>
 <body>

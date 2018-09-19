@@ -90,22 +90,5 @@ class Mmenu extends MY_Model
 		return 1;
 	}
 
-	//controller
-	function get_jemaat(){
-		$sql = $this->db->get('tblmenu');
-		return $sql;
-	}
 
-	function get_combo(){
-		$menu=":All;";
-		$sqlmenu = $this->db->get('tblmenu');
-		foreach ($sqlmenu->result() as $key) {
-			$menu=$menu.$key->menuid.":".$key->menuid.";";
-		}
-		$menu=strrev($menu);
-		$menu=substr($menu,1);
-		$menu=strrev($menu);
-		return $menu;
-
-	}
 }
