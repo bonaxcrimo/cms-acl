@@ -3,6 +3,10 @@ Class Mbesuk extends MY_Model{
 	protected $table = 'tblbesuk';
 	public function save($data) {
         $this->db->trans_start();
+        $besukdate=$data['besukdate'];
+        @$exp1 = explode('/',$besukdate);
+		@$besukdate = $exp1[2]."-".$exp1[0]."-".$exp1[1]." ".date("H:i:s");
+		$data['besukdate']=$besukdate;
         $data['modifiedon'] =  date("Y-m-d H:i:s");
         $data['modifiedby'] = $this->session->userdata('username');
         if (isset($data['besukid']) && !empty($data['besukid'])) {
@@ -32,6 +36,10 @@ Class Mbesuk extends MY_Model{
             return true;
         }
     }
+    public function delete($id){
+        $this->db->where(['besukid'=>$id]);
+        return $this->db->delete($this->table);
+    }
     private function _preFormat($data){
     	$fields = ['member_key','besukdate','pembesuk','pembesukdari','remark','besuklanjutan','modifiedon','modifiedby'];
     	$save = [];
@@ -42,43 +50,24 @@ Class Mbesuk extends MY_Model{
     	}
     	return $save;
     }
-	function count($where){
+	public function count($where){
 		$sql = $this->db->query("SELECT besukid FROM tblbesuk " . $where);
         return $sql;
 	}
-	function get($where, $sidx, $sord, $limit, $start){
-		$sql = $this->db->query("SELECT *,
-		DATE_FORMAT(besukdate,'%d-%m-%Y') besukdateview,
-		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedonview
-		FROM tblbesuk " . $where . " ORDER BY $sidx $sord LIMIT $start , $limit");
-		return $sql;
-	}
-	function getM($where, $sidx, $sord, $limit, $start){
+	public function get($where, $sidx, $sord, $limit, $start){
 		$query = "select *,
 		DATE_FORMAT(besukdate,'%d-%m-%Y') besukdate,
 		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon from tblbesuk  " . $where . " ORDER BY $sidx $sord LIMIT $start , $limit";
 		// echo $query;
 		return $this->db->query($query);
 	}
-	function add($tabel,$data){
-		$sql = $this->db->insert($tabel,$data);
-	}
-	function edit($tabel,$data,$id){
-		$query = $this->db->where("besukid",$id);
-		$query = $this->db->update($tabel,$data);
-	}
-	function getwhere($member_key){
+	public function getwhere($member_key){
 		$sql = $this->db->query("SELECT *,
 		DATE_FORMAT(dob,'%d-%m-%Y') dob,
 		DATE_FORMAT(tglbesuk,'%d-%m-%Y') tglbesuk,
 		DATE_FORMAT(baptismdate,'%d-%m-%Y') baptismdate,
 		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon
 		FROM tblmember WHERE member_key ='$member_key' LIMIT 0,1");
-		return $sql;
-	}
-	function del($tabel,$id){
-		$query = $this->db->where("besukid",$id);
-		$sql = $this->db->delete($tabel);
 		return $sql;
 	}
 }

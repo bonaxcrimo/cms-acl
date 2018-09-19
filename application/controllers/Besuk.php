@@ -21,6 +21,10 @@ class Besuk extends MY_Controller {
 	public function set(){
 		$_SESSION['member_key'] = $_GET['member_key'];
 	}
+	/**
+     * Fungsi awal besuk
+     * @AclName Awal besuk
+     */
 	public function index(){
 		$link = base_url()."besuk/gridbesuk";
 		$this->render('besuk/gridbesuk',['link'=>$link]);
@@ -53,6 +57,11 @@ class Besuk extends MY_Controller {
 			$this->load->view('jemaat/gridbesuk2',$data);
 		}
 	}
+
+	/**
+     * Fungsi grid besuk di jemaat
+     * @AclName grid besuk di jemaat
+     */
 	public function gridBesukJemaat($member_key){
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
@@ -85,17 +94,11 @@ class Besuk extends MY_Controller {
 		$sql = $this->mbesuk->count($cond);
 		$total = $sql->num_rows();
 		$offset = ($page - 1) * $rows;
-		$data = $this->mbesuk->getM($cond,$sort,$order,$rows,$offset)->result();
+		$data = $this->mbesuk->get($cond,$sort,$order,$rows,$offset)->result();
 		foreach($data as $row){
-			$view='';
-			$edit='';
-			$del='';
-				$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewBesuk(\'view\',\''.$row->besukid.'\',\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ';
-
-				$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="saveBesuk(\'edit\',\''.$row->besukid.'\',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ';
-
-				$del = '<button id='.$row->member_key.' class="icon-remove" onclick="delBesuk(\'del\','.$row->besukid.',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button>';
-
+			$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewData(\''.$row->besukid.'\')" style="width:16px;height:16px;border:0"></button> ';
+			$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="editData(\''.$row->besukid.'\');" style="width:16px;height:16px;border:0"></button> ';
+			$del = '<button id='.$row->member_key.' class="icon-remove" onclick="deleteData(\''.$row->besukid.'\');" style="width:16px;height:16px;border:0"></button>';
 			$row->aksi =$view.$edit.$del;
 			$row->besukdate=$row->besukdate=="00-00-0000"?"-":$row->besukdate;
 		}
@@ -105,6 +108,10 @@ class Besuk extends MY_Controller {
 		$_SESSION['excelbesuk']= "asc|member_key|".$cond;
 		echo json_encode($response);
 	}
+	/**
+     * Fungsi grid besuk
+     * @AclName grid besuk
+     */
 	public function grid(){
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
@@ -116,7 +123,6 @@ class Besuk extends MY_Controller {
 		if (!empty($filterRules)){
 			$cond = ' where  1=1 ';
 			$filterRules = json_decode($filterRules);
-
 			foreach($filterRules as $rule){
 				$rule = get_object_vars($rule);
 				$field = $rule['field'];
@@ -135,17 +141,11 @@ class Besuk extends MY_Controller {
 		$sql = $this->mbesuk->count($cond);
 		$total = $sql->num_rows();
 		$offset = ($page - 1) * $rows;
-		$data = $this->mbesuk->getM($cond,$sort,$order,$rows,$offset)->result();
+		$data = $this->mbesuk->get($cond,$sort,$order,$rows,$offset)->result();
 		foreach($data as $row){
-			$view='';
-			$edit='';
-			$del='';
-				$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewData(\''.$row->besukid.'\')" style="width:16px;height:16px;border:0"></button> ';
-
-				$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="saveBesuk(\'edit\',\''.$row->besukid.'\',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ';
-
-				$del = '<button id='.$row->member_key.' class="icon-remove" onclick="delBesuk(\'del\','.$row->besukid.',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button>';
-
+			$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewData(\''.$row->besukid.'\')" style="width:16px;height:16px;border:0"></button> ';
+			$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="editData(\''.$row->besukid.'\');" style="width:16px;height:16px;border:0"></button> ';
+			$del = '<button id='.$row->member_key.' class="icon-remove" onclick="deleteData(\''.$row->besukid.'\');" style="width:16px;height:16px;border:0"></button>';
 			$row->aksi =$view.$edit.$del;
 			$row->besukdate=$row->besukdate=="00-00-0000"?"-":$row->besukdate;
 		}
@@ -159,7 +159,7 @@ class Besuk extends MY_Controller {
      * Fungsi add besuk
      * @AclName Tambah besuk
      */
-	public function add(){
+	public function add($member_key=null){
 		$data=[];
 		if($this->input->server('REQUEST_METHOD') == 'POST' ){
 			$data = $this->input->post();
@@ -172,76 +172,72 @@ class Besuk extends MY_Controller {
 		}else{
 			$data = $this->input->post();
 		}
-		$this->load->view('besuk/add',['data'=>$data]);
+		$check=$member_key==null?0:$member_key;
+		$this->load->view('besuk/add',['data'=>$data,'check'=>$check]);
 	}
-	public function delete($id){
-
+	/**
+     * Fungsi edit besuk
+     * @AclName Edit besuk
+     */
+	public function edit($id,$member_key=null){
+		$data = $this->mbesuk->getById('tblbesuk','besukid',$id);
+        if(empty($data)){
+            redirect('besuk');
+        }
+		if($this->input->server('REQUEST_METHOD') == 'POST' ){
+			$data = $this->input->post();
+			$data['besukid'] = $this->input->post('besukid');
+			$cek = $this->_save($data);
+			$status = $cek?"sukses":"gagal";
+			$hasil = array(
+		        'status' => $status
+		    );
+		    echo json_encode($hasil);
+		}
+		$check=$member_key==null?0:$member_key;
+		$this->load->view('besuk/edit',['data'=>$data,'check'=>$check]);
 	}
-	public function edit($id){
-
+	/**
+     * Fungsi delete besuk
+     * @AclName Delete besuk
+     */
+	public function delete($id,$member_key=null){
+		$data = $this->mbesuk->getById('tblbesuk','besukid',$id);
+		if(empty($data)){
+			redirect('besuk');
+		}
+		if($this->input->server('REQUEST_METHOD') == 'POST'){
+			$cek = $this->mbesuk->delete($this->input->post('besukid'));
+			$status = $cek?"sukses":"gagal";
+			$hasil = array(
+		        'status' => $status
+		    );
+		    echo json_encode($hasil);
+		}
+		$check=$member_key==null?0:$member_key;
+		$this->load->view('besuk/delete',['data'=>$data,'check'=>$check]);
 	}
 	private function _save($data){
+		$data = array_map("strtoupper", $data);
         $this->mbesuk->save($data);
     }
 	/**
      * Fungsi view besuk
      * @AclName View besuk
      */
-	public function view($id){
+	public function view($id,$member_key=null){
 		$data = $this->mbesuk->getById('tblbesuk','besukid',$id);
         if(empty($data)){
             redirect('besuk');
         }
-		$this->load->view('besuk/view',['data'=>$data]);
-	}
-	function form($form,$besukid,$member_key){
-		$data["besukid"] = $besukid;
-		$data["member_key"] = $member_key;
-		$data['sql'] = $this->mbesuk->getwhere($member_key);
-		$this->load->view('besuk/'.$form,$data);
+        $check=$member_key==null?0:$member_key;
+		$this->load->view('besuk/view',['data'=>$data,'check'=>$check]);
 	}
 
-	function crud(){
-		@$oper=@$_POST['oper'];
-		$_POST = array_map("strtoupper", $_POST);
-	    @$besukid=@$_POST['besukid'];
-	    @$besukdate = $_POST['besukdate'];
-	    @$exp1 = explode('/',$besukdate);
-		@$besukdate = $exp1[2]."-".$exp1[0]."-".$exp1[1]." ".date("H:i:s");
-		@$data = array(
-			'member_key' => @$_POST['member_key'],
-			'besukdate' => @$besukdate,
-			'pembesuk' => @$_POST['pembesuk'],
-			'pembesukdari' => @$_POST['pembesukdari'],
-			'remark' => @$_POST['remark'],
-			'besuklanjutan' => @$_POST['besuklanjutan'],
-			'modifiedby' => $_SESSION['username'],
-			'modifiedon' => date("Y-m-d H:i:s")
-			);
-	    switch ($oper) {
-	        case 'add':
-				$this->mbesuk->add("tblbesuk",$data);
-				$hasil = array(
-			        'status' => 'sukses'
-			    );
-			    echo json_encode($hasil);
-	            break;
-	        case 'edit':
-				$this->mbesuk->edit("tblbesuk",$data,$besukid);
-				$hasil = array(
-			        'status' => 'sukses'
-			    );
-			    echo json_encode($hasil);
-	            break;
-	         case 'del':
-				$this->mbesuk->del("tblbesuk",$besukid);
-				$hasil = array(
-			        'status' => 'sukses'.$besukid.$oper
-			    );
-			    echo json_encode($hasil);
-	            break;
-		}
-	}
+	/**
+     * Fungsi export excel
+     * @AclName Export excel
+     */
 	public function excel(){
 		excel('excelbesuk','tblbesuk','besuk/excel');
 	}

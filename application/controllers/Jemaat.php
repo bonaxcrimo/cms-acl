@@ -15,7 +15,6 @@ class Jemaat extends MY_Controller {
 			'mserving',
 			'mmenu'
 		]);
-
         $this->load->library('pinyin');
 	}
 
@@ -48,9 +47,6 @@ class Jemaat extends MY_Controller {
 	}
 
 	function view(){
-
-
-
 		$data['sqlgender'] = getParameter('GENDER');
 		$data['sqlpstatus'] =getParameter('PSTATUS');
 

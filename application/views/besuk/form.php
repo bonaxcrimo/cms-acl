@@ -18,12 +18,23 @@
     });
 </script>
 <?php
-    @$exp1 = explode('-',@$data->besukdate);
-    @$besukdate = $exp1[1]."/".$exp1[0]."/".$exp1[2];
+    @$besukdate = Date("m/d/Y",strtotime($data->besukdate));
+    @$member_key = $check==0?@$data->member_key:$check;
 ?>
 <input type="hidden" name="besukid" value="<?php echo @$data->besukid ?>">
     <div style="margin-bottom:10px">
-        <input name="member_key" id="member" class="easyui-textbox member"  value="<?= @$data->member_key ?>" labelPosition="left"  label="member:" style="width:300px">
+        <?php
+            if($check==0){
+        ?>
+        <input name="member_key" id="member" class="easyui-textbox member"  value="<?= @$member_key ?>" labelPosition="left"  label="member:" style="width:300px">
+        <?php
+            }else{
+        ?>
+        <input name="member_key" type="hidden" value="<?= @$member_key ?>">
+        <?php
+            }
+        ?>
+
     </div>
     <div style="margin-bottom:10px">
         <input name="besukdate" class="easyui-datebox" labelPosition="left"  value="<?= @$besukdate ?>" label="besukdate:" style="width:300px">

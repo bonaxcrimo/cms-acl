@@ -42,12 +42,28 @@
             href:'<?php echo base_url(); ?>besuk/add',
             onLoad:function(){
                  url = '<?= base_url() ?>besuk/add';
+                 oper="";
             }
         });
     }
+    function editData(besukid){
+        var row = besukid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').besukid:besukid;
+        if (row!=''){
+            $('#dlgSaveBesuk').dialog({
+                closed:false,
+                title:'Edit Data',
+                href:'<?php echo base_url(); ?>besuk/edit/'+row,
+                onLoad:function(){
+                    url = '<?= base_url() ?>besuk/edit/'+row;
+                    oper="";
+                }
+            });
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
     function viewData(besukid){
         var row = besukid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').besukid:besukid;
-        console.log(row);
         if (row!=''){
             $('#dlgView').dialog({
                 closed:false,
@@ -59,22 +75,21 @@
              $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
         }
     }
-    function callSubmit(){
-        console.log(url+"dasda");
-        $('#fm').form('submit',{
-            url: url,
-            onSubmit: function(){
-                return $(this).form('validate');
-            },
-            success: function(result){
-                console.log(result);
-                // $('#dlgSaveBesuk').dialog('close');
-                // $('#dgBesuk').datagrid('reload');
-
-            },error:function(error){
-                 console.log($(this).serialize());
-            }
-        });
+    function deleteData(besukid){
+        var row = besukid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').besukid:besukid;
+        if (row!=''){
+            $('#dlgSaveBesuk').dialog({
+                closed:false,
+                title:'Delete data',
+                href:'<?php echo base_url(); ?>besuk/delete/'+row,
+                onLoad:function(){
+                    url = '<?= base_url() ?>besuk/delete/'+row;
+                    oper="del";
+                }
+            });
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
     }
     function saveData(){
         if(oper=="del"){
@@ -87,75 +102,24 @@
             callSubmit();
         }
     }
-    function saveBesuk(form,besukid,member_key){
-        page="<?php echo base_url(); ?>besuk/form/"+form+"/"+besukid+"/"+member_key+"/0";
-         var opr = form;
-        if(opr=="add"){
-            var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/add.png'><ul class='title'>Add Data</ul>";
-        }
-        else{
-            var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/edit.png'><ul class='title'>Edit Data</ul>";
-        }
-         $("#dlgSaveBesuk").dialog({
-            closed:false,
-            title:oprtr,
-            href:page,
-            height:350,
-            resizable:true,
-            autoResize:true
-        });
-    }
-    function saveProsesBesuk(){
-            var pembesuk = $("#formdatabesuk input[name=pembesuk]").val();
-            if(pembesuk==""){
-                $("#formdatabesuk input[name=pembesuk]").css("background-color","rgb(255,128,192)");
-                $("#formdatabesuk span[id=tip]").html("<img class='icon' src='<?php echo base_url(); ?>libraries/icon/16x16/warning.png'>");
-                $("#formdatabesuk input[name=pembesuk]").focus();
-                return false;
-            }
-            return $.ajax({
-                type: $("#formdatabesuk").attr("method"),
-                url: $("#formdatabesuk").attr("action"),
-                enctype: 'multipart/form-data',
-                data : $("#formdatabesuk").serialize(),
-                dataType: "json",
-                async: true,
-                success: function(data) {
-                    $("#dlgSaveBesuk").dialog('close');
-                    $("#dgBesuk").datagrid('reload');
-                }
-            }).responseText
-    }
-    function delBesuk(form,besukid,member_key){
-        page="<?php echo base_url(); ?>besuk/form/"+form+"/"+besukid+"/"+member_key+"/0";
-        $("#dlgDeleteBesuk").dialog({
-            closed:false,
-            title:"Delete Data",
-            href:page,
-            height:350,
-            resizable:true,
-            autoResize:true
-        });
-    }
-    function deleteProsesBesuk(){
-        $.messager.confirm('Confirm','Yakin ingin menghapus data?',function(r){
-        if (r){
-               return $.ajax({
-                type: $("#formdatabesuk").attr("method"),
-                url: $("#formdatabesuk").attr("action"),
-                enctype: 'multipart/form-data',
-                data : $("#formdeletedatabesuk").serialize(),
-                dataType: "json",
-                async: true,
-                success: function(data) {
-                    console.log(data);
-                    $("#dlgDeleteBesuk").dialog('close');
-                    $("#dgBesuk").datagrid('reload');
-                }
-                }).responseText
+    function callSubmit(){
+        $('#fm').form('submit',{
+            url: url,
+            onSubmit: function(){
+                return $(this).form('validate');
+            },
+            success: function(result){
+                $('#dlgSaveBesuk').dialog('close');
+                $('#dgBesuk').datagrid('reload');
+
+            },error:function(error){
+                 console.log($(this).serialize());
             }
         });
     }
+
+
+
 </script>
 <div class="easyui-tabs" style="height:auto">
     <div title="Data Besuk" style="padding:10px">
@@ -188,12 +152,6 @@
         <div id="dlg-buttons-besuk">
             <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px">Proses</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgSaveBesuk').dialog('close');$('#dlgSaveBesuk').html('')" style="width:90px">Cancel</a>
-        </div>
-        <div id="dlgDeleteBesuk" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-besuk1'">
-        </div>
-        <div id="dlg-buttons-besuk1">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="deleteProsesBesuk()" style="width:90px">Proses</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
         </div>
     </div>
 </div>
