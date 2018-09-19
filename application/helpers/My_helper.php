@@ -27,6 +27,11 @@ function hakakses($x){
     $x = $CI->mmenutop->get_menuid($x);
     return $x;
 }
+function getRoles(){
+    $db = get_instance()->db;
+    $role = $db->get('tblroles')->result();
+    echo json_encode($role);
+}
 function excel($nama_session,$tabel,$route){
     $CI = get_instance();
     $excel = $_SESSION[$nama_session];

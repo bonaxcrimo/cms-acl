@@ -16,6 +16,7 @@ class User extends MY_Controller {
 		$link = base_url()."user/grid";
 		$this->render('user/griduser',['link'=>$link]);
 	}
+
     public function getRoles(){
         $role = $this->db->get('tblroles')->result();
         echo json_encode($role);
@@ -151,72 +152,6 @@ class User extends MY_Controller {
     private function _save($data){
         $this->muser->save($data);
     }
-
-	function crud(){
-		@$oper=@$_POST['oper'];
-	    @$userpk=@$_POST['userpk'];
-	    if($_POST['password']!=""){
-			@$data = array(
-				'userid' => @$_POST['userid'],
-				'username' => @$_POST['username'],
-				'userlevel' => @$_POST['userlevel'],
-				'password' => md5(@$_POST['password']),
-				'password1' => md5(@$_POST['password1']),
-				'authorityid' => @$_POST['authorityid'],
-				'dashboard' => @$_POST['dashboard'],
-				'modifiedby' => $_SESSION['userid'],
-				'modifiedon' => date("Y-m-d H:i:s")
-			);
-		}
-		else{
-			@$data = array(
-				'userid' => @$_POST['userid'],
-				'username' => @$_POST['username'],
-				'userlevel' => @$_POST['userlevel'],
-				'authorityid' => @$_POST['authorityid'],
-				'dashboard' => @$_POST['dashboard'],
-				'modifiedby' => $_SESSION['userid'],
-				'modifiedon' => date("Y-m-d H:i:s")
-			);
-		}
-	    switch ($oper) {
-	        case 'add':
-				$userpk = $this->muser->add("tbluser",$data);
-				$this->musermenu->addusermenu($userpk);
-				$hasil = array(
-			        'status' => 'sukses'
-			    );
-			    echo json_encode($hasil);
-	            break;
-	        case 'edit':
-				$this->muser->edit("tbluser",$data,$userpk);
-				$hasil = array(
-			        'status' => 'sukses'
-			    );
-			    echo json_encode($hasil);
-	            break;
-	         case 'del':
-				$this->muser->del("tbluser",$userpk);
-				$this->musermenu->delusermenu($userpk);
-				$hasil = array(
-			        'status' => 'sukses'
-			    );
-			    echo json_encode($hasil);
-	            break;
-	        default :
-	        	$hasil = array(
-			        'status' => 'Not Operation'
-			    );
-			    echo json_encode($hasil);
-	           break;
-		}
-	}
-
-	function generate($userpk){
-		$this->musermenu->delusermenu($userpk);
-		$this->musermenu->addusermenu($userpk);
-		echo "sukses";
-	}
 
 
 }

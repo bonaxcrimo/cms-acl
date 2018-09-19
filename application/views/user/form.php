@@ -21,7 +21,7 @@
 </div> -->
 <div style="margin-bottom: 10px;">
         <input class="easyui-combobox" id="cc" name="user_roles[]" style="width:100%;" data-options="
-                    url:'<?= base_url() ?>/user/getRoles',
+                    url:'<?= base_url() ?>user/getRoles',
                     method:'get',
                     valueField:'roleid',
                     textField:'rolename',

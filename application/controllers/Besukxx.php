@@ -140,7 +140,7 @@ class Besuk extends MY_Controller {
 			$view='';
 			$edit='';
 			$del='';
-				$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewData(\''.$row->besukid.'\')" style="width:16px;height:16px;border:0"></button> ';
+				$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewBesuk(\'view\',\''.$row->besukid.'\',\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ';
 
 				$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="saveBesuk(\'edit\',\''.$row->besukid.'\',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ';
 
@@ -155,44 +155,8 @@ class Besuk extends MY_Controller {
 		$_SESSION['excelbesuk']= "asc|member_key|".$cond;
 		echo json_encode($response);
 	}
-	/**
-     * Fungsi add besuk
-     * @AclName Tambah besuk
-     */
-	public function add(){
-		$data=[];
-		if($this->input->server('REQUEST_METHOD') == 'POST' ){
-			$data = $this->input->post();
-			$cek = $this->_save($data);
-			$status = $cek?"sukses":"gagal";
-			$hasil = array(
-		        'status' => $status
-		    );
-		    echo json_encode($hasil);
-		}else{
-			$data = $this->input->post();
-		}
-		$this->load->view('besuk/add',['data'=>$data]);
-	}
-	public function delete($id){
-
-	}
-	public function edit($id){
-
-	}
-	private function _save($data){
-        $this->mbesuk->save($data);
-    }
-	/**
-     * Fungsi view besuk
-     * @AclName View besuk
-     */
-	public function view($id){
-		$data = $this->mbesuk->getById('tblbesuk','besukid',$id);
-        if(empty($data)){
-            redirect('besuk');
-        }
-		$this->load->view('besuk/view',['data'=>$data]);
+	public function excel(){
+		excel('excelbesuk','tblbesuk','besuk/excel');
 	}
 	function form($form,$besukid,$member_key){
 		$data["besukid"] = $besukid;
@@ -242,7 +206,5 @@ class Besuk extends MY_Controller {
 	            break;
 		}
 	}
-	public function excel(){
-		excel('excelbesuk','tblbesuk','besuk/excel');
-	}
+
 }

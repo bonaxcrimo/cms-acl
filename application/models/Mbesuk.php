@@ -1,6 +1,47 @@
-<?php
+<?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 Class Mbesuk extends MY_Model{
+	protected $table = 'tblbesuk';
+	public function save($data) {
+        $this->db->trans_start();
+        $data['modifiedon'] =  date("Y-m-d H:i:s");
+        $data['modifiedby'] = $this->session->userdata('username');
+        if (isset($data['besukid']) && !empty($data['besukid'])) {
+            $id = $data['besukid'];
+            unset($data['besukid']);
+            $save = $this->_preFormat($data); //format the fields
 
+            $result = $this->update($save, $id,'besukid');
+            if($result === true ){
+            } else {
+                $this->db->trans_rollback();
+            }
+        } else {
+        	$save = $this->_preFormat($data);//format untuk field
+            $result = $this->insert($save);
+            if($result === true){
+
+            } else {
+                $this->db->trans_rollback();
+            }
+        }
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            $this->db->trans_commit();
+            return true;
+        }
+    }
+    private function _preFormat($data){
+    	$fields = ['member_key','besukdate','pembesuk','pembesukdari','remark','besuklanjutan','modifiedon','modifiedby'];
+    	$save = [];
+    	foreach($fields as $val){
+    		if(isset($data[$val])){
+    			$save[$val] = $data[$val];
+    		}
+    	}
+    	return $save;
+    }
 	function count($where){
 		$sql = $this->db->query("SELECT besukid FROM tblbesuk " . $where);
         return $sql;
