@@ -33,7 +33,7 @@
     function viewData(roleid){
         var row = roleid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').roleid:roleid;
         if (row!=''){
-            $('#dlg').dialog({
+            $('#dlgView').dialog({
                 closed:false,
                 width:'400px',
                 title:'View Data',
@@ -46,7 +46,7 @@
     function deleteData(roleid){
          var row = roleid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').roleid:roleid;
          if (row!=''){
-            $('#dlgView').dialog({
+            $('#dlg').dialog({
                 closed:false,
                 title:'Delete data',
                 href:'<?php echo base_url(); ?>roles/delete/'+row,
@@ -68,14 +68,14 @@
         return data;
     }
     function callSubmit(){
+        var data = oper=="del"?$("#fm :input[value!='']").serialize():$("#fm :input[value!='']").serialize()+getChecked();
         $.ajax({
             type: 'POST',
             url: url,
-            data : $("#fm :input[value!='']").serialize()+getChecked(),
+            data : data,
             dataType: "text",
             async: true,
             success: function(result) {
-                console.log(result);
                 var result = JSON.parse(result);
                 if(result.error==0){
                     $('#dlg').dialog('close');
@@ -88,7 +88,6 @@
                         });
                         $.messager.alert('Error',htmlerror,'error');
                     }
-
                 }
             },error:function(err){
                 console.log(err);

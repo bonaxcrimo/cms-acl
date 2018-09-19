@@ -18,7 +18,7 @@
                     $(this).datagrid('selectRow',index);
                  },
                  onLoadSuccess:function(data){
-
+                    var acos="";
                     if(oper!="add"){
                         var acos = "<?= @$data->acos ?>";
                     }
