@@ -64,7 +64,7 @@ class Jemaat extends MY_Controller {
 		$data['persekutuan'] =getComboParameter('PERSEKUTUAN');
 		$data['rayon'] = getComboParameter('RAYON');
 
-		$this->render('jemaat/gridjemaat2',$data);
+		$this->render('jemaat/gridjemaat',$data);
 	}
 	function grid3(){
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;

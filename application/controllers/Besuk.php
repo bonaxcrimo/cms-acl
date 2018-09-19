@@ -54,7 +54,7 @@ class Besuk extends MY_Controller {
 			$data['kebaktian'] = getComboParameter('KEBAKTIAN');
 			$data['persekutuan'] =getComboParameter('PERSEKUTUAN');
 			$data['rayon'] = getComboParameter('RAYON');
-			$this->load->view('jemaat/gridbesuk2',$data);
+			$this->load->view('jemaat/gridbesuk',$data);
 		}
 	}
 

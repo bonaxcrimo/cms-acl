@@ -1,376 +1,435 @@
+<script src="<?= base_url() ?>libraries/js/jquery-hanzi2pinyin.all.js"></script>
+<!-- <input type="text" id="chinese">
+<p id="hasilpinyin"></p> -->
 <script type="text/javascript">
-    var acl = "<?php echo $acl; ?>";
-
-    $(document).ready(function(){
-        $(".ui-th-column").css("background-color","#dddddd");
-    });
-
-    function fontColorFormat(cellvalue, options, rowObject) {
-        var cellHtml = "<span style='font-size:13px;' originalValue='" + cellvalue + "'>" + cellvalue + "</span>";
-        return cellHtml;
-    }
-
-    $(document).ready(function(){
-        $grid = $("#gridjemaat");
-        $grid.jqGrid({
-            url:'<?php echo base_url()?>jemaat/grid/<?php echo @$statusid ?>/<?php echo @$acl; ?>',
-            datatype: "json",
-            height: 250,
-            autowidth: true,
-            colNames:[
-            'recno',
-            'aksi',
-            'photo',
-            'statusid',
-            'grp_pi',
-            'relationno',
-            'memberno',
-            'membername',
-            'chinesename',
-            'phoneticname',
-            'aliasname',
-            'tel_h',
-            'tel_o',
-            'handphone',
-            'address',
-            'add2',
-            'city',
-            'genderid',
-            'pstatusid',
-            'pob',
-            'dob',
-            'umur',
-            'bloodid',
-            'kebaktianid',
-            'persekutuanid',
-            'rayonid',
-            'serving',
-            'fax',
-            'email',
-            'website',
-            'baptismdocno',
-            'baptis',
-            'baptismdate',
-            'remark',
-            'relation',
-            'oldgrp',
-            'kebaktian',
-            'jlhbesuk',
-            'tglbesukterakhir',
-            'pembesukdari',
-            'remark',
-            'modifiedby',
-            'modifiedon'
-            ],
-            colModel:[
-                {name:'recno', index:'recno',sortable:false, search: false},
-                {name:'aksi', index:'aksi', width:70, fixed:true, sortable:false, search: false},
-                {name:'photofile', index:'photofile', width:65, fixed:true, stype :'select', searchoptions:{sopt:['eq'], value:":semua;ada:ada;kosong:kosong"}},
-                {name:'statusid', index:'statusid', width:50, fixed:true, stype: 'select', searchoptions:{sopt:['eq'], value:"<?php echo $statusidv ?>"}},
-                {name:'grp_pi', index:'grp_pi', width:60, fixed:true},
-                {name:'relationno', index:'relationno', width:90, fixed:true},
-                {name:'memberno', index:'memberno', width:90, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'membername', index:'membername', width:110, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'chinesename', index:'chinesename', width:100, fixed:true, searchoptions:{sopt:['cn']}, formatter:fontColorFormat},
-                {name:'phoneticname', index:'phoneticname', width:100, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'aliasname', index:'aliasname', width:100, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'tel_h', index:'tel_h', width:90, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'tel_o', index:'tel_o', width:90, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'handphone', index:'handphone', width:90, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'address', index:'address', width:90, fixed:true, edittype: "textarea",searchoptions:{sopt:['cn']}},
-                {name:'add2', index:'add2', width:90, fixed:true, edittype: "textarea", searchoptions:{sopt:['cn']}},
-                {name:'city', index:'city', width:90, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'genderid', index:'genderid', width:90, fixed:true, stype: 'select', searchoptions:{sopt:['eq'], value:"<?php echo $gender ?>"}},
-                {name:'pstatusid', index:'pstatusid', width:90, fixed:true, stype: 'select', searchoptions:{sopt:['eq'], value:"<?php echo $pstatus ?>"}},
-                {name:'pob', index:'pob', width:90, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'dob', index:'dob', width:90, fixed:true},
-                {name:'umur', index:'umur', width:90, fixed:true, searchoptions:{sopt:['eq']}},
-                {name:'bloodid', index:'bloodid', width:90, fixed:true, stype: 'select', searchoptions:{sopt:['eq'], value:"<?php echo $blood ?>"}},
-                {name:'kebaktianid', index:'kebaktianid', width:90, fixed:true, stype: 'select', searchoptions:{sopt:['eq'],value:"<?php echo $kebaktian ?>"}},
-                {name:'persekutuanid', index:'persekutuanid', width:90, fixed:true, stype: 'select', searchoptions:{sopt:['eq'],value:"<?php echo $persekutuan ?>"}},
-                {name:'rayonid', index:'rayonid', width:90, fixed:true, stype: 'select', searchoptions:{sopt:['eq'],value:"<?php echo $rayon ?>"}},
-                {name:'serving', index:'serving', width:90, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'fax', index:'fax', width:90, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'email', index:'email', width:90, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'website', index:'website', width:90, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'baptismdocno', index:'baptismdocno', width:90, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'baptis', index:'baptis', width:90, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'baptismdate', index:'baptismdate', width:90, fixed:true},
-                {name:'remark', index:'remark', width:90, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'relation', index:'relation', width:90, fixed:true, searchoptions:{sopt:['cn']}, formatter:fontColorFormat},
-                {name:'oldgrp', index:'oldgrp', width:90, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'kebaktian', index:'kebaktian', width:90, fixed:true, searchoptions:{sopt:['cn']}},
-             //   {name:'tglbesuk', index:'tglbesuk', width:90, fixed:true},
-                {name:'jlhbesuk', index:'jlhbesuk', width:90, fixed:true},
-                {name:'tglbesukterakhir', index:'tglbesukterakhir', width:90, fixed:true},
-                {name:'teambesuk', index:'teambesuk', width:90, fixed:true, searchoptions:{sopt:['cn']}, formatter:fontColorFormat},
-                {name:'description', index:'description', width:90, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'modifiedby', index:'modifiedby', width:90, fixed:true, searchoptions:{sopt:['cn']}},
-                {name:'modifiedon', index:'modifiedon', width:130, fixed:true}
-            ],
-            rowNum:10,
-            rowList : [10,20,30,50],
-            loadonce:false,
-            mtype: "POST",
-            rownumbers: true,
-            rownumWidth: 40,
-            gridview: true,
-            pager: '#pgridjemaat',
-            enctype: "multipart/form-data",
-            viewrecords: true,
-            sortable: true,
-            editurl: "<?php echo base_url()?>jemaat/crud",
-            caption: "Data Jemaat",
-            altRows:true,
-            altclass:'myAltRowClass',
-            toolbar: [true,"top"],
-            onSelectRow: function(rowId) {
-                var rowData = jQuery(this).getRowData(rowId);
-                var recno = rowData.recno;
-                var relationno = rowData.relationno;
-                relasi(relationno);
-                besuk(recno);
-            },
-            loadComplete: function() {
-            var ids = $grid.jqGrid('getDataIDs');
-                if (ids) {
-                    var stra = "<?php echo $bgsortira?>";
-                    var strd = "<?php echo $bgsortird?>";
-                    var sortName = $grid.jqGrid('getGridParam','sortname');
-                    var sortOrder = $grid.jqGrid('getGridParam','sortorder');
-                    for (var i=0;i<ids.length;i++) {
-                        $grid.jqGrid('setCell', ids[i], sortName, '', '',
-                                    {style:(sortOrder==='asc'?'background:'+stra+';':
-                                                              'background:'+strd+';')});
-                    }
-                }
-            }
-        });
-
-        $('#t_' + $.jgrid.jqID($grid[0].id)).append($("<div id='resetFilterOptions'><span id='resetFilterOptions'><i class='ui-icon-plus'></i> Clear Filter</span></div>"));
-
-        $grid.jqGrid('filterToolbar',{
-            stringResult: true,
-            searchOnEnter : false
-        });
-
-        $grid.navGrid('#pgridjemaat',{
-            edit:false,
-            add:false,
-            del:false,
-            view: false,
-            search:true//,
-            //refreshtext: 'Reload&nbsp;&nbsp;',
-            //searchtext: 'Find&nbsp;&nbsp;'
-        }
-        ,{}
-        ,{}
-        ,{}
-        ,{
-            multipleSearch: true,
-            multipleGroup:true,
-            caption:"Delete&nbsp;&nbsp;"
-        });
-        $grid.navButtonAdd('#pgridjemaat',{
-            caption:"Delete&nbsp;&nbsp;",
-            title : "Del",
-            id:"deljemaat",
-            buttonicon:"ui-icon-trash",
-            onClickButton: function(){
-                var recno = jQuery("#gridjemaat").jqGrid('getGridParam','selrow');
-                if(recno != null){
-                    del("del",recno,"formjemaat");
-                }
-                else{
-                    alert("Pilih Row")
-                }
-            },
-            position :'first'
-        })
-        .navButtonAdd('#pgridjemaat',{
-            caption:"Edit&nbsp;&nbsp;",
-            title:"Edit",
-            id:"editjemaat",
-            buttonicon:"ui-icon-pencil",
-            onClickButton: function(){
-                var recno = jQuery("#gridjemaat").jqGrid('getGridParam','selrow');
-                if(recno != null){
-                    save("edit",recno,"formjemaat",null);
-                }
-                else{
-                    alert("Pilih Row")
-                }
-            },
-            position :'first'
-        })
-        .navButtonAdd('#pgridjemaat',{
-            caption:"Add&nbsp;&nbsp;",
-            title:"Add",
-            id:"addjemaat",
-            buttonicon:"ui-icon-plus",
-            onClickButton: function(){
-                save("add",null,"formjemaat","<?php echo @$statusid ?>");
-            },
-            position :'first'
-        })
-        .navButtonAdd('#pgridjemaat',{
-            caption:"View&nbsp;&nbsp;",
-            title:"View",
-            id:"viewjemaat",
-            buttonicon:"ui-icon-document",
-            onClickButton: function(){
-                var recno = jQuery("#gridjemaat").jqGrid('getGridParam','selrow');
-                if(recno != null){
-                    view("view",recno,"formjemaat");
-                }
-                else{
-                    alert("Pilih Row")
-                }
-            },
-            position :'first'
-        })
-        .navButtonAdd('#pgridjemaat',{
-           caption:"Excel&nbsp;&nbsp;",
-           title : "Excel",
-           id: "exceljemaat",
-           buttonicon:"ui-icon-shuffle",
-           onClickButton: function(){
-                excel();
-           }
-        })
-        .navButtonAdd('#pgridjemaat',{
-           caption:"Hp Excel&nbsp;&nbsp;",
-           title : "Excel",
-           id: "hpexceljemaat",
-           buttonicon:"ui-icon-shuffle",
-           onClickButton: function(){
-                hpexcel();
-           }
-        })
-        .navButtonAdd('#pgridjemaat',{
-           caption:"Hp Text&nbsp;&nbsp;",
-           title : "Excel",
-           id: "hptextjemaat",
-           buttonicon:"ui-icon-shuffle",
-           onClickButton: function(){
-                hptext();
-           }
-        })
-        .navButtonAdd('#pgridjemaat',{
-           caption:"Report per Rayon&nbsp;&nbsp;",
-           title : "Report per Rayon",
-           id: "exceljemaat",
-           buttonicon:"ui-icon-shuffle",
-           onClickButton: function(){
-                excel();
-           }
-        })
-
-        .navButtonAdd('#pgridjemaat',{
-           caption:"Crt R",
-           title : "Creat Relation",
-           id: "creatrelasijemaat",
-           buttonicon:"ui-icon-arrowthick-2-e-w",
-           onClickButton: function(){
-                $.ajax({
-                    url:"<?php echo base_url(); ?>jemaat/creatrelation/",
-                    success:function(data)
-                    {
-                        $('#gridjemaat').trigger('reloadGrid');
-                        alert("Silahkan Pilih Jemaat Untuk Membuat Relasi");
-                    }
-                });
-           }
-        });
-
-        if(acl.substr(0,1)==0){//disable view
-            $('#viewjemaat').addClass('ui-state-disabled');
-        }
-        if(acl.substr(1,1)==0){//disable add
-            $('#addjemaat').addClass('ui-state-disabled');
-        }
-        if(acl.substr(2,1)==0){//disable edit
-            $('#editjemaat').addClass('ui-state-disabled');
-        }
-        if(acl.substr(3,1)==0){//disable del
-            $('#deljemaat').addClass('ui-state-disabled');
-        }
-        if(acl.substr(6,1)==0){//disable export
-            $('#exceljemaat').addClass('ui-state-disabled');
-            $('#hpexceljemaat').addClass('ui-state-disabled');
-            $('#hptextjemaat').addClass('ui-state-disabled');
-        }
-
-        $("#resetFilterOptions").click(function(){
-            $("#searchText").val("");
-            $('input[id*="gs_"]').val("");
-            $('select[id*="gs_"]').val("ALL");
-            $("#gridjemaat").jqGrid('setGridParam', { search: false, postData: { "filters": ""} }).trigger("reloadGrid");
+    var temp=-1;
+    $('#chinese').bind('keyup change',function(){
+        $('#chinese').hanzi2pinyin({
+            target: '#hasilpinyin',
+            'case': 'upper',
+            hyphen: ' ',
+            punctuation_marks: 'remove',
+            fullwidth_chars: 'replace',
+            tones: 'none'
         });
     });
-
-    $(document).ready(function(){
-
-        datacreatrelasi();
-
-        $("#selectboxid").live('click',function(){
-            if($(this).is(":checked")){
-                var recno = ($(this).val());
-                return $.ajax({
-                    url:"<?php echo base_url(); ?>jemaat/simpan_relation/"+recno,
-                    success:function(data)
-                    {
-                        $('#gridcreatrelasi').trigger('reloadGrid');
+    var startTime = Date.now();
+     $(function(){
+        var dg = $("#dgJemaat").datagrid(
+            {
+                remoteFilter:true,
+                pagination:true,
+                rownumbers:true,
+                fitColumns:true,
+                remoteSort:true,
+                singleSelect:true,
+                checkOnSelect: false,
+                selectOnCheck: false,
+                clientPaging: false,
+                autoResize:true,
+                url:"<?= base_url() ?>jemaat/grid3",
+                method:'get',
+                onClickRow:function(index,row){
+                    var relationno = row.relationno;
+                    relasi(relationno);
+                    var member_key = row.member_key;
+                    besuk(member_key);
+                 },onLoadSuccess:function(data){
+                    var opts = $(this).datagrid('options');
+                    var optLength = opts.filterRules.length;
+                    if(optLength>0){
+                        $("#removeAll").find('span.icon-remove').removeClass('icon-remove').addClass('icon-cancel');
+                    }else{
+                        $("#removeAll").find('span.icon-cancel').removeClass('icon-cancel').addClass('icon-remove');
                     }
-                 }).responseText
-            }
-        });
-        $(".btnview").live('click',function(){
-            recno = $(this).attr("id");
-            view("view",recno,"formjemaat");
-        });
-        $(".btnedit").live('click',function(){
-            recno = $(this).attr("id");
-            save("edit",recno,"formjemaat");
-        });
-        $(".btndel").live('click',function(){
-            recno = $(this).attr("id");
-            del("del",recno,"formjemaat");
-        });
-        $("#btnzoom").live('click',function(){
-            photofile=$(this).attr("fimage");
-            $('#foto').html('<img width="200" src="<?php echo base_url(); ?>libraries/img/loading.gif">');
-            $('#foto').html('<img width="200" src="<?php echo base_url(); ?>uploads/medium_'+photofile+'">');
-            $("#foto").dialog({
-                top:50,
-                height: 'auto',
-                width: 'auto',
-                modal:false
+                 }
             });
-        });
-    });
 
-    function view(form,id,formname){
-        page="<?php echo base_url(); ?>jemaat/form/"+form+"/"+id+"/"+formname;
-        $('#formInput').html('<img src="<?php echo base_url(); ?>libraries/img/loading.gif">').load(page);
-        $("#formInput").dialog({
-            top:10,
-            width:'auto',
-            height:500,
-            modal:false,
-            title:"<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/edit.png'><ul class='title'>View Data</ul>",
+        // dg.datagrid('options').loadMsg = 'other message';
+        dg.datagrid('options').rowHeight = 40;
+        for(var i=0; i<dg.datagrid('getRows').length; i++){
+            dg.datagrid('refreshRow', i);
+        }
+         dg.datagrid('getPanel').panel('panel').attr('tabindex',1).bind('keydown',function(e){
+
+            switch(e.keyCode){
+                case 38:
+                    var selected = dg.datagrid('getSelected');
+                    if(selected){
+                        var index = dg.datagrid('getRowIndex',selected);
+                        dg.datagrid('selectRow',index-1);
+                    }else{
+                        dg.datagrid('selectRow',0);
+                    }
+                break;
+                case 40:
+                var selected = dg.datagrid('getSelected');
+
+                    if(selected){
+                        var index = dg.datagrid('getRowIndex',selected);
+                        if(temp!=index){
+                            dg.datagrid('selectRow',index+1);
+
+                            console.log(index+"="+temp);
+                        }
+                        temp=index;
+
+                    }else{
+                        dg.datagrid('selectRow',0);
+                    }
+                break;
+            }
+        });
+        var pager = dg.datagrid('getPager');    // get the pager of datagrid
+        pager.pagination({
             buttons:[{
-                html:"<img class='icon' src='<?php echo base_url(); ?>libraries/icon/16x16/cancel.png'>Cancel",
-                click:function(){
-                    $(this).dialog('close');
+                iconCls:'icon-add',
+                handler:function(){
+                    save("add",null,"formjemaat","<?php echo @$statusid ?>");
                 }
+            },{
+                iconCls:'icon-edit',
+                handler:function(){
+                   var recno = $('#dgJemaat').datagrid('getSelected');
+
+                    if(recno!=null){
+                        save("edit",recno.member_key,"formjemaat",null);
+                    }else{
+                         $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+                    }
+                }
+            },{
+                iconCls:'icon-remove',
+                handler:function(){
+                    var recno = $('#dgJemaat').datagrid('getSelected');
+                    if(recno.member_key!=null){
+                        del("del",recno.member_key,"formjemaat");
+                    }else{
+                         $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+                    }
+                }
+            },{
+                text:'Export Excel',
+                iconCls:'icon-print',
+                handler:function(){
+                   excel();
+                }
+            },{
+                text:'Hp Excel',
+                iconCls:'icon-print',
+                handler:function(){
+                   hpexcel();
+                }
+            },{
+                text:'Hp Text',
+                iconCls:'icon-print',
+                handler:function(){
+                   hptext();
+                }
+            },{
+                text:'Create Relation',
+                iconCls:'icon-mini-add',
+                handler:function(){
+                    $("#dlgViewRelation").dialog({
+                        closed:false,
+                        title:'Create Relation',
+                        resizable:true,autoResize:true
+                    });
+                }
+
             }]
         });
+        dg.datagrid('enableFilter', [{
+            field:'member_key',
+            type:'label',
+            hidden:true
+        },{
+            field:'aksi',
+            type:'label'
+        },{
+            field:'blood_key',
+            type:'combobox',
+            options:{
+                    panelHeight:'auto',
+                    data:[<?= $blood ?>],
+                    onChange:function(value){
+                        if (value == ''){
+                            dg.datagrid('removeFilterRule', 'blood_key');
+                        } else {
+                            dg.datagrid('addFilterRule', {
+                                field: 'blood_key',
+                                op: 'equal',
+                                value: value
+                            });
+                        }
+                        dg.datagrid('doFilter');
+                    }
+                }
+        },{
+            field:'kebaktian_key',
+            type:'combobox',
+            options:{
+                    panelHeight:'auto',
+                    data:[<?= $kebaktian ?>],
+                    onChange:function(value){
+                        if (value == ''){
+                            dg.datagrid('removeFilterRule', 'kebaktian_key');
+                        } else {
+                            dg.datagrid('addFilterRule', {
+                                field: 'kebaktian_key',
+                                op: 'equal',
+                                value: value
+                            });
+                        }
+                        dg.datagrid('doFilter');
+                    }
+                }
+        },{
+            field:'rayon_key',
+            type:'combobox',
+            options:{
+                    panelHeight:'auto',
+                    data:[<?= $rayon ?>],
+                    onChange:function(value){
+                        if (value == ''){
+                            dg.datagrid('removeFilterRule', 'rayon_key');
+                        } else {
+                            dg.datagrid('addFilterRule', {
+                                field: 'rayon_key',
+                                op: 'equal',
+                                value: value
+                            });
+                        }
+                        dg.datagrid('doFilter');
+                    }
+                }
+        },{
+            field:'persekutuan_key',
+            type:'combobox',
+            options:{
+                    panelHeight:'auto',
+                    data:[<?= $persekutuan ?>],
+                    onChange:function(value){
+                        if (value == ''){
+                            dg.datagrid('removeFilterRule', 'persekutuan_key');
+                        } else {
+                            dg.datagrid('addFilterRule', {
+                                field: 'persekutuan_key',
+                                op: 'equal',
+                                value: value
+                            });
+                        }
+                        dg.datagrid('doFilter');
+                    }
+                }
+        },{
+            field:'status_key',
+            type:'combobox',
+            options:{
+                    panelHeight:'auto',
+                    data:[<?= $statusidv ?>],
+                    onChange:function(value){
+                        if (value == ''){
+                            dg.datagrid('removeFilterRule', 'status_key');
+                        } else {
+                            dg.datagrid('addFilterRule', {
+                                field: 'status_key',
+                                op: 'equal',
+                                value: value
+                            });
+                        }
+                        dg.datagrid('doFilter');
+                    }
+                }
+        },{
+            field:'pstatus_key',
+            type:'combobox',
+            options:{
+                    panelHeight:'auto',
+                    data:[<?= $pstatus ?>],
+                    onChange:function(value){
+                        if (value == ''){
+                            dg.datagrid('removeFilterRule', 'pstatus_key');
+                        } else {
+                            dg.datagrid('addFilterRule', {
+                                field: 'pstatus_key',
+                                op: 'equal',
+                                value: value
+                            });
+                        }
+                        dg.datagrid('doFilter');
+                    }
+                }
+        },{
+            field:'gender_key',
+            type:'combobox',
+            options:{
+                    panelHeight:'auto',
+                    data:[<?= $gender ?>],
+                    onChange:function(value){
+                        if (value == ''){
+                            dg.datagrid('removeFilterRule', 'gender_key');
+                        } else {
+                            dg.datagrid('addFilterRule', {
+                                field: 'gender_key',
+                                op: 'equal',
+                                value: value
+                            });
+                        }
+                        dg.datagrid('doFilter');
+                    }
+                }
+        },{
+            field:'photofile',
+            type:'combobox',
+            options:{
+                    panelHeight:'auto',
+                    data:[{value:'',text:'All'},{value:' ',text:"Kosong"},{value:'tidak',text:"Berisi"}],
+                    onChange:function(value){
+                        if (value == ''){
+                            dg.datagrid('removeFilterRule', 'photofile');
+                        } else {
+                            var operator = value=="tidak"?"notequal":"equal";
+                            var nilai = operator=="equal"?value:"tidak";
+                            dg.datagrid('addFilterRule', {
+                                field: 'photofile',
+                                op: operator,
+                                value: nilai
+                            });
+                        }
+                        dg.datagrid('doFilter');
+                    }
+                }
+        },{
+            field:'persekutuanid',
+            type:'combobox',
+            options:{
+                    panelHeight:'auto',
+                    data:[<?= $persekutuan ?>],
+                    onChange:function(value){
+                        if (value == ''){
+                            dg.datagrid('removeFilterRule', 'persekutuanid');
+                        } else {
+                            dg.datagrid('addFilterRule', {
+                                field: 'persekutuanid',
+                                op: 'equal',
+                                value: value
+                            });
+                        }
+                        dg.datagrid('doFilter');
+                    }
+                }
+        }]);
+
+    });
+    function saveRelation(){
+        var rel = $("#relationno").val();
+        var checkedRows = $('#dgJemaat').datagrid('getChecked');
+        $.ajax({
+            type: "POST",
+            url:"<?php echo base_url()?>jemaat/makeRelation",
+            enctype: 'multipart/form-data',
+            data : {
+                dataMember:JSON.stringify(checkedRows),
+                dataRel:rel
+            },dataType: "html",
+            async: true,
+            success: function(data) {
+                $("#dgJemaat").datagrid('reload');
+                $("#dgRelasi").datagrid('reload');
+                $("#dlgViewRelation").dialog('close');
+            },error:function(err){
+                console.log(err);
+            }
+        });
+    }
+    function del(form,id,formname){
+        formname = "fm2";
+        page="<?php echo base_url(); ?>jemaat/form/"+form+"/"+id+"/"+formname;
+
+        $("#dlgDelete").dialog({
+            closed:false,
+            title:'Delete Data',
+            href:page,
+            height:350,autoResize:true,
+            resizable:true
+        });
     }
 
+    function deleteJemaat(){
+        formname = "fm2";
+        $.messager.confirm('Confirm','Yakin ingin menghapus data?',function(r){
+        if (r){
+            return $.ajax({
+            type: $("#"+formname).attr("method"),
+            url: $("#"+formname).attr("action"),
+            enctype: 'multipart/form-data',
+            data : $("#"+formname).serialize(),
+            dataType: "json",
+            async: true,
+            success: function(data) {
+                $("#dlgDelete").dialog('close');
+                $('#dgJemaat').datagrid('reload');
+            }
+        }).responseText
+        }
+        });
+    }
+
+    function saveJemaat(){
+        formname = "fm2";
+        var membername = $("#"+formname+" input[name=membername]").val();
+        if(membername==""){
+            $("#"+formname+" input[name=membername]").css("background-color","rgb(255,128,192)");
+            $("#"+formname+" input[name=membername]").focus();
+            $("#"+formname+" span[id=tip]").html("<img class='icon' src='<?php echo base_url(); ?>libraries/icon/16x16/warning.png'>");
+            return false;
+        }
+        return $.ajax({
+            type: $("#"+formname).attr("method"),
+            url: $("#"+formname).attr("action"),
+            enctype: 'multipart/form-data',
+            data : $("#"+formname).serialize(),
+            dataType: "json",
+            async: false,
+            success: function(data) {
+                console.log(data);
+                if(data.status=='sukses' && data.photofile!="") {
+                    $('#loading').html('<img src="<?php echo base_url(); ?>libraries/img/loading.gif">');
+                    $.ajaxFileUpload({
+                       url: "<?php echo base_url(); ?>jemaat/uploadWA/"+data.photofile,
+                        secureuri: false,
+                        fileElementId: "photofile",
+                        dataType: "json",
+                        success: function (status){
+                            console.log(status);
+                            $(".easyui-dialog").dialog('close');
+                            $('#dgJemaat').datagrid('reload');
+                            $('#dgRelasi').datagrid('reload');
+                        }
+                    });
+                }else {
+                      $(".easyui-dialog").dialog('close');
+                    $('#dgJemaat').datagrid('reload');
+                     $('#dgRelasi').datagrid('reload');
+                }
+            },error:function(error){
+                console.log(error);
+            }
+        })
+    }
+    function zoom(image){
+        $('#dlgView').dialog({
+            closed:false,
+            title:'Zoom Photo',
+            href:'<?php echo base_url(); ?>jemaat/image/'+image,
+            onLoad:function(){
+            }
+        });
+    }
     function save(form,id,formname,status){
         page="<?php echo base_url(); ?>jemaat/form/"+form+"/"+id+"/"+formname+"/"+status;
-        $('#formInput').html('<img src="<?php echo base_url(); ?>libraries/img/loading.gif">').load(page);
+        console.log(page);
         var opr = form;
         if(opr=="add"){
             var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/add.png'><ul class='title'>Add Data</ul>";
@@ -378,192 +437,147 @@
         else{
             var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/edit.png'><ul class='title'>Edit Data</ul>";
         }
-        $("#formInput").dialog({
-            top:10,
-            width:'auto',
-            height:500,
-            modal:false,
+        $("#dlgSave").dialog({
+            closed:false,
             title:oprtr,
-            buttons:[{
-                html:"<img class='icon' src='<?php echo base_url(); ?>libraries/icon/16x16/ok.png'>Save",
-                click:function(){
-                    var membername = $("#"+formname+" input[name=membername]").val();
-                    if(membername==""){
-                        $("#"+formname+" input[name=membername]").css("background-color","rgb(255,128,192)");
-                        $("#"+formname+" input[name=membername]").focus();
-                        $("#"+formname+" span[id=tip]").html("<img class='icon' src='<?php echo base_url(); ?>libraries/icon/16x16/warning.png'>");
-                        return false;
-                    }
-                    return $.ajax({
-                        type: $("#"+formname).attr("method"),
-                        url: $("#"+formname).attr("action"),
-                        enctype: 'multipart/form-data',
-                        data : $("#"+formname).serialize(),
-                        dataType: "json",
-                        async: true,
-                        success: function(data) {
-                            if(data.status=='sukses' && data.photofile!="") {
-                                $('#loading').html('<img src="<?php echo base_url(); ?>libraries/img/loading.gif">');
-                                $.ajaxFileUpload({
-                                    url: "<?php echo base_url(); ?>jemaat/upload/"+data.photofile,
-                                    secureuri: false,
-                                    fileElementId: "photofile",
-                                    dataType: "json",
-                                    success: function (status){
-                                        $("#formInput").dialog('close');
-                                        $('#gridjemaat').trigger('reloadGrid');
-                                        $('#gridrelasi').trigger('reloadGrid');
-                                        $('#gridbesuk').trigger('reloadGrid');
-                                    }
-                                });
-                            }else {
-                                $("#formInput").dialog('close');
-                                $('#gridjemaat').trigger('reloadGrid');
-                                $('#gridrelasi').trigger('reloadGrid');
-                                $('#gridbesuk').trigger('reloadGrid');
-                            }
-                        }
-                    }).responseText
-                }
-            },{
-                html:"<img class='icon' src='<?php echo base_url(); ?>libraries/icon/16x16/cancel.png'>Cancel",
-                click:function(){
-                    $(this).dialog('close');
-                }
-            }]
+            href:page,
+            height:350,
+            resizable:true,
+            autoResize:true
         });
     }
+    function edit(){
 
-    function del(form,id,formname){
-        page="<?php echo base_url(); ?>jemaat/form/"+form+"/"+id+"/"+formname;
-        $('#formInput').html('<img src="<?php echo base_url(); ?>libraries/img/loading.gif">').load(page);
-        $("#formInput").dialog({
-            top:10,
-            width:'auto',
-            height:500,
-            modal:false,
-            title:"<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/delete.png'><ul class='title'>Delete Data</ul>",
-            buttons:[{
-                html:"<img class='icon' src='<?php echo base_url(); ?>libraries/icon/16x16/delete.png'>Delete",
-                click:function(){
-                    var jwb = confirm('Anda Yakin ?');
-                    if (jwb==1){
-                        return $.ajax({
-                            type: $("#"+formname).attr("method"),
-                            url: $("#"+formname).attr("action"),
-                            enctype: 'multipart/form-data',
-                            data : $("#"+formname).serialize(),
-                            dataType: "json",
-                            async: true,
-                            success: function(data) {
-                                $("#formInput").dialog('close');
-                                $('#gridjemaat').trigger('reloadGrid');
-                                $('#gridrelasi').trigger('reloadGrid');
-                                $('#gridbesuk').trigger('reloadGrid');
-                            }
-                        }).responseText
-                    }
-                }
-            },{
-                html:"<img class='icon' src='<?php echo base_url(); ?>libraries/icon/16x16/cancel.png'>Cancel",
-                click:function(){
-                    $(this).dialog('close');
-                }
-            }]
-        });
     }
-
     function relasi(relationno){
+        relationno=relationno=="-"?"":relationno;
         page="<?php echo base_url()?>relasi/index/?relationno="+relationno;
-            $('#datarelasi').html('<img src="<?php echo base_url()?>libraries/img/loading.gif">').load(page);
+        $('#datarelasi').html('<img src="<?php echo base_url()?>libraries/img/loading.gif">').load(page);
     }
 
-    function datacreatrelasi(){
-        page="<?php echo base_url()?>create_relasi/view";
-        $('#datacreatrelasi').html('<img src="<?php echo base_url()?>libraries/img/loading.gif">').load(page);
-
-    }
-
-    function besuk(recno){
+    function besuk(member_key){
         $.ajax({
-            url:"<?php echo base_url(); ?>besuk/set/?recno="+recno,
+            url:"<?php echo base_url(); ?>besuk/set/?member_key="+member_key,
             success:function(data){
-                //alert(data);
             }
         });
-       // alert(recno);
-        //page="<?php echo base_url()?>besuk/index/?recno="+recno;
-           // $('#databesuk').html('<img src="<?php echo base_url()?>libraries/img/loading.gif">').load(page);
     }
-
-
-
+    function viewJemaat(form,id,formname){
+        page="<?php echo base_url(); ?>jemaat/form/"+form+"2/"+id+"/"+formname;
+        // $('#dlgView2').html('<img src="<?php echo base_url(); ?>libraries/img/loading.gif">').load(page);
+        $("#dlgView2").dialog({
+            closed:false,
+            title:'View Data',
+            href:page,
+            resizable:true,
+            height:350,autoResize:true
+        });
+    }
     function excel(){
         window.open("<?php echo base_url(); ?>jemaat/export/excel");
     }
-
     function hpexcel(){
         window.open("<?php echo base_url(); ?>jemaat/export/hpexcel");
     }
-
     function hptext(){
         window.open("<?php echo base_url(); ?>jemaat/export/hptext");
     }
+    function remoteFilter(){
+        $('#dgJemaat').datagrid('removeFilterRule');
+        $('#dgJemaat').datagrid('doFilter');
 
-    /*keyboard navigasi */
-    var delay = (function(){
-      var timer = 0;
-      return function(callback, ms){
-        clearTimeout (timer);
-        timer = setTimeout(callback, ms);
-      };
-    })();
-
-    $(function(){
-        $("#searchText").keyup(function() {
-            delay(function(){
-                var postData = $grid.jqGrid("getGridParam", "postData"),
-                    colModel = $grid.jqGrid("getGridParam", "colModel"),
-                    rules = [],
-                    searchText = $("#searchText").val(),
-                    l = colModel.length,
-                    i,
-                    cm;
-                for (i = 0; i < l; i++) {
-                    cm = colModel[i];
-                    if (cm.search !== false && (cm.stype === undefined || cm.stype === "text")) {
-                        rules.push({
-                            field: cm.name,
-                            op: "cn",
-                            data: searchText
-                        });
-                    }
-                }
-                postData.filters = JSON.stringify({
-                    groupOp: "OR",
-                    rules: rules
-                });
-                $grid.jqGrid("setGridParam", { search: true });
-                $grid.trigger("reloadGrid", [{page: 1, current: true}]);
-                return false;
-            }, 500 );
-        });
-    });
-
+    }
 </script>
+<div class="easyui-tabs" style="height:auto">
+    <div title="Data Jemaat" style="padding:10px">
+         <table id="dgJemaat" class="easyui-datagrid" style="height:350px"
+         toolbar="#tb"
+               >
+            <thead>
+                <tr>
+                    <th field="ck" checkbox="true"></th>
+                    <th field="aksi" width="7%">Aksi</th>
+                    <th hidden="true" field="member_key" width="5%"></th>
+                    <th sortable="true" field="photofile" width="4%">photo</th>
+                    <th sortable="true" field="status_key" width="8%">statusid</th>
+                    <th sortable="true" field="grp_pi" width="4%">grp_pi</th>
+                    <th sortable="true" field="relationno" width="6%">relationno</th>
+                    <th sortable="true" field="memberno" width="5%">memberno</th>
+                    <th sortable="true" field="membername" width="10%">membername</th>
+                    <th sortable="true" field="chinesename" width="8%">chinesename</th>
+                    <th sortable="true" field="phoneticname" width="10%">phoneticname</th>
+                    <th sortable="true" field="aliasname" width="5%">aliasname</th>
+                    <th sortable="true" field="tel_h" width="5%">tel_h</th>
+                    <th sortable="true" field="tel_o" width="5%">tel_o</th>
+                    <th sortable="true" field="handphone" width="5%">handphone</th>
+                    <th sortable="true" field="address" width="5%">address</th>
+                    <th sortable="true" field="add2" width="5%">add2</th>
+                    <th sortable="true" field="city" width="5%">city</th>
+                    <th sortable="true" field="gender_key" width="5%">genderid</th>
+                    <th sortable="true" field="pstatus_key" width="5%">pstatusid</th>
+                    <th sortable="true" field="pob" width="5%">pob</th>
+                    <th sortable="true" field="dob" width="8%">dob</th>
+                    <th sortable="true" field="umur" width="5%">umur</th>
+                    <th sortable="true" field="blood_key" width="5%">bloodid</th>
+                    <th sortable="true" field="kebaktian_key" width="5%">kebaktianid</th>
+                    <th sortable="true" field="persekutuan_key" width="5%">persekutuanid</th>
+                    <th sortable="true" field="rayon_key" width="5%">rayonid</th>
+                    <th sortable="true" field="serving" width="8%">serving</th>
+                    <th sortable="true" field="fax" width="8%">fax</th>
+                    <th sortable="true" field="email" width="8%">email</th>
+                    <th sortable="true" field="website" width="8%">website</th>
+                    <th sortable="true" field="baptismdocno" width="8%">baptismdocno</th>
+                    <th sortable="true" field="baptis" width="4%">baptis</th>
+                    <th sortable="true" field="baptismdate" width="10%">baptismdate</th>
+                    <th sortable="true" field="remark" width="10%">remark</th>
+                    <th sortable="true" field="relation" width="5%">relation</th>
+                    <th sortable="true" field="oldgrp" width="5%">oldgrp</th>
+                    <th sortable="true" field="kebaktian" width="5%">kebaktian</th>
+                    <th sortable="true" field="jlhbesuk" width="4%">jlhbesuk</th>
+                    <th sortable="true" field="tglbesukterakhir" width="10%">tglbesukterakhir</th>
+                    <th sortable="true" field="pembesukdari" width="5%">pembesukdari</th>
+                    <th sortable="true" field="modifiedby" width="5%">modifiedby</th>
+                    <th sortable="true" field="modifiedon" width="10%">modifiedon</th>
 
-<div id="tt" class="easyui-tabs">
-    <div data-options="selected:true" title="Data Jemaat" style="padding:10px">
-        <div id="titlesearch">Search : <input type="text" placeHolder="Search" id="searchText"></div>
-        <table id="gridjemaat"></table>
-        <div id="pgridjemaat"></div>
-        <div id="formInput"></div>
+                </tr>
+            </thead>
+        </table>
+        <br>
         <div id="foto"></div>
         <div id="datarelasi"></div>
+        <div id="dlgView" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons1'">
+        </div>
+        <div id="dlgSave" class="easyui-dialog" style="width:600px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons'">
+        </div>
+        <div id="dlgDelete" class="easyui-dialog" style="width:600px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons2'">
+        </div>
+        <div id="dlgView2" class="easyui-dialog" style="width:600px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons1'" >
+        </div>
+        <div id="dlgViewRelation" class="easyui-dialog" style="width:400px;padding:10px;" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons-relation'" >
+            <div style="margin-bottom:10px">
+                <input name="relationno"  labelPosition="left" id="relationno" class="easyui-textbox" required="" style="width:100%"   label="relationno:">
+            </div>
+        </div>
+        <div class="dlg-buttons-relation">
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveRelation()" style="width:90px">Proses</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
+        </div>
+        <div class="dlg-buttons">
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveJemaat()" style="width:90px">Proses</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
+        </div>
+        <div class="dlg-buttons2">
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="deleteJemaat()" style="width:90px">Proses</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
+        </div>
+        <div class="dlg-buttons1">
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
+        </div>
+        <div id="tb">
+            <a href="#" id="removeAll" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="remoteFilter()">Remove All Filter</a>
+        </div>
     </div>
-    <div data-options="closable:false,cache:false,href:'<?php echo base_url(); ?>besuk/?op=jemaat'" title="Data Besuk" style="padding:10px" ></div>
-    <!--<div data-options="closable:true,cache:false,href:'<?php echo base_url(); ?>create_relasi'" title="Create Relation" style="padding:10px" ></div>-->
-    <div title="Create Relation" style="padding:10px">
-        <?php $this->load->view("jemaat/gridcreaterelasi"); ?>
-    </div>
+    <div data-options="closable:false,cache:false,href:'<?php echo base_url(); ?>besuk/jemaat/?op=jemaat'" title="Data Besuk" style="padding:10px" ></div>
+    <div data-options="closable:false,cache:false,href:'<?php echo base_url(); ?>profile/jemaat'" title="Data Activity" style="padding:10px" ></div>
+    <div data-options="closable:false,cache:false,href:'<?php echo base_url(); ?>offering/jemaat'" title="Data Offering" style="padding:10px" ></div>
 </div>

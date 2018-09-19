@@ -18,15 +18,6 @@ class Relasi extends CI_Controller {
 	}
 
 	function index(){
-		if(empty($_GET['relationno'])){
-			echo" Empty";
-		}
-		else{
-			$data['relationno'] = $_GET['relationno'];
-			$this->load->view('jemaat/gridrelasi',$data);
-		}
-	}
-	function index2(){
 		$data['listTable'] = $this->db->list_fields('tblmember');
 
 		if(empty($_GET['relationno'])){
@@ -34,23 +25,23 @@ class Relasi extends CI_Controller {
 		}
 		else{
 			$data['sqlgender'] = getParameter('GENDER');
-		$data['sqlpstatus'] =getParameter('PSTATUS');
-		// $data['sqlstatusidv'] = $this->mparameter->get_jemaat();
-		$data['sqlblood'] =getParameter('BLOOD');
-		$data['sqlkebaktian'] =getParameter('KEBAKTIAN');
-		$data['sqlpersekutuan'] =getParameter('PERSEKUTUAN');
-		$data['sqlrayon'] =getParameter('RAYON');
-		$data['listTable'] = $this->db->list_fields('tblmember');
+			$data['sqlpstatus'] =getParameter('PSTATUS');
+			// $data['sqlstatusidv'] = $this->mparameter->get_jemaat();
+			$data['sqlblood'] =getParameter('BLOOD');
+			$data['sqlkebaktian'] =getParameter('KEBAKTIAN');
+			$data['sqlpersekutuan'] =getParameter('PERSEKUTUAN');
+			$data['sqlrayon'] =getParameter('RAYON');
+			$data['listTable'] = $this->db->list_fields('tblmember');
 
-		// $data['statusidv'] = $this->mparameter->get_combo_all();
-		$data['blood'] = getComboParameter('BLOOD');
-		$data['gender'] = getComboParameter('GENDER');
-		$data['pstatus'] = getComboParameter('PSTATUS');
-		$data['kebaktian'] = getComboParameter('KEBAKTIAN');
-		$data['persekutuan'] =getComboParameter('PERSEKUTUAN');
-		$data['rayon'] = getComboParameter('RAYON');
+			// $data['statusidv'] = $this->mparameter->get_combo_all();
+			$data['blood'] = getComboParameter('BLOOD');
+			$data['gender'] = getComboParameter('GENDER');
+			$data['pstatus'] = getComboParameter('PSTATUS');
+			$data['kebaktian'] = getComboParameter('KEBAKTIAN');
+			$data['persekutuan'] =getComboParameter('PERSEKUTUAN');
+			$data['rayon'] = getComboParameter('RAYON');
 			$data['relationno'] = $_GET['relationno'];
-			$this->load->view('jemaat/gridrelasi2',$data);
+			$this->load->view('jemaat/gridrelasi',$data);
 		}
 	}
 	function grid2($relationno){
