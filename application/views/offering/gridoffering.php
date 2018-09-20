@@ -97,7 +97,10 @@
             autoResize:true
         });
     }
-
+    function report(key){
+       url = "<?= base_url() ?>offering/report/"+key;
+        window.open(url,'_blank');
+    }
     function saveOffering(form,key,member_key){
 
         page="<?php echo base_url(); ?>offering/form/"+form+"/"+key+"/"+member_key+"/0";
