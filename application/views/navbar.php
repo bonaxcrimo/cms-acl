@@ -14,14 +14,11 @@
                 tempatjam.innerHTML = teksjam;
                 setTimeout ("tampilkanjam()",1000);
             }
-
             function start() {
                 tampilkanjam();
             }
-
             window.onload = start;
         </script>
-
   	<p><h2>CMS | Church Membership System - GMI GLORIA</h2></p>
     <div style="margin:10px 0;"></div>
     <div  id="menuAtas">

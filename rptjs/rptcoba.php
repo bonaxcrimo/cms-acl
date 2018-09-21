@@ -16,6 +16,12 @@ require_once 'stimulsoft/helper.php';
 	<script src="scripts/jquery.min.js" type="text/javascript"></script>
 	<?php StiHelper::initialize(); ?>
 	<script type="text/javascript">
+		$(document).keydown(function(e) {
+		    // ESCAPE key pressed
+		    if (e.keyCode == 27) {
+		        window.close();
+		    }
+		});
 		var options = new Stimulsoft.Viewer.StiViewerOptions();
 		options.appearance.fullScreenMode = true;
 		options.toolbar.showSendEmailButton = false;
@@ -75,7 +81,7 @@ require_once 'stimulsoft/helper.php';
 		var toolbarTable = viewer.jsObject.controls.toolbar.firstChild.firstChild;
 		var buttonsTable = toolbarTable.rows[0].firstChild.firstChild;
 		var userButtonCell = buttonsTable.rows[0].insertCell(0);
-
+		console.log(buttonsTable.rows[0]);
 		userButtonCell.className = "stiJsViewerClearAllStyles";
 		userButtonCell.appendChild(userButton);
 	</script>

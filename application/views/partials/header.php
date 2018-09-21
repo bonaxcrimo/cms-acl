@@ -3,10 +3,9 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="keywords" content="jquery,ui,easy,easyui,web">
-        <meta name="description" content="easyui help you build your web page easily!">
+        <meta name="description" content="">
         <title>GMI Gloria</title>
         <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>libraries/bootstrap/css/table.css">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>libraries/bootstrap/css/form.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>libraries/bootstrap/css/grid.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>libraries/css/style.css">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>libraries/jquery-easyui/155/themes/default/easyui.css">

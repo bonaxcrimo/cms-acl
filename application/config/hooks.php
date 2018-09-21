@@ -17,3 +17,10 @@ $hook['post_controller_constructor'] = array(
     'filename' => 'acl.php',
     'filepath' => 'hooks'
 );
+// Compress output
+$hook['display_override'][] = array(
+    'class' => '',
+    'function' => 'compress',
+    'filename' => 'compress.php',
+    'filepath' => 'hooks'
+);

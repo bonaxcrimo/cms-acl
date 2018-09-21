@@ -1,6 +1,4 @@
 <script src="<?= base_url() ?>libraries/js/jquery-hanzi2pinyin.all.js"></script>
-<!-- <input type="text" id="chinese">
-<p id="hasilpinyin"></p> -->
 <script type="text/javascript">
     var temp=-1;
     $('#chinese').bind('keyup change',function(){
@@ -44,14 +42,11 @@
                     }
                  }
             });
-
-        // dg.datagrid('options').loadMsg = 'other message';
         dg.datagrid('options').rowHeight = 40;
         for(var i=0; i<dg.datagrid('getRows').length; i++){
             dg.datagrid('refreshRow', i);
         }
          dg.datagrid('getPanel').panel('panel').attr('tabindex',1).bind('keydown',function(e){
-
             switch(e.keyCode){
                 case 38:
                     var selected = dg.datagrid('getSelected');
@@ -64,13 +59,10 @@
                 break;
                 case 40:
                 var selected = dg.datagrid('getSelected');
-
                     if(selected){
                         var index = dg.datagrid('getRowIndex',selected);
                         if(temp!=index){
                             dg.datagrid('selectRow',index+1);
-
-                            console.log(index+"="+temp);
                         }
                         temp=index;
 
@@ -80,7 +72,7 @@
                 break;
             }
         });
-        var pager = dg.datagrid('getPager');    // get the pager of datagrid
+        var pager = dg.datagrid('getPager');
         pager.pagination({
             buttons:[{
                 iconCls:'icon-add',
@@ -339,7 +331,6 @@
                 $("#dgRelasi").datagrid('reload');
                 $("#dlgViewRelation").dialog('close');
             },error:function(err){
-                console.log(err);
             }
         });
     }
@@ -393,7 +384,6 @@
             dataType: "json",
             async: false,
             success: function(data) {
-                console.log(data);
                 if(data.status=='sukses' && data.photofile!="") {
                     $('#loading').html('<img src="<?php echo base_url(); ?>libraries/img/loading.gif">');
                     $.ajaxFileUpload({
@@ -402,7 +392,6 @@
                         fileElementId: "photofile",
                         dataType: "json",
                         success: function (status){
-                            console.log(status);
                             $(".easyui-dialog").dialog('close');
                             $('#dgJemaat').datagrid('reload');
                             $('#dgRelasi').datagrid('reload');
@@ -414,7 +403,6 @@
                      $('#dgRelasi').datagrid('reload');
                 }
             },error:function(error){
-                console.log(error);
             }
         })
     }
@@ -429,7 +417,6 @@
     }
     function save(form,id,formname,status){
         page="<?php echo base_url(); ?>jemaat/form/"+form+"/"+id+"/"+formname+"/"+status;
-        console.log(page);
         var opr = form;
         if(opr=="add"){
             var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/add.png'><ul class='title'>Add Data</ul>";
@@ -445,9 +432,6 @@
             resizable:true,
             autoResize:true
         });
-    }
-    function edit(){
-
     }
     function relasi(relationno){
         relationno=relationno=="-"?"":relationno;
@@ -491,8 +475,7 @@
 <div class="easyui-tabs" style="height:auto">
     <div title="Data Jemaat" style="padding:10px">
          <table id="dgJemaat" class="easyui-datagrid" style="height:350px"
-         toolbar="#tb"
-               >
+         toolbar="#tb">
             <thead>
                 <tr>
                     <th field="ck" checkbox="true"></th>
@@ -538,7 +521,6 @@
                     <th sortable="true" field="pembesukdari" width="5%">pembesukdari</th>
                     <th sortable="true" field="modifiedby" width="5%">modifiedby</th>
                     <th sortable="true" field="modifiedon" width="10%">modifiedon</th>
-
                 </tr>
             </thead>
         </table>
