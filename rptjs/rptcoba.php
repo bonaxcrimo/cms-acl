@@ -25,7 +25,7 @@ require_once 'stimulsoft/helper.php';
 		var options = new Stimulsoft.Viewer.StiViewerOptions();
 		options.appearance.fullScreenMode = true;
 		options.toolbar.showSendEmailButton = false;
-		// options.toolbar.showPrintButton = false;
+		options.toolbar.showPrintButton = false;
 		options.toolbar.showViewModeButton = false;
 		var viewer = new Stimulsoft.Viewer.StiViewer(options, "StiViewer", false);
 		//costum componen
@@ -49,7 +49,7 @@ require_once 'stimulsoft/helper.php';
 			console.log("dasda");
 			$.ajax({
 	            type: "POST",
-	            url:"http://localhost:81/cms31/offering/print",
+	            url:"http://localhost:81/cms31/offering/printupdate",
 	            enctype: 'multipart/form-data',
 	            data : {
 	                noOffering:'<?= $_GET['offering_key'] ?>'
@@ -90,12 +90,22 @@ require_once 'stimulsoft/helper.php';
 		viewer.renderHtml("viewerContent");
 
 		var userButton = viewer.jsObject.SmallButton("userButton", "Close", "emptyImage");
-		userButton.action = function () { window.open('','_parent','');window.close() }
-
+		var printButton = viewer.jsObject.SmallButton("printButton", "Print", "emptyImage");
+		printButton.image.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAACtSURBVHjaYiwqKmJAA/8Z8ANGZA4LNhW9vb1YdRYXF2OIMTFQCCg2AOQFeyDuAmIzkNP9mneCMVYg4Mawqdb9P9Qrp4C4DGTACiCWgKkBKiDWcjOQXhZkzdgCiQCQGPhApEosPAViaTIT0lOQASlAPB85MEHAt2kHisrNdR7oml+A9IIMAKmUhNkMtOU/Dg0w1zEiu4QFl9+IcAGmAcgm49KAHg4sxOY6XAAgwABqSjFfY2wW+AAAAABJRU5ErkJggg==";
+		userButton.action = function () {
+			window.open('','_parent','');window.close();
+		}
+		printButton.action = function(){
+			viewer.jsObject.postPrint("PrintWithPreview");
+		}
 		var toolbarTable = viewer.jsObject.controls.toolbar.firstChild.firstChild;
 		var buttonsTable = toolbarTable.rows[0].firstChild.firstChild;
+
+		var printButtonCell = buttonsTable.rows[0].insertCell(0);
 		var userButtonCell = buttonsTable.rows[0].insertCell(0);
-		console.log(buttonsTable.rows[0]);
+
+		printButtonCell.className = "stiJsViewerClearAllStyles";
+		printButtonCell.appendChild(printButton);
 		userButtonCell.className = "stiJsViewerClearAllStyles";
 		userButtonCell.appendChild(userButton);
 	</script>
