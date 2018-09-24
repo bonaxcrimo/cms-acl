@@ -148,7 +148,9 @@
                 <tr>
                     <th field="aksi" width="5%">Aksi</th>
                     <th field="parameter_key" width="10%" hidden="true"></th>
+                    <th field="parameterid" width="5%" sortable="true">rayonid</th>
                     <th field="parametertext" width="5%" sortable="true">rayon</th>
+                    <th field="parametermemo" width="5%" sortable="true">rayonmemo</th>
                     <th field="modifiedby" width="5%" sortable="true">modifiedby</th>
                     <th field="modifiedon" width="10%" sortable="true">modifiedon</th>
                 </tr>
