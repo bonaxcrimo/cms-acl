@@ -139,7 +139,7 @@
     });
 </script>
 <div class="easyui-tabs" style="height:auto">
-    <div title="Data menu" style="padding:10px">
+    <div title="Data Parameter General" style="padding:10px">
         <table id="dg"  class="easyui-datagrid" style="width:100%;height:250px" url="<?= $link ?>"
                 >
             <thead>

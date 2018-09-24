@@ -282,7 +282,7 @@ class offering extends MY_Controller {
         $data['marginTop'] = $marginTop;
         $this->load->view('offering/report',$data);
     }
-    public function print(){
+    public function printupdate(){
         $no = $_POST['noOffering'];
         $sql="update tbloffering set printedon = '".date("Y-m-d H:i:s")."',printedby='".$this->session->userdata('username')."' where offering_key= ".$no;
         $check = $this->db->query($sql);
