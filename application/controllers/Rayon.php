@@ -132,8 +132,9 @@ class Rayon extends MY_Controller {
 		@$form = array(
 			'parametergrpid' =>'RAYON',
 			'parameter_key' => @$data['parameter_key'],
-			'parameterid' =>  strtoupper(@$data['parametertext']),
+			'parameterid' =>  strtoupper(@$data['parameterid']),
 			'parametertext' => strtoupper(@$data['parametertext']),
+			'parametermemo' => strtoupper(@$data['parametermemo']),
 			'modifiedby' => $this->session->userdata('username'),
 			'modifiedon' => date("Y-m-d H:i:s")
 		);
