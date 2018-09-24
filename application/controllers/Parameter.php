@@ -1,215 +1,142 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class parameter extends CI_Controller {
+class Parameter extends MY_Controller {
 
 	public function __construct(){
 		parent::__construct();
-		$this->load->library('session'); // session_start()
-		$this->load->model('mlogin');
-		$cek = $this->mlogin->cek();
-		if($cek==""){
-			redirect("");
-			session_destroy();
-		}
-		date_default_timezone_set("Asia/Jakarta");
-		ini_set('memory_limit', '-1');
 		$this->load->model('mparameter');
-		$this->load->model('mmenutop');
-        $this->load->helper('my_helper');
-
 	}
-
-	function index(){
-		$data['acl'] = $this->hakakses('parameter');
-		$data['sqlmenu'] = $this->mmenutop->get_data();
-		$this->load->view('header');
-		$this->load->view('navbar',$data);
-		$this->load->view('parameter/gridparameter');
-		$this->load->view('footer');
+	/**
+     * Fungsi list menu
+     * @AclName List Menu
+     */
+	public function index(){
+		$link = base_url().'parameter/grid';
+		$this->render('parameter/gridparameter',['link'=>$link]);
 	}
-	
-	function grid(){
-		$acl = $this->hakakses('parameter');
-		@$page = $_POST['page']; 
-		@$limit = $_POST['rows']; 
-		@$sidx = $_POST['sidx']; 
-		@$sord = $_POST['sord']; 
-		if (!$sidx)
-		    $sidx = 1;
-		@$totalrows = isset($_POST['totalrows']) ? $_POST['totalrows'] : false;
-		if (@$totalrows) {
-		   @$limit = $totalrows;
-		}
-		@$filters = $_POST['filters'];
-		@$search = $_POST['_search'];
-			$where = "";
-       		if(($search==true) &&($filters != "")) {
-				$where= $this->operation($filters);
-		    }
-		$sql = $this->mparameter->count($where);
-		$count = $sql->num_rows();
-		if ($count > 0) {
-		    @$total_pages = ceil($count / $limit);
-		} else {
-		    $total_pages = 0;
-		}
-		if ($page > $total_pages)
-		    @$page = $total_pages;
-		if ($limit < 0)
-		    @$limit = 0;
-			$start = $limit * $page - $limit;
-		if ($start < 0)
-		    @$start = 0;
-		$data = $this->mparameter->get($where, $sidx, $sord, $limit, $start);
-		$_SESSION['excel']= $sord."|".$sidx."|".$where;
-		@$responce->page = $page;
-		@$responce->total = $total_pages;
-		@$responce->records = $count;
-		$i=0;
-		foreach($data->result() as $row){
-			if(substr($acl,0,1)==1){
-				$view='<a href="#" id='.$row->parameterid.' title="view" class="btnview" style="float:left"><span class="ui-icon ui-icon-document"></span></a>';
+	/**
+     * Fungsi grid parameter
+     * @AclName Grid parameter
+     */
+	public function grid(){
+		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
+		$sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'parameter_key';
+		$order = isset($_GET['order']) ? strval($_GET['order']) : 'asc';
+		$filterRules = isset($_GET['filterRules']) ? ($_GET['filterRules']) : '';
+		$cond = '';
+		if (!empty($filterRules)){
+			$cond = ' where 1=1 ';
+			$filterRules = json_decode($filterRules);
+			foreach($filterRules as $rule){
+				$rule = get_object_vars($rule);
+				$field = $rule['field'];
+				$op = $rule['op'];
+				$value = $rule['value'];
+				if (!empty($value)){
+					if ($op == 'contains'){
+						$cond .= " and ($field like '%$value%')";
+					}
+				}
 			}
-			else{
-				$view='<span style="float:left" class="ui-state-disabled ui-icon ui-icon-document"></span>';
-			}
-			if(substr($acl,2,1)==1){
-				$edit='<a href="#" id='.$row->parameterid.' title="Edit" class="btnedit" style="float:left"><span class="ui-icon ui-icon-pencil"></span></a>';
-			}
-			else{
-				$edit='<span style="float:left" class="ui-state-disabled ui-icon ui-icon-pencil"></span>';
-			}
-			if(substr($acl,3,1)==1){
-				$del='<a href="#" id='.$row->parameterid.' title="Del" class="btndel" style="float:left"><span class="ui-icon ui-icon-trash"></span></a>';
-			}
-			else{
-				$del='<span class="ui-state-disabled ui-icon ui-icon-trash"></span>';
-			}
-			$responce->rows[$i]['id']   = $row->parameterid;
-			$responce->rows[$i]['cell'] = array(
-				$view.$edit.$del,
-				$row->parametergrpid,
-				$row->parameterid,
-				$row->parametertext,
-				$row->parametermemo,
-				$row->modifiedby,
-				$row->modifiedonview
-				);
-			$i++;
-		}
-		echo json_encode($responce);
-	}
-
-	function form($form,$parameterid){
-		$data["parameterid"] = $parameterid;
-		$this->load->view('parameter/'.$form,$data);
-	}
-
-	function crud(){
-		@$oper=@$_POST['oper'];
-	    @$parameterpk=@$_POST['parameterpk'];
-		@$data = array(
-			'parametergrpid' => @$_POST['parametergrpid'],
-			'parameterid' => @$_POST['parameterid'],
-			'parametertext' => @$_POST['parametertext'],
-			'parametermemo' => @$_POST['parametermemo'],
-			'modifiedby' => $_SESSION['username'],
-			'modifiedon' => date("Y-m-d H:i:s")
-			);
-	    switch ($oper) {
-	        case 'add':
-				$this->mparameter->add("tblparameter",$data);
-				$hasil = array(
-			        'status' => 'sukses'
-			    );
-			    echo json_encode($hasil);
-	            break;
-	        case 'edit':
-				$this->mparameter->edit("tblparameter",$data,$parameterpk);
-				$hasil = array(
-			        'status' => 'sukses'
-			    );
-			    echo json_encode($hasil);
-	            break;
-	         case 'del':
-				$this->mparameter->del("tblparameter",$parameterpk);
-				$hasil = array(
-			        'status' => 'sukses'
-			    );
-			    echo json_encode($hasil);
-	            break;
-	        default :
-	        	$hasil = array(
-			        'status' => 'Not Operation'
-			    );
-			    echo json_encode($hasil);
-	           break;
-		}
-	}
-
-	function operation($filters){
-        $filters = str_replace('\"','"' ,$filters);
-        $filters = str_replace('"[','[' ,$filters);
-        $filters = str_replace(']"',']' ,$filters);
-		$filters = json_decode($filters);
-		$where = " where ";
-		$whereArray = array();
-		$rules = $filters->rules;
-		$groupOperation = $filters->groupOp;
-		foreach($rules as $rule) {
-		    $fieldName = $rule->field;
-		    $fieldData = escapeString($rule->data);
-			   	switch ($rule->op) {
-					case "eq": $fieldOperation = " = '".$fieldData."'"; break;
-					case "ne": $fieldOperation = " != '".$fieldData."'"; break;
-					case "lt": $fieldOperation = " < '".$fieldData."'"; break;
-					case "gt": $fieldOperation = " > '".$fieldData."'"; break;
-					case "le": $fieldOperation = " <= '".$fieldData."'"; break;
-					case "ge": $fieldOperation = " >= '".$fieldData."'"; break;
-					case "nu": $fieldOperation = " = ''"; break;
-					case "nn": $fieldOperation = " != ''"; break;
-					case "in": $fieldOperation = " IN (".$fieldData.")"; break;
-					case "ni": $fieldOperation = " NOT IN '".$fieldData."'"; break;
-					case "bw": $fieldOperation = " LIKE '".$fieldData."%'"; break;
-					case "bn": $fieldOperation = " NOT LIKE '".$fieldData."%'"; break;
-					case "ew": $fieldOperation = " LIKE '%".$fieldData."'"; break;
-					case "en": $fieldOperation = " NOT LIKE '%".$fieldData."'"; break;
-					case "cn": $fieldOperation = " LIKE '%".$fieldData."%'"; break;
-					case "nc": $fieldOperation = " NOT LIKE '%".$fieldData."%'"; break;
-					default: $fieldOperation = ""; break;
-		        }
-		    if($fieldOperation != "") {
-		    	if($fieldName=="modifiedon"){
-                	$whereArray[] = "DATE_FORMAT(modifiedon,'%d-%m-%Y %T')".$fieldOperation;
-                }
-                else{
-                	$whereArray[] = $fieldName.$fieldOperation;
-                }
-		    }
 		}
 
-		if (count($whereArray)>0) {
-		    $where .= join(" ".$groupOperation." ", $whereArray);
-		} else {
-		    $where = "";
+		$sql = $this->mparameter->count($cond);
+		$total = $sql->num_rows();
+		$offset = ($page - 1) * $rows;
+		$data = $this->mparameter->get($cond,$sort,$order,$rows,$offset)->result();
+
+
+		foreach($data as $row){
+			$view = hasPermission('menu','view')?'<button class="icon-view_detail" onclick="viewData(\''.$row->parameter_key.'\')" style="width:16px;height:16px;border:0"></button> ':'';
+			$edit = hasPermission('menu','edit')?'<button class="icon-edit" onclick="editData(\''.$row->parameter_key.'\')" style="width:16px;height:16px;border:0"></button> ':'';
+			$del = hasPermission('menu','delete')?'<button class="icon-remove" onclick="deleteData(\''.$row->parameter_key.'\')" style="width:16px;height:16px;border:0"></button>':'';
+			$row->aksi = $view.$edit.$del;
 		}
-		return $where;
+		$response = new stdClass;
+		$response->total=$total;
+		$response->rows = $data;
+		$_SESSION['excel']= "asc|parameter_key|".$cond;
+		echo json_encode($response);
 	}
 
-	function excel(){
-		$excel = $_SESSION['excel'];
-		$splitexcel = explode("|",$excel);
-		$sord = $splitexcel[0];
-		$sidx= $splitexcel[1];
-		$where = $splitexcel[2];
-		$data['sql']=$this->db->query("SELECT *,
-		DATE_FORMAT(modifiedon,'%d-%m-%Y') modifiedon
-		FROM tblparameter " . $where . " ORDER BY $sidx $sord");
-		$this->load->view('parameter/excel',$data);
+	/**
+     * Fungsi view parameter
+     * @AclName View parameter
+     */
+	public function view($parameter_key=0){
+		$data['data'] = $this->mparameter->getById('tblparameter','parameter_key',$parameter_key);
+		$this->load->view('parameter/view',$data);
+	}
+	/**
+     * Fungsi add parameter
+     * @AclName Tambah parameter
+     */
+	public function add(){
+		$data=[];
+		if($this->input->server('REQUEST_METHOD') == 'POST' ){
+			$data = $this->input->post();
+			$cek = $this->_save($data);
+			$status = $cek?"sukses":"gagal";
+			$hasil = array(
+		        'status' => $status
+		    );
+		    echo json_encode($hasil);
+		}else{
+			$data = $this->input->post();
+		}
+		$this->load->view('parameter/add',['data'=>$data]);
+	}
+	/**
+     * Fungsi edit parameter
+     * @AclName Edit parameter
+     */
+	public function edit($id){
+		$data = $this->mparameter->getById('tblparameter','parameter_key',$id);
+        if(empty($data)){
+            redirect('parameter');
+        }
+		if($this->input->server('REQUEST_METHOD') == 'POST' ){
+			$data = $this->input->post();
+			$data['parameter_key'] = $this->input->post('parameter_key');
+			$cek = $this->_save($data);
+			$status = $cek?"sukses":"gagal";
+			$hasil = array(
+		        'status' => $status
+		    );
+		    echo json_encode($hasil);
+		}
+		$this->load->view('parameter/edit',['data'=>$data]);
+	}
+	/**
+     * Fungsi delete parameter
+     * @AclName Delete parameter
+     */
+	public function delete($id){
+		$data = $this->mparameter->getById('tblparameter','parameter_key',$id);
+		if(empty($data)){
+			redirect('parameter');
+		}
+		if($this->input->server('REQUEST_METHOD') == 'POST'){
+			$cek = $this->mparameter->delete($this->input->post('parameter_key'));
+			$status = $cek?"sukses":"gagal";
+			$hasil = array(
+		        'status' => $status
+		    );
+		    echo json_encode($hasil);
+		}
+		$this->load->view('parameter/delete',['data'=>$data]);
+	}
+	private function _save($data){
+		$data = array_map("strtoupper", $data);
+		return $this->mparameter->save($data);
+	}
+	/**
+     * Fungsi untuk export excel
+     * @AclName Export Excel rayon
+     */
+	public function excel(){
+		echo "excel";
 	}
 
-	function hakakses($x){
-		$x = $this->mmenutop->get_menuid($x);
-		return $x;
-	}
 }

@@ -10,7 +10,7 @@ class Menu extends MY_Controller {
      * Fungsi list menu
      * @AclName List Menu
      */
-	function index(){
+	public function index(){
 		$link = base_url().'menu/grid';
 		$this->render('menu/gridmenu',['link'=>$link]);
 	}
@@ -18,7 +18,7 @@ class Menu extends MY_Controller {
      * Fungsi grid menu
      * @AclName Grid Menu
      */
-	function grid(){
+	public function grid(){
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
 		$sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'menuid';

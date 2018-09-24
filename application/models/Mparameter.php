@@ -1,104 +1,60 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class Mparameter extends CI_Model {
-	function __construct() {
-        parent::__construct();
+class Mparameter extends MY_Model {
+	protected $table = 'tblparameter';
+	public function save($data) {
+        $this->db->trans_start();
+        $data['modifiedon'] =  date("Y-m-d H:i:s");
+        $data['modifiedby'] = $this->session->userdata('username');
+        if (isset($data['parameter_key']) && !empty($data['parameter_key'])) {
+            $id = $data['parameter_key'];
+            unset($data['parameter_key']);
+            $save = $this->_preFormat($data); //format the fields
+
+            $result = $this->update($save, $id,'parameter_key');
+            if($result === true ){
+            } else {
+                $this->db->trans_rollback();
+            }
+        } else {
+        	$save = $this->_preFormat($data);//format untuk field
+            $result = $this->insert($save);
+            if($result === true){
+
+            } else {
+                $this->db->trans_rollback();
+            }
+        }
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            $this->db->trans_commit();
+            return true;
+        }
+    }
+    public function delete($id){
+        $this->db->where(['parameter_key'=>$id]);
+        return $this->db->delete($this->table);
+    }
+	private function _preFormat($data){
+    	$fields = ['parametergrpid','parameterid','parametertext','parametermemo','modifiedon','modifiedby'];
+    	$save = [];
+    	foreach($fields as $val){
+    		if(isset($data[$val])){
+    			$save[$val] = $data[$val];
+    		}
+    	}
+    	return $save;
     }
 	function count($where){
-		$sql = $this->db->query("SELECT parameterpk FROM tblparameter " . $where);
+		$sql = $this->db->query("SELECT parameter_key FROM tblparameter " . $where);
         return $sql;
 	}
 	function get($where, $sidx, $sord, $limit, $start){
 		$sql = $this->db->query("SELECT *,
-		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedonview
-		FROM tblparameter " . $where . " ORDER BY $sidx $sord LIMIT $start , $limit");
+		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon
+		FROM tblparameter " . $where . " ORDER BY $sidx $sord  LIMIT $start , $limit");
 		return $sql;
-	}
-	function get_where($where){
-		$sql = $this->db->query("SELECT parameterpk FROM tblparameter " . $where);
-		return $sql;
-	}
-
-	function add($tabel,$data){
-		$sql = $this->db->insert($tabel,$data);
-	}
-	function edit($tabel,$data,$id){
-		$query = $this->db->where("parameterpk",$id);
-		$query = $this->db->update($tabel,$data);
-	}
-	function del($tabel,$id){
-		$query = $this->db->where("parameterpk",$id);
-		$sql = $this->db->delete($tabel);
-		return $sql;
-	}
-
-	//controller
-	function get_bgfilter(){
-		$bgfilter="";
-		$sqlbgfilter = $this->db->query('SELECT * FROM tblparameter WHERE parametergrpid="BACKGROUND" AND parameterid="FILTER" ');
-		foreach ($sqlbgfilter->result() as $key) {
-			$bgfilter="#".$key->parametertext;
-		}
-		return $bgfilter;
-	}
-
-	function get_bgsortira(){
-		$bgsortira="";
-		$sqlbgsortir = $this->db->query('SELECT * FROM tblparameter WHERE parametergrpid="BACKGROUND" AND parameterid="SORTIRA" ');
-		foreach ($sqlbgsortir->result() as $key) {
-			$bgsortira="#".$key->parametertext;
-		}
-		return $bgsortira;
-	}
-
-	function get_bgsortird(){
-		$bgsortird="";
-		$sqlbgsortir = $this->db->query('SELECT * FROM tblparameter WHERE parametergrpid="BACKGROUND" AND parameterid="SORTIRD" ');
-		foreach ($sqlbgsortir->result() as $key) {
-			$bgsortird="#".$key->parametertext;
-		}
-		return $bgsortird;
-	}
-
-	function get_jemaat(){
-		$sql = $this->db->query('SELECT * FROM tblparameter WHERE parametergrpid="STATUS"');
-		return $sql;
-	}
-
-	function get_combo(){
-		$parameter=":All;";
-		$sqlparameter = $this->db->query('SELECT * FROM tblparameter WHERE parametergrpid="STATUS"');
-		foreach ($sqlparameter->result() as $key) {
-			$parameter=$parameter.$key->parameterid.":".$key->parametertext.";";
-		}
-		$parameter=strrev($parameter);
-		$parameter=substr($parameter,1);
-		$parameter=strrev($parameter);
-		return $parameter;
-	}
-
-	function get_combo_all(){
-		$parameter=":All;";
-		$sqlparameter = $this->db->query('SELECT * FROM tblparameter WHERE parametergrpid="STATUS" and parameterid<>"M" and parameterid<>"TB" ');
-		foreach ($sqlparameter->result() as $key) {
-			$parameter=$parameter.$key->parameterid.":".$key->parametertext.";";
-		}
-		$parameter=strrev($parameter);
-		$parameter=substr($parameter,1);
-		$parameter=strrev($parameter);
-		return $parameter;
-	}
-
-
-	function get_combo_tb(){
-		$parameter=":All;";
-		$sqlparameter = $this->db->query('SELECT * FROM tblparameter WHERE parametergrpid="STATUS" and parameterid="TB"');
-		foreach ($sqlparameter->result() as $key) {
-			$parameter=$parameter.$key->parameterid.":".$key->parametertext.";";
-		}
-		$parameter=strrev($parameter);
-		$parameter=substr($parameter,1);
-		$parameter=strrev($parameter);
-		return $parameter;
 	}
 
 }

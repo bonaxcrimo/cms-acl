@@ -64,18 +64,8 @@ class Mmenu extends MY_Model
 		return $sql;
 	}
 
-	function add($tabel,$data){
-		$sql = $this->db->insert($tabel,$data);
-	}
-	function edit($tabel,$data,$id){
-		$query = $this->db->where("menuid",$id);
-		$query = $this->db->update($tabel,$data);
-	}
-	function del($tabel,$id){
-		$query = $this->db->where("menuid",$id);
-		$sql = $this->db->delete($tabel);
-		return $sql;
-	}
+
+
 
 	function reseq(){
 		$sql = $this->db->query("SELECT DISTINCT(menuparent) FROM tblmenu ORDER BY menuid ASC");

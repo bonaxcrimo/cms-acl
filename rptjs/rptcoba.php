@@ -46,7 +46,21 @@ require_once 'stimulsoft/helper.php';
 			// args.fileName = "MyReportName";
 		}
 		viewer.onPrintReport = function(event){
-
+			console.log("dasda");
+			$.ajax({
+	            type: "POST",
+	            url:"http://localhost:81/cms31/offering/print",
+	            enctype: 'multipart/form-data',
+	            data : {
+	                noOffering:'<?= $_GET['offering_key'] ?>'
+	            },dataType: "html",
+	            async: true,
+	            success: function(data) {
+	            	console.log(data);
+	            },error:function(err){
+	            	console.log(err);
+	            }
+	        });
 		}
 
 
