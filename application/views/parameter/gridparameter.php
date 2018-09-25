@@ -146,10 +146,10 @@
                 <tr>
                     <th field="aksi" width="5%">Aksi</th>
                     <th field="parameter_key"  hidden="true"></th>
-                    <th field="parametergrpid" width="10%" >parametergrpid</th>
-                    <th field="parameterid" width="10%" >parameterid</th>
+                    <th field="parametergrpid" width="10%" sortable="true">parametergrpid</th>
+                    <th field="parameterid" width="10%" sortable="true">parameterid</th>
                     <th field="parametertext" width="5%" sortable="true">parametertext</th>
-                    <th field="parametermemo" width="10%" >parametermemo</th>
+                    <th field="parametermemo" width="10%" sortable="true">parametermemo</th>
                     <th field="modifiedby" width="5%" sortable="true">modifiedby</th>
                     <th field="modifiedon" width="10%" sortable="true">modifiedon</th>
                 </tr>

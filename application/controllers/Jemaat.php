@@ -643,6 +643,40 @@ class Jemaat extends MY_Controller {
 		$this->load->view('jemaat/report',$data);
 
 	}
+	public function konversi(){
+		$data = $this->db->query("SELECT member_key,TRIM(serving) AS serving FROM tblmember WHERE serving!=''")->result();
+		// $total=0;
+		// $totalInsert = 0;
+		// $totalParam=0;
+		foreach($data as $row){
+			$pecah = explode("/",$row->serving);
+			array_pop($pecah);
+			// $total+=count($pecah);
+			foreach($pecah as $p){
+				$check = $this->mblood->getListAll('tblparameter',['parametergrpid'=>'SERVING','parameterid'=>$p]);
+				if(count($check)==0){
+					$insert= $this->db->query("INSERT INTO tblparameter values (NULL,'SERVING','".$p."','".$p."','','".$this->session->userdata('username')."',NOW())");
+					$parkey=$this->db->insert_id();
+					// if($insert){
+					// 	$totalParam+=1;
+					// }
+					$sql="insert into tblprofile values (NULL,'".$row->member_key."','".$parkey."',NOW(),'',NOW(),'".$this->session->userdata('username')."')";
+					$insert = $this->db->query($sql);
+					// if($insert){
+					// 	$totalInsert+=1;
+					// }
+				}else{
+					$parkey = !empty($check)?$check[0]->parameter_key:0;
+					$sql="insert into tblprofile values (NULL,'".$row->member_key."','".$parkey."',NOW(),'',NOW(),'".$this->session->userdata('username')."')";
+					$insert = $this->db->query($sql);
+					// if($insert){
+					// 	$totalInsert+=1;
+					// }
+				}
+			}
+		}
+		// echo "Total Data Serving = ".$total."<br>Total Data Insert Activity = ".$totalInsert."<br>Total Data Parameter = ".$totalParam;
+	}
 }
 
 

@@ -33,8 +33,15 @@
                             }
                         }
                     }
+                    var data = $(this).datagrid('getData');
+                    total = data.total;
+                    var pagerAcos = $("#dgAcos").datagrid('getPager');
+                    pagerAcos.pagination({
+                        pageList:[10,20,total]
+                    });
                  }
             });
+
     })
 </script>
 <br>

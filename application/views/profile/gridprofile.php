@@ -1,5 +1,6 @@
 <script type="text/javascript">
     $(document).ready(function(){
+        total=0;
         var dgProfile = $("#dgProfile").datagrid(
             {
                 remoteFilter:true,
@@ -11,7 +12,12 @@
                 url:"<?php echo base_url()?>profile/grid2",
                 method:'get',
                 onClickRow:function(index,row){
-                },onBeforeLoad:function(){
+                },onLoadSuccess:function(){
+                    var data = dgProfile.datagrid('getData');
+                    total = data.total;
+                    pagerProfile.pagination({
+                        pageList:[10,20,total]
+                    });
                 }
             });
         var pagerProfile = dgProfile.datagrid('getPager');    // get the pager of datagrid

@@ -129,6 +129,11 @@
                     });
                 }
 
+            },{
+                text:'Konversi Serving',
+                handler:function(){
+                    window.open("jemaat/konversi");
+                }
             }]
         });
         dg.datagrid('enableFilter', [{
