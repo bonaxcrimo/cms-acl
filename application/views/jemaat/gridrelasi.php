@@ -55,25 +55,6 @@
         },{
             field:'aksi',
             type:'label'
-        },{
-            field:'blood_key',
-            type:'combobox',
-            options:{
-                    panelHeight:'auto',
-                    data:[<?= $blood ?>],
-                    onChange:function(value){
-                        if (value == ''){
-                            dgRelasi.datagrid('removeFilterRule', 'blood_key');
-                        } else {
-                            dgRelasi.datagrid('addFilterRule', {
-                                field: 'blood_key',
-                                op: 'equal',
-                                value: value
-                            });
-                        }
-                        dgRelasi.datagrid('doFilter');
-                    }
-                }
         }
 
         ]);
@@ -128,10 +109,7 @@
             <th sortable="true" field="pembesukdari" width="5%">pembesukdari</th>
             <th sortable="true" field="modifiedby" width="5%">modifiedby</th>
             <th sortable="true" field="modifiedon" width="10%">modifiedon</th>
-            <!-- <?php foreach($listTable as $t){
-             ?>
-            <th field="<?= $t ?>" width="10%" sortable="true"><?= $t ?></th>
-            <?php } ?> -->
+
         </tr>
     </thead>
 </table>

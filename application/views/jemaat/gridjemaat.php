@@ -32,6 +32,7 @@
                     relasi(relationno);
                     var member_key = row.member_key;
                     besuk(member_key);
+
                  },onLoadSuccess:function(data){
                     var opts = $(this).datagrid('options');
                     var optLength = opts.filterRules.length;
@@ -442,6 +443,13 @@
         relationno=relationno=="-"?"":relationno;
         page="<?php echo base_url()?>relasi/index/?relationno="+relationno;
         $('#datarelasi').html('<img src="<?php echo base_url()?>libraries/img/loading.gif">').load(page);
+        // $.ajax({
+        //     url:page,
+        //     cache:false,
+        //     success:function(data){
+        //         $("#datarelasi").html(data);
+        //     }
+        // })
     }
 
     function besuk(member_key){

@@ -4,6 +4,8 @@ class Relasi extends CI_Controller {
 
 	public function __construct(){
 		parent::__construct();
+		// date_default_timezone_set("Asia/Jakarta");
+		// ini_set('memory_limit', '-1');
 		$this->load->model([
 			'mjemaat',
 			'mgender',
@@ -18,28 +20,11 @@ class Relasi extends CI_Controller {
 	}
 
 	function index(){
-		$data['listTable'] = $this->db->list_fields('tblmember');
-
 		if(empty($_GET['relationno'])){
 			echo" Empty";
 		}
 		else{
-			$data['sqlgender'] = getParameter('GENDER');
-			$data['sqlpstatus'] =getParameter('PSTATUS');
-			// $data['sqlstatusidv'] = $this->mparameter->get_jemaat();
-			$data['sqlblood'] =getParameter('BLOOD');
-			$data['sqlkebaktian'] =getParameter('KEBAKTIAN');
-			$data['sqlpersekutuan'] =getParameter('PERSEKUTUAN');
-			$data['sqlrayon'] =getParameter('RAYON');
-			$data['listTable'] = $this->db->list_fields('tblmember');
 
-			// $data['statusidv'] = $this->mparameter->get_combo_all();
-			$data['blood'] = getComboParameter('BLOOD');
-			$data['gender'] = getComboParameter('GENDER');
-			$data['pstatus'] = getComboParameter('PSTATUS');
-			$data['kebaktian'] = getComboParameter('KEBAKTIAN');
-			$data['persekutuan'] =getComboParameter('PERSEKUTUAN');
-			$data['rayon'] = getComboParameter('RAYON');
 			$data['relationno'] = $_GET['relationno'];
 			$this->load->view('jemaat/gridrelasi',$data);
 		}
