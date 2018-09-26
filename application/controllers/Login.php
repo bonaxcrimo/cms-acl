@@ -4,6 +4,7 @@ class Login extends MY_Controller {
 
 	public function __construct() {
 		parent::__construct();
+        session_start();
 		$this->load->model('mlogin');
 	}
     /**
@@ -11,6 +12,7 @@ class Login extends MY_Controller {
      * @AclName Login
      */
 	public function index(){
+
 		$adminId = $this->session->userdata('logged_in');
 
         if(!empty($adminId)){

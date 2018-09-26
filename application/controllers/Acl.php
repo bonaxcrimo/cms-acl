@@ -3,6 +3,7 @@
 class Acl extends MY_Controller{
     public function __construct(){
         parent::__construct();
+        session_start();
         $this->load->model('Macl');
     }
     public function index(){

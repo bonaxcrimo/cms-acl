@@ -4,6 +4,7 @@ class Gender extends MY_Controller {
 
 	public function __construct(){
 		parent::__construct();
+		session_start();
 		$this->load->model([
 			'mgender'
 		]);

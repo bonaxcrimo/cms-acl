@@ -4,6 +4,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class offering extends MY_Controller {
     public function __construct(){
         parent::__construct();
+        session_start();
         $this->load->model([
             'moffering'
         ]);
