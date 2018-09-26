@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 07, 2018 at 09:10 AM
+-- Generation Time: Sep 26, 2018 at 06:57 AM
 -- Server version: 5.6.34-log
 -- PHP Version: 7.2.1
 
@@ -31,8 +31,8 @@ CREATE DEFINER=``@`%` PROCEDURE `cekUmur` (IN `var1` INT)  BEGIN
     select (YEAR(CURDATE())-YEAR(@dob)) AS age;
 END$$
 
-CREATE DEFINER=`admin`@`%` PROCEDURE `p_terbilang` (IN `angka` BIGINT, OUT `retval` TEXT)  BEGIN
-      DECLARE tmp1 TEXT;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `p_terbilang` (IN `angka` BIGINT, OUT `retval` TEXT)  BEGIN
+  -- @rgiapratama - 2017    DECLARE tmp1 TEXT;
     DECLARE tmp2 TEXT;
      
     SET max_sp_recursion_depth := 20;
@@ -74,6 +74,15 @@ CREATE DEFINER=`admin`@`%` PROCEDURE `p_terbilang` (IN `angka` BIGINT, OUT `retv
   END IF;
 END$$
 
+--
+-- Functions
+--
+CREATE DEFINER=`root`@`localhost` FUNCTION `f_terbilang` (`angka` BIGINT) RETURNS TEXT CHARSET latin1 BEGIN
+-- @rgiapratama - 2017    DECLARE v_result TEXT;
+    CALL p_terbilang(angka, v_result);
+    RETURN REPLACE(v_result,'  ',' ');
+END$$
+
 DELIMITER ;
 
 -- --------------------------------------------------------
@@ -96,16 +105,16 @@ CREATE TABLE `tblacl` (
 
 INSERT INTO `tblacl` (`aclid`, `acoid`, `roleid`, `modifiedby`, `modifiedon`) VALUES
 (1, 1, 1, 'admin', '0000-00-00 00:00:00'),
-(2, 8, 1, 'admin', '0000-00-00 00:00:00'),
-(3, 7, 1, 'admin', '0000-00-00 00:00:00'),
-(4, 6, 1, 'admin', '0000-00-00 00:00:00'),
+(2, 2, 1, 'admin', '0000-00-00 00:00:00'),
+(3, 3, 1, 'admin', '0000-00-00 00:00:00'),
+(4, 4, 1, 'admin', '0000-00-00 00:00:00'),
 (5, 5, 1, 'admin', '0000-00-00 00:00:00'),
-(6, 4, 1, 'admin', '0000-00-00 00:00:00'),
-(7, 3, 1, 'admin', '0000-00-00 00:00:00'),
-(8, 2, 1, 'admin', '0000-00-00 00:00:00'),
+(6, 6, 1, 'admin', '0000-00-00 00:00:00'),
+(7, 7, 1, 'admin', '0000-00-00 00:00:00'),
+(8, 8, 1, 'admin', '0000-00-00 00:00:00'),
 (9, 9, 1, 'admin', '0000-00-00 00:00:00'),
-(10, 11, 1, 'admin', '0000-00-00 00:00:00'),
-(11, 10, 1, 'admin', '0000-00-00 00:00:00'),
+(10, 10, 1, 'admin', '0000-00-00 00:00:00'),
+(11, 11, 1, 'admin', '0000-00-00 00:00:00'),
 (12, 12, 1, 'admin', '0000-00-00 00:00:00'),
 (13, 13, 1, 'admin', '0000-00-00 00:00:00'),
 (14, 14, 1, 'admin', '0000-00-00 00:00:00'),
@@ -113,32 +122,32 @@ INSERT INTO `tblacl` (`aclid`, `acoid`, `roleid`, `modifiedby`, `modifiedon`) VA
 (16, 16, 1, 'admin', '0000-00-00 00:00:00'),
 (17, 17, 1, 'admin', '0000-00-00 00:00:00'),
 (18, 18, 1, 'admin', '0000-00-00 00:00:00'),
-(19, 20, 1, 'admin', '0000-00-00 00:00:00'),
-(20, 19, 1, 'admin', '0000-00-00 00:00:00'),
+(19, 19, 1, 'admin', '0000-00-00 00:00:00'),
+(20, 20, 1, 'admin', '0000-00-00 00:00:00'),
 (21, 21, 1, 'admin', '0000-00-00 00:00:00'),
-(22, 24, 1, 'admin', '0000-00-00 00:00:00'),
+(22, 22, 1, 'admin', '0000-00-00 00:00:00'),
 (23, 23, 1, 'admin', '0000-00-00 00:00:00'),
-(24, 25, 1, 'admin', '0000-00-00 00:00:00'),
-(25, 22, 1, 'admin', '0000-00-00 00:00:00'),
-(27, 2, 4, 'admin', '0000-00-00 00:00:00'),
-(28, 3, 4, 'admin', '0000-00-00 00:00:00'),
-(29, 4, 4, 'admin', '0000-00-00 00:00:00'),
-(30, 5, 4, 'admin', '0000-00-00 00:00:00'),
-(31, 6, 4, 'admin', '0000-00-00 00:00:00'),
-(33, 8, 4, 'admin', '0000-00-00 00:00:00'),
-(34, 9, 4, 'admin', '0000-00-00 00:00:00'),
-(35, 10, 4, 'admin', '0000-00-00 00:00:00'),
-(36, 11, 4, 'admin', '0000-00-00 00:00:00'),
-(37, 24, 4, 'admin', '0000-00-00 00:00:00'),
-(38, 23, 4, 'admin', '0000-00-00 00:00:00'),
-(40, 20, 4, 'admin', '0000-00-00 00:00:00'),
-(41, 19, 4, 'admin', '0000-00-00 00:00:00'),
-(42, 25, 4, 'admin', '0000-00-00 00:00:00'),
-(43, 12, 4, 'admin', '0000-00-00 00:00:00'),
-(44, 13, 4, 'admin', '0000-00-00 00:00:00'),
-(48, 15, 4, 'admin', '0000-00-00 00:00:00'),
-(50, 22, 4, 'admin', '0000-00-00 00:00:00'),
-(52, 7, 4, 'admin', '0000-00-00 00:00:00');
+(24, 24, 1, 'admin', '0000-00-00 00:00:00'),
+(25, 25, 1, 'admin', '0000-00-00 00:00:00'),
+(26, 26, 1, 'admin', '0000-00-00 00:00:00'),
+(27, 27, 1, 'admin', '0000-00-00 00:00:00'),
+(28, 28, 1, 'admin', '0000-00-00 00:00:00'),
+(29, 29, 1, 'admin', '0000-00-00 00:00:00'),
+(30, 30, 1, 'admin', '0000-00-00 00:00:00'),
+(31, 31, 1, 'admin', '0000-00-00 00:00:00'),
+(32, 32, 1, 'admin', '0000-00-00 00:00:00'),
+(33, 33, 1, 'admin', '0000-00-00 00:00:00'),
+(34, 34, 1, 'admin', '0000-00-00 00:00:00'),
+(35, 35, 1, 'admin', '0000-00-00 00:00:00'),
+(36, 36, 1, 'admin', '0000-00-00 00:00:00'),
+(37, 37, 1, 'admin', '0000-00-00 00:00:00'),
+(38, 38, 1, 'admin', '0000-00-00 00:00:00'),
+(39, 39, 1, 'admin', '0000-00-00 00:00:00'),
+(40, 40, 1, 'admin', '0000-00-00 00:00:00'),
+(41, 41, 1, 'admin', '0000-00-00 00:00:00'),
+(42, 42, 1, 'admin', '0000-00-00 00:00:00'),
+(43, 43, 1, 'admin', '0000-00-00 00:00:00'),
+(44, 44, 1, 'admin', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -161,38 +170,49 @@ CREATE TABLE `tblacos` (
 
 INSERT INTO `tblacos` (`acosid`, `class`, `method`, `displayname`, `modifiedby`, `modifiedon`) VALUES
 (1, 'Acos', 'fetch', 'Acos Fetch\r', 'admin', '0000-00-00 00:00:00'),
-(2, 'blood', 'index', 'List Blood', 'admin', '0000-00-00 00:00:00'),
-(3, 'blood', 'grid', 'Grid Blood', 'admin', '0000-00-00 00:00:00'),
-(4, 'blood', 'view', 'View Blood', 'admin', '0000-00-00 00:00:00'),
-(5, 'blood', 'add', 'Tambah Blood', 'admin', '0000-00-00 00:00:00'),
-(6, 'blood', 'edit', 'Edit Blood', 'admin', '0000-00-00 00:00:00'),
-(7, 'blood', 'delete', 'Delete Blood', 'admin', '0000-00-00 00:00:00'),
-(8, 'blood', 'excel', 'Export Excel Blood', 'admin', '0000-00-00 00:00:00'),
-(9, 'Home', 'index', 'Home', 'admin', '0000-00-00 00:00:00'),
-(10, 'Login', 'index', 'Login', 'admin', '0000-00-00 00:00:00'),
-(11, 'Login', 'logout', 'Logout', 'admin', '0000-00-00 00:00:00'),
-(12, 'offering', 'index', 'List Offering\r', 'admin', '0000-00-00 00:00:00'),
-(13, 'offering', 'grid2', 'Grid Offering\r', 'admin', '0000-00-00 00:00:00'),
-(14, 'Roles', 'view', 'View Roles\r', 'admin', '0000-00-00 00:00:00'),
-(15, 'Roles', 'grid', 'Grid Roles\r', 'admin', '0000-00-00 00:00:00'),
-(16, 'Roles', 'add', 'Tambah Roles\r', 'admin', '0000-00-00 00:00:00'),
-(17, 'Roles', 'edit', 'Edit Roles\r', 'admin', '0000-00-00 00:00:00'),
-(18, 'Roles', 'delete', 'Delete Roles\r', 'admin', '0000-00-00 00:00:00'),
-(19, 'Menu', 'view', 'View Menu\r', 'admin', '0000-00-00 00:00:00'),
-(20, 'Menu', 'add', 'Tambah Menu\r', 'admin', '0000-00-00 00:00:00'),
-(21, 'Menu', 'edit', 'Edit Menu\r', 'admin', '0000-00-00 00:00:00'),
-(22, 'Roles', 'index', 'List Roles\r', 'admin', '0000-00-00 00:00:00'),
-(23, 'Menu', 'index', 'List Menu\r', 'admin', '0000-00-00 00:00:00'),
-(24, 'Menu', 'grid', 'Grid Menu\r', 'admin', '0000-00-00 00:00:00'),
+(2, 'Acos', 'grid', 'Grid Acos\r', 'admin', '0000-00-00 00:00:00'),
+(3, 'blood', 'index', 'List Blood', 'admin', '0000-00-00 00:00:00'),
+(4, 'blood', 'grid', 'Grid Blood', 'admin', '0000-00-00 00:00:00'),
+(5, 'blood', 'view', 'View Blood', 'admin', '0000-00-00 00:00:00'),
+(6, 'blood', 'add', 'Tambah Blood', 'admin', '0000-00-00 00:00:00'),
+(7, 'blood', 'edit', 'Edit Blood', 'admin', '0000-00-00 00:00:00'),
+(8, 'blood', 'delete', 'Delete Blood', 'admin', '0000-00-00 00:00:00'),
+(9, 'blood', 'excel', 'Export Excel Blood', 'admin', '0000-00-00 00:00:00'),
+(10, 'Gender', 'index', 'List Gender\r', 'admin', '0000-00-00 00:00:00'),
+(11, 'Gender', 'view', 'View Gender\r', 'admin', '0000-00-00 00:00:00'),
+(12, 'Gender', 'add', 'Tambah Gender\r', 'admin', '0000-00-00 00:00:00'),
+(13, 'Gender', 'grid', 'Grid Gender\r', 'admin', '0000-00-00 00:00:00'),
+(14, 'Gender', 'edit', 'Edit Gender\r', 'admin', '0000-00-00 00:00:00'),
+(15, 'Gender', 'delete', 'Delete Gender\r', 'admin', '0000-00-00 00:00:00'),
+(16, 'Gender', 'excel', 'Export Excel Gender\r', 'admin', '0000-00-00 00:00:00'),
+(17, 'Home', 'index', 'Home', 'admin', '0000-00-00 00:00:00'),
+(18, 'Login', 'index', 'Login', 'admin', '0000-00-00 00:00:00'),
+(19, 'Login', 'logout', 'Logout', 'admin', '0000-00-00 00:00:00'),
+(20, 'Menu', 'index', 'List Menu\r', 'admin', '0000-00-00 00:00:00'),
+(21, 'Menu', 'grid', 'Grid Menu\r', 'admin', '0000-00-00 00:00:00'),
+(22, 'Menu', 'view', 'View Menu\r', 'admin', '0000-00-00 00:00:00'),
+(23, 'Menu', 'add', 'Tambah Menu\r', 'admin', '0000-00-00 00:00:00'),
+(24, 'Menu', 'edit', 'Edit Menu\r', 'admin', '0000-00-00 00:00:00'),
 (25, 'Menu', 'delete', 'Delete Menu\r', 'admin', '0000-00-00 00:00:00'),
-(26, 'User', 'index', 'List User\r', 'admin', '0000-00-00 00:00:00'),
-(27, 'User', 'grid', 'Grid User\r', 'admin', '0000-00-00 00:00:00'),
-(28, 'User', 'view', 'View User\r', 'admin', '0000-00-00 00:00:00'),
-(29, 'User', 'add', 'Tambah User\r', 'admin', '0000-00-00 00:00:00'),
-(30, 'User', 'edit', 'Edit User\r', 'admin', '0000-00-00 00:00:00'),
-(31, 'User', 'delete', 'Delete User\r', 'admin', '0000-00-00 00:00:00'),
-(32, 'UserAcl', 'index', 'List Awal\r', 'admin', '0000-00-00 00:00:00'),
-(33, 'UserAcl', 'edit', 'Edit User Acl\r', 'admin', '0000-00-00 00:00:00');
+(26, 'offering', 'index', 'List Offering\r', 'admin', '0000-00-00 00:00:00'),
+(27, 'offering', 'prints', 'Print Offering\r', 'admin', '0000-00-00 00:00:00'),
+(28, 'offering', 'grid', 'grid Offering di Jemaat\r', 'admin', '0000-00-00 00:00:00'),
+(29, 'offering', 'grid2', 'grid Offering\r', 'admin', '0000-00-00 00:00:00'),
+(30, 'offering', 'report', 'Report Offering\r', 'admin', '0000-00-00 00:00:00'),
+(31, 'Roles', 'index', 'List Roles\r', 'admin', '0000-00-00 00:00:00'),
+(32, 'Roles', 'view', 'View Roles\r', 'admin', '0000-00-00 00:00:00'),
+(33, 'Roles', 'grid', 'Grid Roles\r', 'admin', '0000-00-00 00:00:00'),
+(34, 'Roles', 'add', 'Tambah Roles\r', 'admin', '0000-00-00 00:00:00'),
+(35, 'Roles', 'edit', 'Edit Roles\r', 'admin', '0000-00-00 00:00:00'),
+(36, 'Roles', 'delete', 'Delete Roles\r', 'admin', '0000-00-00 00:00:00'),
+(37, 'User', 'index', 'List User\r', 'admin', '0000-00-00 00:00:00'),
+(38, 'User', 'grid', 'Grid User\r', 'admin', '0000-00-00 00:00:00'),
+(39, 'User', 'view', 'View User\r', 'admin', '0000-00-00 00:00:00'),
+(40, 'User', 'add', 'Tambah User\r', 'admin', '0000-00-00 00:00:00'),
+(41, 'User', 'edit', 'Edit User\r', 'admin', '0000-00-00 00:00:00'),
+(42, 'User', 'delete', 'Delete User\r', 'admin', '0000-00-00 00:00:00'),
+(43, 'UserAcl', 'index', 'List Awal\r', 'admin', '0000-00-00 00:00:00'),
+(44, 'UserAcl', 'edit', 'Edit User Acl\r', 'admin', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -236,7 +256,7 @@ INSERT INTO `tblbesuk` (`besukid`, `member_key`, `besukdate`, `pembesuk`, `pembe
 (19, 4520, '2013-03-06 00:00:00', 'EV. YOHANNA, GU HUI ZHEN, GU MAN LI, LI LI LAN', 'HAKKA', 'DIA ADALAH JEMAAT ELIM, DULU KE PERS. HAKKA DGN SUAMI, SUAMI BARU MENINGGAL, MEMBERI UANG KASIH DARI KOMISI SOSIAL UNTUK DIA', NULL, 'RUTTE', '2013-05-02 16:59:00'),
 (20, 4605, '2013-10-31 00:00:00', 'GI. XIE LIAN ZHU & EV. YOHANNA', '', 'STROKE RINGAN (SAAT IKUT PAMERAN MASAKAN DI HOTEL HERMES) SAAT INI  SDG DIOPNAME DI RS METHODIST\r\nESTER 6. ', '', 'YOHANNA', '2013-10-31 10:01:27'),
 (1189, 4335, '2016-01-15 13:47:46', 'ONG PEK LIE', 'KETUA RAYON 4', 'SDH DI DEPAN RUMAH TP TDK LELUASA TERIMA MASUK RUMAH', '', 'SUN QI', '2016-01-19 13:47:46'),
-(50, 2717, '2014-06-17 00:00:00', 'HERRY, RIVIN, MARRYWATY & AIFANG', 'RAYON 29-C', 'BESUK DI RS IMELDA. TERJATUH, OPNAME DI RS. HARI ESOKNYA AKAN KELUAR DARI RUMAH SAKIT. SDH AGAK BAIK', 'YA', 'RIVIN', '2014-07-03 20:58:59'),
+(50, 2717, '2014-06-17 08:01:48', 'HERRY, RIVIN, MARRYWATY & AIFANG', 'RAYON 29-C', 'BESUK DI RS IMELDA. TERJATUH, OPNAME DI RS. HARI ESOKNYA AKAN KELUAR DARI RUMAH SAKIT. SDH AGAK BAIK', 'YA', 'admin', '2018-09-19 08:01:48'),
 (27, 3057, '2014-04-02 00:00:00', 'W', 'W', 'W', 'W', 'admin', '2014-04-14 15:04:25'),
 (112, 3571, '2014-08-27 00:00:00', 'SUDIANTO; ANNA WALDEMAR; DENG YOU LIEN, EV.YOHANNA', 'PENGURUS KU-2', 'ISTRINYA DEWI BARU MELAHIRKAN ANAK KE-3 , PUTRA BERNAMA AUSTIN JONES PD TGL.17 AUG\'14', '', 'STEVENLAW', '2014-09-05 23:40:20'),
 (29, 3057, '2014-04-09 00:00:00', 'A', 'A', 'A', 'A', 'CORNEL', '2014-04-14 15:11:25'),
@@ -274,7 +294,7 @@ INSERT INTO `tblbesuk` (`besukid`, `member_key`, `besukdate`, `pembesuk`, `pembe
 (67, 1921, '2014-05-28 00:00:00', 'EV.WILLIAM; GU MAN LI; LI LI LAN', 'HAKKA', 'ISTRINYA LI ZHONG YING JATUH DI RUMAH DAN LUKA KAKI DKT PAHA. BELAKANGAN HRS MKN OBAT TDR , MOHON DOAKAN AGAR TDK BERGANTUNG SAMA OBAT TDR', 'YA', 'SUN QI', '2014-07-17 15:00:04'),
 (68, 930, '2014-02-19 00:00:00', 'GU MAN LI; LI LI LAN', 'HAKKA', 'TDK ADA LAPORAN', '', 'STEVENLAW', '2014-07-07 23:20:55'),
 (69, 2853, '2014-02-12 00:00:00', 'EV. WILLIAM; GU MAN LI', 'HAKKA', 'TDK ADA LAPORAN', '', 'STEVENLAW', '2014-07-07 23:26:38'),
-(70, 0, '2018-02-03 13:28:32', 'GU MAN LI; LI LI LAN', 'HAKKA', 'LEMAH TUBUH. BICARA SUSAH DIMENGERTI. MOHON DIDOAKAN', '', 'admin', '2018-08-16 13:28:32'),
+(70, 0, '1908-08-10 06:29:41', 'GU MAN LI; LI LI LAN', 'HAKKA', 'LEMAH TUBUH. BICARA SUSAH DIMENGERTI. MOHON DIDOAKAN', '', 'admin', '2018-09-19 06:29:41'),
 (72, 4788, '2014-07-04 00:00:00', 'PDT. SUNARYO ; EV.YOHANNA', 'HAMBA TUHAN', 'HATI KURANG BAIK, TDK BISA JLN', '', 'STEVENLAW', '2014-07-07 23:36:27'),
 (73, 2638, '2014-06-29 00:00:00', 'RIVIN; AI FANG; EV. YOHANNA', 'KEANGGOTAAAN', 'BESUK MAMA ELISA DI RS. TDK SADARKAN DIRI. DIDOAKAN JUGA', '', 'RIVIN', '2014-07-11 23:52:44'),
 (74, 2737, '2014-06-29 00:00:00', 'RIVIN; AI FANG; EV. YOHANNA', 'KEANGGOTAAN & RAYON', 'BESUK MAMA YENTY YG KAKI DAN BADANNYA BENGKAK. BESUK DI RS DAN DIDOAKAN', '', 'RIVIN', '2014-07-11 23:50:22'),
@@ -2027,7 +2047,20 @@ INSERT INTO `tblbesuk` (`besukid`, `member_key`, `besukdate`, `pembesuk`, `pembe
 (1930, 5070, '2018-06-20 21:39:08', 'PDT FRANKY,EV PETER,EV NOVI', '', 'BESUK PERJAMUAN KUDUS,BAIK', '', 'BENNY', '2018-07-02 21:39:08'),
 (1931, 3217, '2018-06-20 21:40:42', 'PDT FRANKY,EV PETER,EV NOVI', '', 'BESUK PERJAMUAN KUDUS,BAIK', '', 'BENNY', '2018-07-02 21:40:42'),
 (1933, 9, '2018-08-01 15:32:50', 'BINJAI', 'BINJAI', 'BELUM ADA HASIL', '', 'admin', '2018-08-16 15:32:50'),
-(1934, 7, '2018-08-17 10:23:58', 'ABCD', '12345', '', '', 'admin', '2018-08-15 10:23:58');
+(1934, 7, '2018-08-17 10:23:58', 'ABCD', '12345', '', '', 'admin', '2018-08-15 10:23:58'),
+(1954, 5, '2018-10-24 07:52:46', 'ASD1', 'ASD', 'ASD', 'ASD', 'admin', '2018-09-19 07:52:46');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tblhistorycetak`
+--
+
+CREATE TABLE `tblhistorycetak` (
+  `history_key` int(11) NOT NULL,
+  `offering_key` int(11) NOT NULL DEFAULT '0',
+  `createdon` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -11140,7 +11173,7 @@ CREATE TABLE `tblmenu` (
 --
 
 INSERT INTO `tblmenu` (`menuid`, `menuname`, `menuseq`, `menuparent`, `menuicon`, `acoid`, `modifiedby`, `modifiedon`) VALUES
-(1, 'Home', 10, 0, 'icon-home', 1, 'ADMIN', '2014-04-01 15:21:45'),
+(1, 'Home', 10, 0, 'icon-home', 17, 'admin', '2018-09-19 03:15:13'),
 (2, 'Master', 20, 0, 'icon-master', 0, '', '0000-00-00 00:00:00'),
 (3, 'Pengguna', 40, 0, 'icon-pengguna', 0, 'admin', '2015-04-19 13:01:43'),
 (4, 'Data Jemaat', 30, 2, 'icon-pengguna', 0, '', '0000-00-00 00:00:00'),
@@ -11165,8 +11198,8 @@ INSERT INTO `tblmenu` (`menuid`, `menuname`, `menuseq`, `menuparent`, `menuicon`
 (49, 'Data Teman Baru', 31, 2, 'icon-pengguna', 0, 'admin', '2017-01-12 13:52:05'),
 (50, 'Besuk', 20, 2, 'icon-pengguna', 0, 'admin', '2018-08-16 09:00:28'),
 (51, 'Activity', 10, 2, 'icon-pengguna', 0, 'admin', '2018-08-18 11:30:21'),
-(52, 'Offering', 90, 2, 'icon-pengguna', 0, 'admin', '2018-08-20 09:23:33'),
-(54, 'Roles', 10, 0, 'icon-pengguna', 22, 'admin', '2018-09-06 09:15:30');
+(52, 'Offering', 90, 2, 'icon-pengguna', 12, 'admin', '2018-08-20 09:23:33'),
+(54, 'Roles', 10, 2, 'icon-pengguna', 22, 'admin', '2018-09-06 09:15:30');
 
 -- --------------------------------------------------------
 
@@ -11188,26 +11221,30 @@ CREATE TABLE `tbloffering` (
   `modifiedby` varchar(15) DEFAULT NULL,
   `aliasname2` varchar(50) DEFAULT NULL,
   `printedon` datetime DEFAULT NULL,
-  `printedby` varchar(15) DEFAULT NULL
+  `printedby` varchar(15) DEFAULT NULL,
+  `membername` varchar(50) DEFAULT NULL,
+  `chinesename` varchar(50) DEFAULT NULL,
+  `address` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
 
 --
 -- Dumping data for table `tbloffering`
 --
 
-INSERT INTO `tbloffering` (`offering_key`, `member_key`, `offeringid`, `offeringno`, `transdate`, `inputdate`, `remark`, `offeringvalue`, `row_status`, `modifiedon`, `modifiedby`, `aliasname2`, `printedon`, `printedby`) VALUES
-(1, 5, 155, '001/2018-08-27', '2018-08-27 16:14:18', '2018-08-27 16:14:18', 'DSA', 23131, '', '2018-08-29 16:14:18', 'admin', 'NN', NULL, NULL),
-(4, 5, 154, '002/2018-08-27', '2018-08-27 09:17:59', '2018-08-27 09:17:59', 'DSADA', 121212, '', '2018-08-27 09:17:59', 'admin', NULL, NULL, NULL),
-(5, 5, 155, '003/2018-08-27', '2018-08-27 10:04:05', '2018-08-27 10:04:05', 'REMARK', 500000, '', '2018-08-27 10:04:05', 'admin', NULL, NULL, NULL),
-(11, 6, 154, '001/2018-08-28', '2018-08-28 13:25:34', '2018-08-28 13:25:34', 'GJGHJ', 120000, '', '2018-08-28 13:25:34', 'admin', NULL, NULL, NULL),
-(12, 5, 157, '002/2018-08-28', '2018-08-28 13:26:07', '2018-08-28 13:26:07', 'JANJI IMAN', 5000000, '', '2018-08-28 13:26:07', 'admin', NULL, NULL, NULL),
-(13, 66, 157, '001/2018-08-29', '2018-08-29 10:24:19', '2018-08-29 10:24:19', '', 250000, '', '2018-08-29 10:24:19', 'admin', NULL, NULL, NULL),
-(14, 13, 156, '002/2018-08-29', '2018-08-29 10:25:48', '2018-08-29 10:25:48', '', 200000, '', '2018-08-29 11:16:21', 'admin', NULL, NULL, NULL),
-(15, 120, 155, '003/2018-08-29', '2018-08-29 14:55:28', '2018-08-29 14:55:28', 'DASDA\r\nDASDAS\r\nDASDASD', 300000, '', '2018-08-29 14:55:28', 'admin', NULL, NULL, NULL),
-(16, 8, 156, '001/2018-08-30', '2018-08-30 08:42:32', '2018-08-30 08:42:32', 'JHKSDJHDS\r\nDSLKHDSLDS', 300000, '', '2018-08-30 08:42:32', 'admin', 'AAASS', NULL, NULL),
-(18, 5, 156, '002/2018-08-30', '2018-08-30 08:13:08', '2018-08-30 08:13:08', 'GOOD', 100000, '', '2018-09-06 08:13:08', 'admin', 'NAME', NULL, NULL),
-(19, 38, 157, '003/2018-08-30', '2018-08-30 10:48:46', '2018-08-30 10:48:46', ' PEMBANGUNAN', 50000000, '', '2018-08-30 10:48:46', 'admin', '888', NULL, NULL),
-(20, 8, 157, '001/2018-09-04', '2018-09-04 16:25:41', '2018-09-04 16:25:41', '', 0, 'D', '2018-09-04 16:25:41', 'admin', '', NULL, NULL);
+INSERT INTO `tbloffering` (`offering_key`, `member_key`, `offeringid`, `offeringno`, `transdate`, `inputdate`, `remark`, `offeringvalue`, `row_status`, `modifiedon`, `modifiedby`, `aliasname2`, `printedon`, `printedby`, `membername`, `chinesename`, `address`) VALUES
+(1, 5, 155, '001/2018-08-27', '2018-08-27 16:14:18', '2018-08-27 16:14:18', 'DSA', 23131, '', '2018-08-29 16:14:18', 'admin', 'NN', NULL, NULL, NULL, NULL, NULL),
+(4, 5, 154, '002/2018-08-27', '2018-08-27 09:17:59', '2018-08-27 09:17:59', 'DSADA', 121212, '', '2018-08-27 09:17:59', 'admin', NULL, '2018-09-24 09:54:42', 'admin', NULL, NULL, NULL),
+(5, 5, 155, '003/2018-08-27', '2018-08-27 10:04:05', '2018-08-27 10:04:05', 'REMARK', 500000, '', '2018-08-27 10:04:05', 'admin', NULL, NULL, NULL, NULL, NULL, NULL),
+(11, 6, 154, '001/2018-08-28', '2018-08-28 13:25:34', '2018-08-28 13:25:34', 'GJGHJ', 120000, '', '2018-08-28 13:25:34', 'admin', NULL, '2018-09-24 09:45:58', 'admin', NULL, NULL, NULL),
+(12, 5, 157, '002/2018-08-28', '2018-08-28 13:26:07', '2018-08-28 13:26:07', 'JANJI IMAN', 5000000, '', '2018-08-28 13:26:07', 'admin', NULL, NULL, NULL, NULL, NULL, NULL),
+(13, 66, 157, '001/2018-08-29', '2018-08-29 10:24:19', '2018-08-29 10:24:19', '', 250000, '', '2018-08-29 10:24:19', 'admin', NULL, NULL, NULL, NULL, NULL, NULL),
+(14, 13, 156, '002/2018-08-29', '2018-08-29 10:25:48', '2018-08-29 10:25:48', '', 200000, '', '2018-08-29 11:16:21', 'admin', NULL, NULL, NULL, NULL, NULL, NULL),
+(15, 120, 155, '003/2018-08-29', '2018-08-29 14:55:28', '2018-08-29 14:55:28', 'DASDA\r\nDASDAS\r\nDASDASD', 300000, '', '2018-08-29 14:55:28', 'admin', NULL, NULL, NULL, NULL, NULL, NULL),
+(16, 8, 156, '001/2018-08-30', '2018-08-30 08:42:32', '2018-08-30 08:42:32', 'JHKSDJHDS\r\nDSLKHDSLDS', 23131, '', '2018-08-30 08:42:32', 'admin', 'AAASS', NULL, NULL, 'SHEN DAN YUN', '沈淡雲', 'b'),
+(18, 5, 156, '002/2018-08-30', '2018-08-30 08:13:08', '2018-08-30 08:13:08', 'GOOD', 100000, '', '2018-09-06 08:13:08', 'admin', 'NAME', '2018-09-24 06:35:56', 'admin', NULL, NULL, NULL),
+(19, 38, 157, '003/2018-08-30', '2018-08-30 10:48:46', '2018-08-30 10:48:46', ' PEMBANGUNAN', 50000000, '', '2018-08-30 10:48:46', 'admin', '888', NULL, NULL, NULL, NULL, NULL),
+(20, 8, 157, '001/2018-09-04', '2018-09-04 16:25:41', '2018-09-04 16:25:41', '', 0, 'D', '2018-09-04 16:25:41', 'admin', '', NULL, NULL, NULL, NULL, NULL),
+(21, 0, 154, '001/2018-09-10', '2018-09-10 05:36:32', '2018-09-10 05:36:32', '-', 5000000, '', '2018-09-10 05:36:32', 'admin', 'BUDI', NULL, NULL, 'BUDI', '-', 'JL BUDI');
 
 -- --------------------------------------------------------
 
@@ -11248,28 +11285,28 @@ INSERT INTO `tblparameter` (`parameter_key`, `parametergrpid`, `parameterid`, `p
 (16, 'STATUS', 'P', 'SIMPATISAN', '', 'SUN QI', '2015-08-25 12:37:26'),
 (17, 'STATUS', 'S', 'SAKIT', NULL, 'OPR', '2009-03-23 15:35:00'),
 (18, 'STATUS', 'TB', 'TEMAN BARU', '', 'admin', '2017-01-12 13:50:27'),
-(40, 'PSTATUS', '', 'WIDOW(ER)', NULL, NULL, NULL),
-(39, 'PSTATUS', '', 'SINGLE', NULL, NULL, NULL),
-(38, 'PSTATUS', '', 'MARRIED', NULL, NULL, NULL),
-(37, 'GENDER', 'M', 'MALE', NULL, NULL, NULL),
-(36, 'GENDER', 'F', 'FEMALE', NULL, NULL, NULL),
-(35, 'BLOOD', 'AB', 'AB', NULL, 'admin', '2018-08-11 13:15:04'),
+(40, 'PSTATUS', 'WIDOW(ER)', 'WIDOW(ER)', NULL, 'admin', '2018-09-18 08:18:39'),
+(39, 'PSTATUS', 'SINGLE', 'SINGLE', NULL, 'admin', '2018-09-18 08:18:42'),
+(38, 'PSTATUS', 'MARRIED', 'MARRIED', 'MARRIED', 'admin', '2018-09-24 09:23:45'),
+(37, 'GENDER', 'MALE', 'MALE', 'MALE', 'admin', '2018-09-24 09:16:10'),
+(36, 'GENDER', 'FEMALE', 'FEMALE', NULL, 'admin', '2018-09-18 03:52:28'),
+(35, 'BLOOD', 'AB', 'AB', 'AB GOLONGAN', 'admin', '2018-09-24 08:53:30'),
 (33, 'BLOOD', 'B', 'B', NULL, 'admin', '2018-09-04 02:54:03'),
 (32, 'BLOOD', 'A', 'A', NULL, 'admin', '2018-08-11 08:45:36'),
-(41, 'RAYON', 'DLL', 'DLL', NULL, NULL, NULL),
-(42, 'RAYON', 'HAMBA TUHAN', 'HAMBA TUHAN', NULL, NULL, NULL),
-(43, 'RAYON', 'JKT', 'JAKARTA', NULL, NULL, NULL),
-(44, 'RAYON', 'LAMA', 'LAMA TIDAK IKUT KEBAKTIAN', NULL, NULL, NULL),
-(45, 'RAYON', 'M2', 'METHODIST 2', NULL, NULL, NULL),
-(46, 'RAYON', 'P2MI', 'P2MI', NULL, NULL, NULL),
-(47, 'RAYON', 'P3MI', 'P3MI', NULL, NULL, NULL),
-(48, 'RAYON', 'PINDAH', 'PINDAH / ALAMAT TDK JELAS', NULL, NULL, NULL),
-(49, 'RAYON', 'R1', 'RAYON1', NULL, NULL, NULL),
-(50, 'RAYON', 'R10', 'RAYON10', NULL, NULL, NULL),
-(51, 'RAYON', 'R11A', 'RAYON11A', NULL, NULL, NULL),
-(52, 'RAYON', 'R11B', 'RAYON11B', NULL, NULL, NULL),
-(53, 'RAYON', 'R12', 'RAYON12', NULL, NULL, NULL),
-(54, 'RAYON', 'R13', 'RAYON13', NULL, NULL, NULL),
+(41, 'RAYON', 'DLL', 'DLL', 'DLL', 'admin', '2018-09-24 09:26:15'),
+(42, 'RAYON', 'HAMBA TUHAN', 'HAMBA TUHAN', NULL, 'admin', '2018-09-18 08:07:46'),
+(43, 'RAYON', 'JAKARTA', 'JAKARTA', NULL, 'admin', '2018-09-18 08:07:47'),
+(44, 'RAYON', 'LAMA TIDAK IKUT KEBAKTIAN', 'LAMA TIDAK IKUT KEBAKTIAN', NULL, 'admin', '2018-09-18 08:07:49'),
+(45, 'RAYON', 'METHODIST 2', 'METHODIST 2', NULL, 'admin', '2018-09-18 08:07:51'),
+(46, 'RAYON', 'P2MI', 'P2MI', NULL, 'admin', '2018-09-18 08:08:38'),
+(47, 'RAYON', 'P3MI', 'P3MI', NULL, 'admin', '2018-09-18 08:07:55'),
+(48, 'RAYON', 'PINDAH / ALAMAT TDK JELAS', 'PINDAH / ALAMAT TDK JELAS', NULL, 'admin', '2018-09-18 08:07:58'),
+(49, 'RAYON', 'RAYON1', 'RAYON1', NULL, 'admin', '2018-09-18 08:07:59'),
+(50, 'RAYON', 'RAYON10', 'RAYON10', NULL, 'admin', '2018-09-18 08:08:03'),
+(51, 'RAYON', 'RAYON11A', 'RAYON11A', NULL, 'admin', '2018-09-18 08:08:01'),
+(52, 'RAYON', 'RAYON11B', 'RAYON11B', NULL, 'admin', '2018-09-18 08:08:09'),
+(53, 'RAYON', 'RAYON12', 'RAYON12', NULL, 'admin', '2018-09-18 08:08:12'),
+(54, 'RAYON', 'RAYON13', 'RAYON13', NULL, 'admin', '2018-09-18 08:08:19'),
 (55, 'RAYON', 'R14', 'RAYON14', NULL, NULL, NULL),
 (56, 'RAYON', 'R15A', 'RAYON15A', NULL, NULL, NULL),
 (57, 'RAYON', 'R15B', 'RAYON15B', NULL, NULL, NULL),
@@ -11319,31 +11356,31 @@ INSERT INTO `tblparameter` (`parameter_key`, `parametergrpid`, `parameterid`, `p
 (101, 'CITY', 'DM', 'DUMAI', NULL, NULL, NULL),
 (102, 'CITY', 'MEDAN', 'MEDAN', NULL, NULL, NULL),
 (103, 'CITY', 'PKU', 'PEKAN BARU', NULL, NULL, NULL),
-(104, 'KEBAKTIAN', 'KRMI', 'KRMI', NULL, NULL, NULL),
-(105, 'KEBAKTIAN', 'KU1', 'KU1', NULL, NULL, NULL),
-(106, 'KEBAKTIAN', 'KU2', 'KU2', NULL, NULL, NULL),
-(107, 'KEBAKTIAN', 'SM', 'SM', NULL, NULL, NULL),
-(108, 'KEBAKTIAN', 'SMO', 'SMO', NULL, NULL, NULL),
-(109, 'PERSEKUTUAN', 'P2MI', 'P2MI', NULL, NULL, NULL),
-(110, 'PERSEKUTUAN', 'P3MI', 'P3MI', NULL, NULL, NULL),
-(111, 'PERSEKUTUAN', 'PASKIDA', 'PASKIDA', NULL, NULL, NULL),
-(112, 'PERSEKUTUAN', 'PASUTRI', 'PASUTRI', NULL, NULL, NULL),
-(113, 'PERSEKUTUAN', 'PDOAM', 'PDOAM', NULL, NULL, NULL),
-(114, 'PERSEKUTUAN', 'PDOAP', 'PDOAP', NULL, NULL, NULL),
-(115, 'PERSEKUTUAN', 'PHAKKA', 'PHAKKA', NULL, NULL, NULL),
-(116, 'PERSEKUTUAN', 'PKONGHU', 'PKONGHU', NULL, NULL, NULL),
-(117, 'PERSEKUTUAN', 'PKUG', 'PKUG', NULL, NULL, NULL),
-(118, 'PERSEKUTUAN', 'PWMI', 'PWMI', NULL, NULL, NULL),
-(119, 'SERVING', 'K-CELL GRUP', 'KETUA CELL GRUP', NULL, NULL, NULL),
-(120, 'SERVING', 'K-RAYON', 'KETUA RAYON', NULL, NULL, NULL),
-(121, 'SERVING', 'P-D.KOM. RUMKIT', 'DEWAN KOMISI RUMAH SAKIT', NULL, NULL, NULL),
-(122, 'SERVING', 'P-HAKKA', 'PENGURUS P. HAKKA', NULL, NULL, NULL),
+(104, 'KEBAKTIAN', 'KRMI1', 'KRMI1', 'MEMO', 'admin', '2018-09-24 09:18:22'),
+(105, 'KEBAKTIAN', 'KU12', 'KU12', NULL, 'admin', '2018-09-18 04:04:02'),
+(106, 'KEBAKTIAN', 'KU23', 'KU23', NULL, 'admin', '2018-09-18 04:04:04'),
+(107, 'KEBAKTIAN', 'SM1', 'SM1', NULL, 'admin', '2018-09-18 04:04:06'),
+(108, 'KEBAKTIAN', 'SMO1', 'SMO1', NULL, 'admin', '2018-09-18 04:04:14'),
+(109, 'PERSEKUTUAN', 'P2MI', 'P2MI', 'P2MI', 'admin', '2018-09-24 09:20:34'),
+(110, 'PERSEKUTUAN', 'P3MI', 'P3MI', NULL, 'admin', '2018-09-18 04:13:45'),
+(111, 'PERSEKUTUAN', 'PASKIDA', 'PASKIDA', NULL, 'admin', '2018-09-18 04:15:36'),
+(112, 'PERSEKUTUAN', 'PASUTRI', 'PASUTRI', NULL, 'admin', '2018-09-18 04:13:49'),
+(113, 'PERSEKUTUAN', 'PDOAM', 'PDOAM', NULL, 'admin', '2018-09-18 04:13:51'),
+(114, 'PERSEKUTUAN', 'PDOAP', 'PDOAP', NULL, 'admin', '2018-09-18 04:13:53'),
+(115, 'PERSEKUTUAN', 'PHAKKA', 'PHAKKA', NULL, 'admin', '2018-09-18 04:13:56'),
+(116, 'PERSEKUTUAN', 'PKONGHU', 'PKONGHU', NULL, 'admin', '2018-09-18 04:13:58'),
+(117, 'PERSEKUTUAN', 'PKUG', 'PKUG', NULL, 'admin', '2018-09-18 04:13:59'),
+(118, 'PERSEKUTUAN', 'PWMI', 'PWMI', NULL, 'admin', '2018-09-18 04:14:01'),
+(119, 'SERVING', 'KETUA CELL GRUP', 'KETUA CELL GRUP', NULL, 'admin', '2018-09-18 08:13:54'),
+(120, 'SERVING', 'KETUA RAYON', 'KETUA RAYON', NULL, 'admin', '2018-09-18 08:13:56'),
+(121, 'SERVING', 'DEWAN KOMISI RUMAH SAKIT', 'DEWAN KOMISI RUMAH SAKIT', 'DKRS', 'admin', '2018-09-24 09:27:36'),
+(122, 'SERVING', 'PENGURUS P. HAKKA', 'PENGURUS P. HAKKA', NULL, 'admin', '2018-09-18 08:14:03'),
 (123, 'SERVING', 'P-KOM. HARTA BENDA', 'PENGURUS PEMELIHARA HARTA BENDA', NULL, NULL, NULL),
 (124, 'SERVING', 'P-KOM. KANGGOTAAN', 'PENGURUS K. KEANGGOTAAN', NULL, NULL, NULL),
 (125, 'SERVING', 'P-KOM. MISI', 'PENGURUS K. MISI', NULL, NULL, NULL),
 (126, 'SERVING', 'P-KOM. PAK', 'PENGURUS K. PAK', NULL, NULL, NULL),
 (127, 'SERVING', 'P-KOM. PENATALAYANAN', 'PENGURUS K. PENATALAYANAN', NULL, NULL, NULL),
-(128, 'SERVING', 'P-KOM. PI', 'PENGURUS K. PI', NULL, NULL, NULL),
+(128, 'SERVING', 'PENGURUS K. PI', 'PENGURUS K. PI', NULL, 'admin', '2018-09-18 08:14:09'),
 (129, 'SERVING', 'P-KOM. TM. EDEN', 'PENGURUS TM. EDEN', NULL, NULL, NULL),
 (130, 'SERVING', 'P-KOM.IBDH & MUSIK GER.', 'PENGURUS K. IBDH & MUSIK GER.', NULL, NULL, NULL),
 (131, 'SERVING', 'P-KOM.PENY. PERGURUAN', 'PENGURUS K. P. PERGURUAN', NULL, NULL, NULL),
@@ -11361,7 +11398,7 @@ INSERT INTO `tblparameter` (`parameter_key`, `parametergrpid`, `parameterid`, `p
 (143, 'SERVING', 'P-PWMI', 'PENGURUS PWMI', NULL, NULL, NULL),
 (144, 'SERVING', 'P-SM', 'PENGURUS SM', NULL, NULL, NULL),
 (145, 'SERVING', 'ROHANIWAN ', 'HAMBA TUHAN', NULL, NULL, NULL),
-(146, 'SERVING', 'MAJELIS', 'MAJELIS', NULL, NULL, NULL),
+(146, 'SERVING', 'MAJELIS', 'MAJELIS', NULL, 'admin', '2018-09-18 08:13:58'),
 (149, 'ACTIVITY', 'SEMINAR', 'SEMINAR', NULL, NULL, NULL),
 (150, 'ACTIVITY', 'LITURGIS', 'LITURGIS', NULL, NULL, NULL),
 (151, 'ACTIVITY', 'PENYAMBUT', 'PENYAMBUT', NULL, NULL, NULL),
@@ -11381,7 +11418,12 @@ INSERT INTO `tblparameter` (`parameter_key`, `parametergrpid`, `parameterid`, `p
 (165, 'RUNNING_NO', 'DAILY', 'DAILY', NULL, NULL, NULL),
 (166, 'RUNNING_NO', 'MONTHLY', 'MONTHLY', NULL, NULL, NULL),
 (167, 'RUNNING_NO', 'YEARLY', 'YEARLY', NULL, NULL, NULL),
-(34, 'BLOOD', 'O', 'O', NULL, 'admin', '2018-09-03 08:42:27');
+(34, 'BLOOD', 'O', 'O', 'O GOLONGAN', 'admin', '2018-09-24 09:13:41'),
+(229, 'SERVING', 'P-D.KOM. RUMKIT', 'P-D.KOM. RUMKIT', '', 'admin', '2018-09-25 10:55:08'),
+(230, 'SERVING', 'P-KOM. PI', 'P-KOM. PI', '', 'admin', '2018-09-25 10:55:08'),
+(227, 'SERVING', 'K-CELL GRUP', 'K-CELL GRUP', '', 'admin', '2018-09-25 10:55:07'),
+(228, 'SERVING', 'K-RAYON', 'K-RAYON', '', 'admin', '2018-09-25 10:55:07'),
+(226, 'SERVING', 'P-HAKKA', 'P-HAKKA', '', 'admin', '2018-09-25 10:55:07');
 
 -- --------------------------------------------------------
 
@@ -11406,7 +11448,346 @@ CREATE TABLE `tblprofile` (
 INSERT INTO `tblprofile` (`profile_key`, `member_key`, `activityid`, `activitydate`, `remark`, `modifiedon`, `modifiedby`) VALUES
 (1, 5, 149, '2018-08-20 09:57:43', 'SEMINAR KESEHATAN PART 1', '2018-08-20 09:57:43', 'admin'),
 (6, 2360, 150, '2018-08-21 17:38:19', 'MELAYANI SEBAGAI LITURGIS', '2018-08-21 17:38:19', 'admin'),
-(7, 2360, 149, '2018-04-10 17:38:56', 'IKUT SEMINAR APHC', '2018-08-21 17:38:56', 'admin');
+(7, 2360, 149, '2018-04-10 17:38:56', 'IKUT SEMINAR APHC', '2018-08-21 17:38:56', 'admin'),
+(681, 11, 226, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(682, 22, 227, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(683, 22, 150, '2018-09-25 03:57:01', 'DASDA', '2018-09-25 03:57:01', 'admin'),
+(684, 23, 227, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(685, 32, 227, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(686, 32, 228, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(687, 42, 135, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(688, 59, 145, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(689, 72, 144, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(690, 120, 228, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(691, 228, 227, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(692, 228, 124, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(693, 228, 146, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(694, 229, 228, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(695, 229, 132, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(696, 240, 133, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(697, 264, 227, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(698, 264, 140, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(699, 265, 140, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(700, 266, 130, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(701, 266, 138, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(702, 304, 228, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(703, 304, 136, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(704, 304, 146, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(705, 378, 133, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(706, 417, 141, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(707, 433, 145, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(708, 436, 228, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(709, 449, 124, '2018-09-25 10:55:07', '', '2018-09-25 10:55:07', 'admin'),
+(710, 476, 132, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(711, 506, 144, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(712, 520, 146, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(713, 521, 123, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(714, 522, 134, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(715, 531, 130, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(716, 542, 140, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(717, 558, 131, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(718, 559, 137, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(719, 559, 146, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(720, 560, 143, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(721, 618, 129, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(722, 618, 146, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(723, 622, 229, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(724, 622, 146, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(725, 647, 228, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(726, 667, 230, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(727, 667, 146, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(728, 668, 227, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(729, 707, 228, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(730, 707, 226, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(731, 719, 133, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(732, 719, 146, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(733, 723, 146, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(734, 5076, 145, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(735, 761, 135, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(736, 787, 125, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(737, 787, 146, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(738, 790, 228, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(739, 793, 227, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(740, 796, 131, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(741, 797, 228, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(742, 797, 132, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(743, 797, 146, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(744, 811, 135, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(745, 824, 126, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(746, 831, 228, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(747, 867, 131, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(748, 870, 227, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(749, 870, 126, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(750, 891, 136, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(751, 894, 229, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(752, 954, 137, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(753, 962, 146, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(754, 963, 230, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(755, 971, 136, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(756, 977, 227, '2018-09-25 10:55:08', '', '2018-09-25 10:55:08', 'admin'),
+(757, 982, 228, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(758, 982, 124, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(759, 982, 143, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(760, 985, 138, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(761, 1022, 136, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(762, 1024, 123, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(763, 1034, 133, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(764, 1040, 136, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(765, 1063, 146, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(766, 1092, 135, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(767, 1101, 228, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(768, 1113, 146, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(769, 1114, 132, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(770, 1121, 124, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(771, 1125, 130, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(772, 1125, 146, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(773, 1127, 136, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(774, 1128, 228, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(775, 1128, 230, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(776, 1140, 144, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(777, 1143, 137, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(778, 1153, 136, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(779, 1155, 135, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(780, 1158, 123, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(781, 1159, 124, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(782, 1177, 124, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(783, 1189, 131, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(784, 1218, 228, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(785, 1232, 134, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(786, 1237, 124, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(787, 1302, 132, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(788, 1302, 140, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(789, 1303, 140, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(790, 1308, 144, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(791, 1326, 226, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(792, 1326, 146, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(793, 1339, 123, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(794, 1339, 146, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(795, 1341, 141, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(796, 1370, 228, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(797, 1370, 143, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(798, 1392, 135, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(799, 1401, 141, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(800, 1425, 144, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(801, 1425, 146, '2018-09-25 10:55:09', '', '2018-09-25 10:55:09', 'admin'),
+(802, 1497, 137, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(803, 1498, 136, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(804, 1519, 230, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(805, 1520, 228, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(806, 1520, 229, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(807, 1574, 227, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(808, 1574, 127, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(809, 1574, 146, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(810, 1581, 137, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(811, 1614, 230, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(812, 1693, 228, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(813, 1694, 145, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(814, 1738, 140, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(815, 1739, 228, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(816, 1739, 140, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(817, 1763, 135, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(818, 1778, 145, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(819, 1859, 143, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(820, 1865, 227, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(821, 1865, 228, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(822, 1883, 129, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(823, 1906, 133, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(824, 1912, 228, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(825, 1912, 143, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(826, 1942, 227, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(827, 1942, 126, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(828, 1942, 146, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(829, 1945, 141, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(830, 1962, 145, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(831, 1963, 145, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(832, 1994, 135, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(833, 2045, 139, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(834, 2046, 139, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(835, 2080, 136, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(836, 2087, 135, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(837, 2087, 146, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(838, 2126, 230, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(839, 2126, 146, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(840, 2128, 134, '2018-09-25 10:55:10', '', '2018-09-25 10:55:10', 'admin'),
+(841, 2137, 230, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(842, 2139, 230, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(843, 2150, 143, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(844, 2161, 228, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(845, 2166, 228, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(846, 2166, 143, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(847, 2166, 146, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(848, 2183, 133, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(849, 2184, 133, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(850, 2203, 230, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(851, 2213, 125, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(852, 2213, 140, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(853, 4744, 227, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(854, 4744, 228, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(855, 4744, 124, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(856, 2214, 140, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(857, 2225, 135, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(858, 2242, 135, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(859, 2257, 130, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(860, 2275, 140, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(861, 2345, 130, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(862, 2345, 139, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(863, 2345, 146, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(864, 2361, 124, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(865, 2367, 228, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(866, 2367, 226, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(867, 2419, 227, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(868, 2419, 228, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(869, 2419, 124, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(870, 2424, 137, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(871, 2429, 229, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(872, 2430, 228, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(873, 2430, 130, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(874, 2430, 146, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(875, 2439, 141, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(876, 2439, 146, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(877, 2447, 132, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(878, 2476, 143, '2018-09-25 10:55:11', '', '2018-09-25 10:55:11', 'admin'),
+(879, 2503, 145, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(880, 2540, 228, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(881, 2547, 127, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(882, 2547, 135, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(883, 2548, 132, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(884, 2570, 130, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(885, 2637, 129, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(886, 2647, 145, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(887, 2669, 132, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(888, 2709, 135, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(889, 2712, 126, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(890, 2720, 228, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(891, 2722, 125, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(892, 2722, 138, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(893, 2727, 124, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(894, 2727, 135, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(895, 2729, 138, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(896, 2729, 146, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(897, 2736, 125, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(898, 2737, 131, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(899, 2738, 134, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(900, 2755, 136, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(901, 2773, 126, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(902, 2773, 146, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(903, 2774, 132, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(904, 2782, 134, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(905, 2792, 141, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(906, 2804, 129, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(907, 2805, 132, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(908, 2819, 137, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(909, 2853, 226, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(910, 2868, 135, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(911, 2906, 140, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(912, 2906, 146, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(913, 2960, 130, '2018-09-25 10:55:12', '', '2018-09-25 10:55:12', 'admin'),
+(914, 2976, 145, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(915, 2986, 137, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(916, 3019, 137, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(917, 3028, 227, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(918, 3028, 228, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(919, 3028, 129, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(920, 3031, 134, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(921, 3057, 227, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(922, 3057, 228, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(923, 3057, 125, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(924, 3059, 134, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(925, 3079, 130, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(926, 3081, 123, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(927, 3104, 228, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(928, 3107, 134, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(929, 3122, 131, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(930, 3122, 146, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(931, 3123, 132, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(932, 3125, 134, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(933, 3171, 230, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(934, 3176, 131, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(935, 3176, 146, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(936, 3182, 126, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(937, 3185, 141, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(938, 3186, 130, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(939, 3187, 227, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(940, 3187, 228, '2018-09-25 10:55:13', '', '2018-09-25 10:55:13', 'admin'),
+(941, 3200, 145, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(942, 3201, 137, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(943, 3272, 136, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(944, 3274, 136, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(945, 3275, 130, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(946, 3275, 138, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(947, 3283, 136, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(948, 3364, 131, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(949, 3364, 136, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(950, 3377, 129, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(951, 3381, 132, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(952, 3405, 124, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(953, 3452, 146, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(954, 4887, 145, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(955, 3555, 230, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(956, 3559, 125, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(957, 3559, 136, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(958, 3588, 135, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(959, 3611, 145, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(960, 3619, 145, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(961, 3636, 134, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(962, 3709, 135, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(963, 3723, 145, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(964, 3725, 145, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(965, 4733, 145, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(966, 3731, 145, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(967, 3732, 145, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(968, 3733, 145, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(969, 3734, 145, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(970, 3735, 145, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(971, 3736, 145, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(972, 3738, 145, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(973, 3739, 145, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(974, 3741, 145, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(975, 3746, 145, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(976, 3762, 226, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(977, 3771, 134, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(978, 3805, 138, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(979, 3806, 228, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(980, 3837, 138, '2018-09-25 10:55:14', '', '2018-09-25 10:55:14', 'admin'),
+(981, 3841, 228, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(982, 3864, 135, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(983, 3882, 134, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(984, 3939, 134, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(985, 3941, 134, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(986, 3943, 134, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(987, 3950, 134, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(988, 3994, 140, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(989, 4084, 133, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(990, 4108, 133, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(991, 4128, 138, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(992, 4140, 134, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(993, 4168, 135, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(994, 4201, 125, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(995, 4201, 138, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(996, 4343, 145, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(997, 4346, 134, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(998, 4465, 140, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(999, 4466, 132, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(1000, 4466, 140, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(1001, 4540, 124, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(1002, 4709, 135, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(1003, 4763, 135, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(1004, 4783, 229, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(1005, 4793, 143, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(1006, 4798, 228, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(1007, 4798, 143, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(1008, 4805, 138, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(1009, 4828, 144, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(1010, 4830, 138, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(1011, 4831, 138, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(1012, 4885, 145, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(1013, 4886, 145, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(1014, 4894, 145, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(1015, 5006, 141, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(1016, 5053, 145, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(1017, 5111, 145, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(1018, 5112, 145, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin'),
+(1019, 5147, 145, '2018-09-25 10:55:15', '', '2018-09-25 10:55:15', 'admin');
 
 -- --------------------------------------------------------
 
@@ -11427,8 +11808,7 @@ CREATE TABLE `tblroles` (
 
 INSERT INTO `tblroles` (`roleid`, `rolename`, `modifiedby`, `modifiedon`) VALUES
 (1, 'superadmin', 'admin', '2018-08-24 07:24:43'),
-(3, 'Guest', 'admin', '2018-09-06 06:25:29'),
-(4, 'editor', 'admin', '2018-09-07 01:59:47');
+(3, 'Guest', 'admin', '2018-09-06 06:25:29');
 
 -- --------------------------------------------------------
 
@@ -11482,7 +11862,8 @@ INSERT INTO `tbluser` (`userpk`, `userid`, `username`, `password`, `modifiedby`,
 (101, 'tb', 'tb', 'e44d967f3e8a44f6a7fee562af4d82f4', 'admin', '2017-01-13 09:38:12', 'home/viewtb'),
 (116, 'bona', 'bona', 'a235ece82e18ffd625d9b9846e1b07fe', 'admin', '2018-09-05 09:53:37', 'dashboard1'),
 (115, 'd', 'd', '8277e0910d750195b448797616e091ad', 'admin', '2018-09-05 07:28:49', 'd'),
-(119, 'andi', 'andi', '00dfc53ee86af02e742515cdcf075ed3', 'admin', '2018-09-07 03:15:22', 'andi');
+(120, 'baru', 'baru', '5ef035d11d74713fcb36f2df26aa7c3d', 'admin', '2018-09-14 09:05:31', 'baru'),
+(119, 'andi', 'andi', '3074d9b7ba24b27d9ae573e9c021a487', 'admin', '2018-09-08 04:27:06', 'andi');
 
 -- --------------------------------------------------------
 
@@ -11496,7 +11877,7 @@ CREATE TABLE `tbluseracl` (
   `userpk` int(11) NOT NULL DEFAULT '0',
   `modifiedby` varchar(50) DEFAULT '0',
   `modifiedon` datetime DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tbluseracl`
@@ -11508,7 +11889,14 @@ INSERT INTO `tbluseracl` (`useraclid`, `acoid`, `userpk`, `modifiedby`, `modifie
 (6, 4, 53, 'admin', '2018-09-07 08:38:31'),
 (7, 2, 65, 'admin', '2018-09-07 08:55:30'),
 (9, 3, 65, 'admin', '2018-09-07 08:56:41'),
-(13, 4, 65, 'admin', '2018-09-07 09:06:49');
+(13, 4, 65, 'admin', '2018-09-07 09:06:49'),
+(14, 12, 120, 'admin', '2018-09-14 09:04:42'),
+(15, 13, 120, 'admin', '2018-09-14 09:04:42'),
+(16, 41, 120, 'admin', '2018-09-19 04:04:01'),
+(17, 40, 120, 'admin', '2018-09-19 04:04:01'),
+(18, 39, 120, 'admin', '2018-09-19 04:04:01'),
+(19, 38, 120, 'admin', '2018-09-19 04:04:09'),
+(20, 37, 120, 'admin', '2018-09-19 04:04:09');
 
 -- --------------------------------------------------------
 
@@ -12115,7 +12503,7 @@ CREATE TABLE `tbluserroles` (
   `roleid` int(11) NOT NULL DEFAULT '0',
   `modifiedby` varchar(50) NOT NULL DEFAULT '0',
   `modifiedon` datetime NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `tbluserroles`
@@ -12123,9 +12511,9 @@ CREATE TABLE `tbluserroles` (
 
 INSERT INTO `tbluserroles` (`userrolesid`, `userpk`, `roleid`, `modifiedby`, `modifiedon`) VALUES
 (1, 47, 1, 'admin', '2018-08-31 00:00:00'),
-(14, 118, 4, '0', '0000-00-00 00:00:00'),
 (15, 118, 3, '0', '0000-00-00 00:00:00'),
-(17, 119, 3, '0', '0000-00-00 00:00:00');
+(17, 119, 3, '0', '0000-00-00 00:00:00'),
+(19, 120, 3, '0', '0000-00-00 00:00:00');
 
 --
 -- Indexes for dumped tables
@@ -12148,6 +12536,12 @@ ALTER TABLE `tblacos`
 --
 ALTER TABLE `tblbesuk`
   ADD PRIMARY KEY (`besukid`);
+
+--
+-- Indexes for table `tblhistorycetak`
+--
+ALTER TABLE `tblhistorycetak`
+  ADD PRIMARY KEY (`history_key`);
 
 --
 -- Indexes for table `tblmember`
@@ -12223,17 +12617,22 @@ ALTER TABLE `tbluserroles`
 -- AUTO_INCREMENT for table `tblacl`
 --
 ALTER TABLE `tblacl`
-  MODIFY `aclid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `aclid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 --
 -- AUTO_INCREMENT for table `tblacos`
 --
 ALTER TABLE `tblacos`
-  MODIFY `acosid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `acosid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 --
 -- AUTO_INCREMENT for table `tblbesuk`
 --
 ALTER TABLE `tblbesuk`
-  MODIFY `besukid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1950;
+  MODIFY `besukid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1955;
+--
+-- AUTO_INCREMENT for table `tblhistorycetak`
+--
+ALTER TABLE `tblhistorycetak`
+  MODIFY `history_key` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT for table `tblmember`
 --
@@ -12253,32 +12652,32 @@ ALTER TABLE `tblmenu`
 -- AUTO_INCREMENT for table `tbloffering`
 --
 ALTER TABLE `tbloffering`
-  MODIFY `offering_key` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `offering_key` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 --
 -- AUTO_INCREMENT for table `tblparameter`
 --
 ALTER TABLE `tblparameter`
-  MODIFY `parameter_key` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=196;
+  MODIFY `parameter_key` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=231;
 --
 -- AUTO_INCREMENT for table `tblprofile`
 --
 ALTER TABLE `tblprofile`
-  MODIFY `profile_key` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `profile_key` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1020;
 --
 -- AUTO_INCREMENT for table `tblroles`
 --
 ALTER TABLE `tblroles`
-  MODIFY `roleid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `roleid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `tbluser`
 --
 ALTER TABLE `tbluser`
-  MODIFY `userpk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=120;
+  MODIFY `userpk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
 --
 -- AUTO_INCREMENT for table `tbluseracl`
 --
 ALTER TABLE `tbluseracl`
-  MODIFY `useraclid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `useraclid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 --
 -- AUTO_INCREMENT for table `tblusermenu`
 --
@@ -12288,7 +12687,7 @@ ALTER TABLE `tblusermenu`
 -- AUTO_INCREMENT for table `tbluserroles`
 --
 ALTER TABLE `tbluserroles`
-  MODIFY `userrolesid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;COMMIT;
+  MODIFY `userrolesid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
