@@ -1,21 +1,22 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Tb extends CI_Controller {
+class Tb extends MY_Controller {
 
 	public function __construct(){
 		parent::__construct();
 
 		session_start();
-		$this->load->model('mtb');
-		$this->load->model('mgender');
-		$this->load->model('mpstatus');
-		$this->load->model('mparameter');
-		$this->load->model('mblood');
-		$this->load->model('mkebaktian');
-		$this->load->model('mpersekutuan');
-		$this->load->model('mrayon');
-		$this->load->model('mserving');
-		$this->load->model('mmenu');
+		$this->load->model([
+			'mjemaat',
+			'mpstatus',
+			'mparameter',
+			'mblood',
+			'mkebaktian',
+			'mpersekutuan',
+			'mrayon',
+			'mserving',
+			'mmenu'
+		]);
 
 	}
 
@@ -68,10 +69,11 @@ class Tb extends CI_Controller {
 		$data['persekutuan'] =getComboParameter('PERSEKUTUAN');
 		$data['rayon'] = getComboParameter('RAYON');
 
-		$this->load->view('header');
-		$this->load->view('navbar',$data);
-		// $this->load->view('tb/gridjemaat',$data);
-		$this->load->view('footer');
+		// $this->load->view('header');
+		// $this->load->view('navbar',$data);
+		// // $this->load->view('tb/gridjemaat',$data);
+		// $this->load->view('footer');
+		$this->render('tb/gridjemaat',$data);
 	}
 
 	function grid(){
