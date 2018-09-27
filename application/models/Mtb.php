@@ -1,5 +1,5 @@
 <?php
-Class Mtb extends CI_Model{
+Class Mtb extends MY_Model{
 
 	function count($where){
 		$where2="";

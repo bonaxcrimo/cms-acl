@@ -1,6 +1,7 @@
 
 <script type="text/javascript">
     var temp=-1;
+    var oper,url;
     var startTime = Date.now();
      $(function(){
         var dg = $("#dgJemaat").datagrid(
@@ -68,7 +69,7 @@
             buttons:[{
                 iconCls:'icon-add',
                 handler:function(){
-                    save("add",null,"formjemaat","<?php echo @$statusid ?>");
+                    newData();
                 }
             },{
                 iconCls:'icon-edit',
@@ -287,8 +288,42 @@
                     }
                 }
         }]);
-
     });
+    function newData(){
+        var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/add.png'><ul class='title'>Add Data</ul>";
+         $("#dlgSave").dialog({
+            closed:false,
+            title:oprtr,
+            href:"<?= base_url() ?>tb/add",
+            height:350,
+            resizable:true,
+            autoResize:true,
+            onload:function(){
+                url = "<?= base_url() ?>tb/add";
+                oper="";
+            }
+        });
+    }
+    function editData(member_key){
+        var row = member_key==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').member_key:member_key;
+         var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/add.png'><ul class='title'>Edit Data</ul>";
+        if (row!=''){
+            $('#dlgSave').dialog({
+                closed:false,
+                title:oprtr,
+                href:'<?php echo base_url(); ?>tb/edit/'+row,
+                height:350,
+                resizable:true,
+                autoResize:true,
+                onLoad:function(){
+                    url = '<?= base_url() ?>tb/edit/'+row;
+                    oper="";
+                }
+            });
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
     function saveRelation(){
         var rel = $("#relationno").val();
         var checkedRows = $('#dgJemaat').datagrid('getChecked');
@@ -344,13 +379,6 @@
 
     function saveJemaat(){
         formname = "fm2";
-        var membername = $("#"+formname+" input[name=membername]").val();
-        if(membername==""){
-            $("#"+formname+" input[name=membername]").css("background-color","rgb(255,128,192)");
-            $("#"+formname+" input[name=membername]").focus();
-            $("#"+formname+" span[id=tip]").html("<img class='icon' src='<?php echo base_url(); ?>libraries/icon/16x16/warning.png'>");
-            return false;
-        }
         return $.ajax({
             type: $("#"+formname).attr("method"),
             url: $("#"+formname).attr("action"),
@@ -358,6 +386,9 @@
             data : $("#"+formname).serialize(),
             dataType: "json",
             async: false,
+            onSubmit: function(){
+                return $(this).form('validate');
+            },
             success: function(data) {
                 if(data.status=='sukses' && data.photofile!="") {
                     $('#loading').html('<img src="<?php echo base_url(); ?>libraries/img/loading.gif">');
@@ -395,7 +426,7 @@
         page="<?php echo base_url(); ?>tb/form/"+form+"/"+id+"/"+formname+"/"+status;
         var opr = form;
         if(opr=="add"){
-            var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/add.png'><ul class='title'>Add Data</ul>";
+
         }
         else{
             var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/edit.png'><ul class='title'>Edit Data</ul>";
@@ -413,13 +444,6 @@
         relationno=relationno=="-"?"":relationno;
         page="<?php echo base_url()?>relasi/index/?relationno="+relationno;
         $('#datarelasi').html('<img src="<?php echo base_url()?>libraries/img/loading.gif">').load(page);
-        // $.ajax({
-        //     url:page,
-        //     cache:false,
-        //     success:function(data){
-        //         $("#datarelasi").html(data);
-        //     }
-        // })
     }
 
     function besuk(member_key){
@@ -431,7 +455,6 @@
     }
     function viewJemaat(form,id,formname){
         page="<?php echo base_url(); ?>tb/form/"+form+"2/"+id+"/"+formname;
-        // $('#dlgView2').html('<img src="<?php echo base_url(); ?>libraries/img/loading.gif">').load(page);
         $("#dlgView2").dialog({
             closed:false,
             title:'View Data',
@@ -452,7 +475,6 @@
     function remoteFilter(){
         $('#dgJemaat').datagrid('removeFilterRule');
         $('#dgJemaat').datagrid('doFilter');
-
     }
 </script>
 <div class="easyui-tabs" style="height:auto">

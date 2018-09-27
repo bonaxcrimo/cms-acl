@@ -42,19 +42,21 @@ $(document).ready(function(){
 });
 </script>
 <?php
+    if(!empty($member_key)){
+        @$query=("SELECT *, DATE_FORMAT(dob,'%d-%m-%Y') dob,
+            DATE_FORMAT(tglbesuk,'%d-%m-%Y') tglbesuk,
+            DATE_FORMAT(baptismdate,'%d-%m-%Y') baptismdate,
+            DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon FROM tblmember WHERE member_key=".@$member_key." LIMIT 0,1");
+        // echo $query;
+        @$datarow=queryCustom($query);
+        @$exp1 = explode('-',$datarow->dob);
+        @$dob = $exp1[1]."/".$exp1[0]."/".$exp1[2];
+        @$dob = @$dob == "00/00/0000"?"":@$dob;
+        @$exp2 = explode('-',$datarow->baptismdate);
+        @$baptismdate = $exp2[1]."/".$exp2[0]."/".$exp2[2];
+        @$baptismdate= @$baptismdate == "00/00/0000"?"":@$baptismdate;
+    }
 
-    @$query=("SELECT *, DATE_FORMAT(dob,'%d-%m-%Y') dob,
-        DATE_FORMAT(tglbesuk,'%d-%m-%Y') tglbesuk,
-        DATE_FORMAT(baptismdate,'%d-%m-%Y') baptismdate,
-        DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon FROM tblmember WHERE member_key=".$member_key." LIMIT 0,1");
-    // echo $query;
-    @$datarow=queryCustom($query);
-    @$exp1 = explode('-',$datarow->dob);
-    @$dob = $exp1[1]."/".$exp1[0]."/".$exp1[2];
-    @$dob = @$dob == "00/00/0000"?"":@$dob;
-    @$exp2 = explode('-',$datarow->baptismdate);
-    @$baptismdate = $exp2[1]."/".$exp2[0]."/".$exp2[2];
-    @$baptismdate= @$baptismdate == "00/00/0000"?"":@$baptismdate;
 ?>
   <h3 class="noMargin">Jemaat Informasi</h3>
     <div class="row">
@@ -253,32 +255,7 @@ $(document).ready(function(){
             <div style="margin-bottom:3px">
                 <input name="kebaktian"  labelPosition="left" class="easyui-textbox" required="" style="width:100%"    value="<?= @$datarow->kebaktian ?>" label="kebaktian:">
             </div>
-        <?php
-        $pembesukdari="";
-        $remark="";
-        $besukdate="";
-        $q = ("SELECT * FROM tblbesuk WHERE member_key='$member_key' ORDER BY besukdate DESC");
-        $dta=queryCustom($q);
-        //$q = mysql_query("SELECT *, DATE_FORMAT(besukdate,'%Y-%m-%d') AS besukdate FROM tblbesuk WHERE recno='$recno' ORDER BY besukdate DESC");
-        if(!empty($dta)){
-            $pembesukdari=@$dta->pembesukdari;
 
-            $remark=@$dta->remark;
-            $besukdate=@$dta->besukdate;
-
-            $d=strtotime($besukdate);
-            $besukdate = date("Y-m-d", $d);
-        }
-    ?>
-           <div style="margin-bottom:3px">
-                <input name="besukdate"  labelPosition="left" class="easyui-textbox" readonly="" style="width:100%"   value="<?= @$besukdate ?>" label="besukdate:">
-            </div>
-             <div style="margin-bottom:3px">
-                <input name="pembesukdari"  labelPosition="left" class="easyui-textbox" readonly="" style="width:100%"    value="<?= @$pembesukdari ?>" label="pembesukdari:">
-            </div>
-            <div style="margin-bottom:3px">
-                <input name="remark"  labelPosition="left" class="easyui-textbox" readonly="" style="width:100%"    value="<?= @$remark ?>" label="remark:">
-            </div>
 
             <div style="margin-bottom:3px">
                 <input name="teambesuk"  labelPosition="left" class="easyui-textbox" required="" style="width:100%"    value="<?= @$datarow->teambesuk ?>" label="teambesuk:">
