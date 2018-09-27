@@ -324,6 +324,33 @@
              $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
         }
     }
+    function callSubmit(){
+        $('#fm').form('submit',{
+            url: url,
+            onSubmit: function(){
+                // return $(this).form('validate');
+            },
+            success: function(result){
+                console.log(result);
+                // $('#dlgSave').dialog('close');
+                // $('#dg').datagrid('reload');
+
+            },error:function(error){
+                 console.log($(this).serialize());
+            }
+        });
+    }
+    function saveData(){
+        if(oper=="del"){
+            $.messager.confirm('Confirm','Yakin akan menghapus data ?',function(r){
+                if (r){
+                    callSubmit();
+                }
+            });
+        }else{
+            callSubmit();
+        }
+    }
     function saveRelation(){
         var rel = $("#relationno").val();
         var checkedRows = $('#dgJemaat').datagrid('getChecked');
@@ -550,7 +577,7 @@
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
         </div>
         <div class="dlg-buttons">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveJemaat()" style="width:90px">Proses</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px">Proses</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
         </div>
         <div class="dlg-buttons2">

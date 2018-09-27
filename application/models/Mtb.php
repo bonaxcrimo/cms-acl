@@ -1,6 +1,101 @@
 <?php
 Class Mtb extends MY_Model{
+	protected $table = 'tblmember';
+	public function save($data) {
+        $this->db->trans_start();
+        @$extphotofile=@$_POST['extphotofile'];
+	    @$editphotofile=@$_POST['editphotofile'];
+	    if($extphotofile!=""){
+	    	if($editphotofile!=""){
+	    		if (file_exists("uploads/medium_".$editphotofile)) {
+					unlink("uploads/medium_".$editphotofile);
+				}
+				if (file_exists("uploads/small_".$editphotofile)) {
+					unlink("uploads/small_".$editphotofile);
+				}
+				@$namephotofile = date("d-m-Y-h").substr(str_shuffle("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"), 0, 10) . substr(str_shuffle("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"), 0, 10);
+	    		@$photofile = @$namephotofile.".".@$extphotofile;
+		    }
+	    	else{
+				@$namephotofile = date("d-m-Y-h").substr(str_shuffle("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"), 0, 10) . substr(str_shuffle("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"), 0, 10);
+	    		@$photofile = @$namephotofile.".".@$extphotofile;
+	    	}
+	    }
+	    else{
+	    	if($editphotofile!=""){
+	    		if($editphotofile=="clearfoto"){
+	    			@$photofile = "";
+	    		}
+	    		else{
+	    			@$photofile = $editphotofile;
+		    	}
+	    	}
+	    	else{
+	    		@$photofile = "";
+	    	}
+	    }
+	    $servingid="";
+		if(!empty($_POST['servingid'])){
+		    foreach ($_POST['servingid'] as $selectedOption){
+	    		$servingid=$servingid.$selectedOption."/";
+	    	}
+	    }
+	    @$dob = $data['dob'];
+	    @$exp1 = explode('-',$dob);
+		@$dob = $exp1[2]."-".$exp1[1]."-".$exp1[0];
+		$data['dob'] = $dob;
 
+
+		@$baptismdate = $data['baptismdate'];
+		@$exp2 = explode('-',$baptismdate);
+		@$baptismdate = $exp2[2]."-".$exp2[1]."-".$exp2[0];
+		$data['baptismdate'] = $baptismdate;
+
+		@$tglbesuk = $data['tglbesuk'];
+		@$exp3 = explode('-',$tglbesuk);
+		@$tglbesuk = $exp3[2]."-".$exp3[1]."-".$exp3[0];
+		$data['tglbesuk']=$tglbesuk;
+
+
+        $data['modifiedon'] =  date("Y-m-d H:i:s");
+        $data['modifiedby'] = $this->session->userdata('username');
+        if (isset($data['besukid']) && !empty($data['besukid'])) {
+            $id = $data['besukid'];
+            unset($data['besukid']);
+            $save = $this->_preFormat($data); //format the fields
+
+            $result = $this->update($save, $id,'besukid');
+            if($result === true ){
+            } else {
+                $this->db->trans_rollback();
+            }
+        } else {
+        	$save = $this->_preFormat($data);//format untuk field
+            $result = $this->insert($save);
+            if($result === true){
+
+            } else {
+                $this->db->trans_rollback();
+            }
+        }
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            $this->db->trans_commit();
+            return true;
+        }
+    }
+    private function _preFormat($data){
+    	$fields = ['grp_pi','relationno','memberno','membername','chinesename','phoneticname','aliasname','tel_h','tel_o','handphone','address','add2','city','gender_key','pstatus_key','pob','dob','blood_key','kebaktian_key','persekutuan_key','rayon_key','status_key','serving','fax','email','website','baptismdocno','baptis','baptismdate','remark','relation','oldgrp','kebaktian','tglbesuk','teambesuk','description','photofile','modifiedby','modifiedon'];
+    	$save = [];
+    	foreach($fields as $val){
+    		if(isset($data[$val])){
+    			$save[$val] = $data[$val];
+    		}
+    	}
+    	return $save;
+    }
 	function count($where){
 		$where2="";
 		if($where!="")
@@ -10,6 +105,7 @@ Class Mtb extends MY_Model{
 		$sql = $this->db->query("SELECT member_key FROM tblmember " . $where.$where2);
         return $sql;
 	}
+
 	function get($where, $sidx, $sord, $limit, $start){
 		$sql = $this->db->query("SELECT *,
 		DATE_FORMAT(tgl_hadir,'%d-%m-%Y') tgl_hadirview,

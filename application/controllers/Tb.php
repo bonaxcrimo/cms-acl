@@ -79,17 +79,31 @@ class Tb extends MY_Controller {
         $data=[];
         $data['member_key'] = $id;
 		if($this->input->server('REQUEST_METHOD') == 'POST' ){
-			$data = $this->input->post();
-			$data['member_key'] = $this->input->post('member_key');
-			$cek = $this->_save($data);
-			$status = $cek?"sukses":"gagal";
-			$hasil = array(
-		        'status' => $status
-		    );
-		    echo json_encode($hasil);
+
+			// $data = $this->input->post();
+			// $data['member_key'] = $this->input->post('member_key');
+			// $cek = $this->_save($data);
+			// $status = $cek?"sukses":"gagal";
+			// $hasil = array(
+		 //        'status' => $status
+		 //    );
+		 //    echo json_encode($hasil);
+		}else{
+			$data['sqlgender'] = getParameter('GENDER');
+			$data['sqlpstatus'] = getParameter('PSTATUS');
+			$data['sqlblood'] =getParameter('BLOOD');
+			$data['sqlkebaktian'] = getParameter('KEBAKTIAN');
+			$data['sqlpersekutuan'] = getParameter('PERSEKUTUAN');
+			$data['sqlrayon'] =getParameter('RAYON');
+			$data['sqlserving'] =getParameter('SERVING');
+			$data['sqlstatusid'] =getParameter('STATUS');
+			$this->load->view('tb/edit',$data);
 		}
-		$check=$member_key==null?0:$member_key;
-		$this->load->view('tb/edit',$data);
+
+	}
+	private function _save($data){
+		$data = array_map("strtoupper",$data);
+		$this->mtb->save($data);
 	}
 	function creatrelation(){
 		$this->mtb->creat_relation();
