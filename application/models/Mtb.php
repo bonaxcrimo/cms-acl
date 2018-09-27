@@ -2,19 +2,40 @@
 Class Mtb extends CI_Model{
 
 	function count($where){
-		$sql = $this->db->query("SELECT recno FROM tblmember " . $where);
+		$where2="";
+		if($where!="")
+			$where2=" and status_key='18' ";
+		else
+			$where2=" where status_key = '18' ";
+		$sql = $this->db->query("SELECT member_key FROM tblmember " . $where.$where2);
         return $sql;
 	}
 	function get($where, $sidx, $sord, $limit, $start){
 		$sql = $this->db->query("SELECT *,
 		DATE_FORMAT(tgl_hadir,'%d-%m-%Y') tgl_hadirview,
 		DATE_FORMAT(dob,'%d-%m-%Y') dobview,
-		DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') - (DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d')) AS umur, 
+		DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') - (DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d')) AS umur,
 		DATE_FORMAT(tglbesuk,'%d-%m-%Y') tglbesukview,
 		DATE_FORMAT(baptismdate,'%d-%m-%Y') baptismdateview,
 		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedonview
 		FROM tblmember " . $where . " and statusid='TB' ORDER BY $sidx $sord LIMIT $start , $limit");
 		return $sql;
+	}
+	function getM($where, $sidx, $sord, $limit, $start){
+		$where2="";
+		if($where!="")
+			$where2=" and status_key='18' ";
+		else
+			$where2=" where status_key = '18' ";
+		$query = "select * ,DATE_FORMAT(dob,'%d-%m-%Y') dob,
+		DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') - (DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d')) AS umur,
+		DATE_FORMAT(tglbesuk,'%d-%m-%Y') tglbesuk,
+		DATE_FORMAT(baptismdate,'%d-%m-%Y') baptismdate,
+		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon
+
+		from tblmember  " . $where.$where2."  ORDER BY $sidx $sord LIMIT $start , $limit";
+
+		return $this->db->query($query);
 	}
 
 	function count_relasi($where){
@@ -30,7 +51,7 @@ Class Mtb extends CI_Model{
 	function get_relasi($where, $sidx, $sord, $limit, $start){
 		$sql = $this->db->query("SELECT *,
 		DATE_FORMAT(dob,'%d-%m-%Y') dobview,
-		DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') - (DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d')) AS umur, 
+		DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') - (DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d')) AS umur,
 		DATE_FORMAT(tglbesuk,'%d-%m-%Y') tglbesukview,
 		DATE_FORMAT(baptismdate,'%d-%m-%Y') baptismdateview,
 		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedonview
@@ -48,7 +69,7 @@ Class Mtb extends CI_Model{
 		$sql = $this->db->insert($tabel,$data);
 	}
 	function edit($tabel,$data,$id){
-		$query = $this->db->where("recno",$id);
+		$query = $this->db->where("member_key",$id);
 		$query = $this->db->update($tabel,$data);
 	}
 
@@ -84,30 +105,29 @@ Class Mtb extends CI_Model{
 		$sql = $this->db->query("DELETE FROM ".$tbl);
 	}
 
-	function getwhere($recno){
+	function getwhere($member_key){
 		$sql = $this->db->query("SELECT *,
-		DATE_FORMAT(tgl_hadir,'%d-%m-%Y') tgl_hadir,
 		DATE_FORMAT(dob,'%d-%m-%Y') dob,
-		DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') - (DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d')) AS umur, 
+		DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') - (DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d')) AS umur,
 		DATE_FORMAT(tglbesuk,'%d-%m-%Y') tglbesuk,
 		DATE_FORMAT(baptismdate,'%d-%m-%Y') baptismdate,
 		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon
-		FROM tblmember WHERE recno ='$recno' LIMIT 0,1");
+		FROM tblmember WHERE member_key ='$member_key' LIMIT 0,1");
 		return $sql;
 	}
 	function del($tabel,$id){
-		$query = $this->db->where("recno",$id);
+		$query = $this->db->where("member_key",$id);
 		$sql = $this->db->delete($tabel);
 		return $sql;
 	}
 
-	function jlhbesuk($recno){
-		$sql = $this->db->where('recno',$recno)->count_all_results('tblbesuk');
+	function jlhbesuk($member_key){
+		$sql = $this->db->where('member_key',$member_key)->count_all_results('tblbesuk');
 		return $sql;
 	}
 
-	function tglbesukterakhir($recno){
-		$sql = $this->db->query("SELECT DATE_FORMAT(besukdate,'%d-%m-%Y') besukdate FROM tblbesuk WHERE recno='$recno' ORDER BY besukdate ASC");
+	function tglbesukterakhir($member_key){
+		$sql = $this->db->query("SELECT DATE_FORMAT(besukdate,'%d-%m-%Y') besukdate FROM tblbesuk WHERE member_key='$member_key' ORDER BY besukdate ASC");
 		if($sql->num_rows>=1){
 			foreach ($sql->result() as $key) {
 				$tgl = $key->besukdate;

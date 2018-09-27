@@ -9,7 +9,7 @@
 				</a>
 			</td>
 			<td>
-				<a href="<?php echo base_url()?>jemaat/m" style="text-decoration:none;">
+				<a href="<?php echo base_url()?>jemaat/?status=m" style="text-decoration:none;">
 					<div id="p" class="easyui-panel" title="Jemaat meninggal" style="padding:10px; width:150px">
 						<img style="width:100px; margin:11px;" src="<?php echo base_url()?>libraries/img/jemaatm.png">
 					</div>

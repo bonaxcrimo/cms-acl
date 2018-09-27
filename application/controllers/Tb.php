@@ -7,7 +7,7 @@ class Tb extends MY_Controller {
 
 		session_start();
 		$this->load->model([
-			'mjemaat',
+			'mtb',
 			'mpstatus',
 			'mparameter',
 			'mblood',
@@ -15,7 +15,8 @@ class Tb extends MY_Controller {
 			'mpersekutuan',
 			'mrayon',
 			'mserving',
-			'mmenu'
+			'mmenu',
+			'mjemaat'
 		]);
 
 	}
@@ -59,7 +60,6 @@ class Tb extends MY_Controller {
 		$data['sqlkebaktian'] =getParameter('KEBAKTIAN');
 		$data['sqlpersekutuan'] =getParameter('PERSEKUTUAN');
 		$data['sqlrayon'] =getParameter('RAYON');
-		$data['listTable'] = $this->db->list_fields('tblmember');
 
 		$data['statusidv'] = getComboParameter('STATUS');
 		$data['blood'] = getComboParameter('BLOOD');
@@ -69,115 +69,84 @@ class Tb extends MY_Controller {
 		$data['persekutuan'] =getComboParameter('PERSEKUTUAN');
 		$data['rayon'] = getComboParameter('RAYON');
 
-		// $this->load->view('header');
-		// $this->load->view('navbar',$data);
-		// // $this->load->view('tb/gridjemaat',$data);
-		// $this->load->view('footer');
 		$this->render('tb/gridjemaat',$data);
 	}
-
 	function grid(){
+		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
+		$sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'member_key';
+		$order = isset($_GET['order']) ? strval($_GET['order']) : 'asc';
 
-		if($this->uri->segment(4)!=false){
-			@$acl = $this->uri->segment(4);
-		}
-		@$status = $this->uri->segment(3);
+		$filterRules = isset($_GET['filterRules']) ? ($_GET['filterRules']) : '';
+		$cond = '';
+		$status = $this->uri->segment(3);
+		if (!empty($filterRules)){
+			$cond = ' where 1=1 ';
+			$filterRules = json_decode($filterRules);
+			$where = "";
+			// if($status=="m"){
+			// 	$where = " and status_key = 9 ";
+			// }else if($status=="pi"){
+			// 	$where = " and grp_pi=1 ";
+			// }else{
+			// 	$where = " and status_key = 18 ";
+			// }
+			foreach($filterRules as $rule){
+				$rule = get_object_vars($rule);
+				$field = $rule['field'];
+				$op = $rule['op'];
+				$value = $rule['value'];
 
-		@$page = $_POST['page'];
-		@$limit = $_POST['rows'];
-		@$sidx = $_POST['sidx'];
-		@$sord = $_POST['sord'];
-		if (!$sidx)
-		    $sidx = 1;
-		@$totalrows = isset($_POST['totalrows']) ? $_POST['totalrows'] : false;
-		if (@$totalrows) {
-		   @$limit = $totalrows;
-		}
-		@$filters = $_POST['filters'];
-		@$search = $_POST['_search'];
-			$where1="";
-			$where2="";
-			if($status=="m"){
-				$where1 = " WHERE statusid='M' ";
-			}
-			else if($status=="pi"){
-				$where1 = " WHERE grp_pi=1 ";
-			}
-			else{
-				$where1 = " WHERE statusid='TB' ";
-			}
-       		if($search== "true") {
-				$where2 = " AND (".$this->operation($filters).")";
-		    }
-		    $where = $where1." ".$where2;
+				if (!empty($value)){
+					if($field=="umur"){
+						$field = " DATE_FORMAT(NOW(),'%Y') - DATE_FORMAT(dob,'%Y') ";
+						$op="equal";
+					}
+					if ($op == 'contains'){
+						$cond .= " and ($field like '%$value%')";
+					} else if ($op == 'equal'){
+						$cond .= " and $field = '$value'";
+					}else if($op == 'notequal'){
+						$cond .= " and $field != '' ";
+					}
 
-		$sql = $this->mtb->count($where);
-		$count = $sql->num_rows();
-		if ($count > 0) {
-		    @$total_pages = ceil($count / $limit);
-		} else {
-		    $total_pages = 0;
-		}
-		if ($page > $total_pages)
-		    @$page = $total_pages;
-		if ($limit < 0)
-		    @$limit = 0;
-			$start = $limit * $page - $limit;
-		if ($start < 0)
-		    @$start = 0;
-		$data = $this->mtb->get($where, $sidx, $sord, $limit, $start);
-		$_SESSION['exceljemaat']= $sord."|".$sidx."|".$where;
-		@$responce->page = $page;
-		@$responce->total = $total_pages;
-		@$responce->records = $count;
-		$i=0;
-
-		foreach($data->result() as $row){
-			$relation='<a href="#" id="'.$row->relationno.'" title="View Relation" class="relation"><span class="ui-icon ui-icon-note"></span></a>';
-			if($row->photofile!=""){
-				$photofile="<img style='margin:0 17px;' src='".base_url()."uploads/small_".$row->photofile."' id='btnzoom' fimage='".$row->photofile."' class='dg-picture-zoom'>";
-			}
-			else{
-				$photofile="<img style='margin:0 17px;' src='".base_url()."uploads/small_nofoto.jpg' id='btnzoom' fimage='nofoto.jpg' class='dg-picture-zoom'>";
-			}
-			if(substr($acl,0,1)==1){
-				$view='<a href="#" id='.$row->recno.' title="View" class="btnview" style="float:left"><span class="ui-icon ui-icon-document"></span></a>';
-			}
-			else{
-				$view='<span style="float:left" class="ui-state-disabled ui-icon ui-icon-document"></span>';
-			}
-			if(substr($acl,2,1)==1){
-				$edit='<a href="#" id='.$row->recno.' title="Edit" class="btnedit" style="float:left"><span class="ui-icon ui-icon-pencil"></span></a>';
-			}
-			else{
-				$edit='<span style="float:left" class="ui-state-disabled ui-icon ui-icon-pencil"></span>';
-			}
-			if(substr($acl,3,1)==1){
-				$del='<a href="#" id='.$row->recno.' title="Del" class="btndel" style="float:left"><span class="ui-icon ui-icon-trash"></span></a>';
-			}
-			else{
-				$del='<spans style="float:left" class="ui-state-disabled ui-icon ui-icon-trash"></span>';
-			}
-			$rel="";
-			 $db1 = get_instance()->db->conn_id;
-			if(mysqli_num_rows(mysqli_query($db1,"SHOW TABLES LIKE 'tbltemp".$_SESSION['userpk']."'"))==1){
-				$tabel = "tbltemp".$_SESSION['userpk'];
-				$q = mysqli_query($db1,"SELECT recno FROM $tabel WHERE recno='$row->recno'");
-				if($cek = mysqli_fetch_array($q)){
-					$rel = "checked";
 				}
 			}
-			else{
-			    $rel = "disabled";
-			}
 
-			$recno = $row->recno;
+		$cond .= $where;
+		}
+		$sql = $this->mtb->count($cond);
+		$total = $sql->num_rows();
+		$offset = ($page - 1) * $rows;
+		$data = $this->mtb->getM($cond,$sort,$order,$rows,$offset)->result();
+		$_SESSION['exceltb']= $order."|".$sort."|".$cond;
+		foreach($data as $row){
+			$relation='<a href="#" id="'.$row->relationno.'" title="View Relation" class="relation"><span class="ui-icon ui-icon-note"></span></a>';
+			if($row->photofile!=""){
+				$photofile="<img style='width:20px;height:16px;' src='".base_url()."uploads/small_".$row->photofile."' class='btnzoom' onclick='zoom(\"medium_".$row->photofile."\")'>";
+			}
+			else{
+				$data_photo="medium_nofoto.jpg";
+				$photofile="<img style='width:20px;' src='".base_url()."uploads/small_nofoto.jpg' class='btnzoom' onclick='zoom(\"".$data_photo."\")'>";
+			}
+			$row->photofile = $photofile;
+			$view='';
+			$edit='';
+			$del='';
+				$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewJemaat(\'view\',\''.$row->member_key.'\',\'formjemaat\')" style="width:16px;height:16px;border:0"></button> ';
+
+				$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="save(\'edit\',\''.$row->member_key.'\',\'formjemaat\',null);" style="width:16px;height:16px;border:0"></button> ';
+
+				$del = '<button id='.$row->member_key.' class="icon-remove" onclick="del(\'del\','.$row->member_key.',\'formjemaat\');" style="width:16px;height:16px;border:0"></button>';
+
+			$rel="";
+		    $db1 = get_instance()->db->conn_id;
+			$member_key = $row->member_key;
 			$pembesukdari="";
 			$remark="";
 			$besukdate="";
-			$q = mysqli_query($db1,"SELECT * FROM tblbesuk WHERE recno='$recno' ORDER BY besukdate DESC");
+			$q = mysqli_query($db1,"SELECT * FROM tblbesuk WHERE member_key='$member_key' ORDER BY besukdate DESC");
 			if($dta = mysqli_fetch_array($q,MYSQLI_ASSOC)){
-				//$dta = "checked";
 				$pembesukdari=$dta['pembesukdari'];
 				$remark=$dta['remark'];
 				$besukdate=$dta['besukdate'];
@@ -185,84 +154,84 @@ class Tb extends MY_Controller {
 				$besukdate = date("Y-m-d", $d);
 			}
 
-			$jlhbesuk = $this->mtb->jlhbesuk($row->recno);
-			$tglbesukterakhir = $this->mtb->tglbesukterakhir($row->recno);
-			$select="<spans style='float:left;margin-top:3px;margin-left:4px;'><input style='width:11px' $rel type='checkbox' name='selectboxid[]' id='selectboxid' value='".$row->recno."'></span>";
-			$responce->rows[$i]['id']   = $row->recno;
-			$responce->rows[$i]['cell'] = array(
-				$recno,
-				$view.$edit.$del.$select,
-				$photofile,
-				$row->statusid,
-				$row->grp_pi,
-				$row->relationno,
-				$row->tgl_hadir,
-				$row->memberno,
-				$row->membername,
-				$row->chinesename,
-				$row->phoneticname,
-				$row->aliasname,
-				$row->tel_h,
-				$row->tel_o,
-				$row->handphone,
-				$row->address,
-				$row->add2,
-				$row->city,
-				$row->genderid,
-				$row->pstatusid,
-				$row->pob,
-				$row->dobview,
-				$row->umur,
-				$row->bloodid,
-				$row->kebaktianid,
-				$row->persekutuanid,
-				$row->rayonid,
-				$row->serving,
-				$row->fax,
-				$row->email,
-				$row->website,
-				$row->baptismdocno,
-				$row->baptis,
-				$row->baptismdateview,
-				$row->remark,
-				$row->relation,
-				$row->oldgrp,
-				$row->kebaktian,
-				//$row->tglbesukview,
-				$jlhbesuk,
-				$besukdate,
-				$pembesukdari,
-				$remark,
-				$row->modifiedby,
-				$row->modifiedonview
-				);
-			$i++;
+			$row->blood_key = $row->blood_key=='' || $row->blood_key=="-" ?'-':getParameterKey($row->blood_key)->parameterid;
+			$row->gender_key = $row->gender_key=='' || $row->gender_key=="-" ?'-':getParameterKey($row->gender_key)->parametertext;
+			$row->status_key = $row->status_key=='' || $row->status_key=="-" ?'-':getParameterKey($row->status_key)->parametertext;
+			$row->kebaktian_key = $row->kebaktian_key==''  || $row->kebaktian_key=="-"  ?'-':getParameterKey($row->kebaktian_key)->parametertext;
+			$row->persekutuan_key  = $row->persekutuan_key=='' || $row->persekutuan_key=="-"?'-':getParameterKey($row->persekutuan_key)->parametertext;
+			$row->rayon_key = $row->rayon_key=='' || $row->rayon_key=="-"  ?'-':getParameterKey($row->rayon_key)->parametertext;
+			$row->pstatus_key =  $row->pstatus_key=='' || $row->pstatus_key=="-" ?'-':getParameterKey($row->pstatus_key)->parametertext;
+
+			$jlhbesuk = $this->mtb->jlhbesuk($row->member_key);
+			$tglbesukterakhir = $this->mtb->tglbesukterakhir($row->member_key);
+
+			$row->dob=$row->dob!="00-00-0000"?$row->dob:'-';
+			$row->baptismdate=$row->baptismdate!="00-00-0000"?$row->baptismdate:'-';
+			$row->umur = $row->umur==Date("Y")?'-':$row->umur;
+			$row->relationno = $row->relationno==0?"-":$row->relationno;
+			$row->jlhbesuk = $jlhbesuk;
+			$row->tglbesukterakhir = $besukdate;
+			$row->pembesukdari = $pembesukdari;
+			$row->remark = $remark;
+
+			$row->aksi =$view.$edit.$del;
 		}
-		echo json_encode($responce);
+		$response = new stdClass;
+		$response->total=$total;
+		$response->rows = $data;
+		$_SESSION['exceltb']= "asc|member_key|".$cond;
+		echo json_encode($response);
 	}
 
-	function form($form,$recno,$formname){
+
+	function image($image){
+		$data["image"] = $image;
+		$this->load->view('jemaat/image',$data);
+	}
+	function form($form,$member_key,$formname){
 		$data['grp_pi'] = $this->uri->segment(6);
-		$data['sqlgender'] = $this->mgender->get_jemaat();
-		$data['sqlpstatus'] = $this->mpstatus->get_jemaat();
-		$data['sqlblood'] = $this->mblood->get_jemaat();
-		$data['sqlkebaktian'] = $this->mkebaktian->get_jemaat();
-		$data['sqlpersekutuan'] = $this->mpersekutuan->get_jemaat();
-		$data['sqlrayon'] = $this->mrayon->get_jemaat();
-		$data['sqlserving'] = $this->mserving->get_jemaat();
-		$data['sqlstatusid'] = $this->mparameter->get_jemaat();
+		$data['sqlgender'] = getParameter('GENDER');
+		$data['sqlpstatus'] = getParameter('PSTATUS');
+		$data['sqlblood'] =getParameter('BLOOD');
+		$data['sqlkebaktian'] = getParameter('KEBAKTIAN');
+		$data['sqlpersekutuan'] = getParameter('PERSEKUTUAN');
+		$data['sqlrayon'] =getParameter('RAYON');
+		$data['sqlserving'] =getParameter('SERVING');
+		$data['sqlstatusid'] =getParameter('STATUS');
 		$data['formname'] = $formname;
-		if($recno!=null || $recno!=""){
-			$sql= $this->mtb->getwhere($recno);
+		if($member_key!=null || $member_key!=""){
+			$sql= $this->mjemaat->getwhere($member_key);
 			$count = $sql->num_rows();
-			$data["recno"] = $recno;
+			$data["member_key"] = $member_key;
 		}
 		$this->load->view('tb/'.$form,$data);
 	}
-
+	function makeRelation(){
+		$json = $_POST['dataMember'];
+		$rel = $_POST['dataRel'];
+		$data = json_decode($json);
+		$checkRel = $this->db->query("select * from tblmember where relationno=".$rel)->result();
+		$lastNumber = $rel;
+		if(count($checkRel)==0){
+			$lastNum = $this->db->query("select relationno from tblmember order by relationno desc")->result();
+			$lastNumber= count($lastNum)>0?$lastNum[0]->relationno+1:1;
+		}
+		$gagal=0;
+		foreach($data as $d){
+			$sql="update tblmember set relationno = ".$lastNumber." where member_key= ".$d->member_key;
+			$check = $this->db->query($sql);
+			if(!$check){
+				$gagal=1;
+			}
+		}
+		$hasil = array(
+			'status' => $gagal==0?"Sukses":"Gagal"
+		);
+		return json_encode($hasil);
+	}
 	function crud(){
 		@$oper=@$_POST['oper'];
-	    @$recno=@$_POST['recno'];
+	    @$member_key=@$_POST['member_key'];
 	    @$extphotofile=@$_POST['extphotofile'];
 	    @$editphotofile=@$_POST['editphotofile'];
 	    if($extphotofile!=""){
@@ -300,11 +269,7 @@ class Tb extends MY_Controller {
 	    		$servingid=$servingid.$selectedOption."/";
 	    	}
 	    }
-
-		@$tgl_hadir = $_POST['tgl_hadir'];
-	    @$exp1 = explode('-',$tgl_hadir);
-		@$tgl_hadir = $exp1[2]."-".$exp1[1]."-".$exp1[0];
-
+		$_POST = array_map("strtoupper", $_POST);
 	    @$dob = $_POST['dob'];
 	    @$exp1 = explode('-',$dob);
 		@$dob = $exp1[2]."-".$exp1[1]."-".$exp1[0];
@@ -319,7 +284,6 @@ class Tb extends MY_Controller {
 		@$data = array(
 			'grp_pi' => isset($_POST['grp_pi']) ? $_POST['grp_pi'] : 0,
 			'relationno' => @$_POST['relationno'],
-			'tgl_hadir' => @$tgl_hadir,
 			'memberno' => @$_POST['memberno'],
 			'membername' => @$_POST['membername'],
 			'chinesename' => @$_POST['chinesename'],
@@ -331,15 +295,15 @@ class Tb extends MY_Controller {
 			'address' => @$_POST['address'],
 			'add2' => @$_POST['add2'],
 			'city' => @$_POST['city'],
-			'genderid' => @$_POST['genderid'],
-			'pstatusid' => @$_POST['pstatusid'],
+			'gender_key' => @$_POST['genderid'],
+			'pstatus_key' => @$_POST['pstatusid'],
 			'pob' => @$_POST['pob'],
 			'dob' => @$dob,
-			'bloodid' => @$_POST['bloodid'],
-			'kebaktianid' => @$_POST['kebaktianid'],
-			'persekutuanid' => @$_POST['persekutuanid'],
-			'rayonid' => @$_POST['rayonid'],
-			'statusid' => 'TB',
+			'blood_key' => @$_POST['bloodid'],
+			'kebaktian_key' => @$_POST['kebaktianid'],
+			'persekutuan_key' => @$_POST['persekutuanid'],
+			'rayon_key' => @$_POST['rayonid'],
+			'status_key' => '18',
 			'serving' => $servingid,
 			'fax' => @$_POST['fax'],
 			'email' => @$_POST['email'],
@@ -368,7 +332,7 @@ class Tb extends MY_Controller {
 			    echo json_encode($hasil);
 	            break;
 	        case 'edit':
-				$this->mtb->edit("tblmember",$data,$recno);
+				$this->mtb->edit("tblmember",$data,$member_key);
 				$hasil = array(
 			        'status' => 'sukses',
 			        'photofile' => $photofile
@@ -382,7 +346,7 @@ class Tb extends MY_Controller {
 				if (file_exists("uploads/small_".$editphotofile)) {
 					unlink("uploads/small_".$editphotofile);
 				}
-				$this->mtb->del("tblmember",$recno);
+				$this->mtb->del("tblmember",$member_key);
 				$hasil = array(
 			        'status' => 'sukses',
 			        'photofile' => $editphotofile
@@ -391,86 +355,11 @@ class Tb extends MY_Controller {
 	            break;
 	        default :
 	        	$hasil = array(
-			        'status' => 'No Operation'
+			        'status' => 'No Operation'.implode("", $_POST)
 			    );
 			    echo json_encode($hasil);
 	           break;
 		}
-	}
-
-	function operation($filters){
-        $filters = str_replace('\"','"' ,$filters);
-        $filters = str_replace('"[','[' ,$filters);
-        $filters = str_replace(']"',']' ,$filters);
-		$filters = json_decode($filters);
-		$where = " ";
-		$whereArray = array();
-		$rules = $filters->rules;
-		$groupOperation = $filters->groupOp;
-		foreach($rules as $rule) {
-		    $fieldName = $rule->field;
-		    $fieldData = escapeString($rule->data);
-			   	switch ($rule->op) {
-					case "eq": $fieldOperation = " = '".$fieldData."'"; break;
-					case "ne": $fieldOperation = " != '".$fieldData."'"; break;
-					case "lt": $fieldOperation = " < '".$fieldData."'"; break;
-					case "gt": $fieldOperation = " > '".$fieldData."'"; break;
-					case "le": $fieldOperation = " <= '".$fieldData."'"; break;
-					case "ge": $fieldOperation = " >= '".$fieldData."'"; break;
-					case "nu": $fieldOperation = " = ''"; break;
-					case "nn": $fieldOperation = " != ''"; break;
-					case "in": $fieldOperation = " IN (".$fieldData.")"; break;
-					case "ni": $fieldOperation = " NOT IN '".$fieldData."'"; break;
-					case "bw": $fieldOperation = " LIKE '".$fieldData."%'"; break;
-					case "bn": $fieldOperation = " NOT LIKE '".$fieldData."%'"; break;
-					case "ew": $fieldOperation = " LIKE '%".$fieldData."'"; break;
-					case "en": $fieldOperation = " NOT LIKE '%".$fieldData."'"; break;
-					case "cn": $fieldOperation = " LIKE '%".$fieldData."%'"; break;
-					case "nc": $fieldOperation = " NOT LIKE '%".$fieldData."%'"; break;
-					default: $fieldOperation = ""; break;
-		        }
-		    if($fieldOperation != "") {
-		    	if($fieldName=="tgl_lahir"){
-                	$whereArray[] = "DATE_FORMAT(tgl_lahir,'%d-%m-%Y')".$fieldOperation;
-                }
-		    	else if($fieldName=="dob"){
-                	$whereArray[] = "DATE_FORMAT(dob,'%d-%m-%Y')".$fieldOperation;
-                }
-                else if($fieldName=="baptismdate"){
-                	$whereArray[] = "DATE_FORMAT(baptismdate,'%d-%m-%Y')".$fieldOperation;
-                }
-                else if($fieldName=="tglbesuk"){
-                	$whereArray[] = "DATE_FORMAT(tglbesuk,'%d-%m-%Y')".$fieldOperation;
-                }
-                else if($fieldName=="modifiedon"){
-                	$whereArray[] = "DATE_FORMAT(modifiedon,'%d-%m-%Y %T')".$fieldOperation;
-                }
-                else if($fieldName=="umur"){
-                	$whereArray[] = "DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y')".$fieldOperation;
-                }
-                else if($fieldName=="tglbesukterakhir"){
-                	$whereArray[] = "DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y')".$fieldOperation;
-                }
-                else if($fieldName=="photofile"){
-                	if($fieldData=="ada"){
-                		$whereArray[] = "photofile !='' ";
-                	}
-                	else{
-                		$whereArray[] = "photofile ='' ";
-                	}
-                }
-                else{
-                	$whereArray[] = $fieldName.$fieldOperation;
-                }
-		    }
-		}
-
-		if (count($whereArray)>0) {
-		    $where .= join(" ".$groupOperation." ", $whereArray);
-		} else {
-			$where = " ";
-		}
-		return $where;
 	}
 
 	function upload($namephotofile){
@@ -506,6 +395,79 @@ class Tb extends MY_Controller {
 				imagedestroy($im2);
 				unlink("uploads/$newfilename");
 		        $status = 1;
+		    	$msg ="Upload Success".$dst_height2;
+		    }
+		    else{
+		        $status = 2;
+		    	$msg ="Upload Error";
+		 	}
+		}
+		else{
+			$status = 2;
+		    $msg ="Upload Null";
+		}
+
+	 	$hasil = array(
+	        'status' => $status,
+	        'msg' => $msg
+	    );
+	    echo json_encode($hasil);
+	}
+	function uploadWA($namephotofile){
+	    $filename = $_FILES['photofile']['name'];
+	    if($filename){
+	    	$temp = $_FILES['photofile']['tmp_name'];
+		    $type = $_FILES['photofile']['type'];
+		    $size = $_FILES['photofile']['size'];
+		    $newfilename = $namephotofile;
+			@$vdir_upload = "uploads/";
+			@$directory 	= "uploads/$newfilename";
+		    if (MOVE_UPLOADED_FILE($temp,$directory)){
+		    	$im_src = imagecreatefromjpeg($directory);
+				$src_width = imagesx($im_src);
+				$src_height = imagesy($im_src);
+				$dst_width = 30;
+				$dst_height = ($dst_width/$src_width)*$src_height;
+				$im = imagecreatetruecolor($dst_width,$dst_height);
+				imagecopyresampled($im, $im_src, 0, 0, 0, 0, $dst_width, $dst_height, $src_width, $src_height);
+				imagejpeg($im,$vdir_upload."small_".$newfilename);
+				imagedestroy($im_src);
+				imagedestroy($im);
+
+				$im_src2 = imagecreatefromjpeg($directory);
+				$src_width2 = imagesx($im_src2);
+				$src_height2 = imagesy($im_src2);
+				// start
+				$actualHeight  =  imagesy($im_src2);
+				$actualWidth   = imagesx($im_src2);
+				$maxHeight = 1280;
+				$maxWidth = 1280;
+				$imgRatio = $actualWidth / $actualHeight;
+				$maxRatio = $maxWidth/$maxHeight;
+				if($actualHeight>$maxHeight || $actualWidth > $maxWidth){
+					if($imgRatio < $maxRatio){
+						//menyesuaikan lebar menurut maxHeight
+						$imgRatio = $maxHeight / $actualHeight;
+						$actualWidth = $imgRatio * $actualWidth;
+						$actualHeight = $maxHeight;
+					}else if($imgRatio > $maxRatio){
+						//menyesuaikan tinggi menurut maxWidth
+						$imgRatio = $maxWidth / $actualWidth;
+						$actualHeight = $imgRatio * $actualHeight;
+						$actualWidth = $maxWidth;
+					}else{
+						$actualHeight = $maxHeight;
+						$actualWidth = $maxWidth;
+					}
+				}
+				//end
+				$im2 = imagecreatetruecolor($actualWidth,$actualHeight);
+				imagecopyresampled($im2, $im_src2, 0, 0, 0, 0, $actualWidth, $actualHeight, $src_width2, $src_height2);
+				imagejpeg($im2,$vdir_upload."medium_".$newfilename);
+				imagedestroy($im_src2);
+				imagedestroy($im2);
+				unlink("uploads/$newfilename");
+		        $status = 1;
 		    	$msg ="Upload Success";
 		    }
 		    else{
@@ -526,19 +488,23 @@ class Tb extends MY_Controller {
 	}
 
 	function export($file){
-		$excel = $_SESSION['exceljemaat'];
+		$excel = $_SESSION['exceltb'];
 		$splitexcel = explode("|",$excel);
 		$sord = $splitexcel[0];
 		$sidx= $splitexcel[1];
 		$where = $splitexcel[2];
+		if($where!="")
+			$where2=" and status_key='18' ";
+		else
+			$where2=" where status_key = '18' ";
 		$data['sql']=$this->db->query("SELECT *,
 		DATE_FORMAT(dob,'%d-%m-%Y') dob,
 		DATE_FORMAT(tglbesuk,'%d-%m-%Y') tglbesuk,
 		DATE_FORMAT(baptismdate,'%d-%m-%Y') baptismdate,
 		DATE_FORMAT(modifiedon,'%d-%m-%Y') modifiedon,
 		DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') as umur
-		FROM tblmember " . $where . " ORDER BY $sidx $sord");
-		$this->load->view('tb/'.$file,$data);
+		FROM tblmember " . $where.$where2 . " ORDER BY $sidx $sord");
+		$this->load->view('jemaat/'.$file,$data);
 	}
 
 	function report(){
@@ -554,7 +520,7 @@ class Tb extends MY_Controller {
 		DATE_FORMAT(modifiedon,'%d-%m-%Y') modifiedon,
 		DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') as umur
 		FROM tblmember " . $where . " ORDER BY $sidx $sord");
-		$this->load->view('tb/report',$data);
+		$this->load->view('jemaat/report',$data);
 
 	}
 }

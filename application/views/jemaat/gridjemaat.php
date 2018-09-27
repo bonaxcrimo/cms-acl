@@ -25,7 +25,7 @@
                 selectOnCheck: false,
                 clientPaging: false,
                 autoResize:true,
-                url:"<?= base_url() ?>jemaat/grid3",
+                url:"<?= base_url() ?>jemaat/grid3/<?= $this->uri->segment(2) ?>",
                 method:'get',
                 onClickRow:function(index,row){
                     var relationno = row.relationno;

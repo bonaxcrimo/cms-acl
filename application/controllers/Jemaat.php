@@ -65,10 +65,9 @@ class Jemaat extends MY_Controller {
 		$data['kebaktian'] = getComboParameter('KEBAKTIAN');
 		$data['persekutuan'] =getComboParameter('PERSEKUTUAN');
 		$data['rayon'] = getComboParameter('RAYON');
-
 		$this->render('jemaat/gridjemaat',$data);
 	}
-	function grid3(){
+	function grid3($status=''){
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
 		$sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'member_key';
@@ -76,9 +75,18 @@ class Jemaat extends MY_Controller {
 
 		$filterRules = isset($_GET['filterRules']) ? ($_GET['filterRules']) : '';
 		$cond = '';
+		$where="";
+		if($status=="m"){
+			$where .= " where status_key='9' ";
+		}else if($status=="pi"){
+			$where .= " where grp_pi=1 ";
+		}else{
+			$where .= " where status_key != '9' and status_key != '18' ";
+		}
 		if (!empty($filterRules)){
-			$cond = ' where 1=1 ';
+			$cond = ' and  1=1 ';
 			$filterRules = json_decode($filterRules);
+
 
 			foreach($filterRules as $rule){
 				$rule = get_object_vars($rule);
@@ -102,7 +110,7 @@ class Jemaat extends MY_Controller {
 				}
 			}
 		}
-		$where='';
+		$cond = $where.$cond;
 		$sql = $this->mjemaat->count($cond);
 		$total = $sql->num_rows();
 		$offset = ($page - 1) * $rows;
@@ -130,16 +138,7 @@ class Jemaat extends MY_Controller {
 			$rel="";
 		    $db1 = get_instance()->db->conn_id;
 
-			if(mysqli_num_rows(mysqli_query($db1,"SHOW TABLES LIKE 'tbltemp".$_SESSION['userpk']."'"))==1){
-				$tabel = "tbltemp".$_SESSION['userpk'];
-				$q = mysqli_query($db1,"SELECT member_key FROM $tabel WHERE member_key='$row->member_key'");
-				if($cek = mysqli_fetch_array($q)){
-					$rel = "checked";
-				}
-			}
-			else{
-			    $rel = "disabled";
-			}
+
 
 			$member_key = $row->member_key;
 			$pembesukdari="";
@@ -174,7 +173,7 @@ class Jemaat extends MY_Controller {
 			$row->jlhbesuk = $jlhbesuk;
 			$row->tglbesukterakhir = $besukdate;
 			$row->pembesukdari = $pembesukdari;
-			$row->remark = $remark;
+			$row->remark = $status;
 
 			$row->aksi =$view.$edit.$del;
 		}

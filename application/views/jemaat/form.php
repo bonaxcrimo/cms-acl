@@ -107,7 +107,7 @@ $(document).ready(function(){
                     foreach ($sqlgender as $rowform) {
 
                         ?>
-                            <option <?php if(@$datarow->parameter_key==$rowform->parameter_key){echo "selected";} ?> value="<?php echo $rowform->parameter_key ?>"><?php echo $rowform->parametertext ?></option>
+                            <option <?php if(@$datarow->gender_key==$rowform->parameter_key){echo "selected";} ?> value="<?php echo $rowform->parameter_key ?>"><?php echo $rowform->parametertext ?></option>
                         <?php
                     }
                 ?>
@@ -120,7 +120,7 @@ $(document).ready(function(){
                     foreach ($sqlpstatus as $rowform) {
 
                         ?>
-                            <option <?php if(@$datarow->parameter_key==$rowform->parameter_key){echo "selected";} ?> value="<?php echo $rowform->parameter_key ?>"><?php echo $rowform->parametertext ?></option>
+                            <option <?php if(@$datarow->pstatus_key==$rowform->parameter_key){echo "selected";} ?> value="<?php echo $rowform->parameter_key ?>"><?php echo $rowform->parametertext ?></option>
                         <?php
                     }
                 ?>
@@ -138,7 +138,7 @@ $(document).ready(function(){
                 <?php
                     foreach ($sqlblood as $rowform) {
                         ?>
-                            <option <?php if(@$datarow->parameter_key==$rowform->parameter_key){echo "selected";} ?> value="<?php echo $rowform->parameter_key ?>"><?php echo $rowform->parametertext ?></option>
+                            <option <?php if(@$datarow->blood_key==$rowform->parameter_key){echo "selected";} ?> value="<?php echo $rowform->parameter_key ?>"><?php echo $rowform->parametertext ?></option>
                         <?php
                     }
 
@@ -151,7 +151,7 @@ $(document).ready(function(){
                 <?php
                     foreach ($sqlkebaktian as $rowform) {
                         ?>
-                            <option <?php if(@$datarow->parameter_key==$rowform->parameter_key){echo "selected";} ?> value="<?php echo $rowform->parameter_key ?>"><?php echo $rowform->parametertext ?></option>
+                            <option <?php if(@$datarow->kebaktian_key==$rowform->parameter_key){echo "selected";} ?> value="<?php echo $rowform->parameter_key ?>"><?php echo $rowform->parametertext ?></option>
                         <?php
                     }
 
@@ -164,7 +164,7 @@ $(document).ready(function(){
                 <?php
                     foreach ($sqlpersekutuan as $rowform) {
                         ?>
-                            <option <?php if(@$datarow->parameter_key==$rowform->parameter_key){echo "selected";} ?> value="<?php echo $rowform->parameter_key ?>"><?php echo $rowform->parametertext ?></option>
+                            <option <?php if(@$datarow->persekutuan_key==$rowform->parameter_key){echo "selected";} ?> value="<?php echo $rowform->parameter_key ?>"><?php echo $rowform->parametertext ?></option>
                         <?php
                     }
 
@@ -177,7 +177,7 @@ $(document).ready(function(){
                 <?php
                     foreach ($sqlrayon as $rowform) {
                         ?>
-                            <option <?php if(@$datarow->parameter_key==$rowform->parameter_key){echo "selected";} ?> value="<?php echo $rowform->parameter_key ?>"><?php echo $rowform->parametertext ?></option>
+                            <option <?php if(@$datarow->rayon_key==$rowform->parameter_key){echo "selected";} ?> value="<?php echo $rowform->parameter_key ?>"><?php echo $rowform->parametertext ?></option>
                         <?php
                     }
                 ?>
@@ -189,7 +189,7 @@ $(document).ready(function(){
                     <?php
                         foreach ($sqlstatusid as $rowform) {
                            ?>
-                            <option <?php if(@$datarow->parameter_key==$rowform->parameter_key){echo "selected";} ?> value="<?php echo $rowform->parameter_key ?>"><?php echo $rowform->parametertext ?></option>
+                            <option <?php if(@$datarow->status_key==$rowform->parameter_key){echo "selected";} ?> value="<?php echo $rowform->parameter_key ?>"><?php echo $rowform->parametertext ?></option>
                         <?php
                         }
 
