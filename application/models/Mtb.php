@@ -97,6 +97,10 @@ Class Mtb extends MY_Model{
     	}
     	return $save;
     }
+    public function delete($id){
+    	$this->db->where(['member_key'=>$id]);
+    	return $this->db->delete($this->table);
+    }
 	function count($where){
 		$where2="";
 		if($where!="")

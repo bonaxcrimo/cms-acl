@@ -81,7 +81,6 @@ class Tb extends MY_Controller {
             redirect('tb');
         }
         $data=[];
-        $data['member_key'] = $id;
 		if($this->input->server('REQUEST_METHOD') == 'POST' ){
 
 			$data = $this->input->post();
@@ -94,6 +93,7 @@ class Tb extends MY_Controller {
 		    echo json_encode($hasil);
 		}else{
 			$data = $this->_parameter();
+			$data['member_key'] = $id;
 			$this->load->view('tb/edit',$data);
 		}
 
@@ -123,7 +123,6 @@ class Tb extends MY_Controller {
             redirect('tb');
         }
         $data=[];
-        $data['member_key'] = $id;
 		if($this->input->server('REQUEST_METHOD') == 'POST'){
 			$cek = $this->mtb->delete($this->input->post('member_key'));
 			$status = $cek?"sukses":"gagal";
@@ -133,6 +132,7 @@ class Tb extends MY_Controller {
 		    echo json_encode($hasil);
 		}else{
 			$data = $this->_parameter();
+			$data['member_key'] = $id;
 			$this->load->view('tb/delete',$data);
 		}
 

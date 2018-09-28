@@ -335,7 +335,7 @@
                 result  = JSON.parse(result);
                 if(result.status=="sukses"){
                     $('#dlgSave').dialog('close');
-                    $('#dg').datagrid('reload');
+                    $('#dgJemaat').datagrid('reload');
                 }
                 console.log(result);
             },error:function(error){
