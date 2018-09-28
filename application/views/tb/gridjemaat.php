@@ -355,6 +355,35 @@
             callSubmit();
         }
     }
+    function viewData(member_key){
+        var row = member_key==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').member_key:member_key;
+        if (row!=''){
+            $('#dlgView').dialog({
+                closed:false,
+                title:'View data',
+                href:'<?php echo base_url(); ?>tb/view/'+row
+            });
+
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
+    function deleteData(member_key){
+        var row = member_key==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').member_key:member_key;
+        if (row!=''){
+            $('#dlgSave').dialog({
+                closed:false,
+                title:'Delete data',
+                href:'<?php echo base_url(); ?>tb/delete/'+row,
+                onLoad:function(){
+                    url = '<?= base_url() ?>tb/delete/'+row;
+                    oper="del";
+                }
+            });
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
     function saveRelation(){
         var rel = $("#relationno").val();
         var checkedRows = $('#dgJemaat').datagrid('getChecked');
@@ -563,11 +592,9 @@
         <br>
         <div id="foto"></div>
         <div id="datarelasi"></div>
-        <div id="dlgView" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons1'">
+        <div id="dlgView" class="easyui-dialog" style="width:600px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons1'">
         </div>
         <div id="dlgSave" class="easyui-dialog" style="width:600px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons'">
-        </div>
-        <div id="dlgDelete" class="easyui-dialog" style="width:600px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons2'">
         </div>
         <div id="dlgView2" class="easyui-dialog" style="width:600px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons1'" >
         </div>
@@ -584,10 +611,7 @@
             <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px">Proses</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
         </div>
-        <div class="dlg-buttons2">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="deleteJemaat()" style="width:90px">Proses</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
-        </div>
+
         <div class="dlg-buttons1">
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
         </div>

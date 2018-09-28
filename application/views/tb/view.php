@@ -1,223 +1,147 @@
 <?php
-	@$query=("SELECT *, DATE_FORMAT(tgl_hadir,'%d-%m-%Y') tgl_hadir, DATE_FORMAT(dob,'%d-%m-%Y') dob, 
-		DATE_FORMAT(tglbesuk,'%d-%m-%Y') tglbesuk,
-		DATE_FORMAT(baptismdate,'%d-%m-%Y') baptismdate,
-		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon FROM tblmember WHERE recno=".$recno." LIMIT 0,1");
-	@$row=queryCustom2($query);
+    @$query="SELECT *, DATE_FORMAT(dob,'%d-%m-%Y') dob,
+        DATE_FORMAT(tglbesuk,'%d-%m-%Y') tglbesuk,
+        DATE_FORMAT(baptismdate,'%d-%m-%Y') baptismdate,
+        DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon FROM tblmember WHERE member_key=".$member_key." LIMIT 0,1";
+    @$row=queryCustom($query);
 ?>
-<input type="hidden" name="recno" value="<?php echo @$row['recno'] ?>">
-<table class="table table-condensed" cellpadding="0" cellspacing="0">
-	<tr>
-		<td>grp_pi</td>
-		<td>: <?php echo @$row['grp_pi'] ?></td>
-	</tr>
-	<tr>
-		<td>relationno</td>
-		<td>: <?php echo @$row['relationno'] ?></td>
-		<td rowspan="37" valign="top" align="center">
-			<?php
-				if($row['photofile']!=""){
-					$url = "medium_".$row['photofile'];
-				}
-				else{
-					$url = "medium_nofoto.jpg";
-				}
-			?>
-			<img width="200" class="mediumpic" id="blah" src="<?php echo base_url();?>uploads/<?php echo $url ?>">
-			<a href="<?php echo base_url()?>jemaat/download/<?php echo $url ?>" title="Download Foto">
-				<img src='<?php echo base_url(); ?>libraries/icon/24x24/download.jpg'>
-			</a>
-			<input type="hidden" name="editphotofile" id="editphotofile" value="<?php echo $row['photofile'] ?>">
-        </td>
-	</tr>
-	<tr>
-		<td>tgl hadir</td>
-		<td>: 
-			<script type="text/javascript">
-				$(document).ready(function(){
-					$("#tgl_hadir").datepicker();  
-				});
-			</script>
-		 <?php echo @$row['tgl_hadir'] ?>
-        </td>
-	</tr>
-	<tr>
-		<td>memberno</td>
-		<td>: <?php echo @$row['memberno'] ?></td>
-	</tr>
-	<tr>
-		<td>membername</td>
-		<td>: <?php echo @$row['membername'] ?></td>
-	</tr>
-	<tr>
-		<td>chinesename</td>
-		<td>: <?php echo @$row['chinesename'] ?></td>
-	</tr>
-	<tr>
-		<td>phoneticname</td>
-		<td>: <?php echo @$row['phoneticname'] ?></td>
-	</tr>
-	<tr>
-		<td>aliasname</td>
-		<td>: <?php echo @$row['aliasname'] ?></td>
-	</tr>
-	<tr>
-		<td>tel_h</td>
-		<td>: <?php echo @$row['tel_h'] ?></td>
-	</tr>
-	<tr>
-		<td>tel_o</td>
-		<td>: <?php echo @$row['tel_o'] ?></td>
-	</tr>
-	<tr>
-		<td>handphone</td>
-		<td>: <?php echo @$row['handphone'] ?></td>
-	</tr>
-	<tr>
-		<td>address</td>
-		<td>: <?php echo @$row['address'] ?></td>
-	</tr>
-	<tr>
-		<td>add2</td>
-		<td>: <?php echo @$row['add2'] ?></td>
-	</tr>
-	<tr>
-		<td>city</td>
-		<td>: <?php echo @$row['city'] ?></td>
-	</tr>
-	<tr>
-		<td>genderid</td>
-		<td>: <?php echo $row['genderid']; ?></td>
-	</tr>
-	<tr>
-		<td>pstatusid</td>
-		<td>: <?php echo $row['pstatusid']; ?></td>
-	</tr>
-	<tr>
-		<td>pob</td>
-		<td>: <?php echo @$row['pob'] ?></td>
-	</tr>
-	<tr>
-		<td>dob</td>
-		<td>: 
-			<script type="text/javascript">
-				$(document).ready(function(){
-					$("#dob").datepicker();  
-				});
-			</script>
-		 <?php echo @$row['dob'] ?>
-        </td>
-	</tr>
-	<tr>
-		<td>bloodid</td>
-		<td>: <?php echo $row['bloodid']; ?></td>
-	</tr>
-	<tr>
-		<td>kebaktianid</td>
-		<td>: <?php echo $row['kebaktianid']; ?></td>
-	</tr>
-	<tr>
-		<td>persekutuanid</td>
-		<td>: <?php echo $row['persekutuanid']; ?></td>
-	</tr>
-	<tr>
-		<td>rayonid</td>
-		<td>: <?php echo $row['rayonid']; ?></td>
-	</tr>
-	<tr>
-		<td>statusid</td>
-		<td>: <?php echo @$row['statusid'] ?></td>
-	</tr>
-	<tr>
-		<td>serving</td>
-		<td>: <?php echo @$row['serving'] ?></td>
-	</tr>
-	<tr>
-		<td>fax</td>
-		<td>: <?php echo @$row['fax'] ?></td>
-	</tr>
-	<tr>
-		<td>email</td>
-		<td>: <?php echo @$row['email'] ?></td>
-	</tr>
-	<tr>
-		<td>website</td>
-		<td>: <?php echo @$row['website'] ?></td>
-	</tr>
-	<tr>
-		<td>baptismdocno</td>
-		<td>: <?php echo @$row['baptismdocno'] ?></td>
-	</tr>
-	<tr>
-		<td>baptis</td>
-		<td>: <?php echo $row['baptis']; ?></td>
-	</tr>
-	<tr>
-		<td>baptismdate</td>
-		<td>: 
-			<script type="text/javascript">
-				$(document).ready(function(){
-					$("#baptismdate").datepicker();  
-				});
-			</script>
-		 <?php echo @$row['baptismdate'] ?>
-		</td>
-	</tr>
-	<tr>
-		<td>remark</td>
-		<td>: <?php echo @$row['remark'] ?></td>
-	</tr>
-	<tr>
-		<td>relation</td>
-		<td>: <?php echo @$row['relation'] ?></td>
-	</tr>
-	<tr>
-		<td>oldgrp</td>
-		<td>: <?php echo @$row['oldgrp'] ?></td>
-	</tr>
-	<tr>
-		<td>kebaktian</td>
-		<td>: <?php echo @$row['kebaktian'] ?></td>
-	</tr>
+<div style="margin:0;padding:20px">
+    <input type="hidden" name="member_key" value="<?php echo @$member_key ?>">
+    <h3 class="noMargin">Jemaat Informasi</h3>
+    <div class="row">
+        <div class="col-md-7 borderForm">
+            <div style="margin-bottom:10px">
+                <input name="grp_pi" labelPosition="left" class="easyui-textbox"  value="<?= @$row->grp_pi ?>" readonly="" label="grp_pi:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="relationno" labelPosition="left" class="easyui-textbox"   value="<?= @$row->relationno ?>" readonly="" label="relationno:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="memberno" labelPosition="left" class="easyui-textbox"   value="<?= @$row->memberno ?>" readonly="" label="memberno:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="membername" labelPosition="left" class="easyui-textbox"   value="<?= @$row->membername ?>" readonly="" label="membername:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="chinesename" labelPosition="left" class="easyui-textbox"   value="<?= @$row->chinesename ?>" readonly="" label="chinesename:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="phoneticname" labelPosition="left" class="easyui-textbox"   value="<?= @$row->phoneticname ?>" readonly="" label="phoneticname:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="phoneticname" labelPosition="left" class="easyui-textbox"   value="<?= @$row->phoneticname ?>" readonly="" label="phoneticname:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="tel_h" labelPosition="left" class="easyui-textbox"   value="<?= @$row->tel_h ?>" readonly="" label="tel_h:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="tel_o" labelPosition="left" class="easyui-textbox"   value="<?= @$row->tel_o ?>" readonly="" label="tel_o:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="handphone" labelPosition="left" class="easyui-textbox"   value="<?= @$row->handphone ?>" readonly="" label="handphone:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="handphone" labelPosition="left" class="easyui-textbox"   value="<?= @$row->handphone ?>" readonly="" label="handphone:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="address" labelPosition="left" class="easyui-textbox" multiline="true"   value="<?= @$row->address ?>" readonly="" label="address:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="add2" labelPosition="left" class="easyui-textbox"   value="<?= @$row->add2 ?>" readonly="" label="add2:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="city" labelPosition="left" class="easyui-textbox"   value="<?= @$row->city ?>" readonly="" label="city:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="genderid" labelPosition="left" class="easyui-textbox"   value="<?= @$row->genderid ?>" readonly="" label="genderid:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="pob" labelPosition="left" class="easyui-textbox"   value="<?= @$row->pob ?>" readonly="" label="pob:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="bloodid" labelPosition="left" class="easyui-textbox"   value="<?= @$row->bloodid ?>" readonly="" label="bloodid:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="kebaktianid" labelPosition="left" class="easyui-textbox"   value="<?= @$row->kebaktianid ?>" readonly="" label="kebaktianid:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="persekutuanid" labelPosition="left" class="easyui-textbox"   value="<?= @$row->persekutuanid ?>" readonly="" label="persekutuanid:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="rayonid" labelPosition="left" class="easyui-textbox"   value="<?= @$row->rayonid ?>" readonly="" label="rayonid:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="statusid" labelPosition="left" class="easyui-textbox"   value="<?= @$row->statusid ?>" readonly="" label="statusid:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="serving" labelPosition="left" class="easyui-textbox"   value="<?= @$row->serving ?>" readonly="" label="serving:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="fax" labelPosition="left" class="easyui-textbox"   value="<?= @$row->fax ?>" readonly="" label="fax:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="email" labelPosition="left" class="easyui-textbox"   value="<?= @$row->email ?>" readonly="" label="email:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="website" labelPosition="left" class="easyui-textbox"   value="<?= @$row->website ?>" readonly="" label="website:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="baptismdocno" labelPosition="left" class="easyui-textbox"   value="<?= @$row->baptismdocno ?>" readonly="" label="baptismdocno:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="baptismdate" labelPosition="left" class="easyui-textbox"   value="<?= @$row->baptismdate ?>" readonly="" label="baptismdate:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="baptis" labelPosition="left" class="easyui-textbox"   value="<?= @$row->baptis ?>" readonly="" label="baptis:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="baptismdocno" labelPosition="left" class="easyui-textbox"   value="<?= @$row->baptismdocno ?>" readonly="" label="baptismdocno:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="remark" labelPosition="left" class="easyui-textbox"   value="<?= @$row->remark ?>" readonly="" label="remark:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="relation" labelPosition="left" class="easyui-textbox"   value="<?= @$row->relation ?>" readonly="" label="relation:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="oldgrp" labelPosition="left" class="easyui-textbox"   value="<?= @$row->oldgrp ?>" readonly="" label="oldgrp:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="kebaktian" labelPosition="left" class="easyui-textbox"   value="<?= @$row->kebaktian ?>" readonly="" label="kebaktian:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="besukdate" labelPosition="left" class="easyui-textbox"   value="<?= @$row->besukdate ?>" readonly="" label="besukdate:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="pembesukdari" labelPosition="left" class="easyui-textbox"   value="<?= @$row->pembesukdari ?>" readonly="" label="pembesukdari:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="modifiedby" labelPosition="left" class="easyui-textbox"   value="<?= @$row->modifiedby ?>" readonly="" label="modifiedby:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="description" labelPosition="left" class="easyui-textbox"   value="<?= @$row->description ?>" readonly="" label="description:" style="width:100%">
+            </div>
+            <div style="margin-bottom:10px">
+                <input name="modifiedon" labelPosition="left" class="easyui-textbox"   value="<?= @$row->modifiedon ?>" readonly="" label="modifiedon:" style="width:100%">
+            </div>
 
-	<?php
-		$pembesukdari="";
-		$remark="";
-		$besukdate="";
-		$q = ("SELECT * FROM tblbesuk WHERE recno='$recno' ORDER BY besukdate DESC");
-		//$q = mysql_query("SELECT *, DATE_FORMAT(besukdate,'%Y-%m-%d') AS besukdate FROM tblbesuk WHERE recno='$recno' ORDER BY besukdate DESC");
-		if($dta = queryCustom2($q)){
-			$pembesukdari=$dta['pembesukdari'];
-			$remark=$dta['remark'];
-			$besukdate=$dta['besukdate'];
+        </div>
+        <div class="col-md-5">
+            <?php
+                if($row->photofile!=""){
+                    $url = "medium_".$row->photofile;
+                }
+                else{
+                    $url = "medium_nofoto.jpg";
+                }
+            ?>
+            <img width="200" class="mediumpic" id="blah" src="<?php echo base_url();?>uploads/<?php echo $url ?>">
+            <a href="<?php echo base_url()?>jemaat/download/<?php echo $url ?>" title="Download Foto">
+                <img src='<?php echo base_url(); ?>libraries/icon/24x24/download.jpg'>
+            </a>
+        </div>
+    </div>
 
-			$d=strtotime($besukdate);
-			$besukdate = date("Y-m-d", $d);
-		}
-	?>
 
-	<tr>
-		<td>besukdate</td>
-		<td>:<?php echo @$row['besukdate'] ?></td>
-	</tr>
-	<tr>
-		<td>pembesukdari</td>
-		<td>: <?php echo @$row['pembesukdari'] ?></td>
-	</tr>
-	<tr>
-		<td>remark</td>
-		<td>: <?php echo @$row['remark'] ?></td>
-	</tr>
-	<tr>
-		<td>modifiedby</td>
-		<td>: <?php echo @$row['modifiedby'] ?></td>
-	</tr>
-	<tr>
-		<td>description</td>
-		<td>: <?php echo @$row['description'] ?></td>
-	</tr>
-	<tr>
-		<td>modifiedon</td>
-		<td>: <?php echo @$row['modifiedon'] ?></td>
-	</tr>
-</table>
+
+</div>

@@ -28,15 +28,28 @@ class Tb extends MY_Controller {
 	}
 
 	function index(){
-		$this->view();
+		$data = array_merge( $this->_parameter(),$this->_combo());
+		$this->render('tb/gridjemaat',$data);
+	}
+	private function _combo(){
+		$data['statusidv'] = getComboParameter('STATUS');
+		$data['blood'] = getComboParameter('BLOOD');
+		$data['gender'] = getComboParameter('GENDER');
+		$data['pstatus'] = getComboParameter('PSTATUS');
+		$data['kebaktian'] = getComboParameter('KEBAKTIAN');
+		$data['persekutuan'] =getComboParameter('PERSEKUTUAN');
+		$data['rayon'] = getComboParameter('RAYON');
+		return $data;
 	}
 
-	function m(){
-		$this->view();
-	}
-
-	function pi(){
-		$this->view();
+	/**
+     * Fungsi view rayon
+     * @AclName View rayon
+     */
+	public function view($member_key=0){
+		$data['data'] = $this->mtb->getById('tblmember','member_key',$member_key);
+		$data['member_key'] = $member_key;
+		$this->load->view('tb/view',$data);
 	}
 	/**
      * Fungsi add besuk
@@ -53,14 +66,7 @@ class Tb extends MY_Controller {
 		    );
 		    echo json_encode($hasil);
 		}else{
-			$data['sqlgender'] = getParameter('GENDER');
-			$data['sqlpstatus'] = getParameter('PSTATUS');
-			$data['sqlblood'] =getParameter('BLOOD');
-			$data['sqlkebaktian'] = getParameter('KEBAKTIAN');
-			$data['sqlpersekutuan'] = getParameter('PERSEKUTUAN');
-			$data['sqlrayon'] =getParameter('RAYON');
-			$data['sqlserving'] =getParameter('SERVING');
-			$data['sqlstatusid'] =getParameter('STATUS');
+			$data = $this->_parameter();
 			$this->load->view('tb/add',$data);
 		}
 
@@ -87,21 +93,49 @@ class Tb extends MY_Controller {
 		    );
 		    echo json_encode($hasil);
 		}else{
-			$data['sqlgender'] = getParameter('GENDER');
-			$data['sqlpstatus'] = getParameter('PSTATUS');
-			$data['sqlblood'] =getParameter('BLOOD');
-			$data['sqlkebaktian'] = getParameter('KEBAKTIAN');
-			$data['sqlpersekutuan'] = getParameter('PERSEKUTUAN');
-			$data['sqlrayon'] =getParameter('RAYON');
-			$data['sqlserving'] =getParameter('SERVING');
-			$data['sqlstatusid'] =getParameter('STATUS');
+			$data = $this->_parameter();
 			$this->load->view('tb/edit',$data);
 		}
 
 	}
+	private function _parameter(){
+		$data['sqlgender'] = getParameter('GENDER');
+		$data['sqlpstatus'] = getParameter('PSTATUS');
+		$data['sqlblood'] =getParameter('BLOOD');
+		$data['sqlkebaktian'] = getParameter('KEBAKTIAN');
+		$data['sqlpersekutuan'] = getParameter('PERSEKUTUAN');
+		$data['sqlrayon'] =getParameter('RAYON');
+		$data['sqlserving'] =getParameter('SERVING');
+		$data['sqlstatusid'] =getParameter('STATUS');
+		return $data;
+	}
 	private function _save($data){
 		$data = array_map("strtoupper",$data);
 		return $this->mtb->save($data);
+	}
+	/**
+     * Fungsi delete besuk
+     * @AclName Delete besuk
+     */
+	public function delete($id){
+		$data = $this->mtb->getById('tblmember','member_key',$id);
+        if(empty($data)){
+            redirect('tb');
+        }
+        $data=[];
+        $data['member_key'] = $id;
+		if($this->input->server('REQUEST_METHOD') == 'POST'){
+			$cek = $this->mtb->delete($this->input->post('member_key'));
+			$status = $cek?"sukses":"gagal";
+			$hasil = array(
+		        'status' => $status
+		    );
+		    echo json_encode($hasil);
+		}else{
+			$data = $this->_parameter();
+			$this->load->view('tb/delete',$data);
+		}
+
 	}
 	function creatrelation(){
 		$this->mtb->creat_relation();
@@ -111,29 +145,6 @@ class Tb extends MY_Controller {
 	function simpan_relation($recno){
 		$this->mtb->simpan_relation($recno);
 		echo $recno;
-	}
-
-	function view(){
-
-
-		$data['sqlgender'] = getParameter('GENDER');
-		$data['sqlpstatus'] =getParameter('PSTATUS');
-
-		$data['sqlstatusidv'] = getParameter('STATUS');
-		$data['sqlblood'] =getParameter('BLOOD');
-		$data['sqlkebaktian'] =getParameter('KEBAKTIAN');
-		$data['sqlpersekutuan'] =getParameter('PERSEKUTUAN');
-		$data['sqlrayon'] =getParameter('RAYON');
-
-		$data['statusidv'] = getComboParameter('STATUS');
-		$data['blood'] = getComboParameter('BLOOD');
-		$data['gender'] = getComboParameter('GENDER');
-		$data['pstatus'] = getComboParameter('PSTATUS');
-		$data['kebaktian'] = getComboParameter('KEBAKTIAN');
-		$data['persekutuan'] =getComboParameter('PERSEKUTUAN');
-		$data['rayon'] = getComboParameter('RAYON');
-
-		$this->render('tb/gridjemaat',$data);
 	}
 	function grid(){
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
@@ -197,11 +208,11 @@ class Tb extends MY_Controller {
 			$view='';
 			$edit='';
 			$del='';
-				$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewJemaat(\'view\',\''.$row->member_key.'\',\'formjemaat\')" style="width:16px;height:16px;border:0"></button> ';
+				$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewData(\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ';
 
 				$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="editData(\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ';
 
-				$del = '<button id='.$row->member_key.' class="icon-remove" onclick="del(\'del\','.$row->member_key.',\'formjemaat\');" style="width:16px;height:16px;border:0"></button>';
+				$del = '<button id='.$row->member_key.' class="icon-remove" onclick="deleteData('.$row->member_key.');" style="width:16px;height:16px;border:0"></button>';
 
 			$rel="";
 		    $db1 = get_instance()->db->conn_id;
