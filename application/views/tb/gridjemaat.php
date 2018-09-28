@@ -298,7 +298,7 @@
             height:350,
             resizable:true,
             autoResize:true,
-            onload:function(){
+            onLoad:function(){
                 url = "<?= base_url() ?>tb/add";
                 oper="";
             }
@@ -325,17 +325,21 @@
         }
     }
     function callSubmit(){
+        console.log(url);
         $('#fm').form('submit',{
             url: url,
             onSubmit: function(){
                 // return $(this).form('validate');
             },
             success: function(result){
+                result  = JSON.parse(result);
+                if(result.status=="sukses"){
+                    $('#dlgSave').dialog('close');
+                    $('#dg').datagrid('reload');
+                }
                 console.log(result);
-                // $('#dlgSave').dialog('close');
-                // $('#dg').datagrid('reload');
-
             },error:function(error){
+                console.log(error);
                  console.log($(this).serialize());
             }
         });

@@ -103,7 +103,7 @@ $(document).ready(function(){
                 <input name="city"  labelPosition="left" class="easyui-textbox" required="" style="width:100%"    value="<?= @$datarow->city ?>" label="city:">
             </div>
             <div style="margin-bottom:3px">
-                <select name="genderid"  labelPosition="left" class="easyui-combobox" label="GenderId:" style="width:100%;">
+                <select name="gender_key"  labelPosition="left" class="easyui-combobox" label="GenderId:" style="width:100%;">
                 <option value=""></option>
                 <?php
                     foreach ($sqlgender as $rowform) {
@@ -116,7 +116,7 @@ $(document).ready(function(){
             </select>
             </div>
             <div style="margin-bottom:3px">
-               <select id="pstatusid" name="pstatusid"  labelPosition="left" class="easyui-combobox" label="pstatusid:" style="width:100%;">
+               <select id="pstatusid" name="pstatus_key"  labelPosition="left" class="easyui-combobox" label="pstatusid:" style="width:100%;">
                 <option value=""></option>
                 <?php
                     foreach ($sqlpstatus as $rowform) {
@@ -135,7 +135,7 @@ $(document).ready(function(){
                 <input name="dob"  labelPosition="left" class="easyui-datebox" required="" style="width:100%"    value="<?= @$dob ?>" label="dob:">
             </div>
             <div style="margin-bottom:3px">
-               <select id="bloodid" name="bloodid"  labelPosition="left" class="easyui-combobox" label="bloodid:" style="width:100%;">
+               <select id="bloodid" name="blood_key"  labelPosition="left" class="easyui-combobox" label="bloodid:" style="width:100%;">
                 <option value=""></option>
                 <?php
                     foreach ($sqlblood as $rowform) {
@@ -148,7 +148,7 @@ $(document).ready(function(){
             </select>
             </div>
             <div style="margin-bottom:3px">
-                <select id="kebaktianid" name="kebaktianid"  labelPosition="left" class="easyui-combobox" label="kebaktianid:" style="width:100%;">
+                <select id="kebaktianid" name="kebaktian_key"  labelPosition="left" class="easyui-combobox" label="kebaktianid:" style="width:100%;">
                 <option value=""></option>
                 <?php
                     foreach ($sqlkebaktian as $rowform) {
@@ -161,7 +161,7 @@ $(document).ready(function(){
             </select>
             </div>
             <div style="margin-bottom:3px">
-                <select id="persekutuanid" name="persekutuanid"  labelPosition="left" class="easyui-combobox" label="persekutuanid:" style="width:100%;">
+                <select id="persekutuanid" name="persekutuan_key"  labelPosition="left" class="easyui-combobox" label="persekutuanid:" style="width:100%;">
                 <option value=""></option>
                 <?php
                     foreach ($sqlpersekutuan as $rowform) {
@@ -174,7 +174,7 @@ $(document).ready(function(){
             </select>
             </div>
             <div style="margin-bottom:3px">
-                <select id="rayonid" name="rayonid" class="easyui-combobox" labelPosition="left" label="rayonid:" style="width:100%;">
+                <select id="rayonid" name="rayon_key" class="easyui-combobox" labelPosition="left" label="rayonid:" style="width:100%;">
                 <option value=""></option>
                 <?php
                     foreach ($sqlrayon as $rowform) {
@@ -186,7 +186,7 @@ $(document).ready(function(){
             </select>
             </div>
             <div style="margin-bottom:3px">
-                <select id="statusid" name="statusid"  labelPosition="left" class="easyui-combobox" label="statusid:" style="width:100%;">
+                <select id="statusid" name="status_key"  labelPosition="left" class="easyui-combobox" label="statusid:" style="width:100%;">
                     <option value=""></option>
                     <?php
                         foreach ($sqlstatusid as $rowform) {
