@@ -135,6 +135,9 @@
                     $url = "medium_nofoto.jpg";
                 }
             ?>
+            <input type="hidden" name="editphotofile" id="editphotofile" value="<?= @$row->photofile ?>">
+            <input type="hidden" name="extphotofile" id="extphotofile">
+            <div id="loading"></div>
             <img width="200" class="mediumpic" id="blah" src="<?php echo base_url();?>uploads/<?php echo $url ?>">
             <a href="<?php echo base_url()?>jemaat/download/<?php echo $url ?>" title="Download Foto">
                 <img src='<?php echo base_url(); ?>libraries/icon/24x24/download.jpg'>

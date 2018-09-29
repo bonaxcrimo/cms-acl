@@ -2,12 +2,12 @@
 Class Mtb extends MY_Model{
 	protected $table = 'tblmember';
 	public function save($data) {
-        $this->db->trans_start();
         @$extphotofile=@$_POST['extphotofile'];
 	    @$editphotofile=@$_POST['editphotofile'];
 	    if($extphotofile!=""){
 	    	if($editphotofile!=""){
-	    		if (file_exists("uploads/medium_".$editphotofile)) {
+                if (file_exists("uploads/medium_".$editphotofile)) {
+
 					unlink("uploads/medium_".$editphotofile);
 				}
 				if (file_exists("uploads/small_".$editphotofile)) {
@@ -34,6 +34,7 @@ Class Mtb extends MY_Model{
 	    		@$photofile = "";
 	    	}
 	    }
+        $this->db->trans_start();
 	    $servingid="";
 		if(!empty($_POST['servingid'])){
 		    foreach ($_POST['servingid'] as $selectedOption){
@@ -81,10 +82,18 @@ Class Mtb extends MY_Model{
         }
         if ($this->db->trans_status() === false) {
             $this->db->trans_rollback();
-            return false;
+            $hasil = array(
+                'status' => 'gagal',
+                'photofile' => $photofile
+            );
+            return $hasil;
         } else {
             $this->db->trans_commit();
-            return true;
+            $hasil = array(
+                'status' => 'sukses',
+                'photofile' => $photofile
+            );
+            return $hasil;
         }
     }
     private function _preFormat($data){
@@ -97,8 +106,14 @@ Class Mtb extends MY_Model{
     	}
     	return $save;
     }
-    public function delete($id){
+    public function delete($id,$editphotofile){
     	$this->db->where(['member_key'=>$id]);
+        if (file_exists("uploads/medium_".$editphotofile)) {
+            unlink("uploads/medium_".$editphotofile);
+        }
+        if (file_exists("uploads/small_".$editphotofile)) {
+            unlink("uploads/small_".$editphotofile);
+        }
     	return $this->db->delete($this->table);
     }
 	function count($where){

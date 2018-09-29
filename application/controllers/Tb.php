@@ -59,12 +59,10 @@ class Tb extends MY_Controller {
 		$data=[];
 		if($this->input->server('REQUEST_METHOD') == 'POST' ){
 			$data = $this->input->post();
+
 			$cek = $this->_save($data);
-			$status = $cek?"sukses":"gagal";
-			$hasil = array(
-		        'status' => $status
-		    );
-		    echo json_encode($hasil);
+
+		    echo json_encode($cek);
 		}else{
 			$data = $this->_parameter();
 			$this->load->view('tb/add',$data);
@@ -86,11 +84,8 @@ class Tb extends MY_Controller {
 			$data = $this->input->post();
 			$data['member_key'] = $id;
 			$cek = $this->_save($data);
-			$status = $cek?"sukses":"gagal";
-			$hasil = array(
-		        'status' => $status
-		    );
-		    echo json_encode($hasil);
+
+		    echo json_encode($cek);
 		}else{
 			$data = $this->_parameter();
 			$data['member_key'] = $id;
@@ -124,7 +119,7 @@ class Tb extends MY_Controller {
         }
         $data=[];
 		if($this->input->server('REQUEST_METHOD') == 'POST'){
-			$cek = $this->mtb->delete($this->input->post('member_key'));
+			$cek = $this->mtb->delete($this->input->post('member_key'),$this->input->post('editphotofile'));
 			$status = $cek?"sukses":"gagal";
 			$hasil = array(
 		        'status' => $status

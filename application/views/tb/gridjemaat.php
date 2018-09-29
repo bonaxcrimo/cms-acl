@@ -333,9 +333,24 @@
             },
             success: function(result){
                 result  = JSON.parse(result);
-                if(result.status=="sukses"){
-                    $('#dlgSave').dialog('close');
-                    $('#dgJemaat').datagrid('reload');
+                if(result.status=="sukses" && result.photofile!=""){
+                    if(oper=="del"){
+                        $('#dlgSave').dialog('close');
+                        $('#dgJemaat').datagrid('reload');
+                    }else{
+                        $('#loading').html('<img src="<?php echo base_url(); ?>libraries/img/loading.gif">');
+                        $.ajaxFileUpload({
+                           url: "<?php echo base_url(); ?>tb/uploadWA/"+result.photofile,
+                            secureuri: false,
+                            fileElementId: "photofile",
+                            dataType: "json",
+                            success: function (status){
+                                $('#dlgSave').dialog('close');
+                                $('#dgJemaat').datagrid('reload');
+                            }
+                        });
+                    }
+
                 }
                 console.log(result);
             },error:function(error){
