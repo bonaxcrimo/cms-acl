@@ -677,6 +677,27 @@ class Jemaat extends MY_Controller {
 		}
 		// echo "Total Data Serving = ".$total."<br>Total Data Insert Activity = ".$totalInsert."<br>Total Data Parameter = ".$totalParam;
 	}
+	public function konversiParameter($param,$field_awal){
+		$data = $this->db->query("SELECT member_key,TRIM($field_awal) AS field FROM tblmemberlama WHERE $field_awal!='' and $field_awal!='-'")->result();
+		foreach($data as $row){
+			$check = $this->mblood->getListAll('tblparameter',['parametergrpid'=>$param,'parameterid'=>$row->field]);
+			if(count($check)==0){
+				$insert= $this->db->query("INSERT INTO tblparameter values (NULL,'".$param."','".$row->field."','".$row->field."','','".$this->session->userdata('username')."',NOW())");
+				$parkey=$this->db->insert_id();
+				$sql="update tblmemberlama set $field_awal='$parkey' where member_key = ".$row->member_key;
+				// $insert = $this->db->query($sql);
+				echo $sql."=1<br>";
+			}else{
+				$parkey = !empty($check)?$check[0]->parameter_key:0;
+				$sql="update tblmemberlama set $field_awal='$parkey' where member_key = ".$row->member_key;
+				// $insert = $this->db->query($sql);
+				echo $sql."=2<br>";
+			}
+		}
+		// echo "<pre>";
+		// print_r($data);
+		// echo "</pre>";
+	}
 }
 
 

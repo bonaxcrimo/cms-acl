@@ -133,7 +133,8 @@
             },{
                 text:'Konversi Serving',
                 handler:function(){
-                    window.open("jemaat/konversi");
+                    // window.open("jemaat/konversi");
+                    window.open("jemaat/konversiParameter/BLOOD/bloodid")
                 }
             }]
         });

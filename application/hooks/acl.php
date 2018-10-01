@@ -55,7 +55,7 @@ class ACL{
     }
     private function _validateActionPermission($acos,$class = null,$method = null){
         //acos gk boleh kosong
-        if($this->CI->session->userdata('logged_in')!='' &&$this->CI->session->userdata('username')=='admin' )
+        if($this->CI->session->userdata('logged_in')!='' && $this->CI->session->userdata('username')=='admin' )
             return true;
         if(empty($class)){
             $class = $this->CI->router->fetch_class();
@@ -63,13 +63,18 @@ class ACL{
         if(empty($method)){
             $method = $this->CI->router->fetch_method();
         }
-
-        if($class=="login" ){
+        $class=strtolower($class);
+        $method=strtolower($method);
+        if($class=="login"){
             return true;
         }
         if($this->CI->session->userdata('logged_in')==null)
         {
             return false;
+        }
+        else{
+            if($class=="home")
+                return true;
         }
         if(empty($acos) ){
             return false;
