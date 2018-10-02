@@ -9,6 +9,7 @@
         <link rel="stylesheet" type="text/css" href="<?= base_url();?>libraries/bootstrap/css/grid.css">
         <link rel="stylesheet" type="text/css" href="<?= base_url();?>libraries/css/style.css">
         <link rel="stylesheet" type="text/css" href="<?= base_url();?>libraries/jquery-easyui/155/themes/default/easyui.css">
+                <!-- <link rel="stylesheet" href="<?php echo base_url(); ?>libraries/jquery-easyui/155/themes/metro/easyui.css" /> -->
         <link rel="stylesheet" type="text/css" href="<?= base_url();?>libraries/jquery-easyui/155/themes/icon.css">
         <link rel="stylesheet" type="text/css" href="<?= base_url();?>libraries/jquery-easyui/155/themes/color.css">
         <link rel="stylesheet" type="text/css" href="<?= base_url();?>libraries/picture-zoom/css/dg-picture-zoom.css" />

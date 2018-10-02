@@ -23,17 +23,30 @@ class Login extends MY_Controller {
         	if(!empty($user)){
                 $_SESSION['user'] = $user['userpk'];
                 $_SESSION['userpk'] = $user['userpk'];
+                $_SESSION['password'] = $user['password'];
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['dashboard'] = $user['dashboard'];
                 $_SESSION['versi'] ='acl';
                 $_SESSION['logged_in'] = true;
-        		redirect("home");
+                $status="sukses";
+                $msg="Anda Berhasil Login";
         	}else{
-        		$error = 'Invalid Credentials';
+        		$msg = 'Username atau Password Salah';
+                $status="gagal";
         	}
+            $hasil = array(
+                'status' =>$status,
+                'msg'=>$msg
+            );
+            echo json_encode($hasil);
+        }else{
+            $this->render('loginnew',['error'=>$error]);
         }
-        $this->render('login',['error'=>$error]);
+
 	}
+    // public function index2(){
+    //      $this->render('loginnew');
+    // }
     /**
      * Fungsi logout
      * @AclName Logout

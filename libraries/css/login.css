@@ -1,0 +1,96 @@
+* {
+	font-family: "tahoma", "Microsoft YaHei", sans-serif;
+}
+
+/*body {
+	background: #f3f3f4;
+	width: 99%;
+	height: 100%;
+}*/
+@font-face{
+  font-family: segoeui;
+  src: url('../../libraries/font/segoeui.ttf'),url('../../libraries/font/segoeui.eot'); /* IE9 */
+}
+html, body {
+	background:url(../img/page_bg.jpg);
+  font-family: segoeui;
+background: #f3f3f4;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+#login-body {
+display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.project-icon-div,
+.welcome-div {
+	text-align: center;
+}
+
+.welcome-tip {
+	color: #666666;
+	font-size: 16px;
+}
+
+.project-icon-div {
+	color: #91969A;
+	font-size: 28px;
+}
+
+.login-form-div input[type=text] {
+	width: 270px;
+	height: 26px;
+	line-height: 26px;
+	background-color: #FFF !important;
+	text-indent: 1em !important;
+	color: #666666;
+}
+
+.login-form-div .login-btn {
+	width: 275px;
+	height: 35px;
+	color: #FFF !important;
+	overflow: hidden;
+	border-radius: 1px !important;
+	background: #1ab394 !important;
+	border-color: #1ab394 !important;
+	/*border: 1px solid #95B8E7;
+    background-color: #E0ECFF;
+    background: -webkit-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+	background: -moz-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+	background: -o-linear-gradient(top,#EFF5FF 0,#E0ECFF 100%);
+	background: linear-gradient(to bottom,#EFF5FF 0,#E0ECFF 100%);
+	background-repeat: repeat-x;
+	filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#EFF5FF,endColorstr=#E0ECFF,GradientType=0);*/
+
+}
+
+.login-form-div .l-btn-text {
+	vertical-align: middle !important;
+}
+
+.login-form-div .login-btn:hover {
+	background: #338473 !important;
+	border-color: #338473 !important;
+}
+
+
+
+.login-form-div .error-tip {
+	color: darkred;
+	margin-top: 5px;
+	text-align: right;
+	font-size: 14px;
+}
+
+.remember_me,
+.copyright-text,
+.copyright-text a {
+	color: #666666;
+	font-size: 14px;
+}

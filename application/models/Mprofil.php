@@ -1,11 +1,11 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class Mprofil extends CI_Model {
+class Mprofil extends MY_Model {
 	function __construct() {
         parent::__construct();
     }
-	
-	function get($userid){
-		$sql = $this->db->query("SELECT * FROM tbluser WHERE userid='$userid'");
+
+	function get($userpk){
+		$sql = $this->db->query("SELECT * FROM tbluser WHERE userpk='$userpk'");
         return $sql;
 	}
 }
