@@ -4,7 +4,7 @@ class Mparameter extends MY_Model {
 	public function save($data) {
         $this->db->trans_start();
         $data['modifiedon'] =  date("Y-m-d H:i:s");
-        $data['modifiedby'] = $this->session->userdata('username');
+        $data['modifiedby'] = $_SESSION['username'];
         if (isset($data['parameter_key']) && !empty($data['parameter_key'])) {
             $id = $data['parameter_key'];
             unset($data['parameter_key']);

@@ -75,7 +75,7 @@ class Acos extends MY_Controller {
                     $methods = $this->get_class_methods($class, true);
                     foreach($methods as $method){
                         if(isset($method['docComment']['AclName'])){
-                            $this->Macos->save(['class'=>$class, 'method'=>$method['name'], 'displayname'=>$method['docComment']['AclName'],'modifiedby'=>$this->session->userdata('username')]);
+                            $this->Macos->save(['class'=>$class, 'method'=>$method['name'], 'displayname'=>$method['docComment']['AclName'],'modifiedby'=>$_SESSION['username']]);
                         }
                     }
                 }

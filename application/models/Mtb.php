@@ -60,7 +60,7 @@ Class Mtb extends MY_Model{
 		$data['photofile'] = @$photofile;
 		$data['status_key'] = '18';
         $data['modifiedon'] =  date("Y-m-d H:i:s");
-        $data['modifiedby'] = $this->session->userdata('username');
+        $data['modifiedby'] = $_SESSION['username'];
         if (isset($data['member_key']) && !empty($data['member_key'])) {
             $id = $data['member_key'];
             unset($data['member_key']);

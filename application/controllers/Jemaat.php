@@ -236,16 +236,7 @@ class Jemaat extends MY_Controller {
 			$rel="";
 		    $db1 = get_instance()->db->conn_id;
 
-			if(mysqli_num_rows(mysqli_query($db1,"SHOW TABLES LIKE 'tbltemp".$_SESSION['userpk']."'"))==1){
-				$tabel = "tbltemp".$_SESSION['userpk'];
-				$q = mysqli_query($db1,"SELECT member_key FROM $tabel WHERE member_key='$row->member_key'");
-				if($cek = mysqli_fetch_array($q)){
-					$rel = "checked";
-				}
-			}
-			else{
-			    $rel = "disabled";
-			}
+
 
 			$member_key = $row->member_key;
 			$pembesukdari="";
@@ -655,19 +646,19 @@ class Jemaat extends MY_Controller {
 			foreach($pecah as $p){
 				$check = $this->mblood->getListAll('tblparameter',['parametergrpid'=>'SERVING','parameterid'=>$p]);
 				if(count($check)==0){
-					$insert= $this->db->query("INSERT INTO tblparameter values (NULL,'SERVING','".$p."','".$p."','','".$this->session->userdata('username')."',NOW())");
+					$insert= $this->db->query("INSERT INTO tblparameter values (NULL,'SERVING','".$p."','".$p."','','".$_SESSION['username']."',NOW())");
 					$parkey=$this->db->insert_id();
 					// if($insert){
 					// 	$totalParam+=1;
 					// }
-					$sql="insert into tblprofile values (NULL,'".$row->member_key."','".$parkey."',NOW(),'',NOW(),'".$this->session->userdata('username')."')";
+					$sql="insert into tblprofile values (NULL,'".$row->member_key."','".$parkey."',NOW(),'',NOW(),'".$_SESSION['username']."')";
 					$insert = $this->db->query($sql);
 					// if($insert){
 					// 	$totalInsert+=1;
 					// }
 				}else{
 					$parkey = !empty($check)?$check[0]->parameter_key:0;
-					$sql="insert into tblprofile values (NULL,'".$row->member_key."','".$parkey."',NOW(),'',NOW(),'".$this->session->userdata('username')."')";
+					$sql="insert into tblprofile values (NULL,'".$row->member_key."','".$parkey."',NOW(),'',NOW(),'".$_SESSION['username']."')";
 					$insert = $this->db->query($sql);
 					// if($insert){
 					// 	$totalInsert+=1;
@@ -682,7 +673,7 @@ class Jemaat extends MY_Controller {
 		foreach($data as $row){
 			$check = $this->mblood->getListAll('tblparameter',['parametergrpid'=>$param,'parameterid'=>$row->field]);
 			if(count($check)==0){
-				$insert= $this->db->query("INSERT INTO tblparameter values (NULL,'".$param."','".$row->field."','".$row->field."','','".$this->session->userdata('username')."',NOW())");
+				$insert= $this->db->query("INSERT INTO tblparameter values (NULL,'".$param."','".$row->field."','".$row->field."','','".$_SESSION['username']."',NOW())");
 				$parkey=$this->db->insert_id();
 				$sql="update tblmemberlama set $field_awal='$parkey' where member_key = ".$row->member_key;
 				// $insert = $this->db->query($sql);

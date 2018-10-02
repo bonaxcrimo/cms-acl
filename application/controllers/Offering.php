@@ -285,7 +285,7 @@ class offering extends MY_Controller {
     }
     public function printupdate(){
         $no = $_POST['noOffering'];
-        $sql="update tbloffering set printedon = '".date("Y-m-d H:i:s")."',printedby='".$this->session->userdata('username')."' where offering_key= ".$no;
+        $sql="update tbloffering set printedon = '".date("Y-m-d H:i:s")."',printedby='".$_SESSION['username']."' where offering_key= ".$no;
         $check = $this->db->query($sql);
         $gagal=0;
         if(!$check){

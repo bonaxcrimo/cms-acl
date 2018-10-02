@@ -37,7 +37,7 @@ Class Muser extends MY_Model{
 	public function save($data) {
         $this->db->trans_start();
         $data['modifiedon'] =  date("Y-m-d H:i:s");
-        $data['modifiedby'] = $this->session->userdata('username');
+        $data['modifiedby'] = $_SESSION['username'];
         //encypt the password
         if(isset($data['password']) && !empty($data['password'])){
             $data['password'] = $this->_hashPassword($data['password']);

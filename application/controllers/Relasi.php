@@ -86,16 +86,6 @@ class Relasi extends CI_Controller {
 			$rel="";
 		    $db1 = get_instance()->db->conn_id;
 
-			if(mysqli_num_rows(mysqli_query($db1,"SHOW TABLES LIKE 'tbltemp".$_SESSION['userpk']."'"))==1){
-				$tabel = "tbltemp".$_SESSION['userpk'];
-				$q = mysqli_query($db1,"SELECT member_key FROM $tabel WHERE member_key='$row->member_key'");
-				if($cek = mysqli_fetch_array($q)){
-					$rel = "checked";
-				}
-			}
-			else{
-			    $rel = "disabled";
-			}
 
 			$member_key = $row->member_key;
 			$pembesukdari="";

@@ -6,7 +6,7 @@ class Mmenu extends MY_Model
 	public function save($data) {
         $this->db->trans_start();
         $data['modifiedon'] =  date("Y-m-d H:i:s");
-        $data['modifiedby'] = $this->session->userdata('username');
+        $data['modifiedby'] = $_SESSION['username'];
         if (isset($data['menuid']) && !empty($data['menuid'])) {
             $id = $data['menuid'];
             unset($data['menuid']);

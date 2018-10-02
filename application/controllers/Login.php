@@ -12,9 +12,7 @@ class Login extends MY_Controller {
      * @AclName Login
      */
 	public function index(){
-
-		$adminId = $this->session->userdata('logged_in');
-
+        $adminId = @$_SESSION['logged_in'];
         if(!empty($adminId)){
     		redirect('home');
         }
@@ -23,12 +21,12 @@ class Login extends MY_Controller {
         	$data = $this->input->post();
         	$user = $this->mlogin->verifyLogin($data['userid'],$data['password']);
         	if(!empty($user)){
-        		$this->session->set_userdata('user',$user['userpk']);
-        		$this->session->set_userdata('userpk',$user['userpk']);
-                $this->session->set_userdata('username',$user['username']);
-        		$this->session->set_userdata('dashboard',$user['dashboard']);
-                $this->session->set_userdata('versi','acl');
-        		$this->session->set_userdata('logged_in',true);
+                $_SESSION['user'] = $user['userpk'];
+                $_SESSION['userpk'] = $user['userpk'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['dashboard'] = $user['dashboard'];
+                $_SESSION['versi'] ='acl';
+                $_SESSION['logged_in'] = true;
         		redirect("home");
         	}else{
         		$error = 'Invalid Credentials';
@@ -41,13 +39,8 @@ class Login extends MY_Controller {
      * @AclName Logout
      */
 	public function logout(){
-		$this->session->unset_userdata('user');
-        $this->session->unset_userdata('username');
-        $this->session->unset_userdata('excel');
-		$this->session->unset_userdata('userpk');
-		$this->session->unset_userdata('dashboard');
-		$this->session->unset_userdata('logged_in');
-        $this->session->unset_userdata('groups.guest');
+        session_unset();
+        session_destroy();
 		redirect('login');
 	}
 }

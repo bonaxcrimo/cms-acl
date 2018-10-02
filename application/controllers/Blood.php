@@ -137,7 +137,7 @@ class blood extends MY_Controller {
 			'parameterid' =>  strtoupper(@$data['parameterid']),
 			'parametertext' => strtoupper(@$data['parametertext']),
 			'parametermemo' => strtoupper(@$data['parametermemo']),
-			'modifiedby' => $this->session->userdata('username'),
+			'modifiedby' => $_SESSION['username'],
 			'modifiedon' => date("Y-m-d H:i:s")
 		);
 		return $this->mblood->save($form);

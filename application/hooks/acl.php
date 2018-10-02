@@ -23,14 +23,14 @@ class ACL{
             if($class!='login')
                 redirect('login');
         }
-        if(!$this->_validateActionPermission($user['acl']) && $CI->session->userdata('username')!='admin'){
+        if(!$this->_validateActionPermission($user['acl']) && $_SESSION['username']!='admin'){
             exit('anda tidak punya akses');
         }
 
     }
     public function getLoggedInUser(){
         $CI = $this->CI;
-        $user = $CI->session->userdata('user');
+        $user = @$_SESSION['user'];
 
         if(!empty($this->user)){
             // print_r($this->user);
@@ -45,17 +45,17 @@ class ACL{
     }
     public function _checkQuestAccess($class = null,$method=null){
 
-        $group = $this->CI->session->userdata('groups.guest');
+        $group = @$_SESSION['groups.guest'];
         if(empty($group)){
             $this->CI->load->model('Mroles');
             $group = $this->CI->Mroles->getGuestGroup();
-            $this->CI->session->set_userdata('groups.guest',$group);
+            $_SESSION['groups.guest']=$group;
         }
         return $this->_validateActionPermission($group->acos,$class,$method);
     }
     private function _validateActionPermission($acos,$class = null,$method = null){
         //acos gk boleh kosong
-        if($this->CI->session->userdata('logged_in')!='' && $this->CI->session->userdata('username')=='admin' )
+        if(@$_SESSION['logged_in']!='' && @$_SESSION['username']=='admin' )
             return true;
         if(empty($class)){
             $class = $this->CI->router->fetch_class();
@@ -68,7 +68,7 @@ class ACL{
         if($class=="login"){
             return true;
         }
-        if($this->CI->session->userdata('logged_in')==null)
+        if($_SESSION['logged_in']==null)
         {
             return false;
         }

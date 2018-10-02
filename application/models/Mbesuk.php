@@ -8,7 +8,7 @@ Class Mbesuk extends MY_Model{
 		@$besukdate = $exp1[2]."-".$exp1[0]."-".$exp1[1]." ".date("H:i:s");
 		$data['besukdate']=$besukdate;
         $data['modifiedon'] =  date("Y-m-d H:i:s");
-        $data['modifiedby'] = $this->session->userdata('username');
+        $data['modifiedby'] = $_SESSION['username'];
         if (isset($data['besukid']) && !empty($data['besukid'])) {
             $id = $data['besukid'];
             unset($data['besukid']);

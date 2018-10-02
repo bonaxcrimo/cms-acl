@@ -75,7 +75,7 @@ class Museracl extends MY_Model{
                     $insert[] = [
                         'userpk'=>$data['userpk'],
                         'acoid'=>$aco,
-                        'modifiedby'=>$this->session->userdata('username'),
+                        'modifiedby'=>$_SESSION['username'],
                         'modifiedon'=>date("Y-m-d H:i:s")
                     ];
                 }
@@ -91,7 +91,7 @@ class Museracl extends MY_Model{
                         $insert[]=[
                             'userpk'=>$data['userpk'],
                             'acoid'=>$val,
-                            'modifiedby'=>$this->session->userdata('username'),
+                            'modifiedby'=>$_SESSION['username'],
                             'modifiedon'=>date("Y-m-d H:i:s")
                         ];
                     }

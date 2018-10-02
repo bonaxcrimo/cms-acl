@@ -28,7 +28,7 @@ class Macl extends MY_Model{
                     $insert[] = [
                         'roleid'=>$data['roleid'],
                         'acoid'=>$aco,
-                        'modifiedby'=>$this->session->userdata('username')
+                        'modifiedby'=>$_SESSION['username']
                     ];
                 }
                 return $this->insertBatch($insert);
@@ -43,7 +43,7 @@ class Macl extends MY_Model{
                         $insert[]=[
                             'roleid'=>$data['roleid'],
                             'acoid'=>$val,
-                            'modifiedby'=>$this->session->userdata('username')
+                            'modifiedby'=>$_SESSION['username']
                         ];
                     }
                     $this->insertBatch($insert);
