@@ -22,15 +22,16 @@
                 <span class="welcome-tip">Church Membership System</span>
             </div>
             <div class="login-form-div">
-                <form id="form"  method="POST">
+                <form id="form" name="form" method="POST" novalidate="">
                     <p>
-                        <input type="text" name="userid" class="easyui-textbox" data-options="prompt:'Username'" />
+                        <input type="text" name="userid" required="" class="easyui-textbox" data-options="prompt:'Username'" />
                     </p>
                     <p>
-                        <input type="text" name="password" class="easyui-passwordbox" data-options="prompt:'Password'" />
+                        <input type="text" name="password" required="" class="easyui-passwordbox" data-options="prompt:'Password'" />
                     </p>
                     <p>
-                        <button type="submit" class="easyui-linkbutton login-btn">LOGIN</button>
+                        <!-- <a  class="easyui-linkbutton login-btn">LOGIN</button> -->
+                       <a href="javascript:void(0)" class="easyui-linkbutton login-btn" iconCls="icon-ok" onclick="login()" >LOGIN</a>
                     </p>
                 </form>
                 <div class="error-tip" style="display: none;">
@@ -44,31 +45,27 @@
         </div>
 
         <script type="text/javascript">
-            $('#form').submit(function(e) {
-                var form = $(this);
-                // if($('input[name=userid]').val() != 'admin') {
-                //     $('.error-tip').fadeIn(200);
-                //     return false;
-                // }
-                // return true;
-                 $.ajax({
-                   type: "POST",
-                   data: form.serialize(),
-                   success: function(data)
-                   {
-                       data = JSON.parse(data);
-                       if(data.status=="sukses"){
-                            window.location ="home";
-                       }else if(data.status=="gagal"){
-                            $("#error-msg").html(data.msg);
-                            $('.error-tip').fadeIn(200);
-                       }else{
-                            $('.error-tip').fadeIn(200);
-                       }
+            function login(){
+              $("#form").form('submit',{
+                onSubmit: function(){
+                    return $(this).form('validate');
+                },
+                success: function(data){
+                   data = JSON.parse(data);
+                   if(data.status=="sukses"){
+                        window.location ="home";
+                   }else if(data.status=="gagal"){
+                        $("#error-msg").html(data.msg);
+                        $('.error-tip').fadeIn(200);
+                   }else{
+                        $('.error-tip').fadeIn(200);
                    }
-                 });
-                e.preventDefault();
-            });
+                },error:function(error){
+                     console.log($(this).serialize());
+                }
+              })
+
+            }
         </script>
     </body>
 
