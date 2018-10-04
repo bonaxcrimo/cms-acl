@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 class Login extends MY_Controller {
 
@@ -38,9 +38,10 @@ class Login extends MY_Controller {
                 'status' =>$status,
                 'msg'=>$msg
             );
-            echo json_encode($hasil);
+            // echo json_encode($hasil);
+            redirect("home");
         }else{
-            $this->render('loginnew',['error'=>$error]);
+            $this->render('login',['error'=>$error]);
         }
 
 	}

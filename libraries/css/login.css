@@ -1,6 +1,4 @@
-* {
-	font-family: "tahoma", "Microsoft YaHei", sans-serif;
-}
+
 
 /*body {
 	background: #f3f3f4;
@@ -13,8 +11,8 @@
 }
 html, body {
 	background:url(../img/page_bg.jpg);
-  font-family: segoeui;
-background: #f3f3f4;
+   font-family: segoeui;
+  /*background: #f3f3f4;*/
   height: 100%;
   margin: 0;
   padding: 0;

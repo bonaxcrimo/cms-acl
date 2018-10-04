@@ -118,6 +118,7 @@ class offering extends MY_Controller {
             'membername'=>@$_POST['member_name'],
             'chinesename'=>@$_POST['chinese_name'],
             'address'=>@$_POST['address'],
+            'handphone'=>@$_POST['handphone'],
             'offeringno' => @$offeringno,
             'transdate' => @$transdate,
             'inputdate' =>@$inputdate,

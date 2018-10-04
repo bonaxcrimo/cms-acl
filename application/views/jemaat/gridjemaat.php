@@ -12,7 +12,11 @@
         });
     });
     var startTime = Date.now();
+    var form_original_data;
      $(function(){
+
+
+
         var dg = $("#dgJemaat").datagrid(
             {
                 remoteFilter:true,
@@ -376,6 +380,7 @@
 
     function saveJemaat(){
         formname = "fm2";
+
         var membername = $("#"+formname+" input[name=membername]").val();
         if(membername==""){
             $("#"+formname+" input[name=membername]").css("background-color","rgb(255,128,192)");
@@ -425,6 +430,15 @@
     function save(form,id,formname,status){
         page="<?php echo base_url(); ?>jemaat/form/"+form+"/"+id+"/"+formname+"/"+status;
         var opr = form;
+        var dlg = $('#dlgSave');
+        dlg.window('window').attr('tabindex',1).focus().bind('keyup', function(e){
+            if (e.keyCode == 27){   // ESC
+                if ($("#fm2").serialize() != form_original_data) {
+                }else{
+                    dlg.window('close');
+                }
+            }
+        })
         if(opr=="add"){
             var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/add.png'><ul class='title'>Add Data</ul>";
         }
@@ -437,7 +451,10 @@
             href:page,
             height:350,
             resizable:true,
-            autoResize:true
+            autoResize:true,
+            onLoad:function(){
+                form_original_data = $("#fm2").serialize();
+            }
         });
     }
     function relasi(relationno){
@@ -461,7 +478,7 @@
         });
     }
     function viewJemaat(form,id,formname){
-        page="<?php echo base_url(); ?>jemaat/form/"+form+"2/"+id+"/"+formname;
+        page="<?php echo base_url(); ?>jemaat/form/"+form+"/"+id+"/"+formname;
         // $('#dlgView2').html('<img src="<?php echo base_url(); ?>libraries/img/loading.gif">').load(page);
         $("#dlgView2").dialog({
             closed:false,

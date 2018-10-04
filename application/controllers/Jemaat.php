@@ -191,8 +191,10 @@ class Jemaat extends MY_Controller {
 
 		$filterRules = isset($_GET['filterRules']) ? ($_GET['filterRules']) : '';
 		$cond = '';
+		$where="";
+		$where .= " where status_key !='9' ";
 		if (!empty($filterRules)){
-			$cond = ' where 1=1 ';
+			$cond = ' and 1=1 ';
 			$filterRules = json_decode($filterRules);
 
 			foreach($filterRules as $rule){
@@ -217,7 +219,7 @@ class Jemaat extends MY_Controller {
 				}
 			}
 		}
-		$where='';
+		$cond = $where.$cond;
 		$sql = $this->mjemaat->count($cond);
 		$total = $sql->num_rows();
 		$offset = ($page - 1) * $rows;
@@ -634,6 +636,27 @@ class Jemaat extends MY_Controller {
 		$this->load->view('jemaat/report',$data);
 
 	}
+	function konversiRelation(){
+		$data = $this->db->query("select relationno from tblmember2 where relationno!='' group by relationno");
+		$no=1;
+		foreach($data->result() as $d){
+
+			$members = $this->db->query("select * from tblmember2 where relationno='".$d->relationno."'")->result();
+			foreach($members as $member){
+				$id = $member->member_key;
+				$sql="update tblmember2 set relationno='".$no."' where member_key = ".$id;
+				$check = $this->db->query($sql);
+				if($check){
+					echo "berhasil";
+				}else{
+					echo "gagal";
+				}
+			}
+			echo "<br>";
+			echo $no."=".$d->relationno."=".count($members)."<br>";
+			$no++;
+		}
+	}
 	public function konversi(){
 		$data = $this->db->query("SELECT member_key,TRIM(serving) AS serving FROM tblmember WHERE serving!=''")->result();
 		// $total=0;
@@ -685,9 +708,6 @@ class Jemaat extends MY_Controller {
 				echo $sql."=2<br>";
 			}
 		}
-		// echo "<pre>";
-		// print_r($data);
-		// echo "</pre>";
 	}
 }
 

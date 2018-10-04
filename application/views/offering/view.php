@@ -35,6 +35,11 @@
                 <label class="textbox-label textbox-label-left">address:</label>
                 <input  id="address" class="easyui-textbox" readonly="" value="<?= @$sql->address ?>"   style="width:198px">
             </div>
+              <div style="margin-bottom:10px" class="inputHide">
+                <label class="textbox-label textbox-label-left">handphone:</label>
+                <input  id="handphone" class="easyui-textbox" readonly="" value="<?= @$sql->handphone ?>"   style="width:198px">
+            </div>
+
 
             <div style="margin-bottom:10px">
                 <label class="textbox-label textbox-label-left">offeringvalue:</label>

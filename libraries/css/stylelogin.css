@@ -21,20 +21,20 @@ body {
   font-family: segoeui;
 	/*font: 13px/20px "TitilliumText14L250wt","Helvetica Neue", Helvetica, Arial, sans-serif; */
 }
-.blok_header { 
-	margin:0; 
-	padding:0; 
+.blok_header {
+	margin:0;
+	padding:0;
 	/*background: url(../images/header_bg.gif) top repeat-x; */
 }
-.header { 
-	margin:0; 
+.header {
+	margin:0;
 	padding:0;
 }
 /* logo */
-.logo { 
-	padding:0; 
-	margin:0; 
-	width:70px; 
+.logo {
+	padding:0;
+	margin:0;
+	width:70px;
 	float:left;
 }
 .judul {
@@ -101,11 +101,11 @@ input{
 	font-size:12px;
 }
 
-fieldset	{ 
+fieldset	{
 	width: 400px;
 	font-size:12px;
-	margin: 0px auto;  
-	margin-top: 10px; 
+	margin: 0px auto;
+	margin-top: 10px;
 	border-radius:4px 4px 0 0;
     -moz-border-radius:4px 4px 0 0;
     -webkit-border-radius:4px 4px 0 0;
@@ -146,7 +146,7 @@ fieldset.tblFooters {
     -webkit-border-radius:0 0 4px 4px;
     -moz-border-radius:0 0 4px 4px;
     border-radius: 0 0 4px 5px;
-	
+
 	font-weight:        normal;
     color:              #000000;
     background:         #D3DCE3;

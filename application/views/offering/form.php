@@ -31,6 +31,7 @@
             $("#member_name").textbox({readonly:buka});
             $("#chinese_name").textbox({readonly:buka});
             $("#address").textbox({readonly:buka});
+             $("#handphone").textbox({readonly:buka});
         });
     });
 </script>
@@ -70,6 +71,10 @@
               <div style="margin-bottom:10px" class="inputHide">
                 <label class="textbox-label textbox-label-left">address:</label>
                 <input  id="address" name="address" class="easyui-textbox" readonly="" value="<?= @$sql->address ?>"   style="width:226px">
+            </div>
+             <div style="margin-bottom:10px" class="inputHide">
+                <label class="textbox-label textbox-label-left">handphone:</label>
+                <input  id="handphone" name="handphone" class="easyui-textbox" readonly="" value="<?= @$sql->handphone ?>"   style="width:226px">
             </div>
             <div style="margin-bottom:10px" class="inputHide">
                  <label class="textbox-label textbox-label-left">aliasname:</label>
