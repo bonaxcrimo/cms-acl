@@ -1,12 +1,13 @@
 <script>
      $(document).ready(function(){
+        $("#memberDiv").hide();
         $('.auto-numeric').autoNumeric('init', {
             'aSep': '.',
             'aDec': ',',
             'vMin': '0',
             'vMax': '999999999999'
         });
-        $("#member").textbox({
+        $("#member_name").textbox({
             onChange: function(value){
                 console.log('The value has been changed to ' + value);
               },
@@ -55,14 +56,15 @@
 ?>
             <input type="hidden" name="offering_key" value="<?php echo @$row->offering_key ?>">
             <input type="hidden" name="row_status" value="<?= @$row->row_status ?>">
-            <div style="margin-bottom:10px">
+            <div style="margin-bottom:10px" id="memberDiv">
                 <label class="textbox-label textbox-label-left">memberkey:</label>
-                <input name="member_key" id="member" class="easyui-textbox member"  value="<?= @$row->member_key ?>" style="width:226px">
-                <a class="easyui-linkbutton" id="bukaRead" text="New"></a>
+                <input name="member_key" id="member"  class="easyui-textbox member" type="hidden"  value="<?= @$row->member_key ?>" style="width:226px">
+
             </div>
              <div style="margin-bottom:10px" class="inputHide">
                  <label class="textbox-label textbox-label-left">membername:</label>
-                <input  id="member_name" name="member_name" class="easyui-textbox" readonly="" value="<?= @$sql->membername ?>"  style="width:226px">
+                <input  id="member_name" name="member_name" class="easyui-textbox"  value="<?= @$sql->membername ?>"  style="width:226px">
+                <a class="easyui-linkbutton" id="bukaRead" text="New"></a>
             </div>
              <div style="margin-bottom:10px" class="inputHide">
                  <label class="textbox-label textbox-label-left">chinesename:</label>
