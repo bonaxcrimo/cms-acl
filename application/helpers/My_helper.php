@@ -5,7 +5,9 @@ function print_recursive_list($data)
     $str = "";
     foreach($data as $list)
     {
-        $str .= "<div a href='".base_url().$list['menuexe']."' iconCls='".$list['menuicon']."'>".$list['menuname'];
+        $menuexe = $list['menuexe']=="0"?"#":base_url().$list['menuexe'];
+        $menuexe = $list['link']!=''?$list['link']:$menuexe;
+        $str .= "<div a href='".$menuexe."' iconCls='".$list['menuicon']."'>".$list['menuname'];
         $subchild = print_recursive_list($list['child']);
         if($subchild != ''){
             $str .= "<span>".$subchild."</span>";

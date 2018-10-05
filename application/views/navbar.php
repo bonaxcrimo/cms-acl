@@ -30,7 +30,8 @@
             {
                 $n++;
                 $x = print_recursive_list($data['child']);
-                $menuexe = $data['menuexe']=="#"?'#':base_url().$data['menuexe'];
+                $menuexe = $data['menuexe']=="0"?"#":base_url().$data['menuexe'];
+                $menuexe = $data['link']!=''?$data['link']:$menuexe;
                 if($x!=""){
                     $class = "easyui-menubutton";
                 }
@@ -40,7 +41,6 @@
                 ?>
                     <a href="<?= $menuexe ?>" class="<?php echo $class; ?>" data-options="showEvent:'click',plain:true, menu:'#<?php echo $n?>'" iconCls="<?php echo $data['menuicon'] ?>"><?php echo $data['menuname'] ?>
                         <div id="<?php echo $n?>">
-                            <!-- diganti -->
                             <?php echo $x; ?>
                         </div>
                     </a>

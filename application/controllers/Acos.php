@@ -114,7 +114,6 @@ class Acos extends MY_Controller {
 
         return $methods;
     }
-
     public function get_method_comment($obj,$method){
         $comment = $obj->getMethod($method)->getDocComment();
         //define the regular expression pattern to use for string matching

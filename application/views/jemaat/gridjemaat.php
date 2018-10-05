@@ -410,9 +410,9 @@
                         }
                     });
                 }else {
-                      $(".easyui-dialog").dialog('close');
+                    $(".easyui-dialog").dialog('close');
                     $('#dgJemaat').datagrid('reload');
-                     $('#dgRelasi').datagrid('reload');
+                    $('#dgRelasi').datagrid('reload');
                 }
             },error:function(error){
             }
