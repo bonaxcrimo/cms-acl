@@ -14,9 +14,6 @@
     var startTime = Date.now();
     var form_original_data;
      $(function(){
-
-
-
         var dg = $("#dgJemaat").datagrid(
             {
                 remoteFilter:true,
@@ -560,11 +557,11 @@
         <div id="datarelasi"></div>
         <div id="dlgView" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons1'">
         </div>
-        <div id="dlgSave" class="easyui-dialog" style="width:600px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons'">
+        <div id="dlgSave" class="easyui-dialog" style="width:700px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons'">
         </div>
-        <div id="dlgDelete" class="easyui-dialog" style="width:600px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons2'">
+        <div id="dlgDelete" class="easyui-dialog" style="width:700px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons2'">
         </div>
-        <div id="dlgView2" class="easyui-dialog" style="width:600px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons1'" >
+        <div id="dlgView2" class="easyui-dialog" style="width:700px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons1'" >
         </div>
         <div id="dlgViewRelation" class="easyui-dialog" style="width:400px;padding:10px;" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons-relation'" >
             <div style="margin-bottom:10px">
@@ -576,11 +573,11 @@
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
         </div>
         <div class="dlg-buttons">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveJemaat()" style="width:90px">Proses</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveJemaat()" style="width:90px">Save</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
         </div>
         <div class="dlg-buttons2">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="deleteJemaat()" style="width:90px">Proses</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="deleteJemaat()" style="width:90px">Delete</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
         </div>
         <div class="dlg-buttons1">

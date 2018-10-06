@@ -13,9 +13,9 @@ Class Mprofile extends MY_Model{
         return $sql;
     }
     function getM($where, $sidx, $sord, $limit, $start){
-        $query = "select *,
-        DATE_FORMAT(activitydate,'%d-%m-%Y') activitydate,
-        DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon from tblprofile  " . $where . " ORDER BY $sidx $sord LIMIT $start , $limit";
+        $query = "select tblprofile.*,tblmember.membername,tblmember.chinesename,tblmember.address,
+        DATE_FORMAT(tblprofile.activitydate,'%d-%m-%Y') activitydate,
+        DATE_FORMAT(tblprofile.modifiedon,'%d-%m-%Y %T') modifiedon from tblprofile inner join tblmember on tblprofile.member_key = tblmember.member_key  " . $where . " ORDER BY $sidx $sord LIMIT $start , $limit";
         return $this->db->query($query);
     }
     function add($tabel,$data){

@@ -18,6 +18,13 @@
                     pagerProfile.pagination({
                         pageList:[10,20,total]
                     });
+                },
+                onBeforeDropColumn: function(){
+                    $(this).datagrid('disableFilter');
+                },
+                onDropColumn: function(){
+                    $(this).datagrid('enableFilter');
+                    $(this).datagrid('doFilter');
                 }
             });
         var pagerProfile = dgProfile.datagrid('getPager');    // get the pager of datagrid
@@ -30,6 +37,11 @@
                 }
             }]
         });
+        dgProfile.datagrid('enableFilter', [{
+            field:'aksi',
+            type:'label'
+        }]);
+        dgProfile.datagrid('columnMoving');
     });
     function viewProfile(form,profile_key,member_key){
         page="<?php echo base_url(); ?>profile/form/"+form+"/"+profile_key+"/"+member_key+"/0";
@@ -113,6 +125,9 @@
                     <th field="aksi" width="6%">Aksi</th>
                     <th  field="member_key" width="8%" hidden="true">Member Key</th>
                     <th field="profile_key" hidden="true"></th>
+                    <th sortable="true" field="membername" width="10%">membername</th>
+                    <th sortable="true" field="chinesename" width="10%">chinesename</th>
+                    <th sortable="true" field="address" width="10%">address</th>
                     <th sortable="true" field="activityid" width="10%">activityid</th>
                     <th sortable="true" field="activitydate" width="10%">activitydate</th>
                     <th sortable="true" field="remark" width="10%">remark</th>
@@ -124,18 +139,18 @@
         <div id="dlgViewLookup" class="easyui-dialog" style="width:600px;" data-options="closed:true,modal:true,border:'thin'">
             <?php $this->load->view('partials/lookupjemaat') ?>
         </div>
-        <div id="dlgView" class="easyui-dialog" style="width:400px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-view'">
+        <div id="dlgView" class="easyui-dialog" style="width:640px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-view'">
         </div>
          <div id="dlg-buttons-view">
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgView').dialog('close')" style="width:90px">Cancel</a>
         </div>
-        <div id="dlgSaveProfile" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-profile'">
+        <div id="dlgSaveProfile" class="easyui-dialog" style="width:640px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-profile'">
         </div>
         <div id="dlg-buttons-profile">
             <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveProsesProfile()" style="width:90px">Proses</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
         </div>
-        <div id="dlgDeleteProfile" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-profile1'">
+        <div id="dlgDeleteProfile" class="easyui-dialog" style="width:640px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-profile1'">
         </div>
         <div id="dlg-buttons-profile1">
             <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="deleteProsesProfile()" style="width:90px">Proses</a>
