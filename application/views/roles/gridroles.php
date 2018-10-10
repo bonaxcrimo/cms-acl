@@ -11,7 +11,8 @@
             href:'<?php echo base_url(); ?>roles/add',
             onLoad:function(){
                 oper="add";
-                 url = '<?= base_url() ?>roles/add';
+                url = '<?= base_url() ?>roles/add';
+                $("#btnSave span span.l-btn-text").text("Save");
             }
         });
     }
@@ -23,7 +24,9 @@
                 title:'Edit Data',
                 href:'<?php echo base_url(); ?>roles/edit/'+row,
                 onLoad:function(){
+                    oper="";
                     url = '<?= base_url() ?>roles/edit/'+row;
+                    $("#btnSave span span.l-btn-text").text("Save");
                 }
             });
         }else{
@@ -53,6 +56,7 @@
                 onLoad:function(){
                     url = '<?= base_url() ?>roles/delete/'+row;
                     oper="del";
+                    $("#btnSave span span.l-btn-text").text("Delete");
                 }
             });
         }else{
@@ -198,7 +202,7 @@
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgView').dialog('close')" style="width:90px">Cancel</a>
         </div>
         <div id="dlg-buttons">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px">Proses</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px" id="btnSave">Save</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
         </div>
 

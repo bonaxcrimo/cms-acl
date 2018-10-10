@@ -9,7 +9,9 @@
             title:'Tambah data',
             href:'<?php echo base_url(); ?>menu/add',
             onLoad:function(){
-                 url = '<?= base_url() ?>menu/add';
+                oper="";
+                url = '<?= base_url() ?>menu/add';
+                $("#btnSave span span.l-btn-text").text("Save");
             }
         });
     }
@@ -21,7 +23,9 @@
                 title:'Edit Menu',
                 href:'<?php echo base_url(); ?>menu/edit/'+row,
                 onLoad:function(){
+                    oper="";
                     url = '<?= base_url() ?>menu/edit/'+row;
+                    $("#btnSave span span.l-btn-text").text("Save");
                 }
             });
         }else{
@@ -51,6 +55,7 @@
                 onLoad:function(){
                     url = '<?= base_url() ?>menu/delete/'+row;
                     oper="del";
+                    $("#btnSave span span.l-btn-text").text("Delete");
                 }
             });
         }else{
@@ -160,7 +165,7 @@
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgView').dialog('close')" style="width:90px">Cancel</a>
         </div>
         <div id="dlg-buttons">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px">Proses</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px" id="btnSave">Save</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
         </div>
     </div>

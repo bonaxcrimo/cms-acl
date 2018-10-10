@@ -11,6 +11,7 @@
             onLoad:function(){
                  url = '<?= base_url() ?>parameter/add';
                  oper='';
+                  $("#btnSave span span.l-btn-text").text("Save");
             }
         });
     }
@@ -24,6 +25,7 @@
                 onLoad:function(){
                     url = '<?= base_url() ?>parameter/edit/'+row;
                     oper='';
+                     $("#btnSave span span.l-btn-text").text("Save");
                 }
             });
         }else{

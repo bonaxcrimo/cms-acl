@@ -12,6 +12,7 @@
             onLoad:function(){
                  url = '<?= base_url() ?>rayon/add';
                  oper="";
+                  $("#btnSave span span.l-btn-text").text("Save");
             },
             onBeforeDropColumn: function(){
                 $(this).datagrid('disableFilter');
@@ -32,6 +33,7 @@
                 onLoad:function(){
                     url = '<?= base_url() ?>rayon/edit/'+row;
                     oper="";
+                     $("#btnSave span span.l-btn-text").text("Save");
                 }
             });
         }else{
@@ -61,6 +63,7 @@
                 onLoad:function(){
                     url = '<?= base_url() ?>rayon/delete/'+row;
                     oper="del";
+                    $("#btnSave span span.l-btn-text").text("Delete");
                 }
             });
         }else{
@@ -162,7 +165,7 @@
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgView').dialog('close')" style="width:90px">Cancel</a>
         </div>
         <div id="dlg-buttons">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px">Proses</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px" id="btnSave">Save</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
         </div>
     </div>
