@@ -277,7 +277,7 @@ $(document).ready(function(){
                 </div>
             </p>
             <p style="width: 100px;">
-                 <a href="<?= base_url() ?>jemaat/download/<?= $url ?>" class="easyui-linkbutton" iconCls="icon-save"></a>
+                 <a href="<?= base_url() ?>uploads/<?= $url ?>" download class="easyui-linkbutton" iconCls="icon-save"></a>
                   <a href="#" id="btn_clear_photo" class="easyui-linkbutton" iconCls="icon-cancel"></a>
             </p>
             <input type="hidden" name="editphotofile" id="editphotofile" value="<?= @$datarow->photofile ?>">

@@ -16,21 +16,14 @@ class Jemaat extends MY_Controller {
 			'mserving',
 			'mmenu'
 		]);
-        $this->load->library('pinyin');
-
 	}
 
-	function download($filename){
-		$this->load->helper('download');
-		$data = file_get_contents('uploads/'.$filename);
-		force_download($filename,$data);
-	}
 
-	function index(){
+	public function index(){
 		$this->view();
 	}
 
-	function m(){
+	public function m(){
 		$this->view();
 	}
 
@@ -234,26 +227,20 @@ class Jemaat extends MY_Controller {
 				$photofile="<img style='margin:0 17px;width:20px;' src='".base_url()."uploads/small_nofoto.jpg' class='btnzoom' onclick='zoom(\"".$data_photo."\")'>";
 			}
 			$row->photofile = $photofile;
-
 			$rel="";
 		    $db1 = get_instance()->db->conn_id;
-
-
-
 			$member_key = $row->member_key;
 			$pembesukdari="";
 			$remark="";
 			$besukdate="";
 			$q = mysqli_query($db1,"SELECT * FROM tblbesuk WHERE member_key='$member_key' ORDER BY besukdate DESC");
 			if($dta = mysqli_fetch_array($q,MYSQLI_ASSOC)){
-				//$dta = "checked";
 				$pembesukdari=$dta['pembesukdari'];
 				$remark=$dta['remark'];
 				$besukdate=$dta['besukdate'];
 				$d=strtotime($besukdate);
 				$besukdate = date("Y-m-d", $d);
 			}
-
 			$row->blood_key = $row->blood_key=='' || $row->blood_key=="-" ?'-':getParameterKey($row->blood_key)->parametertext;
 			$row->gender_key = $row->gender_key=='' || $row->gender_key=="-" ?'-':getParameterKey($row->gender_key)->parametertext;
 			$row->status_key = $row->status_key=='' || $row->status_key=="-" ?'-':getParameterKey($row->status_key)->parametertext;
@@ -261,7 +248,6 @@ class Jemaat extends MY_Controller {
 			$row->persekutuan_key  = $row->persekutuan_key=='' || $row->persekutuan_key=="-"?'-':getParameterKey($row->persekutuan_key)->parametertext;
 			$row->rayon_key = $row->rayon_key=='' || $row->rayon_key=="-"  ?'-':getParameterKey($row->rayon_key)->parametertext;
 			$row->pstatus_key =  $row->pstatus_key=='' || $row->pstatus_key=="-" ?'-':getParameterKey($row->pstatus_key)->parametertext;
-
 
 			$jlhbesuk = $this->mjemaat->jlhbesuk($row->member_key);
 			$tglbesukterakhir = $this->mjemaat->tglbesukterakhir($row->member_key);
@@ -277,7 +263,6 @@ class Jemaat extends MY_Controller {
 			$row->pembesukdari = $pembesukdari;
 			$row->remark = $remark;
 		}
-		// $total = count($data);
 		$response = new stdClass;
 		$response->total=$total;
 		$response->rows = $data;
