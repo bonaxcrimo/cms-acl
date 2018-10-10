@@ -11,6 +11,8 @@
             href:'<?php echo base_url(); ?>blood/add',
             onLoad:function(){
                  url = '<?= base_url() ?>blood/add';
+                 oper='';
+                 $("#btnSave span span.l-btn-text").text("Save");
             },
             onBeforeDropColumn: function(){
                 $(this).datagrid('disableFilter');
@@ -30,6 +32,8 @@
                 href:'<?php echo base_url(); ?>blood/edit/'+row,
                 onLoad:function(){
                     url = '<?= base_url() ?>blood/edit/'+row;
+                    oper='';
+                    $("#btnSave span span.l-btn-text").text("Save");
                 }
             });
         }else{

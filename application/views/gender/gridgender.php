@@ -12,6 +12,7 @@
             onLoad:function(){
                  url = '<?= base_url() ?>gender/add';
                  oper="";
+                 $("#btnSave span span.l-btn-text").text("Save");
             },
             onBeforeDropColumn: function(){
                 $(this).datagrid('disableFilter');
@@ -32,6 +33,7 @@
                 onLoad:function(){
                     url = '<?= base_url() ?>gender/edit/'+row;
                     oper="";
+                    $("#btnSave span span.l-btn-text").text("Save");
                 }
             });
         }else{
