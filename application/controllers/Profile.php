@@ -101,7 +101,7 @@ class profile extends MY_Controller {
         $filterRules = isset($_GET['filterRules']) ? ($_GET['filterRules']) : '';
         $cond = '';
         if (!empty($filterRules)){
-            $cond = ' where member_key = "'.$member_key.'" and  1=1 ';
+            $cond = ' where tblprofile.member_key = "'.$member_key.'" and  1=1 ';
             $filterRules = json_decode($filterRules);
 
             foreach($filterRules as $rule){
@@ -118,7 +118,7 @@ class profile extends MY_Controller {
                 }
             }
         }else{
-            $cond = ' where member_key = "'.$member_key.'" ';
+            $cond = ' where tblprofile.member_key = "'.$member_key.'" ';
         }
         $where='';
         $sql = $this->mprofile->count($cond);

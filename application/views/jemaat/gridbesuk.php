@@ -76,7 +76,7 @@
     function deleteData(besukid){
         var row = besukid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').besukid:besukid;
         if (row!=''){
-            $('#dlgSaveBesuk').dialog({
+            $('#dlgDeleteBesuk').dialog({
                 closed:false,
                 title:'Delete data',
                 href:'<?php echo base_url(); ?>besuk/delete/'+row+'/<?= @$member_key ?>',
@@ -107,7 +107,11 @@
                 return $(this).form('validate');
             },
             success: function(result){
-                $('#dlgSaveBesuk').dialog('close');
+                if(oper=="del"){
+                    $('#dlgDeleteBesuk').dialog('close');
+                }else{
+                    $('#dlgSaveBesuk').dialog('close');
+                }
                 $('#dgBesuk').datagrid('reload');
 
             },error:function(error){
@@ -135,7 +139,13 @@
 </table>
 <div id="dlgSaveBesuk" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-besuk'">
 </div>
+<div id="dlgDeleteBesuk" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-delete-besuk'">
+</div>
 <div id="dlg-buttons-besuk">
-    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px">Proses</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px">Save</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
+</div>
+<div id="dlg-delete-besuk">
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px">Delete</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
 </div>

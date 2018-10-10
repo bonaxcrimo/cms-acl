@@ -9,13 +9,13 @@
 ?>
         <input type="hidden" name="profile_key" value="<?php echo @$row->profile_key ?>">
 
-        <div style="margin-bottom:10px">
+        <div style="margin:5px 20px;">
             <input name="activitydate" labelPosition="left" class="easyui-textbox"  value="<?= @$row->activitydate ?>" readonly="" label="activitydate:" style="width:100%">
         </div>
-        <div style="margin-bottom:10px">
+        <div style="margin:5px 20px;">
             <input name="activityid" labelPosition="left" class="easyui-textbox"  value="<?= @$row->activityid ?>" readonly="" label="activity:" style="width:100%">
         </div>
-        <div style="margin-bottom:10px">
+        <div style="margin:5px 20px;">
             <input name="remark" labelPosition="left" class="easyui-textbox"  value="<?= @$row->remark ?>" readonly="" label="remark:" style="width:100%">
         </div>
     </div>

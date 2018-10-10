@@ -198,6 +198,7 @@ class offering extends MY_Controller {
             $edit = hasPermission('offering','edit')?'<button id='.$row->member_key.' class="icon-edit" onclick="saveOffering(\'edit\',\''.$row->offering_key.'\',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ':'';
             $del = hasPermission('offering','delete')?'<button id='.$row->member_key.' class="icon-remove" onclick="delOffering(\'del\','.$row->offering_key.',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button>':'';
             $print =hasPermission('offering','print')?'<button id='.$row->member_key.' class="icon-print" onclick="reportOffering(\''.$row->offering_key.'\',\''.$row->offeringno.'\')" style="width:16px;height:16px;border:0"></button> ':'';
+
             $row->aksi =$print.$view.$edit.$del;
             $row->offeringid =  $row->offeringid==0?'-':getParameterKey($row->offeringid)->parameterid;
         }

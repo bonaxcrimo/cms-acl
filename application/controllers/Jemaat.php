@@ -18,30 +18,19 @@ class Jemaat extends MY_Controller {
 		]);
 	}
 
-
 	public function index(){
-		$this->view();
+		$this->_view();
 	}
 
 	public function m(){
-		$this->view();
+		$this->_view();
 	}
 
-	function pi(){
-		$this->view();
+	public function pi(){
+		$this->_view();
 	}
 
-	function creatrelation(){
-		$this->mjemaat->creat_relation();
-		echo 1;
-	}
-
-	function simpan_relation($recno){
-		$this->mjemaat->simpan_relation($recno);
-		echo $recno;
-	}
-
-	function view(){
+	private function _view(){
 		$data['sqlgender'] = getParameter('GENDER');
 		$data['sqlpstatus'] =getParameter('PSTATUS');
 
@@ -153,8 +142,6 @@ class Jemaat extends MY_Controller {
 			$row->persekutuan_key  = $row->persekutuan_key=='' || $row->persekutuan_key=="-"?'-':getParameterKey($row->persekutuan_key)->parametertext;
 			$row->rayon_key = $row->rayon_key=='' || $row->rayon_key=="-"  ?'-':getParameterKey($row->rayon_key)->parametertext;
 			$row->pstatus_key =  $row->pstatus_key=='' || $row->pstatus_key=="-" ?'-':getParameterKey($row->pstatus_key)->parametertext;
-			// if($row->member_key==7)
-			// 	$row->phoneticname = $this->pinyin->pinyin($row->chinesename);
 
 			$jlhbesuk = $this->mjemaat->jlhbesuk($row->member_key);
 			$tglbesukterakhir = $this->mjemaat->tglbesukterakhir($row->member_key);
@@ -219,7 +206,7 @@ class Jemaat extends MY_Controller {
 		$data = $this->mjemaat->getM($cond,$sort,$order,$rows,$offset)->result();
 		$_SESSION['exceljemaat']= $order."|".$sort."|".$cond;
 		foreach($data as $row){
-						if($row->photofile!=""){
+			if($row->photofile!=""){
 				$photofile="<img style='margin:0 17px;width:20px;' src='".base_url()."uploads/small_".$row->photofile."' class='btnzoom' onclick='zoom(\"medium_".$row->photofile."\")'>";
 			}
 			else{
@@ -269,23 +256,6 @@ class Jemaat extends MY_Controller {
 		$_SESSION['excel']= "asc|member_key|";
 		echo json_encode($response);
 	}
-	function grid2(){
-		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
-		$sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'recno';
-		$order = isset($_GET['order']) ? strval($_GET['order']) : 'asc';
-		$where='';
-		$sql = $this->mjemaat->count($where);
-		$total = $sql->num_rows();
-		$data = $this->mjemaat->getJ('',$sort,$order,$rows,$page)->result();
-
-		$response = new stdClass;
-		$response->total=$total;
-		$response->rows = $data;
-		$_SESSION['excel']= "asc|recno|";
-		echo json_encode($response);
-	}
-
 	function image($image){
 		$data["image"] = $image;
 		$this->load->view('jemaat/image',$data);

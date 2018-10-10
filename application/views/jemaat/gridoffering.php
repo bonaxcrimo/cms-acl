@@ -36,8 +36,9 @@
             autoResize:true
         });
     }
-    function reportOffering(key){
-        window.open("<?php echo base_url(); ?>offering/report/"+key,'_blank');
+    function reportOffering(key,no){
+        // window.open("<?php echo base_url(); ?>offering/report/"+key,'_blank');
+        window.open("<?php echo base_url(); ?>rptjs/rptcoba.php?offering_key="+key+"&no="+no,'_blank');
     }
     function saveOffering(form,key,member_key){
         page="<?php echo base_url(); ?>offering/form/"+form+"/"+key+"/"+member_key;
@@ -128,12 +129,12 @@
 <div id="dlgSaveOffering" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-offering'">
 </div>
 <div id="dlg-buttons-offering">
-    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveProsesOffering()" style="width:90px">Proses</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveProsesOffering()" style="width:90px">Save</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
 </div>
 <div id="dlgDeleteOffering" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-offering1'">
 </div>
 <div id="dlg-buttons-offering1">
-    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="deleteProsesOffering()" style="width:90px">Proses</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="deleteProsesOffering()" style="width:90px">Delete</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
 </div>

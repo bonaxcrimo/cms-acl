@@ -345,7 +345,6 @@
     function del(form,id,formname){
         formname = "fm2";
         page="<?php echo base_url(); ?>jemaat/form/"+form+"/"+id+"/"+formname;
-
         $("#dlgDelete").dialog({
             closed:false,
             title:'Delete Data',
@@ -458,13 +457,6 @@
         relationno=relationno=="-"?"":relationno;
         page="<?php echo base_url()?>relasi/index/?relationno="+relationno;
         $('#datarelasi').html('<img src="<?php echo base_url()?>libraries/img/loading.gif">').load(page);
-        // $.ajax({
-        //     url:page,
-        //     cache:false,
-        //     success:function(data){
-        //         $("#datarelasi").html(data);
-        //     }
-        // })
     }
 
     function besuk(member_key){
