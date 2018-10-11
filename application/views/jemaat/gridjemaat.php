@@ -500,7 +500,7 @@
                 <tr>
                     <th field="ck" checkbox="true"></th>
                     <th field="aksi" width="7%">Aksi</th>
-                    <th hidden="true" field="member_key" width="5%"></th>
+                    <th ></th>
                     <th sortable="true" field="photofile" width="4%">photo</th>
                     <th sortable="true" field="status_key" width="8%">statusid</th>
                     <th sortable="true" field="grp_pi" width="4%">grp_pi</th>

@@ -16,21 +16,39 @@ class Jemaat extends MY_Controller {
 			'mserving',
 			'mmenu'
 		]);
+        $this->load->library('pinyin');
+
 	}
 
-	public function index(){
-		$this->_view();
+	function download($filename){
+		$this->load->helper('download');
+		$data = file_get_contents('uploads/'.$filename);
+		force_download($filename,$data);
 	}
 
-	public function m(){
-		$this->_view();
+	function index(){
+		$this->view();
 	}
 
-	public function pi(){
-		$this->_view();
+	function m(){
+		$this->view();
 	}
 
-	private function _view(){
+	function pi(){
+		$this->view();
+	}
+
+	function creatrelation(){
+		$this->mjemaat->creat_relation();
+		echo 1;
+	}
+
+	function simpan_relation($recno){
+		$this->mjemaat->simpan_relation($recno);
+		echo $recno;
+	}
+
+	function view(){
 		$data['sqlgender'] = getParameter('GENDER');
 		$data['sqlpstatus'] =getParameter('PSTATUS');
 
@@ -80,6 +98,18 @@ class Jemaat extends MY_Controller {
 					if($field=="umur"){
 						$field = " DATE_FORMAT(NOW(),'%Y') - DATE_FORMAT(dob,'%Y') ";
 						$op="equal";
+					}else if($field=="dob"){
+						$field=" DATE_FORMAT(dob,'%d-%m-%Y')  ";
+						$op = "containsend";
+					}else if($field=="baptismdate"){
+						$field=" DATE_FORMAT(baptismdate,'%d-%m-%Y')  ";
+						$op = "containsend";
+					}else if($field=="tglbesuk"){
+						$field=" DATE_FORMAT(tglbesuk,'%d-%m-%Y')  ";
+						$op = "containsend";
+					}else if($field=="modifiedon"){
+						$field=" DATE_FORMAT(modifiedon,'%d-%m-%Y')  ";
+						$op = "containsend";
 					}
 					if ($op == 'contains'){
 						$cond .= " and ($field like '%$value%')";
@@ -87,6 +117,8 @@ class Jemaat extends MY_Controller {
 						$cond .= " and $field = '$value'";
 					}else if($op == 'notequal'){
 						$cond .= " and $field != '' ";
+					}else if($op =="containsend"){
+						$cond .= " and ($field like '$value%')";
 					}
 
 				}
@@ -142,6 +174,8 @@ class Jemaat extends MY_Controller {
 			$row->persekutuan_key  = $row->persekutuan_key=='' || $row->persekutuan_key=="-"?'-':getParameterKey($row->persekutuan_key)->parametertext;
 			$row->rayon_key = $row->rayon_key=='' || $row->rayon_key=="-"  ?'-':getParameterKey($row->rayon_key)->parametertext;
 			$row->pstatus_key =  $row->pstatus_key=='' || $row->pstatus_key=="-" ?'-':getParameterKey($row->pstatus_key)->parametertext;
+			// if($row->member_key==7)
+			// 	$row->phoneticname = $this->pinyin->pinyin($row->chinesename);
 
 			$jlhbesuk = $this->mjemaat->jlhbesuk($row->member_key);
 			$tglbesukterakhir = $this->mjemaat->tglbesukterakhir($row->member_key);
@@ -206,7 +240,7 @@ class Jemaat extends MY_Controller {
 		$data = $this->mjemaat->getM($cond,$sort,$order,$rows,$offset)->result();
 		$_SESSION['exceljemaat']= $order."|".$sort."|".$cond;
 		foreach($data as $row){
-			if($row->photofile!=""){
+						if($row->photofile!=""){
 				$photofile="<img style='margin:0 17px;width:20px;' src='".base_url()."uploads/small_".$row->photofile."' class='btnzoom' onclick='zoom(\"medium_".$row->photofile."\")'>";
 			}
 			else{
@@ -214,20 +248,26 @@ class Jemaat extends MY_Controller {
 				$photofile="<img style='margin:0 17px;width:20px;' src='".base_url()."uploads/small_nofoto.jpg' class='btnzoom' onclick='zoom(\"".$data_photo."\")'>";
 			}
 			$row->photofile = $photofile;
+
 			$rel="";
 		    $db1 = get_instance()->db->conn_id;
+
+
+
 			$member_key = $row->member_key;
 			$pembesukdari="";
 			$remark="";
 			$besukdate="";
 			$q = mysqli_query($db1,"SELECT * FROM tblbesuk WHERE member_key='$member_key' ORDER BY besukdate DESC");
 			if($dta = mysqli_fetch_array($q,MYSQLI_ASSOC)){
+				//$dta = "checked";
 				$pembesukdari=$dta['pembesukdari'];
 				$remark=$dta['remark'];
 				$besukdate=$dta['besukdate'];
 				$d=strtotime($besukdate);
 				$besukdate = date("Y-m-d", $d);
 			}
+
 			$row->blood_key = $row->blood_key=='' || $row->blood_key=="-" ?'-':getParameterKey($row->blood_key)->parametertext;
 			$row->gender_key = $row->gender_key=='' || $row->gender_key=="-" ?'-':getParameterKey($row->gender_key)->parametertext;
 			$row->status_key = $row->status_key=='' || $row->status_key=="-" ?'-':getParameterKey($row->status_key)->parametertext;
@@ -235,6 +275,7 @@ class Jemaat extends MY_Controller {
 			$row->persekutuan_key  = $row->persekutuan_key=='' || $row->persekutuan_key=="-"?'-':getParameterKey($row->persekutuan_key)->parametertext;
 			$row->rayon_key = $row->rayon_key=='' || $row->rayon_key=="-"  ?'-':getParameterKey($row->rayon_key)->parametertext;
 			$row->pstatus_key =  $row->pstatus_key=='' || $row->pstatus_key=="-" ?'-':getParameterKey($row->pstatus_key)->parametertext;
+
 
 			$jlhbesuk = $this->mjemaat->jlhbesuk($row->member_key);
 			$tglbesukterakhir = $this->mjemaat->tglbesukterakhir($row->member_key);
@@ -250,12 +291,30 @@ class Jemaat extends MY_Controller {
 			$row->pembesukdari = $pembesukdari;
 			$row->remark = $remark;
 		}
+		// $total = count($data);
 		$response = new stdClass;
 		$response->total=$total;
 		$response->rows = $data;
 		$_SESSION['excel']= "asc|member_key|";
 		echo json_encode($response);
 	}
+	function grid2(){
+		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
+		$sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'recno';
+		$order = isset($_GET['order']) ? strval($_GET['order']) : 'asc';
+		$where='';
+		$sql = $this->mjemaat->count($where);
+		$total = $sql->num_rows();
+		$data = $this->mjemaat->getJ('',$sort,$order,$rows,$page)->result();
+
+		$response = new stdClass;
+		$response->total=$total;
+		$response->rows = $data;
+		$_SESSION['excel']= "asc|recno|";
+		echo json_encode($response);
+	}
+
 	function image($image){
 		$data["image"] = $image;
 		$this->load->view('jemaat/image',$data);
