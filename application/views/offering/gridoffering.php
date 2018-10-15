@@ -83,6 +83,11 @@
                       var key = 0;
                       saveOffering("add",null,key);
                     }
+                },{
+                    text:'Cetak Laporan',
+                    handler:function(){
+                        console.log("cetak laporan");
+                    }
                 }]
             });
         });
@@ -102,7 +107,6 @@
             window.open(url,'_blank');
         }
         function saveOffering(form,key,member_key){
-
             page="<?php echo base_url(); ?>offering/form/"+form+"/"+key+"/"+member_key+"/0";
              var opr = form;
             if(opr=="add"){

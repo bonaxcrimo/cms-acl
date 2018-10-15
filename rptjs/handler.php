@@ -19,6 +19,7 @@ $handler->onBeginProcessData = function ($event) {
 	$dataSource = $event->dataSource; // Current data source name
 	$connectionString = $event->connectionString;
 	$queryString = $event->queryString;
+	if($queryString=="")
 	// $event->parameters["limit"] = 2;
 	//$event->parameters["Variable2"] = "text value";
 

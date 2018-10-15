@@ -16,7 +16,12 @@ require_once 'stimulsoft/helper.php';
 	<script src="scripts/stimulsoft.reports.js" type="text/javascript"></script>
 	<script src="scripts/stimulsoft.viewer.js" type="text/javascript"></script>
 	<script src="scripts/jquery.min.js" type="text/javascript"></script>
-	<?php StiHelper::initialize(); ?>
+	<?php
+		$options = StiHelper::createOptions();
+		$options->handler = "handler.php";
+		$options->timeout = 30;
+		StiHelper::initialize($options);
+	?>
 	<script type="text/javascript">
 		$(document).keydown(function(e) {
 		    // ESCAPE key pressed
@@ -47,23 +52,23 @@ require_once 'stimulsoft/helper.php';
 		viewer.onBeginExportReport = function (args) {
 			// args.fileName = "MyReportName";
 		}
-		viewer.onPrintReport = function(event){
-			console.log("dasda");
-			$.ajax({
-	            type: "POST",
-	            url:"<?= $url ?>offering/printupdate",
-	            enctype: 'multipart/form-data',
-	            data : {
-	                noOffering:'<?= $_GET['offering_key'] ?>'
-	            },dataType: "html",
-	            async: true,
-	            success: function(data) {
-	            	console.log(data);
-	            },error:function(err){
-	            	console.log(err);
-	            }
-	        });
-		}
+		// viewer.onPrintReport = function(event){
+		// 	console.log("dasda");
+		// 	$.ajax({
+	 //            type: "POST",
+	 //            url:"<?= $url ?>offering/printupdate",
+	 //            enctype: 'multipart/form-data',
+	 //            data : {
+	 //                noOffering:'<?= $_GET['offering_key'] ?>'
+	 //            },dataType: "html",
+	 //            async: true,
+	 //            success: function(data) {
+	 //            	console.log(data);
+	 //            },error:function(err){
+	 //            	console.log(err);
+	 //            }
+	 //        });
+		// }
 
 
 		// Send exported report to Email
@@ -73,8 +78,9 @@ require_once 'stimulsoft/helper.php';
 
 		// Load and show report
 		var report = new Stimulsoft.Report.StiReport();
-
-		report.loadFile("rptcoba.mrt");
+		report.dictionary.databases.clear();
+		var connStr = "server=localhost;database=cms3;port=3306;Convert Zero Datetime=True;uid=root;pwd=root;";
+		report.loadFile("reports/rptcoba.mrt");
 		function getUrlVars() {
 		    var vars = {};
 		    var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi,
@@ -89,7 +95,10 @@ require_once 'stimulsoft/helper.php';
 		    if (typeof vars[item.name] != "undefined") item.valueObject = vars[item.name];
 		});
 		viewer.report = report;
-		viewer.renderHtml("viewerContent");
+		function onLoad() {
+			viewer.renderHtml("viewerContent");
+		}
+
 
 		var userButton = viewer.jsObject.SmallButton("userButton", "Close", "emptyImage");
 		var printButton = viewer.jsObject.SmallButton("printButton", "Print", "emptyImage");
@@ -112,7 +121,7 @@ require_once 'stimulsoft/helper.php';
 		userButtonCell.appendChild(userButton);
 	</script>
 	</head>
-<body>
+<body onload="onLoad();">
 	<div id="viewerContent" ></div>
 </body>
 </html>

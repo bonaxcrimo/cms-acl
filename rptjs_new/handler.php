@@ -24,21 +24,21 @@ $handler->onBeginProcessData = function ($event) {
 	$connectionString = $event->connectionString;
 	// SQL query string for the current data source
 	$queryString = $event->queryString;
-	
+
 	// You can change the connection string
 	//if ($connection == "MyConnectionName")
-	//	$event->connectionString = "Server=localhost;Database=test;Port=3306;";
-	
+	// $event->connectionString = "server=localhost;database=cms3;port=3306;Convert Zero Datetime=True;uid=root;pwd=root;";
+
 	// You can change the SQL query
 	//if ($dataSource == "MyDataSource")
-	//	$event->queryString = "SELECT * FROM MyTable";
-	
+	// $event->queryString = "select tbloffering.*,NOW() as tglcetak,UPPER(f_terbilang(offeringvalue)) as terbilang,tblparameter.parameterid from tbloffering left join tblparameter on tblparameter.parameter_key = tbloffering.offeringid order by offeringid desc limit 1";
+
 	// You can replace the SQL query parameters with the required values
 	// For example: SELECT * FROM {Variable1} WHERE Id={Variable2}
 	// If the report contains a variable with this name, its value will be used instead of the specified value
 	//$event->parameters["Variable1"] = "TableName";
 	//$event->parameters["Variable2"] = 10;
-	
+
 	return StiResult::success();
 	//return StiResult::error("Message for some connection error.");
 };
@@ -57,9 +57,9 @@ $handler->onEndExportReport = function ($event) {
 	$format = $event->format; // Export format
 	$data = $event->data; // Base64 export data
 	$fileName = $event->fileName; // Report file name
-	
+
 	file_put_contents('reports/'.$fileName.'.'.strtolower($format), base64_decode($data));
-	
+
 	//return StiResult::success();
 	return StiResult::success("Export OK. Message from server side.");
 	//return StiResult::error("Export ERROR. Message from server side.");
@@ -85,9 +85,9 @@ $handler->onSaveReport = function ($event) {
 	$report = $event->report; // Report object
 	$reportJson = $event->reportJson; // Report JSON
 	$fileName = $event->fileName; // Report file name
-	
+
 	file_put_contents('reports/'.$fileName.".mrt", $reportJson);
-	
+
 	//return StiResult::success();
 	return StiResult::success("Save Report OK: ".$fileName);
 	//return StiResult::error("Save Report ERROR. Message from server side.");
