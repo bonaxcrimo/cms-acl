@@ -265,11 +265,8 @@ class offering extends MY_Controller {
         $_SESSION['excel']= "asc|offering_key|".$cond;
         echo json_encode($response);
     }
-    /**
-     * report offering
-     * @AclName Report Offering
-     */
-    public function report($offering_key){
+
+    public function report_old($offering_key){
         $this->load->library('Pdf');
         $data['key'] = $offering_key;
         $offering = getOne('offering_key',$offering_key,'tbloffering')[0];
@@ -285,6 +282,22 @@ class offering extends MY_Controller {
         $data['marginLeft'] = $marginLeft;
         $data['marginTop'] = $marginTop;
         $this->load->view('offering/report',$data);
+    }
+    /**
+     * report offering
+     * @AclName Report Offering
+     */
+    public function report(){
+        if($this->input->server('REQUEST_METHOD') == 'POST' ){
+            $filter = $this->input->post('filter');
+            $mulai = $this->input->post('mulai');
+            $selesai = $this->input->post('selesai');
+            $link = base_url()."rptjs_new/rptoffering.php?filter=".$filter."&mulai=".$mulai."&akhir=".$selesai;
+            echo $link;
+        }else{
+            $this->render('offering/report');
+        }
+
     }
     public function printupdate(){
         $no = $_POST['noOffering'];

@@ -40,6 +40,7 @@ require_once 'stimulsoft/helper.php';
 	    }
 		// Process SQL data source
 		viewer.onBeginProcessData = function (event, callback) {
+			event.connection= "offering";
 			<?php StiHelper::createHandler(); ?>
 		}
 		viewer.onBeginExportReport = function (args) {
@@ -83,6 +84,8 @@ require_once 'stimulsoft/helper.php';
 		}
 
 		var vars = getUrlVars();
+		// report.dictionary.databases.clear();
+		// report.dictionary.database.add(new Stimulsoft.Report.Dictionary.StiMySqlDatabase("LocalJS", "LocalJS",""))
 		report.dictionary.variables.list.forEach(function(item, i, arr) {
 		    if (typeof vars[item.name] != "undefined") item.valueObject = vars[item.name];
 		});

@@ -19,7 +19,11 @@ $handler->onBeginProcessData = function ($event) {
 	$dataSource = $event->dataSource; // Current data source name
 	$connectionString = $event->connectionString;
 	$queryString = $event->queryString;
-	if($queryString=="")
+
+	if($connection=="offering"){
+		$event->connectionString = "server=localhost;database=cms3;port=3306;Convert Zero Datetime=True;uid=root;pwd=root;";
+	}
+	// if($queryString=="")
 	// $event->parameters["limit"] = 2;
 	//$event->parameters["Variable2"] = "text value";
 

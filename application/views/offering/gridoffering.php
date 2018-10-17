@@ -86,7 +86,7 @@
                 },{
                     text:'Cetak Laporan',
                     handler:function(){
-                        console.log("cetak laporan");
+                        window.open("<?= base_url() ?>offering/report","_blank");
                     }
                 }]
             });
