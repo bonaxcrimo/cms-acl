@@ -23,10 +23,31 @@ class Relasi extends CI_Controller {
 			echo" Empty";
 		}
 		else{
-
+			$data = array_merge($this->_parameter(),$this->_combo());
 			$data['relationno'] = $_GET['relationno'];
 			$this->load->view('jemaat/gridrelasi',$data);
 		}
+	}
+	private function _combo(){
+		$data['statusidv'] = getComboParameter('STATUS');
+		$data['blood'] = getComboParameter('BLOOD');
+		$data['gender'] = getComboParameter('GENDER');
+		$data['pstatus'] = getComboParameter('PSTATUS');
+		$data['kebaktian'] = getComboParameter('KEBAKTIAN');
+		$data['persekutuan'] =getComboParameter('PERSEKUTUAN');
+		$data['rayon'] = getComboParameter('RAYON');
+		return $data;
+	}
+	private function _parameter(){
+		$data['sqlgender'] = getParameter('GENDER');
+		$data['sqlpstatus'] = getParameter('PSTATUS');
+		$data['sqlblood'] =getParameter('BLOOD');
+		$data['sqlkebaktian'] = getParameter('KEBAKTIAN');
+		$data['sqlpersekutuan'] = getParameter('PERSEKUTUAN');
+		$data['sqlrayon'] =getParameter('RAYON');
+		$data['sqlserving'] =getParameter('SERVING');
+		$data['sqlstatusid'] =getParameter('STATUS');
+		return $data;
 	}
 	function grid2($relationno){
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
@@ -77,16 +98,12 @@ class Relasi extends CI_Controller {
 			$view='';
 			$edit='';
 			$del='';
-			$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewJemaat(\'view\',\''.$row->member_key.'\',\'formjemaat\')" style="width:16px;height:16px;border:0"></button> ';
-
-			$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="save(\'edit\',\''.$row->member_key.'\',\'formjemaat\',null);" style="width:16px;height:16px;border:0"></button> ';
-
-			$del = '<button id='.$row->member_key.' class="icon-remove" onclick="del(\'del\','.$row->member_key.',\'formjemaat\');" style="width:16px;height:16px;border:0"></button>';
+			$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewData(\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ';
+			$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="editData(\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ';
+			$del = '<button id='.$row->member_key.' class="icon-remove" onclick="deleteData('.$row->member_key.');" style="width:16px;height:16px;border:0"></button>';
 
 			$rel="";
 		    $db1 = get_instance()->db->conn_id;
-
-
 			$member_key = $row->member_key;
 			$pembesukdari="";
 			$remark="";
@@ -100,6 +117,13 @@ class Relasi extends CI_Controller {
 				$d=strtotime($besukdate);
 				$besukdate = date("Y-m-d", $d);
 			}
+			$row->blood_key = $row->blood_key=='' || $row->blood_key=="-" ?'-':getParameterKey($row->blood_key)->parameterid;
+			$row->gender_key = $row->gender_key=='' || $row->gender_key=="-" ?'-':getParameterKey($row->gender_key)->parametertext;
+			$row->status_key = $row->status_key=='' || $row->status_key=="-" ?'-':getParameterKey($row->status_key)->parametertext;
+			$row->kebaktian_key = $row->kebaktian_key==''  || $row->kebaktian_key=="-"  ?'-':getParameterKey($row->kebaktian_key)->parametertext;
+			$row->persekutuan_key  = $row->persekutuan_key=='' || $row->persekutuan_key=="-"?'-':getParameterKey($row->persekutuan_key)->parametertext;
+			$row->rayon_key = $row->rayon_key=='' || $row->rayon_key=="-"  ?'-':getParameterKey($row->rayon_key)->parametertext;
+			$row->pstatus_key =  $row->pstatus_key=='' || $row->pstatus_key=="-" ?'-':getParameterKey($row->pstatus_key)->parametertext;
 
 			$jlhbesuk = $this->mjemaat->jlhbesuk($row->member_key);
 			$tglbesukterakhir = $this->mjemaat->tglbesukterakhir($row->member_key);

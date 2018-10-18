@@ -180,7 +180,6 @@ Class Mtb extends MY_Model{
         }
         return $data;
 	}
-
 	function add($tabel,$data){
 		$sql = $this->db->insert($tabel,$data);
 	}

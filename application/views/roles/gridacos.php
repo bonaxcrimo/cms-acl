@@ -37,6 +37,7 @@
                     total = data.total;
                     var pagerAcos = $("#dgAcos").datagrid('getPager');
                     pagerAcos.pagination({
+                        pageSize:total,
                         pageList:[10,20,total]
                     });
                  }

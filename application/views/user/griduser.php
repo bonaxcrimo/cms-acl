@@ -10,6 +10,7 @@
             href:'<?= base_url()?>user/add',
             onLoad:function(){
                 url = '<?= base_url() ?>user/add'
+                 $("#btnSave span span.l-btn-text").text("Save");
             }
         });
     }
@@ -22,6 +23,7 @@
                 href:'<?php echo base_url(); ?>user/edit/'+row,
                 onLoad:function(){
                     url = '<?= base_url() ?>user/edit/'+row;
+                     $("#btnSave span span.l-btn-text").text("Save");
                 }
             });
         }else{
@@ -52,6 +54,7 @@
                 onLoad:function(){
                     url = '<?= base_url() ?>user/delete/'+row;
                     oper="del";
+                     $("#btnSave span span.l-btn-text").text("Delete");
                 }
             });
         }else{
@@ -111,8 +114,11 @@
                 }
             }]
         });
-
-      });
+        dgUser.datagrid('enableFilter', [{
+            field:'aksi',
+            type:'label'
+        }]);
+  });
 </script>
 
 <div class="easyui-tabs" style="height:auto">
@@ -133,7 +139,7 @@
         </table>
         <div id="dlg" class="easyui-dialog" style="width: 400px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'"></div>
         <div id="dlg-buttons">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px">Save</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px" id="btnSave">Save</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlg').dialog('close')" style="width:90px">Cancel</a>
         </div>
         <div id="dlgView" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttonsView'"></div>

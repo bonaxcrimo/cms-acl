@@ -4,7 +4,6 @@ class Tb extends MY_Controller {
 
 	public function __construct(){
 		parent::__construct();
-
 		session_start();
 		$this->load->model([
 			'mtb',
@@ -18,7 +17,6 @@ class Tb extends MY_Controller {
 			'mmenu',
 			'mjemaat'
 		]);
-
 	}
 
 	function download($filename){
@@ -43,8 +41,8 @@ class Tb extends MY_Controller {
 	}
 
 	/**
-     * Fungsi view rayon
-     * @AclName View rayon
+     * Fungsi view tb
+     * @AclName View tb
      */
 	public function view($member_key=0){
 		$data['data'] = $this->mtb->getById('tblmember','member_key',$member_key);
@@ -52,8 +50,8 @@ class Tb extends MY_Controller {
 		$this->load->view('tb/view',$data);
 	}
 	/**
-     * Fungsi add besuk
-     * @AclName Tambah besuk
+     * Fungsi add tb
+     * @AclName Tambah tb
      */
 	public function add(){
 		$data=[];
@@ -109,8 +107,8 @@ class Tb extends MY_Controller {
 		return $this->mtb->save($data);
 	}
 	/**
-     * Fungsi delete besuk
-     * @AclName Delete besuk
+     * Fungsi delete tb
+     * @AclName Delete tb
      */
 	public function delete($id){
 		$data = $this->mtb->getById('tblmember','member_key',$id);
@@ -131,15 +129,6 @@ class Tb extends MY_Controller {
 			$this->load->view('tb/delete',$data);
 		}
 
-	}
-	function creatrelation(){
-		$this->mtb->creat_relation();
-		echo 1;
-	}
-
-	function simpan_relation($recno){
-		$this->mtb->simpan_relation($recno);
-		echo $recno;
 	}
 	function grid(){
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
@@ -194,8 +183,7 @@ class Tb extends MY_Controller {
 			$relation='<a href="#" id="'.$row->relationno.'" title="View Relation" class="relation"><span class="ui-icon ui-icon-note"></span></a>';
 			if($row->photofile!=""){
 				$photofile="<img style='width:20px;height:16px;' src='".base_url()."uploads/small_".$row->photofile."' class='btnzoom' onclick='zoom(\"medium_".$row->photofile."\")'>";
-			}
-			else{
+			}else{
 				$data_photo="medium_nofoto.jpg";
 				$photofile="<img style='width:20px;' src='".base_url()."uploads/small_nofoto.jpg' class='btnzoom' onclick='zoom(\"".$data_photo."\")'>";
 			}
@@ -203,12 +191,9 @@ class Tb extends MY_Controller {
 			$view='';
 			$edit='';
 			$del='';
-				$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewData(\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ';
-
-				$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="editData(\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ';
-
-				$del = '<button id='.$row->member_key.' class="icon-remove" onclick="deleteData('.$row->member_key.');" style="width:16px;height:16px;border:0"></button>';
-
+			$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewData(\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ';
+			$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="editData(\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ';
+			$del = '<button id='.$row->member_key.' class="icon-remove" onclick="deleteData('.$row->member_key.');" style="width:16px;height:16px;border:0"></button>';
 			$rel="";
 		    $db1 = get_instance()->db->conn_id;
 			$member_key = $row->member_key;

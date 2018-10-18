@@ -27,37 +27,10 @@ class Jemaat extends MY_Controller {
 	}
 
 	function index(){
-		$this->view();
+		$data = array_merge($this->_parameter(),$this->_combo());
+		$this->render('jemaat/gridjemaat',$data);
 	}
-
-	function m(){
-		$this->view();
-	}
-
-	function pi(){
-		$this->view();
-	}
-
-	function creatrelation(){
-		$this->mjemaat->creat_relation();
-		echo 1;
-	}
-
-	function simpan_relation($recno){
-		$this->mjemaat->simpan_relation($recno);
-		echo $recno;
-	}
-
-	function view(){
-		$data['sqlgender'] = getParameter('GENDER');
-		$data['sqlpstatus'] =getParameter('PSTATUS');
-
-		$data['sqlstatusidv'] = getParameter('STATUS');
-		$data['sqlblood'] =getParameter('BLOOD');
-		$data['sqlkebaktian'] =getParameter('KEBAKTIAN');
-		$data['sqlpersekutuan'] =getParameter('PERSEKUTUAN');
-		$data['sqlrayon'] =getParameter('RAYON');
-
+	private function _combo(){
 		$data['statusidv'] = getComboParameter('STATUS');
 		$data['blood'] = getComboParameter('BLOOD');
 		$data['gender'] = getComboParameter('GENDER');
@@ -65,7 +38,95 @@ class Jemaat extends MY_Controller {
 		$data['kebaktian'] = getComboParameter('KEBAKTIAN');
 		$data['persekutuan'] =getComboParameter('PERSEKUTUAN');
 		$data['rayon'] = getComboParameter('RAYON');
-		$this->render('jemaat/gridjemaat',$data);
+		return $data;
+	}
+	private function _parameter(){
+		$data['sqlgender'] = getParameter('GENDER');
+		$data['sqlpstatus'] = getParameter('PSTATUS');
+		$data['sqlblood'] =getParameter('BLOOD');
+		$data['sqlkebaktian'] = getParameter('KEBAKTIAN');
+		$data['sqlpersekutuan'] = getParameter('PERSEKUTUAN');
+		$data['sqlrayon'] =getParameter('RAYON');
+		$data['sqlserving'] =getParameter('SERVING');
+		$data['sqlstatusid'] =getParameter('STATUS');
+		return $data;
+	}
+	/**
+     * Fungsi view jemaat
+     * @AclName View jemaat
+     */
+	public function view($member_key=0){
+		$data['data'] = $this->mjemaat->getById('tblmember','member_key',$member_key);
+		$data['member_key'] = $member_key;
+		$this->load->view('jemaat/view',$data);
+	}
+	/**
+     * Fungsi add jemaat
+     * @AclName Tambah jemaat
+     */
+	public function add(){
+		$data=[];
+		if($this->input->server('REQUEST_METHOD') == 'POST' ){
+			$data = $this->input->post();
+
+			$cek = $this->_save($data);
+
+		    echo json_encode($cek);
+		}else{
+			$data = $this->_parameter();
+			$this->load->view('jemaat/add',$data);
+		}
+
+	}
+	/**
+     * Fungsi edit besuk
+     * @AclName Edit besuk
+     */
+	public function edit($id){
+		$data = $this->mjemaat->getById('tblmember','member_key',$id);
+        if(empty($data)){
+            redirect('jemaat');
+        }
+        $data=[];
+		if($this->input->server('REQUEST_METHOD') == 'POST' ){
+
+			$data = $this->input->post();
+			$data['member_key'] = $id;
+			$cek = $this->_save($data);
+		    echo json_encode($cek);
+		}else{
+			$data = $this->_parameter();
+			$data['member_key'] = $id;
+			$this->load->view('jemaat/edit',$data);
+		}
+	}
+	private function _save($data){
+		$data = array_map("strtoupper",$data);
+		return $this->mjemaat->save($data);
+	}
+	/**
+     * Fungsi delete jemaat
+     * @AclName Delete jemaat
+     */
+	public function delete($id){
+		$data = $this->mjemaat->getById('tblmember','member_key',$id);
+        if(empty($data)){
+            redirect('jemaat');
+        }
+        $data=[];
+		if($this->input->server('REQUEST_METHOD') == 'POST'){
+			$cek = $this->mjemaat->delete($this->input->post('member_key'),$this->input->post('editphotofile'));
+			$status = $cek?"sukses":"gagal";
+			$hasil = array(
+		        'status' => $status
+		    );
+		    echo json_encode($hasil);
+		}else{
+			$data = $this->_parameter();
+			$data['member_key'] = $id;
+			$this->load->view('jemaat/delete',$data);
+		}
+
 	}
 	function grid3($status=''){
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
@@ -143,11 +204,9 @@ class Jemaat extends MY_Controller {
 			$view='';
 			$edit='';
 			$del='';
-				$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewJemaat(\'view\',\''.$row->member_key.'\',\'formjemaat\')" style="width:16px;height:16px;border:0"></button> ';
-
-				$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="save(\'edit\',\''.$row->member_key.'\',\'formjemaat\',null);" style="width:16px;height:16px;border:0"></button> ';
-
-				$del = '<button id='.$row->member_key.' class="icon-remove" onclick="del(\'del\','.$row->member_key.',\'formjemaat\');" style="width:16px;height:16px;border:0"></button>';
+			$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewData(\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ';
+			$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="editData(\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ';
+			$del = '<button id='.$row->member_key.' class="icon-remove" onclick="deleteData('.$row->member_key.');" style="width:16px;height:16px;border:0"></button>';
 
 			$rel="";
 		    $db1 = get_instance()->db->conn_id;
@@ -174,8 +233,7 @@ class Jemaat extends MY_Controller {
 			$row->persekutuan_key  = $row->persekutuan_key=='' || $row->persekutuan_key=="-"?'-':getParameterKey($row->persekutuan_key)->parametertext;
 			$row->rayon_key = $row->rayon_key=='' || $row->rayon_key=="-"  ?'-':getParameterKey($row->rayon_key)->parametertext;
 			$row->pstatus_key =  $row->pstatus_key=='' || $row->pstatus_key=="-" ?'-':getParameterKey($row->pstatus_key)->parametertext;
-			// if($row->member_key==7)
-			// 	$row->phoneticname = $this->pinyin->pinyin($row->chinesename);
+
 
 			$jlhbesuk = $this->mjemaat->jlhbesuk($row->member_key);
 			$tglbesukterakhir = $this->mjemaat->tglbesukterakhir($row->member_key);
@@ -298,22 +356,7 @@ class Jemaat extends MY_Controller {
 		$_SESSION['excel']= "asc|member_key|";
 		echo json_encode($response);
 	}
-	function grid2(){
-		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
-		$sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'recno';
-		$order = isset($_GET['order']) ? strval($_GET['order']) : 'asc';
-		$where='';
-		$sql = $this->mjemaat->count($where);
-		$total = $sql->num_rows();
-		$data = $this->mjemaat->getJ('',$sort,$order,$rows,$page)->result();
 
-		$response = new stdClass;
-		$response->total=$total;
-		$response->rows = $data;
-		$_SESSION['excel']= "asc|recno|";
-		echo json_encode($response);
-	}
 
 	function image($image){
 		$data["image"] = $image;

@@ -17,7 +17,7 @@
             buttons:[{
                 iconCls:'icon-add',
                 handler:function(){
-                    save("add",null,"formjemaat","<?php echo @$statusid ?>");
+                    newData();
                 }
             },{
                 iconCls:'icon-edit',
@@ -25,7 +25,7 @@
                    var recno = $('#dgRelasi').datagrid('getSelected');
 
                     if(recno!=null){
-                        save("edit",recno.member_key,"formjemaat",null);
+                        editData(recno.member_key);
                     }else{
                          $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
                     }
@@ -34,8 +34,8 @@
                 iconCls:'icon-remove',
                 handler:function(){
                     var recno = $('#dgRelasi').datagrid('getSelected');
-                    if(recno.member_key!=null){
-                        del("del",recno.member_key,"formjemaat");
+                    if(recno!=null){
+                        deleteData(recno.member_key);
                     }else{
                          $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
                     }
@@ -55,9 +55,180 @@
         },{
             field:'aksi',
             type:'label'
-        }
-
-        ]);
+        },{
+            field:'blood_key',
+            type:'combobox',
+            options:{
+                    panelHeight:'auto',
+                    data:[<?= $blood ?>],
+                    onChange:function(value){
+                        if (value == ''){
+                            dgRelasi.datagrid('removeFilterRule', 'blood_key');
+                        } else {
+                            dgRelasi.datagrid('addFilterRule', {
+                                field: 'blood_key',
+                                op: 'equal',
+                                value: value
+                            });
+                        }
+                        dgRelasi.datagrid('doFilter');
+                    }
+                }
+        },{
+            field:'kebaktian_key',
+            type:'combobox',
+            options:{
+                    panelHeight:'auto',
+                    data:[<?= $kebaktian ?>],
+                    onChange:function(value){
+                        if (value == ''){
+                            dgRelasi.datagrid('removeFilterRule', 'kebaktian_key');
+                        } else {
+                            dgRelasi.datagrid('addFilterRule', {
+                                field: 'kebaktian_key',
+                                op: 'equal',
+                                value: value
+                            });
+                        }
+                        dgRelasi.datagrid('doFilter');
+                    }
+                }
+        },{
+            field:'rayon_key',
+            type:'combobox',
+            options:{
+                    panelHeight:'auto',
+                    data:[<?= $rayon ?>],
+                    onChange:function(value){
+                        if (value == ''){
+                            dgRelasi.datagrid('removeFilterRule', 'rayon_key');
+                        } else {
+                            dgRelasi.datagrid('addFilterRule', {
+                                field: 'rayon_key',
+                                op: 'equal',
+                                value: value
+                            });
+                        }
+                        dgRelasi.datagrid('doFilter');
+                    }
+                }
+        },{
+            field:'persekutuan_key',
+            type:'combobox',
+            options:{
+                    panelHeight:'auto',
+                    data:[<?= $persekutuan ?>],
+                    onChange:function(value){
+                        if (value == ''){
+                            dgRelasi.datagrid('removeFilterRule', 'persekutuan_key');
+                        } else {
+                            dgRelasi.datagrid('addFilterRule', {
+                                field: 'persekutuan_key',
+                                op: 'equal',
+                                value: value
+                            });
+                        }
+                        dgRelasi.datagrid('doFilter');
+                    }
+                }
+        },{
+            field:'status_key',
+            type:'combobox',
+            options:{
+                    panelHeight:'auto',
+                    data:[<?= $statusidv ?>],
+                    onChange:function(value){
+                        if (value == ''){
+                            dgRelasi.datagrid('removeFilterRule', 'status_key');
+                        } else {
+                            dgRelasi.datagrid('addFilterRule', {
+                                field: 'status_key',
+                                op: 'equal',
+                                value: value
+                            });
+                        }
+                        dgRelasi.datagrid('doFilter');
+                    }
+                }
+        },{
+            field:'pstatus_key',
+            type:'combobox',
+            options:{
+                    panelHeight:'auto',
+                    data:[<?= $pstatus ?>],
+                    onChange:function(value){
+                        if (value == ''){
+                            dgRelasi.datagrid('removeFilterRule', 'pstatus_key');
+                        } else {
+                            dgRelasi.datagrid('addFilterRule', {
+                                field: 'pstatus_key',
+                                op: 'equal',
+                                value: value
+                            });
+                        }
+                        dgRelasi.datagrid('doFilter');
+                    }
+                }
+        },{
+            field:'gender_key',
+            type:'combobox',
+            options:{
+                    panelHeight:'auto',
+                    data:[<?= $gender ?>],
+                    onChange:function(value){
+                        if (value == ''){
+                            dgRelasi.datagrid('removeFilterRule', 'gender_key');
+                        } else {
+                            dgRelasi.datagrid('addFilterRule', {
+                                field: 'gender_key',
+                                op: 'equal',
+                                value: value
+                            });
+                        }
+                        dgRelasi.datagrid('doFilter');
+                    }
+                }
+        },{
+            field:'photofile',
+            type:'combobox',
+            options:{
+                    panelHeight:'auto',
+                    data:[{value:'',text:'All'},{value:' ',text:"Kosong"},{value:'tidak',text:"Berisi"}],
+                    onChange:function(value){
+                        if (value == ''){
+                            dgRelasi.datagrid('removeFilterRule', 'photofile');
+                        } else {
+                            var operator = value=="tidak"?"notequal":"equal";
+                            var nilai = operator=="equal"?value:"tidak";
+                            dgRelasi.datagrid('addFilterRule', {
+                                field: 'photofile',
+                                op: operator,
+                                value: nilai
+                            });
+                        }
+                        dgRelasi.datagrid('doFilter');
+                    }
+                }
+        },{
+            field:'persekutuanid',
+            type:'combobox',
+            options:{
+                    panelHeight:'auto',
+                    data:[<?= $persekutuan ?>],
+                    onChange:function(value){
+                        if (value == ''){
+                            dgRelasi.datagrid('removeFilterRule', 'persekutuanid');
+                        } else {
+                            dgRelasi.datagrid('addFilterRule', {
+                                field: 'persekutuanid',
+                                op: 'equal',
+                                value: value
+                            });
+                        }
+                        dgRelasi.datagrid('doFilter');
+                    }
+                }
+        }]);
     });
     function excelrelasi(){
         window.open("<?php echo base_url(); ?>relasi/excel");
@@ -70,7 +241,7 @@
             <th field="aksi" width="7%">Aksi</th>
             <th hidden="true" field="member_key" width="5%"></th>
             <th sortable="true" field="photofile" width="5%">photo</th>
-            <th sortable="true" field="statusid" width="8%">statusid</th>
+            <th sortable="true" field="status_key" width="8%">statusid</th>
             <th sortable="true" field="grp_pi" width="4%">grp_pi</th>
             <th sortable="true" field="relationno" width="6%">relationno</th>
             <th sortable="true" field="memberno" width="5%">memberno</th>

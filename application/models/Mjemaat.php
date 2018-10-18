@@ -1,7 +1,121 @@
 <?php
-Class Mjemaat extends CI_Model{
+Class Mjemaat extends MY_Model{
+	protected $table='tblmember';
+	public function save($data) {
+        @$extphotofile=@$_POST['extphotofile'];
+	    @$editphotofile=@$_POST['editphotofile'];
+	    if($extphotofile!=""){
+	    	if($editphotofile!=""){
+                if (file_exists("uploads/medium_".$editphotofile)) {
 
-	function count($where){
+					unlink("uploads/medium_".$editphotofile);
+				}
+				if (file_exists("uploads/small_".$editphotofile)) {
+					unlink("uploads/small_".$editphotofile);
+				}
+				@$namephotofile = date("d-m-Y-h").substr(str_shuffle("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"), 0, 10) . substr(str_shuffle("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"), 0, 10);
+	    		@$photofile = @$namephotofile.".".@$extphotofile;
+		    }
+	    	else{
+				@$namephotofile = date("d-m-Y-h").substr(str_shuffle("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"), 0, 10) . substr(str_shuffle("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"), 0, 10);
+	    		@$photofile = @$namephotofile.".".@$extphotofile;
+	    	}
+	    }
+	    else{
+	    	if($editphotofile!=""){
+	    		if($editphotofile=="clearfoto"){
+	    			@$photofile = "";
+	    		}
+	    		else{
+	    			@$photofile = $editphotofile;
+		    	}
+	    	}
+	    	else{
+	    		@$photofile = "";
+	    	}
+	    }
+        $this->db->trans_start();
+	    $servingid="";
+		if(!empty($_POST['servingid'])){
+		    foreach ($_POST['servingid'] as $selectedOption){
+	    		$servingid=$servingid.$selectedOption."/";
+	    	}
+	    }
+	    $data['serving'] = @$servingid;
+	    @$dob = $data['dob'];
+	    @$exp1 = explode('-',$dob);
+		@$dob = $exp1[2]."-".$exp1[1]."-".$exp1[0];
+		$data['dob'] = @$dob;
+
+
+		@$baptismdate = $data['baptismdate'];
+		@$exp2 = explode('-',$baptismdate);
+		@$baptismdate = $exp2[2]."-".$exp2[1]."-".$exp2[0];
+		$data['baptismdate'] = @$baptismdate;
+
+		@$tglbesuk = $data['tglbesuk'];
+		@$exp3 = explode('-',$tglbesuk);
+		@$tglbesuk = $exp3[2]."-".$exp3[1]."-".$exp3[0];
+		$data['tglbesuk']=@$tglbesuk;
+		$data['photofile'] = @$photofile;
+        $data['modifiedon'] =  date("Y-m-d H:i:s");
+        $data['modifiedby'] = $_SESSION['username'];
+        if (isset($data['member_key']) && !empty($data['member_key'])) {
+            $id = $data['member_key'];
+            unset($data['member_key']);
+            $save = $this->_preFormat($data); //format the fields
+
+            $result = $this->update($save, $id,'member_key');
+            if($result === true ){
+            } else {
+                $this->db->trans_rollback();
+            }
+        } else {
+        	$save = $this->_preFormat($data);//format untuk field
+            $result = $this->insert($save);
+            if($result === true){
+
+            } else {
+                $this->db->trans_rollback();
+            }
+        }
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+            $hasil = array(
+                'status' => 'gagal',
+                'photofile' => $photofile
+            );
+            return $hasil;
+        } else {
+            $this->db->trans_commit();
+            $hasil = array(
+                'status' => 'sukses',
+                'photofile' => $photofile
+            );
+            return $hasil;
+        }
+    }
+    private function _preFormat($data){
+    	$fields = ['grp_pi','relationno','memberno','membername','chinesename','phoneticname','aliasname','tel_h','tel_o','handphone','address','add2','city','gender_key','pstatus_key','pob','dob','blood_key','kebaktian_key','persekutuan_key','rayon_key','status_key','serving','fax','email','website','baptismdocno','baptis','baptismdate','remark','relation','oldgrp','kebaktian','tglbesuk','teambesuk','description','photofile','modifiedby','modifiedon'];
+    	$save = [];
+    	foreach($fields as $val){
+    		if(isset($data[$val])){
+    			$save[$val] = $data[$val];
+    		}
+    	}
+    	return $save;
+    }
+    public function delete($id,$editphotofile){
+    	$this->db->where(['member_key'=>$id]);
+        if (file_exists("uploads/medium_".$editphotofile)) {
+            unlink("uploads/medium_".$editphotofile);
+        }
+        if (file_exists("uploads/small_".$editphotofile)) {
+            unlink("uploads/small_".$editphotofile);
+        }
+    	return $this->db->delete($this->table);
+    }
+	public function count($where){
 		$sql = $this->db->query("SELECT member_key FROM tblmember " . $where);
         return $sql;
 	}

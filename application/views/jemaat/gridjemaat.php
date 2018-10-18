@@ -79,7 +79,7 @@
             buttons:[{
                 iconCls:'icon-add',
                 handler:function(){
-                    save("add",null,"formjemaat","<?php echo @$statusid ?>");
+                    newData();
                 }
             },{
                 iconCls:'icon-edit',
@@ -87,7 +87,7 @@
                    var recno = $('#dgJemaat').datagrid('getSelected');
 
                     if(recno!=null){
-                        save("edit",recno.member_key,"formjemaat",null);
+                        editData(recno.member_key);
                     }else{
                          $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
                     }
@@ -96,8 +96,8 @@
                 iconCls:'icon-remove',
                 handler:function(){
                     var recno = $('#dgJemaat').datagrid('getSelected');
-                    if(recno.member_key!=null){
-                        del("del",recno.member_key,"formjemaat");
+                    if(recno!=null){
+                        deleteData(recno.member_key);
                     }else{
                          $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
                     }
@@ -320,8 +320,129 @@
                     }
                 }
         }]);
-
     });
+    function newData(){
+        var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/add.png'><ul class='title'>Add Data</ul>";
+         $("#dlgSave").dialog({
+            closed:false,
+            title:oprtr,
+            href:"<?= base_url() ?>jemaat/add",
+            height:350,
+            resizable:true,
+            autoResize:true,
+            onLoad:function(){
+                url = "<?= base_url() ?>jemaat/add";
+                oper="";
+                $("#btnSave span span.l-btn-text").text("Save");
+            }
+        });
+    }
+    function editData(member_key){
+        var row = member_key==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').member_key:member_key;
+         var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/add.png'><ul class='title'>Edit Data</ul>";
+        if (row!=''){
+            $('#dlgSave').dialog({
+                closed:false,
+                title:oprtr,
+                href:'<?php echo base_url(); ?>jemaat/edit/'+row,
+                height:350,
+                resizable:true,
+                autoResize:true,
+                onLoad:function(){
+                    url = '<?= base_url() ?>jemaat/edit/'+row;
+                    oper="";
+                    $("#btnSave span span.l-btn-text").text("Save");
+                }
+            });
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
+    function callSubmit(){
+        console.log(url);
+        $('#fm').form('submit',{
+            url: url,
+            onSubmit: function(){
+                // return $(this).form('validate');
+            },
+            success: function(result){
+                result  = JSON.parse(result);
+                if(result.status=="sukses"  ){
+                    if(oper=="del"){
+                        $('#dlgSave').dialog('close');
+                        $('#dgJemaat').datagrid('reload');
+                        $("#dgRelasi").datagrid('reload');
+                    }else{
+                        $('#loading').html('<img src="<?php echo base_url(); ?>libraries/img/loading.gif">');
+                        if(result.photofile!=""){
+                            $.ajaxFileUpload({
+                               url: "<?php echo base_url(); ?>jemaat/uploadWA/"+result.photofile,
+                                secureuri: false,
+                                fileElementId: "photofile",
+                                dataType: "json",
+                                success: function (status){
+                                    $('#dlgSave').dialog('close');
+                                    $('#dgJemaat').datagrid('reload');
+                                    $("#dgRelasi").datagrid('reload');
+                                }
+                            });
+                        }else{
+                            $('#dlgSave').dialog('close');
+                            $('#dgJemaat').datagrid('reload');
+                            $("#dgRelasi").datagrid('reload');
+                        }
+                    }
+                }
+                console.log(result);
+            },error:function(error){
+                console.log(error);
+                 console.log($(this).serialize());
+            }
+        });
+    }
+    function saveData(){
+        if(oper=="del"){
+            $.messager.confirm('Confirm','Yakin akan menghapus data ?',function(r){
+                if (r){
+                    callSubmit();
+                }
+            });
+        }else{
+            callSubmit();
+        }
+    }
+    function viewData(member_key){
+        var row = member_key==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').member_key:member_key;
+        if (row!=''){
+            $('#dlgView').dialog({
+                closed:false,
+                title:'View data',
+                height:350,
+                href:'<?php echo base_url(); ?>jemaat/view/'+row
+            });
+
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
+    function deleteData(member_key){
+        var row = member_key==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').member_key:member_key;
+        if (row!=''){
+            $('#dlgSave').dialog({
+                closed:false,
+                title:'Delete data',
+                height:350,
+                href:'<?php echo base_url(); ?>jemaat/delete/'+row,
+                onLoad:function(){
+                    url = '<?= base_url() ?>jemaat/delete/'+row;
+                    oper="del";
+                    $("#btnSave span span.l-btn-text").text("Delete");
+                }
+            });
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
     function saveRelation(){
         var rel = $("#relationno").val();
         var checkedRows = $('#dgJemaat').datagrid('getChecked');
@@ -500,7 +621,6 @@
                 <tr>
                     <th field="ck" checkbox="true"></th>
                     <th field="aksi" width="7%">Aksi</th>
-                    <th ></th>
                     <th sortable="true" field="photofile" width="4%">photo</th>
                     <th sortable="true" field="status_key" width="8%">statusid</th>
                     <th sortable="true" field="grp_pi" width="4%">grp_pi</th>
@@ -547,13 +667,11 @@
         <br>
         <div id="foto"></div>
         <div id="datarelasi"></div>
-        <div id="dlgView" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons1'">
+        <div id="dlgView" class="easyui-dialog" style="width:600px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons1'">
         </div>
-        <div id="dlgSave" class="easyui-dialog" style="width:700px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons'">
+        <div id="dlgSave" class="easyui-dialog" style="width:600px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons'">
         </div>
-        <div id="dlgDelete" class="easyui-dialog" style="width:700px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons2'">
-        </div>
-        <div id="dlgView2" class="easyui-dialog" style="width:700px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons1'" >
+        <div id="dlgView2" class="easyui-dialog" style="width:600px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons1'" >
         </div>
         <div id="dlgViewRelation" class="easyui-dialog" style="width:400px;padding:10px;" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons-relation'" >
             <div style="margin-bottom:10px">
@@ -561,15 +679,11 @@
             </div>
         </div>
         <div class="dlg-buttons-relation">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveRelation()" style="width:90px">Proses</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveRelation()" style="width:90px">Save</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
         </div>
         <div class="dlg-buttons">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveJemaat()" style="width:90px">Save</a>
-            <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
-        </div>
-        <div class="dlg-buttons2">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="deleteJemaat()" style="width:90px">Delete</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px" id="btnSave">Save</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
         </div>
         <div class="dlg-buttons1">
