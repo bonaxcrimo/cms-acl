@@ -1,6 +1,70 @@
 <?php
 Class Moffering extends MY_Model{
+    protected $table = 'tbloffering';
+    public function save($data) {
+        $this->db->trans_start();
+        $data['modifiedon'] =  date("Y-m-d H:i:s");
+        $data['modifiedby'] = $_SESSION['username'];
+        $offering_value = str_replace(".","",$data['offeringvalue']);
+        $data['offeringvalue']=$offeringvalue;
+        @$exp1 = explode('/',$transdate);
+        @$transdate = $exp1[2]."-".$exp1[0]."-".$exp1[1]." ".date("H:i:s");
+        @$exp2 = explode('/',$inputdate);
+        @$inputdate = $exp2[2]."-".$exp2[0]."-".$exp2[1]." ".date("H:i:s");
+        $data['transdate'] = $transdate;
+        $data['inputdate'] = $inputdate;
+        if (isset($data['offering_key']) && !empty($data['parameter_key'])) {
+            $id = $data['offering_key'];
+            unset($data['offering_key']);
+            $save = $this->_preFormat($data); //format the fields
+            $result = $this->update($save, $id,'offering_key');
+            if($result === true ){
+            } else {
+                $this->db->trans_rollback();
+            }
+        } else {
+            $data['row_status'] = '';
+            $noOffering = getTableWhere('tblparameter',array('parametergrpid'=>'FORMAT_NO','parameterid'=>'OFFERING'))[0];
+            $period = getTableWhere('tblparameter',array('parameter_key'=>$noOffering->parametermemo))[0];
+            $offerData = getDataPeriodly($period->parameterid,'tbloffering','inputdate','offeringno','desc');
+            if(count($offerData)==0){
+                $offeringno = bacaFormat($noOffering->parametertext,1);
+            }else{
+                $offerData = $offerData[0]->offeringno;
+                $pecah = explode("/",$offerData)[0];
+                $offeringno = bacaFormat($noOffering->parametertext,$pecah+1);
+            }
+            $data['offeringno']=$offeringno;
+            $save = $this->_preFormat($data);//format untuk field
+            $result = $this->insert($save);
+            if($result === true){
 
+            } else {
+                $this->db->trans_rollback();
+            }
+        }
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            $this->db->trans_commit();
+            return true;
+        }
+    }
+    public function delete($id){
+        $this->db->where(['offering_key'=>$id]);
+        return $this->db->delete($this->table);
+    }
+    private function _preFormat($data){
+        $fields = ['offeringid','membername','chinesename','address','handphone','offeringno','transdate','inputdate','aliasname2','remark','offeringvalue','row_status','modifiedon','modifiedby'];
+        $save = [];
+        foreach($fields as $val){
+            if(isset($data[$val])){
+                $save[$val] = $data[$val];
+            }
+        }
+        return $save;
+    }
     function count($where){
         $sql = $this->db->query("SELECT offering_key FROM tbloffering " . $where);
         return $sql;

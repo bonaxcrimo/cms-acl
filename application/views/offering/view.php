@@ -1,22 +1,13 @@
-<div style="margin:0;padding:20px">
+<div style="margin:0;padding: 20px;">
     <input type="hidden" name="member_key" value="<?php echo @$member_key ?>">
     <div  class="row">
         <div class="col-md-7 noPadding">
             <?php
-                @$query=("SELECT *, DATE_FORMAT(transdate,'%d-%m-%Y') transdate,
-                DATE_FORMAT(inputdate,'%d-%m-%Y') inputdate,
-                DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon FROM tbloffering WHERE offering_key=".$offering_key." LIMIT 0,1");
-                @$row=queryCustom($query);
                 @$exp1 = explode('-',$row->transdate);
                 @$transdate = $exp1[1]."/".$exp1[0]."/".$exp1[2];
                 @$exp2 = explode('-',$row->inputdate);
                 @$inputdate = $exp2[1]."/".$exp2[0]."/".$exp2[2];
                 @$row->offeringid = getParameterKey($row->offeringid)->parameterid;
-
-                // function nl2br2($string) {
-                //     $string = str_replace(array("\r\n", "\r", "\n"), "<br />", $string);
-                //     return $string;
-                // }
             ?>
             <input type="hidden" name="offering_key" value="<?php echo @$row->offering_key ?>">
             <div style="margin-bottom:10px">
@@ -25,19 +16,19 @@
             </div>
             <div style="margin-bottom:10px" class="inputHide">
                  <label class="textbox-label textbox-label-left">membername:</label>
-                <input  id="member_name" class="easyui-textbox" readonly="" value="<?= @$sql->membername ?>"  style="width:198px">
+                <input  id="member_name" class="easyui-textbox" readonly="" value="<?= @$row->membername ?>"  style="width:198px">
             </div>
              <div style="margin-bottom:10px" class="inputHide">
                  <label class="textbox-label textbox-label-left">chinesename:</label>
-                <input  id="chinese_name" class="easyui-textbox" readonly="" value="<?= @$sql->chinesename ?>"   style="width:198px">
+                <input  id="chinese_name" class="easyui-textbox" readonly="" value="<?= @$row->chinesename ?>"   style="width:198px">
             </div>
               <div style="margin-bottom:10px" class="inputHide">
                 <label class="textbox-label textbox-label-left">address:</label>
-                <input  id="address" class="easyui-textbox" readonly="" value="<?= @$sql->address ?>"   style="width:198px">
+                <input  id="address" class="easyui-textbox" readonly="" value="<?= @$row->address ?>"   style="width:198px">
             </div>
               <div style="margin-bottom:10px" class="inputHide">
                 <label class="textbox-label textbox-label-left">handphone:</label>
-                <input  id="handphone" class="easyui-textbox" readonly="" value="<?= @$sql->handphone ?>"   style="width:198px">
+                <input  id="handphone" class="easyui-textbox" readonly="" value="<?= @$row->handphone ?>"   style="width:198px">
             </div>
 
 

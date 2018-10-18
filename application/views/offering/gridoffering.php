@@ -1,5 +1,6 @@
 
     <script type="text/javascript">
+        var url,oper;
         $(document).ready(function(){
             var dgOffering = $("#dgOffering").datagrid(
                 {
@@ -100,7 +101,7 @@
                     iconCls:'icon-add',
                     handler:function(){
                       var key = 0;
-                      saveOffering("add",null,key);
+                      newData();
                     }
                 },{
                     text:'Cetak Laporan',
@@ -110,90 +111,101 @@
                 }]
             });
         });
-        function viewOffering(form,key,member_key){
-            page="<?php echo base_url(); ?>offering/form/"+form+"/"+key+"/"+member_key+"/0";
-             $("#dlgView").dialog({
-                closed:false,
-                title:"View Activity",
-                href:page,
-                height:350,
-                resizable:true,
-                autoResize:true
-            });
-        }
-        function report(key){
-           url = "<?= base_url() ?>offering/report/"+key;
-            window.open(url,'_blank');
-        }
-        function saveOffering(form,key,member_key){
-            page="<?php echo base_url(); ?>offering/form/"+form+"/"+key+"/"+member_key+"/0";
-             var opr = form;
-            if(opr=="add"){
-                var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/add.png'><ul class='title'>Add Data</ul>";
-            }
-            else{
-                var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/edit.png'><ul class='title'>Edit Data</ul>";
-            }
-             $("#dlgSaveOffering").dialog({
-                closed:false,
-                title:oprtr,
-                href:page,
-                height:350,
-                resizable:true,
-                autoResize:true
-            });
-        }
-        function saveProsesOffering(){
-            console.log($("#formdataoffering").serialize());
-                return $.ajax({
-                    type: $("#formdataoffering").attr("method"),
-                    url: $("#formdataoffering").attr("action"),
-                    enctype: 'multipart/form-data',
-                    data : $("#formdataoffering").serialize(),
-                    dataType: "json",
-                    async: true,
-                    success: function(data) {
-                        console.log(data);
-                        $("#dlgSaveOffering").dialog('close');
-                        $("#dgOffering").datagrid('reload');
-                        $("#dgOfferingDeleted").datagrid('reload');
-                    }
-                }).responseText
-        }
 
-        function reportOffering(key,no){
-            window.open("<?php echo base_url(); ?>rptjs/rptcoba.php?offering_key="+key+"&no="+no,'_blank');
-        }
-        function delOffering(form,key,member_key){
-            page="<?php echo base_url(); ?>offering/form/"+form+"/"+key+"/"+member_key+"/0";
-            $("#dlgDeleteOffering").dialog({
+    function report(key){
+       url = "<?= base_url() ?>offering/report/"+key;
+        window.open(url,'_blank');
+    }
+
+    function reportOffering(key,no){
+        window.open("<?php echo base_url(); ?>rptjs/rptcoba.php?offering_key="+key+"&no="+no,'_blank');
+    }
+    function newData(){
+        $('#dlg').dialog({
+            closed:false,
+            title:'Tambah data',
+            href:'<?php echo base_url(); ?>offering/add',
+            onLoad:function(){
+                 url = '<?= base_url() ?>offering/add';
+                 oper='';
+                  $("#btnSave span span.l-btn-text").text("Save");
+            }
+        });
+    }
+    function editData(offering_key){
+        var row = offering_key==undefined?$('#dgOffering').datagrid('getSelected')==undefined?'':$('#dgOffering').datagrid('getSelected').offering_key:offering_key;
+        if (row!=''){
+            $('#dlg').dialog({
                 closed:false,
-                title:"Delete Data",
-                href:page,
-                height:350,
-                resizable:true,
-                autoResize:true
-            });
-        }
-        function deleteProsesOffering(){
-            $.messager.confirm('Confirm','Yakin ingin menghapus data?',function(r){
-            if (r){
-                   return $.ajax({
-                    type: $("#formdeletedataoffering").attr("method"),
-                    url: $("#formdeletedataoffering").attr("action"),
-                    enctype: 'multipart/form-data',
-                    data : $("#formdeletedataoffering").serialize(),
-                    dataType: "json",
-                    async: true,
-                    success: function(data) {
-                        $("#dlgDeleteOffering").dialog('close');
-                        $("#dgOffering").datagrid('reload');
-                        $("#dgOfferingDeleted").datagrid('reload');
-                    }
-                    }).responseText
+                title:'Edit Data',
+                href:'<?php echo base_url(); ?>offering/edit/'+row,
+                onLoad:function(){
+                    url = '<?= base_url() ?>offering/edit/'+row;
+                    oper='';
+                     $("#btnSave span span.l-btn-text").text("Save");
                 }
             });
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
         }
+    }
+    function viewData(offering_key){
+        var row = offering_key==undefined?$('#dgOffering').datagrid('getSelected')==undefined?'':$('#dgOffering').datagrid('getSelected').offering_key:offering_key;
+        if (row!=''){
+            $('#dlgView').dialog({
+                closed:false,
+                title:'View data',
+                href:'<?php echo base_url(); ?>offering/view/'+row
+            });
+
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
+    function deleteData(offering_key){
+        var row = offering_key==undefined?$('#dgOffering').datagrid('getSelected')==undefined?'':$('#dgOffering').datagrid('getSelected').offering_key:offering_key;
+        if (row!=''){
+            $('#dlg').dialog({
+                closed:false,
+                title:'Delete data',
+                href:'<?php echo base_url(); ?>offering/delete/'+row,
+                onLoad:function(){
+                    url = '<?= base_url() ?>offering/delete/'+row;
+                    oper="del";
+                    $("#btnSave span span.l-btn-text").text("Delete");
+                }
+            });
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
+    function callSubmit(){
+        console.log("callSubmit");
+        $('#fm').form('submit',{
+            url: url,
+            onSubmit: function(){
+                return $(this).form('validate');
+            },
+            success: function(result){
+                console.log(result);
+                $('#dlg').dialog('close');
+                $('#dgOffering').datagrid('reload');
+            },error:function(error){
+                 console.log($(this).serialize());
+            }
+        });
+    }
+    function saveData(){
+        if(oper=="del"){
+            $.messager.confirm('Confirm','Yakin akan menghapus data ?',function(r){
+                if (r){
+                    callSubmit();
+                }
+            });
+        }else{
+            callSubmit();
+        }
+    }
 
     </script>
     <div class="easyui-tabs" style="height:auto">
@@ -230,16 +242,10 @@
              <div id="dlg-buttons-view">
                 <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgView').dialog('close')" style="width:90px">Cancel</a>
             </div>
-            <div id="dlgSaveOffering" class="easyui-dialog" style="width:640px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-offering'">
+            <div id="dlg" class="easyui-dialog" style="width:640px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-offering'">
             </div>
             <div id="dlg-buttons-offering">
-                <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveProsesOffering()" style="width:90px">Save</a>
-                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
-            </div>
-            <div id="dlgDeleteOffering" class="easyui-dialog" style="width:600px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-offering1'">
-            </div>
-            <div id="dlg-buttons-offering1">
-                <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="deleteProsesOffering()" style="width:90px">Delete</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px" id="btnSave">Save</a>
                 <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
             </div>
         </div>

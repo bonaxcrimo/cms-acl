@@ -41,6 +41,79 @@ class offering extends MY_Controller {
             $this->load->view('jemaat/gridoffering',$data);
         }
     }
+    /**
+     * Fungsi view offering
+     * @AclName View offering
+     */
+    public function view($offering_key=0){
+        $data['row'] = $this->moffering->getById('tbloffering','offering_key',$offering_key);
+        $this->load->view('offering/view',$data);
+    }
+    /**
+     * Fungsi add offering
+     * @AclName Tambah offering
+     */
+    public function add(){
+        $data=[];
+        $sqloffering = getParameter('OFFERING');
+        if($this->input->server('REQUEST_METHOD') == 'POST' ){
+            $data = $this->input->post();
+            $cek = $this->_save($data);
+            $status = $cek?"sukses":"gagal";
+            $hasil = array(
+                'status' => $status
+            );
+            echo json_encode($hasil);
+        }else{
+            $data = $this->input->post();
+        }
+        $this->load->view('offering/add',['row'=>$data,'sqloffering'=>$sqloffering]);
+    }
+    /**
+     * Fungsi edit offering
+     * @AclName Edit offering
+     */
+    public function edit($id){
+        $data = $this->moffering->getById('tbloffering','offering_key',$id);
+        $sqloffering = getParameter('OFFERING');
+        if(empty($data)){
+            redirect('offering');
+        }
+        if($this->input->server('REQUEST_METHOD') == 'POST' ){
+            $data = $this->input->post();
+            $data['offering_key'] = $this->input->post('offering_key');
+            $cek = $this->_save($data);
+            $status = $cek?"sukses":"gagal";
+            $hasil = array(
+                'status' => $status
+            );
+            echo json_encode($hasil);
+        }
+        $this->load->view('offering/edit',['row'=>$data,'sqloffering'=>$sqloffering]);
+    }
+    /**
+     * Fungsi delete offering
+     * @AclName Delete offering
+     */
+    public function delete($id){
+        $data = $this->moffering->getById('tbloffering','offering_key',$id);
+        if(empty($data)){
+            redirect('offering');
+        }
+        if($this->input->server('REQUEST_METHOD') == 'POST'){
+            $cek = $this->moffering->delete($this->input->post('offering_key'));
+            $status = $cek?"sukses":"gagal";
+            $hasil = array(
+                'status' => $status
+            );
+            echo json_encode($hasil);
+        }
+        $this->load->view('offering/delete',['row'=>$data]);
+    }
+    private function _save($data){
+        $data = array_map("strtoupper", $data);
+        return $this->moffering->save($data);
+    }
      function form($form,$offering_key,$member_key,$tabs=1){
         $data["offering_key"] = $offering_key;
         $data["member_key"] = $member_key;
@@ -240,10 +313,11 @@ class offering extends MY_Controller {
             $edit='';
             $del='';
             $jumlah=0;
-            $view =hasPermission('offering','view')?'<button id='.$row->member_key.' class="icon-view_detail" onclick="viewOffering(\'view\',\''.$row->offering_key.'\',\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ':'';
-            $edit = hasPermission('offering','edit')?'<button id='.$row->member_key.' class="icon-edit" onclick="saveOffering(\'edit\',\''.$row->offering_key.'\',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ':'';
-            if($status=="")
-                $del = hasPermission('offering','delete')?'<button id='.$row->member_key.' class="icon-remove" onclick="delOffering(\'del\','.$row->offering_key.',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button>':'';
+            if($status==""){
+                $view =hasPermission('offering','view')?'<button id='.$row->member_key.' class="icon-view_detail" onclick="viewData(\''.$row->offering_key.'\')" style="width:16px;height:16px;border:0"></button> ':'';
+                $edit = hasPermission('offering','edit')?'<button id='.$row->member_key.' class="icon-edit" onclick="editData(\''.$row->offering_key.'\');" style="width:16px;height:16px;border:0"></button> ':'';
+                $del = hasPermission('offering','delete')?'<button id='.$row->member_key.' class="icon-remove" onclick="deleteData('.$row->offering_key.');" style="width:16px;height:16px;border:0"></button>':'';
+            }
             $print = hasPermission('offering','print')?'<button id='.$row->member_key.' class="icon-print" onclick="reportOffering(\''.$row->offering_key.'\',\''.$row->offeringno.'\')" style="width:16px;height:16px;border:0"></button> ':'';
             $print2 ='<button id='.$row->member_key.' class="icon-print" onclick="report(\''.$row->offering_key.'\',\''.$row->offeringno.'\')" style="width:16px;height:16px;border:0"></button> ';
             $print2='';
