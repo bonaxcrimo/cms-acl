@@ -14,6 +14,29 @@
                 },onBeforeLoad:function(){
                 }
             });
+        dgOffering.datagrid('enableFilter', [{
+                field:'aksi',
+                type:'label'
+        },{
+            field:'offeringid',
+            type:'combobox',
+            options:{
+                    panelHeight:'auto',
+                    data:[<?= $offering ?>],
+                    onChange:function(value){
+                        if (value == ''){
+                            dgOffering.datagrid('removeFilterRule', 'offeringid');
+                        } else {
+                            dgOffering.datagrid('addFilterRule', {
+                                field: 'offeringid',
+                                op: 'equal',
+                                value: value
+                            });
+                        }
+                        dgOffering.datagrid('doFilter');
+                    }
+                }
+        }]);
         var pagerOffering = dgOffering.datagrid('getPager');    // get the pager of datagrid
         pagerOffering.pagination({
             buttons:[{
@@ -106,7 +129,6 @@
 
 </script>
 <?php  $this->load->view('partials/infojemaat'); ?>
-
 <table id="dgOffering" style="width:100%;height:250px">
     <thead>
         <tr>

@@ -44,7 +44,26 @@
             dgOffering.datagrid('enableFilter', [{
                 field:'aksi',
                 type:'label'
-            }]);
+            },{
+            field:'offeringid',
+            type:'combobox',
+            options:{
+                    panelHeight:'auto',
+                    data:[<?= $offering ?>],
+                    onChange:function(value){
+                        if (value == ''){
+                            dgOffering.datagrid('removeFilterRule', 'offeringid');
+                        } else {
+                            dgOffering.datagrid('addFilterRule', {
+                                field: 'offeringid',
+                                op: 'equal',
+                                value: value
+                            });
+                        }
+                        dgOffering.datagrid('doFilter');
+                    }
+                }
+        }]);
             var pagerOfferingDeleted = dgOfferingDeleted.datagrid('getPager');
             pagerOfferingDeleted.pagination({
                 buttons:[{

@@ -14,8 +14,9 @@ class offering extends MY_Controller {
      * @AclName List Offering
      */
     function index(){
-        $link = base_url()."offering/grid";
-        $this->render('offering/gridoffering',['link'=>$link]);
+        $data['link'] = base_url()."offering/grid";
+        $data['offering'] = getComboParameter('OFFERING');
+        $this->render('offering/gridoffering',$data);
     }
     /**
      * print offering
@@ -25,35 +26,18 @@ class offering extends MY_Controller {
         $no = $no;
         $this->load->view('offering/print',['no'=>$no]);
     }
-    function jemaat(){
+    /**
+     * tab offering jemaat
+     * @AclName Tab Offering di Jemaat
+     */
+    public function jemaat(){
         if(empty($_SESSION['member_key'])){
             echo" Empty";
         }
         else{
             $data['member_key'] = $_SESSION['member_key'];
             $data['sql'] = $this->moffering->getwhere($_SESSION['member_key']);
-
-
-            $data['sqlmenu'] = $this->mmenutop->get_data();
-
-            $data['sqlgender'] = getParameter('GENDER');
-            $data['sqlpstatus'] =getParameter('PSTATUS');
-
-            $data['sqlstatusidv'] = getParameter('STATUS');
-            $data['sqlblood'] =getParameter('BLOOD');
-            $data['sqlkebaktian'] =getParameter('KEBAKTIAN');
-            $data['sqlpersekutuan'] =getParameter('PERSEKUTUAN');
-            $data['sqlrayon'] =getParameter('RAYON');
-            $data['sqloffering'] = getParameter('OFFERING');
-
-            $data['statusidv'] = getComboParameter('STATUS');
-            $data['blood'] = getComboParameter('BLOOD');
-            $data['gender'] = getComboParameter('GENDER');
-            $data['pstatus'] = getComboParameter('PSTATUS');
-            $data['kebaktian'] = getComboParameter('KEBAKTIAN');
-            $data['persekutuan'] =getComboParameter('PERSEKUTUAN');
-            $data['rayon'] = getComboParameter('RAYON');
-            $data['activity'] = getComboParameter('ACTIVITY');
+            $data['offering'] = getComboParameter('OFFERING');
             $this->load->view('jemaat/gridoffering',$data);
         }
     }
@@ -66,6 +50,10 @@ class offering extends MY_Controller {
         $view = $tabs==0?'offering/':'jemaat/offering/';
         $this->load->view($view.$form,$data);
     }
+    /**
+     * restore offering
+     * @AclName restore offering yang dihapus
+     */
     function restoreChecked(){
         $json = $_POST['dataOffering'];
         $status = $_POST['status'];
@@ -232,8 +220,12 @@ class offering extends MY_Controller {
                 if (!empty($value)){
                     if ($op == 'contains'){
                         $cond .= " and ($field like '%$value%')";
-                    } else if ($op == 'greater'){
-                        $cond .= " and $field>$value";
+                    } else if ($op == 'equal'){
+                        $cond .= " and $field = '$value'";
+                    }else if($op == 'notequal'){
+                        $cond .= " and $field != '' ";
+                    }else if($op =="containsend"){
+                        $cond .= " and ($field like '$value%')";
                     }
                 }
             }
