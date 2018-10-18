@@ -66,8 +66,9 @@ class offering extends MY_Controller {
             echo json_encode($hasil);
         }else{
             $data = $this->input->post();
+            $this->load->view('offering/add',['row'=>$data,'sqloffering'=>$sqloffering]);
         }
-        $this->load->view('offering/add',['row'=>$data,'sqloffering'=>$sqloffering]);
+
     }
     /**
      * Fungsi edit offering

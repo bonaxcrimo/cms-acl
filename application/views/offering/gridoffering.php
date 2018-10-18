@@ -184,7 +184,7 @@
         $('#fm').form('submit',{
             url: url,
             onSubmit: function(){
-                return $(this).form('validate');
+                // return $(this).form('validate');
             },
             success: function(result){
                 console.log(result);

@@ -51,7 +51,6 @@
             <div style="margin-bottom:10px" id="memberDiv">
                 <label class="textbox-label textbox-label-left">memberkey:</label>
                 <input name="member_key" id="member"  class="easyui-textbox member" type="hidden"  value="<?= @$row->member_key ?>" style="width:226px">
-
             </div>
              <div style="margin-bottom:10px" class="inputHide">
                  <label class="textbox-label textbox-label-left">membername:</label>
@@ -76,7 +75,7 @@
             </div>
             <div style="margin-bottom:10px">
                 <label class="textbox-label textbox-label-left">offering:</label>
-                <select name="offeringid"  labelPosition="left" class="easyui-combobox"  style="width:226px;">
+                <select name="offeringid"  labelPosition="left" class="easyui-combobox" required=""  style="width:226px;">
                     <option value=""></option>
                     <?php
                         foreach ($sqloffering as $rowform) {
@@ -89,16 +88,16 @@
             </div>
             <div style="margin-bottom:10px">
                 <label class="textbox-label textbox-label-left">transdate:</label>
-                <input name="transdate" labelPosition="left" class="easyui-datebox"  value="<?= @$transdate ?>"   style="width:226px;">
+                <input name="transdate" labelPosition="left" required="" class="easyui-datebox"  value="<?= @$transdate ?>"   style="width:226px;">
             </div>
             <div style="margin-bottom:10px;display: none;">
                 <label class="textbox-label textbox-label-left">inputdate:</label>
-                <input name="inputdate" labelPosition="left" class="easyui-datebox"  value="<?= @$inputdate ?>"   style="width:226px;">
+                <input name="inputdate" labelPosition="left" required="" class="easyui-datebox"  value="<?= @$inputdate ?>"   style="width:226px;">
             </div>
             <div style="margin-bottom:10px">
                 <label class="textbox-label textbox-label-left">offeringvalue:</label>
                 <span class="textbox" style="width: 226px;">
-                    <input id="offer"  name="offeringvalue"   class="textbox-text validatebox-text auto-numeric" type="text" aria-describedby="amount" data-v-max="5000000000" data-v-min="0" data-a-sep="." data-a-dec=","  value="<?= @$row->offeringvalue ?>" style="text-align: right;width: 226px;">
+                    <input id="offer"  name="offeringvalue" required=""   class="textbox-text validatebox-text auto-numeric" type="text" aria-describedby="amount" data-v-max="5000000000" data-v-min="0" data-a-sep="." data-a-dec=","  value="<?= @$row->offeringvalue ?>" style="text-align: right;width: 226px;">
                 </span>
             </div>
             <div style="margin-bottom:10px">
