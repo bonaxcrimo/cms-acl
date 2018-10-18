@@ -6,14 +6,14 @@ Class Mjemaat extends CI_Model{
         return $sql;
 	}
 	function get($where, $sidx, $sord, $limit, $start){
-		$sql = $this->db->query("SELECT *,
+		$sql = "SELECT *,
 		DATE_FORMAT(dob,'%d-%m-%Y') dobview,
 		DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') - (DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d')) AS umur,
 		DATE_FORMAT(tglbesuk,'%d-%m-%Y') tglbesukview,
 		DATE_FORMAT(baptismdate,'%d-%m-%Y') baptismdateview,
 		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedonview
-		FROM tblmember " . $where . " ORDER BY $sidx $sord LIMIT $start , $limit");
-		return $sql;
+		FROM tblmember " . $where . " ORDER BY $sidx $sord LIMIT $start , $limit";
+		return $this->db->query($sql);
 	}
 	function getM($where, $sidx, $sord, $limit, $start){
 
@@ -32,9 +32,9 @@ Class Mjemaat extends CI_Model{
 		return $this->db->query($query);
 	}
 	function count_relasi($where){
-		$sql = $this->db->query("SELECT * FROM tblmember t1, tbltemp".$_SESSION['userpk']." t2 WHERE t1.member_key=t2.member_key " . $where);
+		$sql = "SELECT * FROM tblmember t1, tbltemp".$_SESSION['userpk']." t2 WHERE t1.member_key=t2.member_key " . $where;
         if($sql){
-        	$data = $sql;
+        	$data = $this->db->query($sql);
         }
         else{
         	$data = 0;
@@ -42,15 +42,15 @@ Class Mjemaat extends CI_Model{
         return $data;
 	}
 	function get_relasi($where, $sidx, $sord, $limit, $start){
-		$sql = $this->db->query("SELECT *,
+		$sql = "SELECT *,
 		DATE_FORMAT(dob,'%d-%m-%Y') dobview,
 		DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') - (DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d')) AS umur,
 		DATE_FORMAT(tglbesuk,'%d-%m-%Y') tglbesukview,
 		DATE_FORMAT(baptismdate,'%d-%m-%Y') baptismdateview,
 		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedonview
-		FROM tblmember t1, tbltemp".$_SESSION['userpk']." t2 WHERE t1.recno=t2.recno " . $where . " ORDER BY $sidx $sord LIMIT $start , $limit");
+		FROM tblmember t1, tbltemp".$_SESSION['userpk']." t2 WHERE t1.recno=t2.recno " . $where . " ORDER BY $sidx $sord LIMIT $start , $limit";
 		if($sql){
-        	$data = $sql;
+        	$data = $this->db->query($sql);
         }
         else{
         	$data = 0;
@@ -58,15 +58,15 @@ Class Mjemaat extends CI_Model{
         return $data;
 	}
 	function get_relasiM($where, $sidx, $sord, $limit, $start){
-		$sql = $this->db->query("SELECT *,
+		$sql = "SELECT *,
 		DATE_FORMAT(dob,'%d-%m-%Y') dobview,
 		DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') - (DATE_FORMAT(NOW(), '00-%m-%d') < DATE_FORMAT(dob, '00-%m-%d')) AS umur,
 		DATE_FORMAT(tglbesuk,'%d-%m-%Y') tglbesukview,
 		DATE_FORMAT(baptismdate,'%d-%m-%Y') baptismdateview,
 		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedonview
-		FROM tblmember t1, tbltemp".$_SESSION['userpk']." t2 WHERE t1.recno=t2.recno " . $where . " ORDER BY t1.$sidx $sord LIMIT $start , $limit");
+		FROM tblmember t1, tbltemp".$_SESSION['userpk']." t2 WHERE t1.recno=t2.recno " . $where . " ORDER BY t1.$sidx $sord LIMIT $start , $limit";
 		if($sql){
-        	$data = $sql;
+        	$data = $this->db->query($sql);
         }
         else{
         	$data = 0;

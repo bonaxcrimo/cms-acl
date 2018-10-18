@@ -47,14 +47,14 @@ class Mparameter extends MY_Model {
     	return $save;
     }
 	function count($where){
-		$sql = $this->db->query("SELECT parameter_key FROM tblparameter " . $where);
-        return $sql;
+		$sql = "SELECT parameter_key FROM tblparameter " . $where;
+        return $this->db->query($sql);
 	}
 	function get($where, $sidx, $sord, $limit, $start){
-		$sql = $this->db->query("SELECT *,
+		$sql = "SELECT *,
 		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon
-		FROM tblparameter " . $where . " ORDER BY $sidx $sord  LIMIT $start , $limit");
-		return $sql;
+		FROM tblparameter " . $where . " ORDER BY $sidx $sord  LIMIT $start , $limit";
+		return $this->db->query($sql);
 	}
 
 }

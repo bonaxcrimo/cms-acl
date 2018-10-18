@@ -97,19 +97,20 @@ Class Muser extends MY_Model{
     	return md5($password);
     }
 	function count($where){
-		$sql = $this->db->query("SELECT userpk FROM tbluser " . $where);
-        return $sql;
+		$sql = "SELECT userpk FROM tbluser " . $where;
+        return $this->db->query($sql);
 	}
 	function get($where, $sidx, $sord, $limit, $start){
-		$sql = $this->db->query("SELECT *,
+		$sql = "SELECT *,
 		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedonview
-		FROM tbluser " . $where . " ORDER BY $sidx $sord LIMIT $start , $limit");
-		return $sql;
+		FROM tbluser " . $where . " ORDER BY $sidx $sord LIMIT $start , $limit";
+		return $this->db->query($sql);
 	}
 	function add($tabel,$data){
 		$this->db->insert($tabel,$data);
 		$userpk="";
-		$sql = $this->db->query("SELECT userpk FROM tbluser ORDER BY userpk DESC LIMIT 0,1");
+        $query = "SELECT userpk FROM tbluser ORDER BY userpk DESC LIMIT 0,1";
+		$sql = $this->db->query($query);
 		foreach ($sql->result() as $key) {
 			$userpk .= $key->userpk;
 		}
@@ -120,10 +121,10 @@ Class Muser extends MY_Model{
 		$query = $this->db->update($tabel,$data);
 	}
 	function getwhere($userpk){
-		$sql = $this->db->query("SELECT *,
+		$sql = "SELECT *,
 		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon
-		FROM tbluser WHERE userpk ='$userpk' LIMIT 0,1");
-		return $sql;
+		FROM tbluser WHERE userpk ='$userpk' LIMIT 0,1";
+		return $this->db->query($sql);
 	}
 	function del($tabel,$id){
 		$query = $this->db->where("userpk",$id);

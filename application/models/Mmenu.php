@@ -53,28 +53,31 @@ class Mmenu extends MY_Model
         return $sql;
 	}
 	function get($where, $sidx, $sord, $limit, $start){
-		$sql = $this->db->query("SELECT *,
+		$sql = "SELECT *,
 		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon
-		FROM tblmenu " . $where . " ORDER BY $sidx $sord, menuseq ASC LIMIT $start , $limit");
-		return $sql;
+		FROM tblmenu " . $where . " ORDER BY $sidx $sord, menuseq ASC LIMIT $start , $limit";
+		return $this->db->query($sql);
 	}
 
 	function get_where($where){
-		$sql = $this->db->query("SELECT menuid FROM tblmenu " . $where);
-		return $sql;
+		$sql = "SELECT menuid FROM tblmenu " . $where;
+		return $this->db->query($sql);
 	}
 
 
 
 
 	function reseq(){
-		$sql = $this->db->query("SELECT DISTINCT(menuparent) FROM tblmenu ORDER BY menuid ASC");
+        $query = "SELECT DISTINCT(menuparent) FROM tblmenu ORDER BY menuid ASC";
+		$sql = $this->db->query($sql);
 		foreach ($sql->result() as $key) {
-			$sql = $this->db->query("SELECT menuid FROM tblmenu WHERE menuparent='$key->menuparent' ORDER BY menuseq ASC");
+            $query="SELECT menuid FROM tblmenu WHERE menuparent='$key->menuparent' ORDER BY menuseq ASC";
+			$sql = $this->db->query($query);
 			$i=0;
 			foreach ($sql->result() as $key) {
 				$i=$i+10;
-				$this->db->query("UPDATE tblmenu SET menuseq='$i' WHERE menuid='$key->menuid'");
+                $query = "UPDATE tblmenu SET menuseq='$i' WHERE menuid='$key->menuid'";
+				$this->db->query($query);
 			}
 		}
 		return 1;

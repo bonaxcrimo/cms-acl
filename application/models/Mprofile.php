@@ -2,15 +2,15 @@
 Class Mprofile extends MY_Model{
 
     function count($where){
-        $sql = $this->db->query("SELECT profile_key FROM tblprofile " . $where);
-        return $sql;
+        $sql = "SELECT profile_key FROM tblprofile " . $where;
+        return $this->db->query($sql);
     }
     function get($where, $sidx, $sord, $limit, $start){
-        $sql = $this->db->query("SELECT *,
+        $sql ="SELECT *,
         DATE_FORMAT(besukdate,'%d-%m-%Y') besukdateview,
         DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedonview
-        FROM tblbesuk " . $where . " ORDER BY $sidx $sord LIMIT $start , $limit");
-        return $sql;
+        FROM tblbesuk " . $where . " ORDER BY $sidx $sord LIMIT $start , $limit";
+        return  $this->db->query($sql);
     }
     function getM($where, $sidx, $sord, $limit, $start){
         $query = "select tblprofile.*,tblmember.membername,tblmember.chinesename,tblmember.address,
@@ -26,13 +26,13 @@ Class Mprofile extends MY_Model{
         $query = $this->db->update($tabel,$data);
     }
     function getwhere($member_key){
-        $sql = $this->db->query("SELECT *,
+        $sql = "SELECT *,
         DATE_FORMAT(dob,'%d-%m-%Y') dob,
         DATE_FORMAT(tglbesuk,'%d-%m-%Y') tglbesuk,
         DATE_FORMAT(baptismdate,'%d-%m-%Y') baptismdate,
         DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon
-        FROM tblmember WHERE member_key ='$member_key' LIMIT 0,1");
-        return $sql;
+        FROM tblmember WHERE member_key ='$member_key' LIMIT 0,1";
+        return $this->db->query($sql);
     }
     function del($tabel,$id){
         $query = $this->db->where("profile_key",$id);

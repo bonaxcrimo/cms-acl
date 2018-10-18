@@ -44,10 +44,10 @@ Class Musermenu extends CI_Model{
 		$menuid="";
 		foreach ($sql->result() as $key) {
 			$data = array(
-				'userpk' => $userpk, 
-				'menuid' => $key->menuid, 
+				'userpk' => $userpk,
+				'menuid' => $key->menuid,
 				'acl' => '1111111',
-				'modifiedby' =>$_SESSION['userid'], 
+				'modifiedby' =>$_SESSION['userid'],
 				'modifiedon' => date("Y-m-d H:i:s")
 				);
 			$this->db->insert('tblusermenu',$data);

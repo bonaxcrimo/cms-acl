@@ -25,13 +25,13 @@ Class Moffering extends MY_Model{
         $query = $this->db->update($tabel,$data);
     }
     function getwhere($member_key){
-        $sql = $this->db->query("SELECT *,
+        $sql = "SELECT *,
         DATE_FORMAT(dob,'%d-%m-%Y') dob,
         DATE_FORMAT(tglbesuk,'%d-%m-%Y') tglbesuk,
         DATE_FORMAT(baptismdate,'%d-%m-%Y') baptismdate,
         DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon
-        FROM tblmember WHERE member_key ='$member_key' LIMIT 0,1");
-        return $sql;
+        FROM tblmember WHERE member_key ='$member_key' LIMIT 0,1";
+        return $this->db->query($sql);
     }
     function del($tabel,$id){
         $query = $this->db->where("offering_key",$id);

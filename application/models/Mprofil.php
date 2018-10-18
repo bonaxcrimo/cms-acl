@@ -5,7 +5,7 @@ class Mprofil extends MY_Model {
     }
 
 	function get($userpk){
-		$sql = $this->db->query("SELECT * FROM tbluser WHERE userpk='$userpk'");
-        return $sql;
+		$sql ="SELECT * FROM tbluser WHERE userpk='$userpk'";
+        return  $this->db->query($sql);
 	}
 }

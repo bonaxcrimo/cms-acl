@@ -51,24 +51,23 @@ Class Mbesuk extends MY_Model{
     	return $save;
     }
 	public function count($where){
-		$sql = $this->db->query("SELECT besukid FROM tblbesuk " . $where);
-        return $sql;
+		$sql ="SELECT besukid FROM tblbesuk " . $where;
+        return  $this->db->query($sql);
 	}
 	public function get($where, $sidx, $sord, $limit, $start){
 		$query = "select *,
 		DATE_FORMAT(besukdate,'%d-%m-%Y') besukdate,
 		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon from tblbesuk  " . $where . " ORDER BY $sidx $sord LIMIT $start , $limit";
-		// echo $query;
 		return $this->db->query($query);
 	}
 	public function getwhere($member_key){
-		$sql = $this->db->query("SELECT *,
+		$sql = "SELECT *,
 		DATE_FORMAT(dob,'%d-%m-%Y') dob,
 		DATE_FORMAT(tglbesuk,'%d-%m-%Y') tglbesuk,
 		DATE_FORMAT(baptismdate,'%d-%m-%Y') baptismdate,
 		DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon
-		FROM tblmember WHERE member_key ='$member_key' LIMIT 0,1");
-		return $sql;
+		FROM tblmember WHERE member_key ='$member_key' LIMIT 0,1";
+		return $this->db->query($sql);
 	}
 }
 ?>
