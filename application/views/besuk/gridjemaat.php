@@ -15,7 +15,7 @@
                 selectOnCheck: false,
                 clientPaging: false,
                 autoResize:true,
-                url:"<?= base_url() ?>jemaat/gridBesuk",
+                url:"<?= base_url() ?>jemaat/lookup_jemaat",
                 method:'get',
                 onClickRow:function(index,row){
                     // $("#member").val(row.member_key);

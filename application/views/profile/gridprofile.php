@@ -125,10 +125,10 @@
                     <th field="aksi" width="6%">Aksi</th>
                     <th  field="member_key" width="8%" hidden="true">Member Key</th>
                     <th field="profile_key" hidden="true"></th>
+                    <th sortable="true" field="activityid" width="10%">activityid</th>
                     <th sortable="true" field="membername" width="10%">membername</th>
                     <th sortable="true" field="chinesename" width="10%">chinesename</th>
                     <th sortable="true" field="address" width="10%">address</th>
-                    <th sortable="true" field="activityid" width="10%">activityid</th>
                     <th sortable="true" field="activitydate" width="10%">activitydate</th>
                     <th sortable="true" field="remark" width="10%">remark</th>
                     <th sortable="true" field="modifiedby" width="6%">modifiedby</th>

@@ -15,6 +15,10 @@
                 },onBeforeLoad:function(){
                 }
             });
+        dgProfile.datagrid('enableFilter', [{
+                field:'aksi',
+                type:'label'
+        }]);
         var pagerProfile = dgProfile.datagrid('getPager');    // get the pager of datagrid
         pagerProfile.pagination({
             buttons:[{
@@ -25,6 +29,7 @@
                 }
             }]
         });
+
     });
     function viewProfile(form,profile_key,member_key){
         page="<?php echo base_url(); ?>profile/form/"+form+"/"+profile_key+"/"+member_key;
@@ -101,12 +106,11 @@
 
 </script>
 <?php  $this->load->view('partials/infojemaat'); ?>
-
 <table id="dgProfile" style="width:100%;height:250px">
     <thead>
         <tr>
-            <th field="aksi" width="6%">Aksi</th>
-            <th  field="member_key" width="8%" hidden="true">Member Key</th>
+            <th field="aksi" width="3%">Aksi</th>
+            <th  field="member_key"  hidden="true">Member Key</th>
             <th field="profile_key" hidden="true"></th>
             <th sortable="true" field="activityid" width="10%">activityid</th>
             <th sortable="true" field="activitydate" width="10%">activitydate</th>

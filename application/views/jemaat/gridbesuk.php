@@ -1,4 +1,5 @@
 <script type="text/javascript">
+    var url,oper;
     $(document).ready(function(){
         $("#dgBesuk").datagrid(
             {
@@ -41,6 +42,7 @@
             onLoad:function(){
                  url = '<?= base_url() ?>besuk/add/<?= @$member_key ?>';
                  oper="";
+                 $("#btnSave span span.l-btn-text").text("Save");
             }
         });
     }
@@ -54,6 +56,7 @@
                 onLoad:function(){
                     url = '<?= base_url() ?>besuk/edit/'+row+'/<?= @$member_key ?>';
                     oper="";
+                    $("#btnSave span span.l-btn-text").text("Save");
                 }
             });
         }else{
@@ -83,6 +86,7 @@
                 onLoad:function(){
                     url = '<?= base_url() ?>besuk/delete/'+row+'/<?= @$member_key ?>';
                     oper="del";
+                    $("#btnSave span span.l-btn-text").text("Delete");
                 }
             });
         }else{
@@ -101,6 +105,7 @@
         }
     }
     function callSubmit(){
+        console.log(url);
         $('#fm').form('submit',{
             url: url,
             onSubmit: function(){
@@ -143,7 +148,7 @@
 </div>
 <div id="dlg-buttons-besuk">
     <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px">Save</a>
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px" id="btnSave">Cancel</a>
 </div>
 <div id="dlg-delete-besuk">
     <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px">Delete</a>

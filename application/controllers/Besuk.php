@@ -30,6 +30,10 @@ class Besuk extends MY_Controller {
 		$link = base_url()."besuk/gridbesuk";
 		$this->render('besuk/gridbesuk',['link'=>$link]);
 	}
+	/**
+     * Fungsi tab besuk
+     * @AclName tab besuk di jemaat
+     */
 	public function jemaat(){
 		if(empty($_SESSION['member_key'])){
 			echo" Empty";
@@ -172,9 +176,10 @@ class Besuk extends MY_Controller {
 		    echo json_encode($hasil);
 		}else{
 			$data = $this->input->post();
+			$check=$member_key==null?0:$member_key;
+			$this->load->view('besuk/add',['data'=>$data,'check'=>$check]);
 		}
-		$check=$member_key==null?0:$member_key;
-		$this->load->view('besuk/add',['data'=>$data,'check'=>$check]);
+
 	}
 	/**
      * Fungsi edit besuk
@@ -194,9 +199,11 @@ class Besuk extends MY_Controller {
 		        'status' => $status
 		    );
 		    echo json_encode($hasil);
+		}else{
+			$check=$member_key==null?0:$member_key;
+			$this->load->view('besuk/edit',['data'=>$data,'check'=>$check]);
 		}
-		$check=$member_key==null?0:$member_key;
-		$this->load->view('besuk/edit',['data'=>$data,'check'=>$check]);
+
 	}
 	/**
      * Fungsi delete besuk
@@ -208,15 +215,17 @@ class Besuk extends MY_Controller {
 			redirect('besuk');
 		}
 		if($this->input->server('REQUEST_METHOD') == 'POST'){
-			$cek = $this->mbesuk->delete($this->input->post('besukid'));
+			$cek = $this->mbesuk->delete($id);
 			$status = $cek?"sukses":"gagal";
 			$hasil = array(
 		        'status' => $status
 		    );
 		    echo json_encode($hasil);
+		}else{
+			$check=$member_key==null?0:$member_key;
+			$this->load->view('besuk/delete',['data'=>$data,'check'=>$check]);
 		}
-		$check=$member_key==null?0:$member_key;
-		$this->load->view('besuk/delete',['data'=>$data,'check'=>$check]);
+
 	}
 	private function _save($data){
 		$data = array_map("strtoupper", $data);

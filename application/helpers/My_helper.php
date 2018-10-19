@@ -107,7 +107,11 @@ function getParameterKey($key){
 }
 function getParameter($tipe){
     $db = get_instance()->db;
-    $db->where('parametergrpid',$tipe);
+    if($tipe=='ACTIVITY'){
+        $db->where('parametergrpid',$tipe)->or_where('parametergrpid','SERVING');
+    }else{
+        $db->where('parametergrpid',$tipe);
+    }
     $sql =$db->get('tblparameter');
     return $sql->result();
 }

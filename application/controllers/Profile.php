@@ -12,7 +12,9 @@ class profile extends MY_Controller {
     }
     function index(){
         $link = base_url()."profile/gridprofile";
-        $this->render('profile/gridprofile',['link'=>$link]);
+        $data['link']=$link;
+        $data['activity'] = getComboParameter('ACTIVITY');
+        $this->render('profile/gridprofile',$data);
     }
     function jemaat(){
         if(empty($_SESSION['member_key'])){
@@ -20,27 +22,7 @@ class profile extends MY_Controller {
         }
         else{
             $data['member_key'] = $_SESSION['member_key'];
-            $data['sql'] = $this->mbesuk->getwhere($_SESSION['member_key']);
-
-            $data['sqlgender'] = getParameter('GENDER');
-            $data['sqlpstatus'] =getParameter('PSTATUS');
-
-            $data['sqlstatusidv'] = getParameter('STATUS');
-            $data['sqlblood'] =getParameter('BLOOD');
-            $data['sqlkebaktian'] =getParameter('KEBAKTIAN');
-            $data['sqlpersekutuan'] =getParameter('PERSEKUTUAN');
-            $data['sqlrayon'] =getParameter('RAYON');
-            $data['sqlactivity'] = getParameter('ACTIVITY');
-
-            $data['statusidv'] = getComboParameter('STATUS');
-            $data['blood'] = getComboParameter('BLOOD');
-            $data['gender'] = getComboParameter('GENDER');
-            $data['pstatus'] = getComboParameter('PSTATUS');
-            $data['kebaktian'] = getComboParameter('KEBAKTIAN');
-            $data['persekutuan'] =getComboParameter('PERSEKUTUAN');
-            $data['rayon'] = getComboParameter('RAYON');
             $data['activity'] = getComboParameter('ACTIVITY');
-
             $this->load->view('jemaat/gridprofile',$data);
         }
     }
@@ -103,13 +85,16 @@ class profile extends MY_Controller {
         if (!empty($filterRules)){
             $cond = ' where tblprofile.member_key = "'.$member_key.'" and  1=1 ';
             $filterRules = json_decode($filterRules);
-
             foreach($filterRules as $rule){
                 $rule = get_object_vars($rule);
                 $field = $rule['field'];
                 $op = $rule['op'];
                 $value = $rule['value'];
                 if (!empty($value)){
+                    if($field=="activityid"){
+                        $field='parametertext';
+                        $op="contains";
+                    }
                     if ($op == 'contains'){
                         $cond .= " and ($field like '%$value%')";
                     } else if ($op == 'greater'){
@@ -121,10 +106,10 @@ class profile extends MY_Controller {
             $cond = ' where tblprofile.member_key = "'.$member_key.'" ';
         }
         $where='';
-        $sql = $this->mprofile->count($cond);
-        $total = $sql->num_rows();
         $offset = ($page - 1) * $rows;
-        $data = $this->mprofile->getM($cond,$sort,$order,$rows,$offset)->result();
+        $data = $this->mprofile->getM($cond,$sort,$order,$rows,$offset);
+        $total = $data->num_rows();
+        $data=$data->result();
         foreach($data as $row){
             $view='';
             $edit='';
@@ -136,7 +121,7 @@ class profile extends MY_Controller {
                 $del = '<button id='.$row->member_key.' class="icon-remove" onclick="delProfile(\'del\','.$row->profile_key.',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button>';
 
             $row->aksi =$view.$edit.$del;
-            $row->activityid =  $row->activityid==0?'-':getParameterKey($row->activityid)->parameterid;
+            $row->activityid =  $row->activityid==0?'-':getParameterKey($row->activityid)->parametertext;
         }
         $response = new stdClass;
         $response->total=$total;
@@ -162,6 +147,10 @@ class profile extends MY_Controller {
                 $op = $rule['op'];
                 $value = $rule['value'];
                 if (!empty($value)){
+                    if($field=="activityid"){
+                        $field='parametertext';
+                        $op="contains";
+                    }
                     if ($op == 'contains'){
                         $cond .= " and ($field like '%$value%')";
                     } else if ($op == 'greater'){
@@ -171,10 +160,10 @@ class profile extends MY_Controller {
             }
         }
         $where='';
-        $sql = $this->mprofile->count($cond);
-        $total = $sql->num_rows();
         $offset = ($page - 1) * $rows;
-        $data = $this->mprofile->getM($cond,$sort,$order,$rows,$offset)->result();
+        $data = $this->mprofile->getM($cond,$sort,$order,$rows,$offset);
+        $total = $data->num_rows();
+        $data=$data->result();
         foreach($data as $row){
             $view='';
             $edit='';

@@ -25,7 +25,10 @@ class Jemaat extends MY_Controller {
 		$data = file_get_contents('uploads/'.$filename);
 		force_download($filename,$data);
 	}
-
+	/**
+     * Fungsi awal jemaat
+     * @AclName Awal jemaat
+     */
 	function index(){
 		$data = array_merge($this->_parameter(),$this->_combo());
 		$this->render('jemaat/gridjemaat',$data);
@@ -79,8 +82,8 @@ class Jemaat extends MY_Controller {
 
 	}
 	/**
-     * Fungsi edit besuk
-     * @AclName Edit besuk
+     * Fungsi edit jemaat
+     * @AclName Edit jemaat
      */
 	public function edit($id){
 		$data = $this->mjemaat->getById('tblmember','member_key',$id);
@@ -128,7 +131,11 @@ class Jemaat extends MY_Controller {
 		}
 
 	}
-	function grid3($status=''){
+	/**
+     * Fungsi grid  jemaat
+     * @AclName grid  jemaat
+     */
+	public function grid($status=''){
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
 		$sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'member_key';
@@ -255,7 +262,11 @@ class Jemaat extends MY_Controller {
 		$_SESSION['excel']= "asc|member_key|";
 		echo json_encode($response);
 	}
-	function gridBesuk(){
+	/**
+     * Fungsi grid lookup jemaat
+     * @AclName grid lookup besuk
+     */
+	function lookup_jemaat(){
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
 		$sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'member_key';
@@ -362,24 +373,10 @@ class Jemaat extends MY_Controller {
 		$data["image"] = $image;
 		$this->load->view('jemaat/image',$data);
 	}
-	function form($form,$member_key,$formname){
-		$data['grp_pi'] = $this->uri->segment(6);
-		$data['sqlgender'] = getParameter('GENDER');
-		$data['sqlpstatus'] = getParameter('PSTATUS');
-		$data['sqlblood'] =getParameter('BLOOD');
-		$data['sqlkebaktian'] = getParameter('KEBAKTIAN');
-		$data['sqlpersekutuan'] = getParameter('PERSEKUTUAN');
-		$data['sqlrayon'] =getParameter('RAYON');
-		$data['sqlserving'] =getParameter('SERVING');
-		$data['sqlstatusid'] =getParameter('STATUS');
-		$data['formname'] = $formname;
-		if($member_key!=null || $member_key!=""){
-			$sql= $this->mjemaat->getwhere($member_key);
-			$count = $sql->num_rows();
-			$data["member_key"] = $member_key;
-		}
-		$this->load->view('jemaat/'.$form,$data);
-	}
+	/**
+     * Fungsi buat relasi
+     * @AclName membuat relasi jemaat
+     */
 	function makeRelation(){
 		$json = $_POST['dataMember'];
 		$rel = $_POST['dataRel'];
@@ -403,191 +400,8 @@ class Jemaat extends MY_Controller {
 		);
 		return json_encode($hasil);
 	}
-	function crud(){
-		@$oper=@$_POST['oper'];
-	    @$member_key=@$_POST['member_key'];
-	    @$extphotofile=@$_POST['extphotofile'];
-	    @$editphotofile=@$_POST['editphotofile'];
-	    if($extphotofile!=""){
-	    	if($editphotofile!=""){
-	    		if (file_exists("uploads/medium_".$editphotofile)) {
-					unlink("uploads/medium_".$editphotofile);
-				}
-				if (file_exists("uploads/small_".$editphotofile)) {
-					unlink("uploads/small_".$editphotofile);
-				}
-				@$namephotofile = date("d-m-Y-h").substr(str_shuffle("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"), 0, 10) . substr(str_shuffle("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"), 0, 10);
-	    		@$photofile = @$namephotofile.".".@$extphotofile;
-		    }
-	    	else{
-				@$namephotofile = date("d-m-Y-h").substr(str_shuffle("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"), 0, 10) . substr(str_shuffle("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"), 0, 10);
-	    		@$photofile = @$namephotofile.".".@$extphotofile;
-	    	}
-	    }
-	    else{
-	    	if($editphotofile!=""){
-	    		if($editphotofile=="clearfoto"){
-	    			@$photofile = "";
-	    		}
-	    		else{
-	    			@$photofile = $editphotofile;
-		    	}
-	    	}
-	    	else{
-	    		@$photofile = "";
-	    	}
-	    }
-		$servingid="";
-		if(!empty($_POST['servingid'])){
-		    foreach ($_POST['servingid'] as $selectedOption){
-	    		$servingid=$servingid.$selectedOption."/";
-	    	}
-	    }
-		$_POST = array_map("strtoupper", $_POST);
-	    @$dob = $_POST['dob'];
-	    @$exp1 = explode('-',$dob);
-		@$dob = $exp1[2]."-".$exp1[1]."-".$exp1[0];
 
-		@$baptismdate = $_POST['baptismdate'];
-		@$exp2 = explode('-',$baptismdate);
-		@$baptismdate = $exp2[2]."-".$exp2[1]."-".$exp2[0];
-
-		@$tglbesuk = $_POST['tglbesuk'];
-		@$exp3 = explode('-',$tglbesuk);
-		@$tglbesuk = $exp3[2]."-".$exp3[1]."-".$exp3[0];
-		@$data = array(
-			'grp_pi' => isset($_POST['grp_pi']) ? $_POST['grp_pi'] : 0,
-			'relationno' => @$_POST['relationno'],
-			'memberno' => @$_POST['memberno'],
-			'membername' => @$_POST['membername'],
-			'chinesename' => @$_POST['chinesename'],
-			'phoneticname' => @$_POST['phoneticname'],
-			'aliasname' => @$_POST['aliasname'],
-			'tel_h' => @$_POST['tel_h'],
-			'tel_o' => @$_POST['tel_o'],
-			'handphone' => @$_POST['handphone'],
-			'address' => @$_POST['address'],
-			'add2' => @$_POST['add2'],
-			'city' => @$_POST['city'],
-			'gender_key' => @$_POST['genderid'],
-			'pstatus_key' => @$_POST['pstatusid'],
-			'pob' => @$_POST['pob'],
-			'dob' => @$dob,
-			'blood_key' => @$_POST['bloodid'],
-			'kebaktian_key' => @$_POST['kebaktianid'],
-			'persekutuan_key' => @$_POST['persekutuanid'],
-			'rayon_key' => @$_POST['rayonid'],
-			'status_key' => @$_POST['statusid'],
-			'serving' => $servingid,
-			'fax' => @$_POST['fax'],
-			'email' => @$_POST['email'],
-			'website' => @$_POST['website'],
-			'baptismdocno' => @$_POST['baptismdocno'],
-			'baptis' => isset($_POST['baptis']) ? $_POST['baptis'] : 0,
-			'baptismdate' => @$baptismdate,
-			'remark' => @$_POST['remark'],
-			'relation' => @$_POST['relation'],
-			'oldgrp' => @$_POST['oldgrp'],
-			'kebaktian' => @$_POST['kebaktian'],
-			'tglbesuk' => @$tglbesuk,
-			'teambesuk' => @$_POST['teambesuk'],
-			'description' => @$_POST['description'],
-			'photofile' => @$photofile,
-			'modifiedby' => $_SESSION['username'],
-			'modifiedon' => date("Y-m-d H:i:s")
-			);
-	    switch ($oper) {
-	        case 'add':
-				$this->mjemaat->add("tblmember",$data);
-				$hasil = array(
-			        'status' => 'sukses',
-			        'photofile' => $photofile
-			    );
-			    echo json_encode($hasil);
-	            break;
-	        case 'edit':
-				$this->mjemaat->edit("tblmember",$data,$member_key);
-				$hasil = array(
-			        'status' => 'sukses',
-			        'photofile' => $photofile
-			    );
-			    echo json_encode($hasil);
-	            break;
-	         case 'del':
-         		if (file_exists("uploads/medium_".$editphotofile)) {
-					unlink("uploads/medium_".$editphotofile);
-				}
-				if (file_exists("uploads/small_".$editphotofile)) {
-					unlink("uploads/small_".$editphotofile);
-				}
-				$this->mjemaat->del("tblmember",$member_key);
-				$hasil = array(
-			        'status' => 'sukses',
-			        'photofile' => $editphotofile
-			    );
-			    echo json_encode($hasil);
-	            break;
-	        default :
-	        	$hasil = array(
-			        'status' => 'No Operation'.implode("", $_POST)
-			    );
-			    echo json_encode($hasil);
-	           break;
-		}
-	}
-
-	function upload($namephotofile){
-	    $filename = $_FILES['photofile']['name'];
-	    if($filename){
-	    	$temp = $_FILES['photofile']['tmp_name'];
-		    $type = $_FILES['photofile']['type'];
-		    $size = $_FILES['photofile']['size'];
-		    $newfilename = $namephotofile;
-			@$vdir_upload = "uploads/";
-			@$directory 	= "uploads/$newfilename";
-		    if (MOVE_UPLOADED_FILE($temp,$directory)){
-		    	$im_src = imagecreatefromjpeg($directory);
-				$src_width = imagesx($im_src);
-				$src_height = imagesy($im_src);
-				$dst_width = 30;
-				$dst_height = ($dst_width/$src_width)*$src_height;
-				$im = imagecreatetruecolor($dst_width,$dst_height);
-				imagecopyresampled($im, $im_src, 0, 0, 0, 0, $dst_width, $dst_height, $src_width, $src_height);
-				imagejpeg($im,$vdir_upload."small_".$newfilename);
-				imagedestroy($im_src);
-				imagedestroy($im);
-
-				$im_src2 = imagecreatefromjpeg($directory);
-				$src_width2 = imagesx($im_src2);
-				$src_height2 = imagesy($im_src2);
-				$dst_width2 = 500;
-				$dst_height2 = ($dst_width2/$src_width2)*$src_height2;
-				$im2 = imagecreatetruecolor($dst_width2,$dst_height2);
-				imagecopyresampled($im2, $im_src2, 0, 0, 0, 0, $dst_width2, $dst_height2, $src_width2, $src_height2);
-				imagejpeg($im2,$vdir_upload."medium_".$newfilename);
-				imagedestroy($im_src2);
-				imagedestroy($im2);
-				unlink("uploads/$newfilename");
-		        $status = 1;
-		    	$msg ="Upload Success".$dst_height2;
-		    }
-		    else{
-		        $status = 2;
-		    	$msg ="Upload Error";
-		 	}
-		}
-		else{
-			$status = 2;
-		    $msg ="Upload Null";
-		}
-
-	 	$hasil = array(
-	        'status' => $status,
-	        'msg' => $msg
-	    );
-	    echo json_encode($hasil);
-	}
-	function uploadWA($namephotofile){
+	public function uploadWA($namephotofile){
 	    $filename = $_FILES['photofile']['name'];
 	    if($filename){
 	    	$temp = $_FILES['photofile']['tmp_name'];
@@ -660,8 +474,11 @@ class Jemaat extends MY_Controller {
 	    );
 	    echo json_encode($hasil);
 	}
-
-	function export($file){
+	/**
+     * Fungsi export jemaat
+     * @AclName export  jemaat
+     */
+	public function export($file){
 		$excel = $_SESSION['exceljemaat'];
 		$splitexcel = explode("|",$excel);
 		$sord = $splitexcel[0];
@@ -676,8 +493,11 @@ class Jemaat extends MY_Controller {
 		FROM tblmember " . $where . " ORDER BY $sidx $sord");
 		$this->load->view('jemaat/'.$file,$data);
 	}
-
-	function report(){
+	/**
+     * Fungsi report jemaat
+     * @AclName report  jemaat
+     */
+	public function report(){
 		$excel = $_SESSION['exceljemaat'];
 		$splitexcel = explode("|",$excel);
 		$sord = $splitexcel[0];
