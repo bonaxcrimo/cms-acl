@@ -13,7 +13,7 @@ Class Moffering extends MY_Model{
         @$inputdate = $exp2[2]."-".$exp2[0]."-".$exp2[1]." ".date("H:i:s");
         $data['transdate'] = $transdate;
         $data['inputdate'] = $inputdate;
-        if (isset($data['offering_key']) && !empty($data['parameter_key'])) {
+        if (isset($data['offering_key']) && !empty($data['offering_key'])) {
             $id = $data['offering_key'];
             unset($data['offering_key']);
             $save = $this->_preFormat($data); //format the fields
@@ -56,7 +56,7 @@ Class Moffering extends MY_Model{
         return $this->db->delete($this->table);
     }
     private function _preFormat($data){
-        $fields = ['offeringid','membername','chinesename','address','handphone','offeringno','transdate','inputdate','aliasname2','remark','offeringvalue','row_status','modifiedon','modifiedby'];
+        $fields = ['member_key','offeringid','membername','chinesename','address','handphone','offeringno','transdate','inputdate','aliasname2','remark','offeringvalue','row_status','modifiedon','modifiedby'];
         $save = [];
         foreach($fields as $val){
             if(isset($data[$val])){

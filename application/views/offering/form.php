@@ -29,7 +29,7 @@
             var text= $("#bukaRead").text()=="New"?"Close":"New";
             var buka= $("#bukaRead").text()=="New"?false:true;
             $("#bukaRead").linkbutton({text:text});
-            $("#member_name").textbox({readonly:buka});
+            // $("#member_name").textbox({readonly:buka});
             $("#chinese_name").textbox({readonly:buka});
             $("#address").textbox({readonly:buka});
              $("#handphone").textbox({readonly:buka});
@@ -54,12 +54,12 @@
             </div>
              <div style="margin-bottom:10px" class="inputHide">
                  <label class="textbox-label textbox-label-left">membername:</label>
-                <input  id="member_name" name="member_name" class="easyui-textbox"  value="<?= @$row->membername ?>"  style="width:226px">
+                <input  id="member_name" name="membername" class="easyui-textbox"  value="<?= @$row->membername ?>"  style="width:226px">
                 <a class="easyui-linkbutton" id="bukaRead" text="New"></a>
             </div>
              <div style="margin-bottom:10px" class="inputHide">
                  <label class="textbox-label textbox-label-left">chinesename:</label>
-                <input  id="chinese_name" name="chinese_name" class="easyui-textbox" readonly="" value="<?= @$row->chinesename ?>"   style="width:226px">
+                <input  id="chinese_name" name="chinesename" class="easyui-textbox" readonly="" value="<?= @$row->chinesename ?>"   style="width:226px">
             </div>
               <div style="margin-bottom:10px" class="inputHide">
                 <label class="textbox-label textbox-label-left">address:</label>
@@ -75,12 +75,11 @@
             </div>
             <div style="margin-bottom:10px">
                 <label class="textbox-label textbox-label-left">offering:</label>
-                <select name="offeringid"  labelPosition="left" class="easyui-combobox" required=""  style="width:226px;">
-                    <option value=""></option>
+                <select name="offeringid"  labelPosition="left" class="easyui-combobox" id="offeringid"  style="width:226px;">
                     <?php
                         foreach ($sqloffering as $rowform) {
                             ?>
-                                <option <?php if(@$row->offeringid==$rowform->parameter_key){echo "selected";} ?> value="<?= $rowform->parameter_key ?>"><?= $rowform->parameterid ?></option>
+                                <option  value="<?= $rowform->parameter_key ?>" <?php if(@$row->offeringid==$rowform->parameter_key){echo "selected";} ?>><?= $rowform->parameterid ?></option>
                             <?php
                         }
                     ?>
@@ -97,12 +96,12 @@
             <div style="margin-bottom:10px">
                 <label class="textbox-label textbox-label-left">offeringvalue:</label>
                 <span class="textbox" style="width: 226px;">
-                    <input id="offer"  name="offeringvalue" required=""   class="textbox-text validatebox-text auto-numeric" type="text" aria-describedby="amount" data-v-max="5000000000" data-v-min="0" data-a-sep="." data-a-dec=","  value="<?= @$row->offeringvalue ?>" style="text-align: right;width: 226px;">
+                    <input id="offer"  name="offeringvalue" required=""   class="textbox-text  auto-numeric" type="text" aria-describedby="amount" data-v-max="5000000000" data-v-min="0" data-a-sep="." data-a-dec=","  value="<?= @$row->offeringvalue ?>" style="text-align: right;width: 226px;">
                 </span>
             </div>
             <div style="margin-bottom:10px">
                 <label class="textbox-label textbox-label-left">Remark:</label><span class="textbox easyui-fluid textarea-custom" style="width: 226px;">
-                    <textarea name="remark"   class="textbox-text validatebox-text " style="width: 226px;white-space: pre-line;height: 100px;"><?=@$row->remark?></textarea>
+                    <textarea name="remark"   class="textbox-text  " style="width: 226px;white-space: pre-line;height: 100px;"><?=@$row->remark?></textarea>
                 </span>
             </div>
         </div>

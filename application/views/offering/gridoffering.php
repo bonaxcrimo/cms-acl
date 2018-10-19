@@ -184,10 +184,9 @@
         $('#fm').form('submit',{
             url: url,
             onSubmit: function(){
-                // return $(this).form('validate');
+                return $(this).form('validate');
             },
             success: function(result){
-                console.log(result);
                 $('#dlg').dialog('close');
                 $('#dgOffering').datagrid('reload');
             },error:function(error){
@@ -254,7 +253,6 @@
                 <thead>
                     <tr>
                         <th field="ck" checkbox="true"></th>
-
                         <th  field="member_key" hidden="true">Member Key</th>
                         <th field="offering_key" hidden="true"></th>
                         <th field="aksi" width="60">Aksi</th>

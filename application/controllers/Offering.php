@@ -89,8 +89,10 @@ class offering extends MY_Controller {
                 'status' => $status
             );
             echo json_encode($hasil);
+        }else{
+            $this->load->view('offering/edit',['row'=>$data,'sqloffering'=>$sqloffering]);
         }
-        $this->load->view('offering/edit',['row'=>$data,'sqloffering'=>$sqloffering]);
+
     }
     /**
      * Fungsi delete offering
