@@ -35,7 +35,7 @@
                 hidden:true
             }]);
     });
-    function newData(){
+    function newBesuk(){
         $('#dlgSaveBesuk').dialog({
             closed:false,
             title:'Tambah data',
@@ -47,7 +47,7 @@
             }
         });
     }
-    function editData(besukid){
+    function editBesuk(besukid){
         var row = besukid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').besukid:besukid;
         if (row!=''){
             $('#dlgSaveBesuk').dialog({
@@ -64,7 +64,7 @@
              $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
         }
     }
-    function viewData(besukid){
+    function viewBesuk(besukid){
         var row = besukid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').besukid:besukid;
         if (row!=''){
             $('#dlgView').dialog({
@@ -77,7 +77,7 @@
              $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
         }
     }
-    function deleteData(besukid){
+    function deleteBesuk(besukid){
         var row = besukid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').besukid:besukid;
         if (row!=''){
             $('#dlgSaveBesuk').dialog({
@@ -94,18 +94,18 @@
              $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
         }
     }
-    function saveData(){
+    function saveBesuk(){
         if(oper=="del"){
             $.messager.confirm('Confirm','Yakin akan menghapus data ?',function(r){
                 if (r){
-                    callSubmit();
+                    callBesuk();
                 }
             });
         }else{
-            callSubmit();
+            callBesuk();
         }
     }
-    function callSubmit(){
+    function callBesuk(){
         $('#fm').form('submit',{
             url: url,
             onSubmit: function(){
@@ -153,7 +153,7 @@
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgView').dialog('close')" style="width:90px">Cancel</a>
         </div>
         <div id="dlg-buttons-besuk">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px" id="btnSave">Save</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="callBesuk()" style="width:90px" id="btnSave">Save</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgSaveBesuk').dialog('close');$('#dlgSaveBesuk').html('')" style="width:90px">Cancel</a>
         </div>
     </div>

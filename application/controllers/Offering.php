@@ -41,19 +41,12 @@ class offering extends MY_Controller {
             $this->load->view('jemaat/gridoffering',$data);
         }
     }
-    /**
-     * Fungsi view offering
-     * @AclName View offering
-     */
-    public function view($offering_key=0){
-        $data['row'] = $this->moffering->getById('tbloffering','offering_key',$offering_key);
-        $this->load->view('offering/view',$data);
-    }
+
     /**
      * Fungsi add offering
      * @AclName Tambah offering
      */
-    public function add(){
+    public function add($member_key=null){
         $data=[];
         $sqloffering = getParameter('OFFERING');
         if($this->input->server('REQUEST_METHOD') == 'POST' ){
@@ -66,15 +59,28 @@ class offering extends MY_Controller {
             echo json_encode($hasil);
         }else{
             $data = $this->input->post();
-            $this->load->view('offering/add',['row'=>$data,'sqloffering'=>$sqloffering]);
+            $check=$member_key==null?0:$member_key;
+            $this->load->view('offering/add',['row'=>$data,'sqloffering'=>$sqloffering,'check'=>$check,'member_key'=>$member_key]);
         }
 
+    }
+    /**
+     * Fungsi view offering
+     * @AclName View offering
+     */
+    public function view($offering_key=0,$member_key=null){
+        $data = $this->moffering->getById('tbloffering','offering_key',$offering_key);
+        if(empty($data)){
+            redirect('offering');
+        }
+        $check=$member_key==null?0:$member_key;
+        $this->load->view('offering/view',['row'=>$data,'check'=>$check,'member_key'=>$member_key]);
     }
     /**
      * Fungsi edit offering
      * @AclName Edit offering
      */
-    public function edit($id){
+    public function edit($id,$member_key=null){
         $data = $this->moffering->getById('tbloffering','offering_key',$id);
         $sqloffering = getParameter('OFFERING');
         if(empty($data)){
@@ -90,7 +96,8 @@ class offering extends MY_Controller {
             );
             echo json_encode($hasil);
         }else{
-            $this->load->view('offering/edit',['row'=>$data,'sqloffering'=>$sqloffering]);
+            $check=$member_key==null?0:$member_key;
+            $this->load->view('offering/edit',['row'=>$data,'sqloffering'=>$sqloffering,'check'=>$check,'member_key'=>$member_key]);
         }
 
     }
@@ -98,7 +105,7 @@ class offering extends MY_Controller {
      * Fungsi delete offering
      * @AclName Delete offering
      */
-    public function delete($id){
+    public function delete($id,$member_key=null){
         $data = $this->moffering->getById('tbloffering','offering_key',$id);
         if(empty($data)){
             redirect('offering');
@@ -110,8 +117,11 @@ class offering extends MY_Controller {
                 'status' => $status
             );
             echo json_encode($hasil);
+        }else{
+            $check=$member_key==null?0:$member_key;
+            $this->load->view('offering/delete',['row'=>$data,'check'=>$check,'member_key'=>$member_key]);
         }
-        $this->load->view('offering/delete',['row'=>$data]);
+
     }
     private function _save($data){
         $data = array_map("strtoupper", $data);
@@ -145,77 +155,6 @@ class offering extends MY_Controller {
             'status' => $gagal==0?"Sukses":"Gagal"
         );
         return json_encode($hasil);
-    }
-    function crud(){
-        @$oper=@$_POST['oper'];
-        $_POST = array_map("strtoupper", $_POST);
-        @$offeringid=@$_POST['offeringid'];
-        @$row_status = @$_POST['row_status'];
-        @$offering_key = @$_POST['offering_key'];
-        @$transdate = $_POST['transdate'];
-        @$inputdate = $_POST['inputdate'];
-        @$aliasname2 = $_POST['aliasname2'];
-        @$offeringvalue = str_replace(".","",$_POST['offeringvalue']);
-        @$exp1 = explode('/',$transdate);
-        @$transdate = $exp1[2]."-".$exp1[0]."-".$exp1[1]." ".date("H:i:s");
-        @$exp2 = explode('/',$inputdate);
-        @$inputdate = $exp2[2]."-".$exp2[0]."-".$exp2[1]." ".date("H:i:s");
-        if($oper=="add"){
-            $noOffering = getTableWhere('tblparameter',array('parametergrpid'=>'FORMAT_NO','parameterid'=>'OFFERING'))[0];
-            $period = getTableWhere('tblparameter',array('parameter_key'=>$noOffering->parametermemo))[0];
-            $offerData = getDataPeriodly($period->parameterid,'tbloffering','inputdate','offeringno','desc');
-            if(count($offerData)==0){
-                $offeringno = bacaFormat($noOffering->parametertext,1);
-            }else{
-                $offerData = $offerData[0]->offeringno;
-                $pecah = explode("/",$offerData)[0];
-                $offeringno = bacaFormat($noOffering->parametertext,$pecah+1);
-            }
-        }else{
-            $this->db->where('offering_key',$offering_key);
-            $offerData = $this->db->get("tbloffering")->result()[0];
-            $offeringno = $offerData->offeringno;
-        }
-        @$data = array(
-            'member_key' => @$_POST['member_key'],
-            'offeringid' => @$offeringid,
-            'membername'=>@$_POST['member_name'],
-            'chinesename'=>@$_POST['chinese_name'],
-            'address'=>@$_POST['address'],
-            'handphone'=>@$_POST['handphone'],
-            'offeringno' => @$offeringno,
-            'transdate' => @$transdate,
-            'inputdate' =>@$inputdate,
-            'aliasname2'=>@$aliasname2,
-            'remark' => @$_POST['remark'],
-            'offeringvalue' =>$offeringvalue,
-            'row_status'=>@$row_status,
-            'modifiedby' => $_SESSION['username'],
-            'modifiedon' => date("Y-m-d H:i:s")
-            );
-        switch ($oper) {
-            case 'add':
-                $this->moffering->add("tbloffering",$data);
-                $hasil = array(
-                    'status' => 'sukses'
-                );
-                echo json_encode($hasil);
-                break;
-            case 'edit':
-                $this->moffering->edit("tbloffering",$data,$offering_key);
-                $hasil = array(
-                    'status' => 'sukses'
-                );
-                echo json_encode($hasil);
-                break;
-             case 'del':
-                $this->moffering->del("tbloffering",$offering_key);
-                $hasil = array(
-                    'status' => 'sukses'
-                );
-                echo json_encode($hasil);
-                break;
-        }
     }
     /**
      * grid offering
@@ -258,9 +197,9 @@ class offering extends MY_Controller {
             $edit='';
             $del='';
 
-            $view = hasPermission('offering','view')?'<button id='.$row->member_key.' class="icon-view_detail" onclick="viewOffering(\'view\',\''.$row->offering_key.'\',\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ':'';
-            $edit = hasPermission('offering','edit')?'<button id='.$row->member_key.' class="icon-edit" onclick="saveOffering(\'edit\',\''.$row->offering_key.'\',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ':'';
-            $del = hasPermission('offering','delete')?'<button id='.$row->member_key.' class="icon-remove" onclick="delOffering(\'del\','.$row->offering_key.',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button>':'';
+            $view = hasPermission('offering','view')?'<button class="icon-view_detail" onclick="viewOffer(\''.$row->offering_key.'\')" style="width:16px;height:16px;border:0"></button> ':'';
+            $edit = hasPermission('offering','edit')?'<button class="icon-edit" onclick="editOffer(\''.$row->offering_key.'\');" style="width:16px;height:16px;border:0"></button> ':'';
+            $del = hasPermission('offering','delete')?'<button  class="icon-remove" onclick="deleteOffer('.$row->offering_key.');" style="width:16px;height:16px;border:0"></button>':'';
             $print =hasPermission('offering','print')?'<button id='.$row->member_key.' class="icon-print" onclick="reportOffering(\''.$row->offering_key.'\',\''.$row->offeringno.'\')" style="width:16px;height:16px;border:0"></button> ':'';
 
             $row->aksi =$print.$view.$edit.$del;
@@ -317,9 +256,9 @@ class offering extends MY_Controller {
             $del='';
             $jumlah=0;
             if($status==""){
-                $view =hasPermission('offering','view')?'<button id='.$row->member_key.' class="icon-view_detail" onclick="viewData(\''.$row->offering_key.'\')" style="width:16px;height:16px;border:0"></button> ':'';
-                $edit = hasPermission('offering','edit')?'<button id='.$row->member_key.' class="icon-edit" onclick="editData(\''.$row->offering_key.'\');" style="width:16px;height:16px;border:0"></button> ':'';
-                $del = hasPermission('offering','delete')?'<button id='.$row->member_key.' class="icon-remove" onclick="deleteData('.$row->offering_key.');" style="width:16px;height:16px;border:0"></button>':'';
+                $view =hasPermission('offering','view')?'<button  class="icon-view_detail" onclick="viewOffer(\''.$row->offering_key.'\')" style="width:16px;height:16px;border:0"></button> ':'';
+                $edit = hasPermission('offering','edit')?'<button  class="icon-edit" onclick="editOffer(\''.$row->offering_key.'\');" style="width:16px;height:16px;border:0"></button> ':'';
+                $del = hasPermission('offering','delete')?'<button  class="icon-remove" onclick="deleteOffer('.$row->offering_key.');" style="width:16px;height:16px;border:0"></button>':'';
             }
             $print = hasPermission('offering','print')?'<button id='.$row->member_key.' class="icon-print" onclick="reportOffering(\''.$row->offering_key.'\',\''.$row->offeringno.'\')" style="width:16px;height:16px;border:0"></button> ':'';
             $print2 ='<button id='.$row->member_key.' class="icon-print" onclick="report(\''.$row->offering_key.'\',\''.$row->offeringno.'\')" style="width:16px;height:16px;border:0"></button> ';

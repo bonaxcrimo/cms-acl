@@ -1,4 +1,5 @@
 <script type="text/javascript">
+    var url,oper;
     $(document).ready(function(){
         var dgOffering = $("#dgOffering").datagrid(
             {
@@ -43,88 +44,101 @@
                 iconCls:'icon-add',
                 handler:function(){
                   var key = "<?php echo $member_key; ?>";
-                  saveOffering("add",null,key);
+                  newOffer();
                 }
             }]
         });
     });
-    function viewOffering(form,key,member_key){
-        page="<?php echo base_url(); ?>offering/form/"+form+"/"+key+"/"+member_key;
-         $("#dlgView").dialog({
-            closed:false,
-            title:"View Activity",
-            href:page,
-            height:350,
-            resizable:true,
-            autoResize:true
-        });
-    }
+
     function reportOffering(key,no){
         // window.open("<?php echo base_url(); ?>offering/report/"+key,'_blank');
         window.open("<?php echo base_url(); ?>rptjs/rptcoba.php?offering_key="+key+"&no="+no,'_blank');
     }
-    function saveOffering(form,key,member_key){
-        page="<?php echo base_url(); ?>offering/form/"+form+"/"+key+"/"+member_key;
-         var opr = form;
-        if(opr=="add"){
-            var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/add.png'><ul class='title'>Add Data</ul>";
-        }
-        else{
-            var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/edit.png'><ul class='title'>Edit Data</ul>";
-        }
-         $("#dlgSaveOffering").dialog({
+    function newOffer(){
+        $('#dlgSaveOffering').dialog({
             closed:false,
-            title:oprtr,
-            href:page,
-            height:350,
-            resizable:true,
-            autoResize:true
-        });
-    }
-    function saveProsesOffering(){
-            return $.ajax({
-                type: $("#formdataoffering").attr("method"),
-                url: $("#formdataoffering").attr("action"),
-                enctype: 'multipart/form-data',
-                data : $("#formdataoffering").serialize(),
-                dataType: "json",
-                async: true,
-                success: function(data) {
-                    $("#dlgSaveOffering").dialog('close');
-                    $("#dgOffering").datagrid('reload');
-                }
-            }).responseText
-    }
-    function delOffering(form,key,member_key){
-        page="<?php echo base_url(); ?>offering/form/"+form+"/"+key+"/"+member_key;
-        $("#dlgDeleteOffering").dialog({
-            closed:false,
-            title:"Delete Data",
-            href:page,
-            height:350,
-            resizable:true,
-            autoResize:true
-        });
-    }
-    function deleteProsesOffering(){
-        $.messager.confirm('Confirm','Yakin ingin menghapus data?',function(r){
-        if (r){
-               return $.ajax({
-                type: $("#formdeletedataoffering").attr("method"),
-                url: $("#formdeletedataoffering").attr("action"),
-                enctype: 'multipart/form-data',
-                data : $("#formdeletedataoffering").serialize(),
-                dataType: "json",
-                async: true,
-                success: function(data) {
-                    $("#dlgDeleteOffering").dialog('close');
-                    $("#dgOffering").datagrid('reload');
-                },error:function(err){
-                    console.log(err);
-                }
-                }).responseText
+            title:'Tambah data',
+            href:'<?php echo base_url(); ?>offering/add/<?= @$member_key ?>',
+            onLoad:function(){
+                 url = '<?= base_url() ?>offering/add/<?= @$member_key ?>';
+                 oper='';
+                  $("#btnOffer span span.l-btn-text").text("Save");
             }
         });
+    }
+    function editOffer(offering_key){
+        var row = offering_key==undefined?$('#dgOffering').datagrid('getSelected')==undefined?'':$('#dgOffering').datagrid('getSelected').offering_key:offering_key;
+        if (row!=''){
+            $('#dlgSaveOffering').dialog({
+                closed:false,
+                title:'Edit Data',
+                href:'<?php echo base_url(); ?>offering/edit/'+row+'/<?= @$member_key ?>',
+                onLoad:function(){
+                    url = '<?= base_url() ?>offering/edit/'+row+'/<?= @$member_key ?>';
+                    oper='';
+                     $("#btnOffer span span.l-btn-text").text("Save");
+                }
+            });
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
+    function viewOffer(offering_key){
+        var row = offering_key==undefined?$('#dgOffering').datagrid('getSelected')==undefined?'':$('#dgOffering').datagrid('getSelected').offering_key:offering_key;
+        if (row!=''){
+            $('#dlgView').dialog({
+                closed:false,
+                title:'View data',
+                href:'<?php echo base_url(); ?>offering/view/'+row+'/<?= @$member_key ?>'
+            });
+
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
+    function deleteOffer(offering_key){
+        console.log(offering_key);
+        var row = offering_key==undefined?$('#dgOffering').datagrid('getSelected')==undefined?'':$('#dgOffering').datagrid('getSelected').offering_key:offering_key;
+        if (row!=''){
+            $('#dlgSaveOffering').dialog({
+                closed:false,
+                title:'Delete data',
+                href:'<?php echo base_url(); ?>offering/delete/'+row+'/<?= @$member_key ?>',
+                onLoad:function(){
+                    url = '<?= base_url() ?>offering/delete/'+row+'/<?= @$member_key ?>';
+                    oper="del";
+                    $("#btnOffer span span.l-btn-text").text("Delete");
+                }
+            });
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
+    function callOffer(){
+        console.log("callSubmit");
+        $('#fm').form('submit',{
+            url: url,
+            onSubmit: function(){
+                return $(this).form('validate');
+            },
+            success: function(result){
+                $('#dlgSaveOffering').dialog('close');
+                $('#dgOffering').datagrid('reload');
+            },error:function(error){
+                 console.log($(this).serialize());
+            }
+        });
+    }
+    function saveOffer(){
+        if(oper=="del"){
+            $.messager.confirm('Confirm','Yakin akan menghapus data ?',function(r){
+                if (r){
+                    callOffer();
+                }
+            });
+        }else{
+            callOffer();
+        }
     }
 
 </script>
@@ -151,12 +165,6 @@
 <div id="dlgSaveOffering" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-offering'">
 </div>
 <div id="dlg-buttons-offering">
-    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveProsesOffering()" style="width:90px">Save</a>
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
-</div>
-<div id="dlgDeleteOffering" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-offering1'">
-</div>
-<div id="dlg-buttons-offering1">
-    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="deleteProsesOffering()" style="width:90px">Delete</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveOffer()" style="width:90px" id="btnOffer">Save</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
 </div>

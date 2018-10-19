@@ -101,7 +101,7 @@
                     iconCls:'icon-add',
                     handler:function(){
                       var key = 0;
-                      newData();
+                      newOffer();
                     }
                 },{
                     text:'Cetak Laporan',
@@ -120,7 +120,7 @@
     function reportOffering(key,no){
         window.open("<?php echo base_url(); ?>rptjs/rptcoba.php?offering_key="+key+"&no="+no,'_blank');
     }
-    function newData(){
+    function newOffer(){
         $('#dlg').dialog({
             closed:false,
             title:'Tambah data',
@@ -132,7 +132,7 @@
             }
         });
     }
-    function editData(offering_key){
+    function editOffer(offering_key){
         var row = offering_key==undefined?$('#dgOffering').datagrid('getSelected')==undefined?'':$('#dgOffering').datagrid('getSelected').offering_key:offering_key;
         if (row!=''){
             $('#dlg').dialog({
@@ -149,7 +149,7 @@
              $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
         }
     }
-    function viewData(offering_key){
+    function viewOffer(offering_key){
         var row = offering_key==undefined?$('#dgOffering').datagrid('getSelected')==undefined?'':$('#dgOffering').datagrid('getSelected').offering_key:offering_key;
         if (row!=''){
             $('#dlgView').dialog({
@@ -162,7 +162,7 @@
              $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
         }
     }
-    function deleteData(offering_key){
+    function deleteOffer(offering_key){
         var row = offering_key==undefined?$('#dgOffering').datagrid('getSelected')==undefined?'':$('#dgOffering').datagrid('getSelected').offering_key:offering_key;
         if (row!=''){
             $('#dlg').dialog({
@@ -179,7 +179,7 @@
              $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
         }
     }
-    function callSubmit(){
+    function callOffer(){
         console.log("callSubmit");
         $('#fm').form('submit',{
             url: url,
@@ -195,15 +195,15 @@
             }
         });
     }
-    function saveData(){
+    function saveOffer(){
         if(oper=="del"){
             $.messager.confirm('Confirm','Yakin akan menghapus data ?',function(r){
                 if (r){
-                    callSubmit();
+                    callOffer();
                 }
             });
         }else{
-            callSubmit();
+            callOffer();
         }
     }
 
@@ -245,7 +245,7 @@
             <div id="dlg" class="easyui-dialog" style="width:640px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-offering'">
             </div>
             <div id="dlg-buttons-offering">
-                <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px" id="btnSave">Save</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveOffer()" style="width:90px" id="btnSave">Save</a>
                 <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
             </div>
         </div>

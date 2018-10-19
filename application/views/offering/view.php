@@ -1,3 +1,6 @@
+<?php
+    if($check==0){
+?>
 <div style="margin:0;padding: 20px;">
     <input type="hidden" name="member_key" value="<?php echo @$member_key ?>">
     <div  class="row">
@@ -57,3 +60,4 @@
         </div>
     </div>
 </div>
+<?php }else{ $this->load->view('jemaat/offering/view'); } ?>

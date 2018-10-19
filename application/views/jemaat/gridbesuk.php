@@ -34,7 +34,7 @@
                 hidden:true
             }]);
     });
-    function newData(){
+    function newBesuk(){
         $('#dlgSaveBesuk').dialog({
             closed:false,
             title:'Tambah data',
@@ -46,7 +46,7 @@
             }
         });
     }
-    function editData(besukid){
+    function editBesuk(besukid){
         var row = besukid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').besukid:besukid;
         if (row!=''){
             $('#dlgSaveBesuk').dialog({
@@ -63,7 +63,7 @@
              $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
         }
     }
-    function viewData(besukid){
+    function viewBesuk(besukid){
         var row = besukid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').besukid:besukid;
         if (row!=''){
             $('#dlgView').dialog({
@@ -76,7 +76,7 @@
              $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
         }
     }
-    function deleteData(besukid){
+    function deleteBesuk(besukid){
         var row = besukid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').besukid:besukid;
         if (row!=''){
             $('#dlgDeleteBesuk').dialog({
@@ -93,18 +93,18 @@
              $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
         }
     }
-    function saveData(){
+    function saveBesuk(){
         if(oper=="del"){
             $.messager.confirm('Confirm','Yakin akan menghapus data ?',function(r){
                 if (r){
-                    callSubmit();
+                    callBesuk();
                 }
             });
         }else{
-            callSubmit();
+            callBesuk();
         }
     }
-    function callSubmit(){
+    function callBesuk(){
         console.log(url);
         $('#fm').form('submit',{
             url: url,
@@ -147,10 +147,10 @@
 <div id="dlgDeleteBesuk" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-delete-besuk'">
 </div>
 <div id="dlg-buttons-besuk">
-    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px">Save</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveBesuk()" style="width:90px">Save</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px" id="btnSave">Cancel</a>
 </div>
 <div id="dlg-delete-besuk">
-    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px">Delete</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveBesuk()" style="width:90px">Delete</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
 </div>

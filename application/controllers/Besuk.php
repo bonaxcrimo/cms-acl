@@ -102,9 +102,9 @@ class Besuk extends MY_Controller {
 		$offset = ($page - 1) * $rows;
 		$data = $this->mbesuk->get($cond,$sort,$order,$rows,$offset)->result();
 		foreach($data as $row){
-			$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewData(\''.$row->besukid.'\')" style="width:16px;height:16px;border:0"></button> ';
-			$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="editData(\''.$row->besukid.'\');" style="width:16px;height:16px;border:0"></button> ';
-			$del = '<button id='.$row->member_key.' class="icon-remove" onclick="deleteData(\''.$row->besukid.'\');" style="width:16px;height:16px;border:0"></button>';
+			$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewBesuk(\''.$row->besukid.'\')" style="width:16px;height:16px;border:0"></button> ';
+			$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="editBesuk(\''.$row->besukid.'\');" style="width:16px;height:16px;border:0"></button> ';
+			$del = '<button id='.$row->member_key.' class="icon-remove" onclick="deleteBesuk(\''.$row->besukid.'\');" style="width:16px;height:16px;border:0"></button>';
 			$row->aksi =$view.$edit.$del;
 			$row->besukdate=$row->besukdate=="00-00-0000"?"-":$row->besukdate;
 		}
@@ -149,9 +149,9 @@ class Besuk extends MY_Controller {
 		$offset = ($page - 1) * $rows;
 		$data = $this->mbesuk->get($cond,$sort,$order,$rows,$offset)->result();
 		foreach($data as $row){
-			$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewData(\''.$row->besukid.'\')" style="width:16px;height:16px;border:0"></button> ';
-			$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="editData(\''.$row->besukid.'\');" style="width:16px;height:16px;border:0"></button> ';
-			$del = '<button id='.$row->member_key.' class="icon-remove" onclick="deleteData(\''.$row->besukid.'\');" style="width:16px;height:16px;border:0"></button>';
+			$view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewBesuk(\''.$row->besukid.'\')" style="width:16px;height:16px;border:0"></button> ';
+			$edit = '<button id='.$row->member_key.' class="icon-edit" onclick="editBesuk(\''.$row->besukid.'\');" style="width:16px;height:16px;border:0"></button> ';
+			$del = '<button id='.$row->member_key.' class="icon-remove" onclick="deleteBesuk(\''.$row->besukid.'\');" style="width:16px;height:16px;border:0"></button>';
 			$row->aksi =$view.$edit.$del;
 			$row->besukdate=$row->besukdate=="00-00-0000"?"-":$row->besukdate;
 		}

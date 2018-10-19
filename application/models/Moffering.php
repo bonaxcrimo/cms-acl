@@ -7,8 +7,10 @@ Class Moffering extends MY_Model{
         $data['modifiedby'] = $_SESSION['username'];
         $offering_value = str_replace(".","",$data['offeringvalue']);
         $data['offeringvalue']=$offering_value;
+        $transdate= $data['transdate'];
         @$exp1 = explode('/',$transdate);
         @$transdate = $exp1[2]."-".$exp1[0]."-".$exp1[1]." ".date("H:i:s");
+        $inputdate =  $data['inputdate'];
         @$exp2 = explode('/',$inputdate);
         @$inputdate = $exp2[2]."-".$exp2[0]."-".$exp2[1]." ".date("H:i:s");
         $data['transdate'] = $transdate;

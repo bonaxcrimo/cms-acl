@@ -12,10 +12,6 @@
     <input type="hidden" name="member_key" value="<?php echo @$member_key ?>">
     <div  class="row">
 <?php
-    @$query=("SELECT *, DATE_FORMAT(transdate,'%d-%m-%Y') transdate,
-         DATE_FORMAT(inputdate,'%d-%m-%Y') inputdate,
-        DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon FROM tbloffering WHERE offering_key=".$offering_key." LIMIT 0,1");
-    @$row=queryCustom($query);
     @$exp1 = explode('-',$row->transdate);
     @$transdate = $exp1[1]."/".$exp1[0]."/".$exp1[2];
     @$exp2 = explode('-',$row->inputdate);
@@ -47,12 +43,12 @@
         </div>
         <div style="margin-bottom:10px">
             <label class="textbox-label textbox-label-left">offeringvalue:</label><span class="textbox easyui-fluid" style="width: 200px">
-                <input id="offer"  name="offeringvalue"   class="textbox-text validatebox-text auto-numeric" type="text" aria-describedby="amount" data-v-max="5000000000" data-v-min="0" data-a-sep="." data-a-dec=","  value="<?= @$row->offeringvalue ?>" style="text-align: right;width: 200px;">
+                <input id="offer"  name="offeringvalue"  class="textbox-text auto-numeric" type="text" aria-describedby="amount" data-v-max="5000000000" data-v-min="0" data-a-sep="." data-a-dec=","  value="<?= @$row->offeringvalue ?>" style="text-align: right;width: 200px;">
             </span>
         </div>
         <div style="margin-bottom:10px">
             <label class="textbox-label textbox-label-left">Remark:</label><span class="textbox easyui-fluid" style="width: 200px">
-                <textarea name="remark"   class="textbox-text validatebox-text" style="width:200px;white-space: pre-line;height: 100px;"><?=@$row->remark?></textarea>
+                <textarea name="remark"   class="textbox-text" style="width:200px;white-space: pre-line;height: 100px;"><?=@$row->remark?></textarea>
             </span>
         </div>
     </div>

@@ -2,10 +2,6 @@
     <input type="hidden" name="member_key" value="<?php echo @$member_key ?>">
     <div  class="row">
         <?php
-            @$query=("SELECT *, DATE_FORMAT(transdate,'%d-%m-%Y') transdate,
-            DATE_FORMAT(inputdate,'%d-%m-%Y') inputdate,
-            DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon FROM tbloffering WHERE offering_key=".$offering_key." LIMIT 0,1");
-            @$row=queryCustom($query);
             @$exp1 = explode('-',$row->transdate);
             @$transdate = $exp1[1]."/".$exp1[0]."/".$exp1[2];
             @$exp2 = explode('-',$row->inputdate);
