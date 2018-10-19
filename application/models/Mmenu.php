@@ -39,7 +39,7 @@ class Mmenu extends MY_Model
         return $this->db->delete($this->table);
     }
 	private function _preFormat($data){
-    	$fields = ['menuname','menuseq','menuparent','menuicon','acoid','modifiedon','modifiedby'];
+    	$fields = ['menuname','menuseq','menuparent','menuicon','acoid','modifiedon','modifiedby','link'];
     	$save = [];
     	foreach($fields as $val){
     		if(isset($data[$val])){

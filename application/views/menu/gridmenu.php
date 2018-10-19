@@ -154,6 +154,7 @@
                     <th field="menuparent" width="5%" sortable="true">menuparent</th>
                     <th field="menuicon" width="10%" sortable="true">menuicon</th>
                     <th field="acoid" width="10%" sortable="true">route</th>
+                    <th field="link" width="10%" sortable="true">link</th>
                     <th field="modifiedby" width="5%" sortable="true">modifiedby</th>
                     <th field="modifiedon" width="10%" sortable="true">modifiedon</th>
                 </tr>
