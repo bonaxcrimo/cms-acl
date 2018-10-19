@@ -52,8 +52,12 @@ Class Moffering extends MY_Model{
         }
     }
     public function delete($id){
-        $this->db->where(['offering_key'=>$id]);
-        return $this->db->delete($this->table);
+        $query = $this->db->where("offering_key",$id);
+        $data = array(
+            'row_status' => 'D'
+        );
+        $sql = $this->db->update($this->table,$data);
+        return $sql;
     }
     private function _preFormat($data){
         $fields = ['member_key','offeringid','membername','chinesename','address','handphone','offeringno','transdate','inputdate','aliasname2','remark','offeringvalue','row_status','modifiedon','modifiedby'];

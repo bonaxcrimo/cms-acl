@@ -189,6 +189,7 @@
             success: function(result){
                 $('#dlg').dialog('close');
                 $('#dgOffering').datagrid('reload');
+                $('#dgOfferingDeleted').datagrid('reload');
             },error:function(error){
                  console.log($(this).serialize());
             }
