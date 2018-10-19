@@ -66,6 +66,10 @@ class UserAcl extends MY_Controller{
         $this->form_validation->set_rules($rules);
         return $this->form_validation->run();
     }
+    /**
+     * Fungsi grid user acl
+     * @AclName grid  Acl
+     */
     public function grid($userpk){
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;

@@ -9,7 +9,7 @@
                 singleSelect:true,
                 remoteSort:true,
                 clientPaging: false,
-                url:"<?php echo base_url()?>profile/grid2",
+                url:"<?php echo base_url()?>profile/grid",
                 method:'get',
                 onClickRow:function(index,row){
                 },onLoadSuccess:function(){
@@ -114,7 +114,7 @@
         }
     }
     function callProfile(){
-        $('#fm').form('submit',{
+        $('#fmProfile').form('submit',{
             url: url,
             onSubmit: function(){
                 return $(this).form('validate');

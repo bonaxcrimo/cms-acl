@@ -9,13 +9,19 @@ class Profil extends MY_Controller {
 			['muser','mprofil']
 		);
 	}
-
-	function index(){
+	/**
+     * Fungsi awal profil user
+     * @AclName profil
+     */
+	public function index(){
 		$data['row'] = $this->mprofil->get($_SESSION['userpk'])->row();
         $this->render('profil/view',$data);
 	}
-
-	function editpassword(){
+	/**
+     * Fungsi edit password user
+     * @AclName editpassword
+     */
+	public function editpassword(){
 		$userpk = $_SESSION['userpk'];
 		$password = $_SESSION['password'];
 		$password1 = md5($_POST['password']);

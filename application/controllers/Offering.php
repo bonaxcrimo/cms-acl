@@ -41,7 +41,6 @@ class offering extends MY_Controller {
             $this->load->view('jemaat/gridoffering',$data);
         }
     }
-
     /**
      * Fungsi add offering
      * @AclName Tambah offering
@@ -127,15 +126,7 @@ class offering extends MY_Controller {
         $data = array_map("strtoupper", $data);
         return $this->moffering->save($data);
     }
-     function form($form,$offering_key,$member_key,$tabs=1){
-        $data["offering_key"] = $offering_key;
-        $data["member_key"] = $member_key;
-        $data['sqloffering'] = getParameter('OFFERING');
-        $data['sql'] = @$this->moffering->getwhere($member_key)->result()[0];
-        $data['form'] = $form;
-        $view = $tabs==0?'offering/':'jemaat/offering/';
-        $this->load->view($view.$form,$data);
-    }
+
     /**
      * restore offering
      * @AclName restore offering yang dihapus
@@ -157,10 +148,10 @@ class offering extends MY_Controller {
         return json_encode($hasil);
     }
     /**
-     * grid offering
-     * @AclName grid Offering di Jemaat
+     * grid  Offering di Jemaat
+     * @AclName grid jemaat
      */
-    function grid($member_key){
+    public function gridJemaat($member_key){
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
         $sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'offering_key';
@@ -215,7 +206,7 @@ class offering extends MY_Controller {
      * grid offering
      * @AclName grid Offering
      */
-    function grid2($status=""){
+    public function grid($status=""){
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
         $sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'offering_key';
@@ -307,18 +298,6 @@ class offering extends MY_Controller {
         }
 
     }
-    public function printupdate(){
-        $no = $_POST['noOffering'];
-        $sql="update tbloffering set printedon = '".date("Y-m-d H:i:s")."',printedby='".$_SESSION['username']."' where offering_key= ".$no;
-        $check = $this->db->query($sql);
-        $gagal=0;
-        if(!$check){
-            $gagal=1;
-        }
-        $hasil = array(
-            'status' => $gagal==0?"Sukses":"Gagal"
-        );
-        echo json_encode($hasil);
-    }
+
 }
 ?>

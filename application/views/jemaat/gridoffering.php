@@ -9,7 +9,7 @@
                 singleSelect:true,
                 remoteSort:true,
                 clientPaging: false,
-                url:"<?php echo base_url()?>offering/grid/<?php echo $member_key; ?>",
+                url:"<?php echo base_url()?>offering/gridJemaat/<?php echo $member_key; ?>",
                 method:'get',
                 onClickRow:function(index,row){
                 },onBeforeLoad:function(){
@@ -116,7 +116,7 @@
     }
     function callOffer(){
         console.log("callSubmit");
-        $('#fm').form('submit',{
+        $('#fmOffer').form('submit',{
             url: url,
             onSubmit: function(){
                 return $(this).form('validate');

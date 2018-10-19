@@ -144,10 +144,10 @@ class Menu extends MY_Controller {
 	function excel(){
 	}
 	/**
-     * Fungsi reseq
+     * Fungsi re sequence
      * @AclName Re sequence
      */
-	function reseq(){
+	public function reseq(){
 		return $this->mmenu->reseq();
 	}
 

@@ -24,7 +24,7 @@
                     iconCls:'icon-add',
                     handler:function(){
                         var key = "<?php echo $member_key; ?>";
-                        newData();
+                        newBesuk();
                     }
                 }]
             });
@@ -106,7 +106,7 @@
     }
     function callBesuk(){
         console.log(url);
-        $('#fm').form('submit',{
+        $('#fmBesuk').form('submit',{
             url: url,
             onSubmit: function(){
                 return $(this).form('validate');

@@ -340,7 +340,7 @@
                     }else{
                         $('#loading').html('<img src="<?php echo base_url(); ?>libraries/img/loading.gif">');
                         $.ajaxFileUpload({
-                           url: "<?php echo base_url(); ?>tb/uploadWA/"+result.photofile,
+                           url: "<?php echo base_url(); ?>extension/uploadWA/"+result.photofile,
                             secureuri: false,
                             fileElementId: "photofile",
                             dataType: "json",
@@ -404,7 +404,7 @@
         var checkedRows = $('#dgJemaat').datagrid('getChecked');
         $.ajax({
             type: "POST",
-            url:"<?php echo base_url()?>tb/makeRelation",
+            url:"<?php echo base_url()?>jemaat/makeRelation",
             enctype: 'multipart/form-data',
             data : {
                 dataMember:JSON.stringify(checkedRows),

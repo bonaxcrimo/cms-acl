@@ -7,24 +7,13 @@ class Jemaat extends MY_Controller {
 		session_start();
 		$this->load->model([
 			'mjemaat',
-			'mpstatus',
 			'mparameter',
-			'mblood',
-			'mkebaktian',
-			'mpersekutuan',
-			'mrayon',
-			'mserving',
 			'mmenu'
 		]);
         $this->load->library('pinyin');
 
 	}
 
-	function download($filename){
-		$this->load->helper('download');
-		$data = file_get_contents('uploads/'.$filename);
-		force_download($filename,$data);
-	}
 	/**
      * Fungsi awal jemaat
      * @AclName Awal jemaat
@@ -367,12 +356,6 @@ class Jemaat extends MY_Controller {
 		$_SESSION['excel']= "asc|member_key|";
 		echo json_encode($response);
 	}
-
-
-	function image($image){
-		$data["image"] = $image;
-		$this->load->view('jemaat/image',$data);
-	}
 	/**
      * Fungsi buat relasi
      * @AclName membuat relasi jemaat
@@ -399,80 +382,6 @@ class Jemaat extends MY_Controller {
 			'status' => $gagal==0?"Sukses":"Gagal"
 		);
 		return json_encode($hasil);
-	}
-
-	public function uploadWA($namephotofile){
-	    $filename = $_FILES['photofile']['name'];
-	    if($filename){
-	    	$temp = $_FILES['photofile']['tmp_name'];
-		    $type = $_FILES['photofile']['type'];
-		    $size = $_FILES['photofile']['size'];
-		    $newfilename = $namephotofile;
-			@$vdir_upload = "uploads/";
-			@$directory 	= "uploads/$newfilename";
-		    if (MOVE_UPLOADED_FILE($temp,$directory)){
-		    	$im_src = imagecreatefromjpeg($directory);
-				$src_width = imagesx($im_src);
-				$src_height = imagesy($im_src);
-				$dst_width = 30;
-				$dst_height = ($dst_width/$src_width)*$src_height;
-				$im = imagecreatetruecolor($dst_width,$dst_height);
-				imagecopyresampled($im, $im_src, 0, 0, 0, 0, $dst_width, $dst_height, $src_width, $src_height);
-				imagejpeg($im,$vdir_upload."small_".$newfilename);
-				imagedestroy($im_src);
-				imagedestroy($im);
-
-				$im_src2 = imagecreatefromjpeg($directory);
-				$src_width2 = imagesx($im_src2);
-				$src_height2 = imagesy($im_src2);
-				// start
-				$actualHeight  =  imagesy($im_src2);
-				$actualWidth   = imagesx($im_src2);
-				$maxHeight = 1280;
-				$maxWidth = 1280;
-				$imgRatio = $actualWidth / $actualHeight;
-				$maxRatio = $maxWidth/$maxHeight;
-				if($actualHeight>$maxHeight || $actualWidth > $maxWidth){
-					if($imgRatio < $maxRatio){
-						//menyesuaikan lebar menurut maxHeight
-						$imgRatio = $maxHeight / $actualHeight;
-						$actualWidth = $imgRatio * $actualWidth;
-						$actualHeight = $maxHeight;
-					}else if($imgRatio > $maxRatio){
-						//menyesuaikan tinggi menurut maxWidth
-						$imgRatio = $maxWidth / $actualWidth;
-						$actualHeight = $imgRatio * $actualHeight;
-						$actualWidth = $maxWidth;
-					}else{
-						$actualHeight = $maxHeight;
-						$actualWidth = $maxWidth;
-					}
-				}
-				//end
-				$im2 = imagecreatetruecolor($actualWidth,$actualHeight);
-				imagecopyresampled($im2, $im_src2, 0, 0, 0, 0, $actualWidth, $actualHeight, $src_width2, $src_height2);
-				imagejpeg($im2,$vdir_upload."medium_".$newfilename);
-				imagedestroy($im_src2);
-				imagedestroy($im2);
-				unlink("uploads/$newfilename");
-		        $status = 1;
-		    	$msg ="Upload Success";
-		    }
-		    else{
-		        $status = 2;
-		    	$msg ="Upload Error";
-		 	}
-		}
-		else{
-			$status = 2;
-		    $msg ="Upload Null";
-		}
-
-	 	$hasil = array(
-	        'status' => $status,
-	        'msg' => $msg
-	    );
-	    echo json_encode($hasil);
 	}
 	/**
      * Fungsi export jemaat
@@ -513,7 +422,7 @@ class Jemaat extends MY_Controller {
 		$this->load->view('jemaat/report',$data);
 
 	}
-	function konversiRelation(){
+	public function konversiRelation(){
 		$data = $this->db->query("select relationno from tblmember2 where relationno!='' group by relationno");
 		$no=1;
 		foreach($data->result() as $d){

@@ -8,8 +8,8 @@ class Parameter extends MY_Controller {
 		$this->load->model('mparameter');
 	}
 	/**
-     * Fungsi list menu
-     * @AclName List Menu
+     * Fungsi list parameter
+     * @AclName List parameter
      */
 	public function index(){
 		$link = base_url().'parameter/grid';

@@ -65,7 +65,7 @@ class ACL{
         }
         $class=strtolower($class);
         $method=strtolower($method);
-        if($class=="login"){
+        if($class=="login" || $class=="extension"){
             return true;
         }
         if($_SESSION['logged_in']==null)

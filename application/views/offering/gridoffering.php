@@ -10,7 +10,7 @@
                     singleSelect:true,
                     remoteSort:true,
                     clientPaging: false,
-                    url:"<?php echo base_url()?>offering/grid2",
+                    url:"<?php echo base_url()?>offering/grid",
                     method:'get',
                     onClickRow:function(index,row){
                     },
@@ -33,7 +33,7 @@
                     checkOnSelect: false,
                     selectOnCheck: false,
                     clientPaging: false,
-                    url:"<?php echo base_url()?>offering/grid2/D",
+                    url:"<?php echo base_url()?>offering/grid/D",
                     method:'get',
                     onClickRow:function(index,row){
                     }
@@ -181,7 +181,7 @@
     }
     function callOffer(){
         console.log("callSubmit");
-        $('#fm').form('submit',{
+        $('#fmOffer').form('submit',{
             url: url,
             onSubmit: function(){
                 return $(this).form('validate');

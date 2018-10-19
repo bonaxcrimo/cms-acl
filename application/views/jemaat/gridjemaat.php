@@ -32,7 +32,7 @@
                     var relationno = row.relationno;
                     relasi(relationno);
                     var member_key = row.member_key;
-                    besuk(member_key);
+                    setMember(member_key);
 
                  },onLoadSuccess:function(data){
                     var opts = $(this).datagrid('options');
@@ -376,7 +376,7 @@
                         $('#loading').html('<img src="<?php echo base_url(); ?>libraries/img/loading.gif">');
                         if(result.photofile!=""){
                             $.ajaxFileUpload({
-                               url: "<?php echo base_url(); ?>jemaat/uploadWA/"+result.photofile,
+                               url: "<?php echo base_url(); ?>extension/uploadWA/"+result.photofile,
                                 secureuri: false,
                                 fileElementId: "photofile",
                                 dataType: "json",
@@ -470,7 +470,7 @@
         $('#dlgView').dialog({
             closed:false,
             title:'Zoom Photo',
-            href:'<?php echo base_url(); ?>jemaat/image/'+image,
+            href:'<?php echo base_url(); ?>extension/image/'+image,
             onLoad:function(){
             }
         });
@@ -482,9 +482,9 @@
         $('#datarelasi').html('<img src="<?php echo base_url()?>libraries/img/loading.gif">').load(page);
     }
 
-    function besuk(member_key){
+    function setMember(member_key){
         $.ajax({
-            url:"<?php echo base_url(); ?>besuk/set/?member_key="+member_key,
+            url:"<?php echo base_url(); ?>extension/set/?member_key="+member_key,
             success:function(data){
             }
         });

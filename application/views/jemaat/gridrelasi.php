@@ -9,7 +9,7 @@
                 singleSelect:true,
                 remoteSort:true,
                 clientPaging: false,
-                url:"<?= base_url() ?>relasi/grid2/<?= $relationno ?>",
+                url:"<?= base_url() ?>relasi/grid/<?= $relationno ?>",
                 method:'get'
             });
         var pagerRelasi = dgRelasi.datagrid('getPager');    // get the pager of datagrid

@@ -45,9 +45,6 @@ class Login extends MY_Controller {
         }
 
 	}
-    // public function index2(){
-    //      $this->render('loginnew');
-    // }
     /**
      * Fungsi logout
      * @AclName Logout

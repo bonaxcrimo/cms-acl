@@ -7,25 +7,13 @@ class Tb extends MY_Controller {
 		session_start();
 		$this->load->model([
 			'mtb',
-			'mpstatus',
-			'mparameter',
-			'mblood',
-			'mkebaktian',
-			'mpersekutuan',
-			'mrayon',
-			'mserving',
 			'mmenu',
 			'mjemaat'
 		]);
 	}
 
-	function download($filename){
-		$this->load->helper('download');
-		$data = file_get_contents('uploads/'.$filename);
-		force_download($filename,$data);
-	}
 
-	function index(){
+	public function index(){
 		$data = array_merge( $this->_parameter(),$this->_combo());
 		$this->render('tb/gridjemaat',$data);
 	}
@@ -130,7 +118,11 @@ class Tb extends MY_Controller {
 		}
 
 	}
-	function grid(){
+	/**
+     * Fungsi grid tb
+     * @AclName grid tb
+     */
+	public function grid(){
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
 		$sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'member_key';
@@ -143,13 +135,6 @@ class Tb extends MY_Controller {
 			$cond = ' where 1=1 ';
 			$filterRules = json_decode($filterRules);
 			$where = "";
-			// if($status=="m"){
-			// 	$where = " and status_key = 9 ";
-			// }else if($status=="pi"){
-			// 	$where = " and grp_pi=1 ";
-			// }else{
-			// 	$where = " and status_key = 18 ";
-			// }
 			foreach($filterRules as $rule){
 				$rule = get_object_vars($rule);
 				$field = $rule['field'];
@@ -237,312 +222,11 @@ class Tb extends MY_Controller {
 		$_SESSION['exceltb']= "asc|member_key|".$cond;
 		echo json_encode($response);
 	}
-
-
-	function image($image){
-		$data["image"] = $image;
-		$this->load->view('jemaat/image',$data);
-	}
-	function form($form,$member_key,$formname){
-		$data['grp_pi'] = $this->uri->segment(6);
-		$data['sqlgender'] = getParameter('GENDER');
-		$data['sqlpstatus'] = getParameter('PSTATUS');
-		$data['sqlblood'] =getParameter('BLOOD');
-		$data['sqlkebaktian'] = getParameter('KEBAKTIAN');
-		$data['sqlpersekutuan'] = getParameter('PERSEKUTUAN');
-		$data['sqlrayon'] =getParameter('RAYON');
-		$data['sqlserving'] =getParameter('SERVING');
-		$data['sqlstatusid'] =getParameter('STATUS');
-		$data['formname'] = $formname;
-		if($member_key!=null || $member_key!=""){
-			$sql= $this->mjemaat->getwhere($member_key);
-			$count = $sql->num_rows();
-			$data["member_key"] = $member_key;
-		}
-		$this->load->view('tb/'.$form,$data);
-	}
-	function makeRelation(){
-		$json = $_POST['dataMember'];
-		$rel = $_POST['dataRel'];
-		$data = json_decode($json);
-		$checkRel = $this->db->query("select * from tblmember where relationno=".$rel)->result();
-		$lastNumber = $rel;
-		if(count($checkRel)==0){
-			$lastNum = $this->db->query("select relationno from tblmember order by relationno desc")->result();
-			$lastNumber= count($lastNum)>0?$lastNum[0]->relationno+1:1;
-		}
-		$gagal=0;
-		foreach($data as $d){
-			$sql="update tblmember set relationno = ".$lastNumber." where member_key= ".$d->member_key;
-			$check = $this->db->query($sql);
-			if(!$check){
-				$gagal=1;
-			}
-		}
-		$hasil = array(
-			'status' => $gagal==0?"Sukses":"Gagal"
-		);
-		return json_encode($hasil);
-	}
-	function crud(){
-		@$oper=@$_POST['oper'];
-	    @$member_key=@$_POST['member_key'];
-	    @$extphotofile=@$_POST['extphotofile'];
-	    @$editphotofile=@$_POST['editphotofile'];
-	    if($extphotofile!=""){
-	    	if($editphotofile!=""){
-	    		if (file_exists("uploads/medium_".$editphotofile)) {
-					unlink("uploads/medium_".$editphotofile);
-				}
-				if (file_exists("uploads/small_".$editphotofile)) {
-					unlink("uploads/small_".$editphotofile);
-				}
-				@$namephotofile = date("d-m-Y-h").substr(str_shuffle("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"), 0, 10) . substr(str_shuffle("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"), 0, 10);
-	    		@$photofile = @$namephotofile.".".@$extphotofile;
-		    }
-	    	else{
-				@$namephotofile = date("d-m-Y-h").substr(str_shuffle("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"), 0, 10) . substr(str_shuffle("abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz"), 0, 10);
-	    		@$photofile = @$namephotofile.".".@$extphotofile;
-	    	}
-	    }
-	    else{
-	    	if($editphotofile!=""){
-	    		if($editphotofile=="clearfoto"){
-	    			@$photofile = "";
-	    		}
-	    		else{
-	    			@$photofile = $editphotofile;
-		    	}
-	    	}
-	    	else{
-	    		@$photofile = "";
-	    	}
-	    }
-		$servingid="";
-		if(!empty($_POST['servingid'])){
-		    foreach ($_POST['servingid'] as $selectedOption){
-	    		$servingid=$servingid.$selectedOption."/";
-	    	}
-	    }
-		$_POST = array_map("strtoupper", $_POST);
-	    @$dob = $_POST['dob'];
-	    @$exp1 = explode('-',$dob);
-		@$dob = $exp1[2]."-".$exp1[1]."-".$exp1[0];
-
-		@$baptismdate = $_POST['baptismdate'];
-		@$exp2 = explode('-',$baptismdate);
-		@$baptismdate = $exp2[2]."-".$exp2[1]."-".$exp2[0];
-
-		@$tglbesuk = $_POST['tglbesuk'];
-		@$exp3 = explode('-',$tglbesuk);
-		@$tglbesuk = $exp3[2]."-".$exp3[1]."-".$exp3[0];
-		@$data = array(
-			'grp_pi' => isset($_POST['grp_pi']) ? $_POST['grp_pi'] : 0,
-			'relationno' => @$_POST['relationno'],
-			'memberno' => @$_POST['memberno'],
-			'membername' => @$_POST['membername'],
-			'chinesename' => @$_POST['chinesename'],
-			'phoneticname' => @$_POST['phoneticname'],
-			'aliasname' => @$_POST['aliasname'],
-			'tel_h' => @$_POST['tel_h'],
-			'tel_o' => @$_POST['tel_o'],
-			'handphone' => @$_POST['handphone'],
-			'address' => @$_POST['address'],
-			'add2' => @$_POST['add2'],
-			'city' => @$_POST['city'],
-			'gender_key' => @$_POST['genderid'],
-			'pstatus_key' => @$_POST['pstatusid'],
-			'pob' => @$_POST['pob'],
-			'dob' => @$dob,
-			'blood_key' => @$_POST['bloodid'],
-			'kebaktian_key' => @$_POST['kebaktianid'],
-			'persekutuan_key' => @$_POST['persekutuanid'],
-			'rayon_key' => @$_POST['rayonid'],
-			'status_key' => '18',
-			'serving' => $servingid,
-			'fax' => @$_POST['fax'],
-			'email' => @$_POST['email'],
-			'website' => @$_POST['website'],
-			'baptismdocno' => @$_POST['baptismdocno'],
-			'baptis' => isset($_POST['baptis']) ? $_POST['baptis'] : 0,
-			'baptismdate' => @$baptismdate,
-			'remark' => @$_POST['remark'],
-			'relation' => @$_POST['relation'],
-			'oldgrp' => @$_POST['oldgrp'],
-			'kebaktian' => @$_POST['kebaktian'],
-			'tglbesuk' => @$tglbesuk,
-			'teambesuk' => @$_POST['teambesuk'],
-			'description' => @$_POST['description'],
-			'photofile' => @$photofile,
-			'modifiedby' => $_SESSION['username'],
-			'modifiedon' => date("Y-m-d H:i:s")
-			);
-	    switch ($oper) {
-	        case 'add':
-				$this->mtb->add("tblmember",$data);
-				$hasil = array(
-			        'status' => 'sukses',
-			        'photofile' => $photofile
-			    );
-			    echo json_encode($hasil);
-	            break;
-	        case 'edit':
-				$this->mtb->edit("tblmember",$data,$member_key);
-				$hasil = array(
-			        'status' => 'sukses',
-			        'photofile' => $photofile
-			    );
-			    echo json_encode($hasil);
-	            break;
-	         case 'del':
-         		if (file_exists("uploads/medium_".$editphotofile)) {
-					unlink("uploads/medium_".$editphotofile);
-				}
-				if (file_exists("uploads/small_".$editphotofile)) {
-					unlink("uploads/small_".$editphotofile);
-				}
-				$this->mtb->del("tblmember",$member_key);
-				$hasil = array(
-			        'status' => 'sukses',
-			        'photofile' => $editphotofile
-			    );
-			    echo json_encode($hasil);
-	            break;
-	        default :
-	        	$hasil = array(
-			        'status' => 'No Operation'.implode("", $_POST)
-			    );
-			    echo json_encode($hasil);
-	           break;
-		}
-	}
-
-	function upload($namephotofile){
-	    $filename = $_FILES['photofile']['name'];
-	    if($filename){
-	    	$temp = $_FILES['photofile']['tmp_name'];
-		    $type = $_FILES['photofile']['type'];
-		    $size = $_FILES['photofile']['size'];
-		    $newfilename = $namephotofile;
-			@$vdir_upload = "uploads/";
-			@$directory 	= "uploads/$newfilename";
-		    if (MOVE_UPLOADED_FILE($temp,$directory)){
-		    	$im_src = imagecreatefromjpeg($directory);
-				$src_width = imagesx($im_src);
-				$src_height = imagesy($im_src);
-				$dst_width = 30;
-				$dst_height = ($dst_width/$src_width)*$src_height;
-				$im = imagecreatetruecolor($dst_width,$dst_height);
-				imagecopyresampled($im, $im_src, 0, 0, 0, 0, $dst_width, $dst_height, $src_width, $src_height);
-				imagejpeg($im,$vdir_upload."small_".$newfilename);
-				imagedestroy($im_src);
-				imagedestroy($im);
-
-				$im_src2 = imagecreatefromjpeg($directory);
-				$src_width2 = imagesx($im_src2);
-				$src_height2 = imagesy($im_src2);
-				$dst_width2 = 500;
-				$dst_height2 = ($dst_width2/$src_width2)*$src_height2;
-				$im2 = imagecreatetruecolor($dst_width2,$dst_height2);
-				imagecopyresampled($im2, $im_src2, 0, 0, 0, 0, $dst_width2, $dst_height2, $src_width2, $src_height2);
-				imagejpeg($im2,$vdir_upload."medium_".$newfilename);
-				imagedestroy($im_src2);
-				imagedestroy($im2);
-				unlink("uploads/$newfilename");
-		        $status = 1;
-		    	$msg ="Upload Success".$dst_height2;
-		    }
-		    else{
-		        $status = 2;
-		    	$msg ="Upload Error";
-		 	}
-		}
-		else{
-			$status = 2;
-		    $msg ="Upload Null";
-		}
-
-	 	$hasil = array(
-	        'status' => $status,
-	        'msg' => $msg
-	    );
-	    echo json_encode($hasil);
-	}
-	function uploadWA($namephotofile){
-	    $filename = $_FILES['photofile']['name'];
-	    if($filename){
-	    	$temp = $_FILES['photofile']['tmp_name'];
-		    $type = $_FILES['photofile']['type'];
-		    $size = $_FILES['photofile']['size'];
-		    $newfilename = $namephotofile;
-			@$vdir_upload = "uploads/";
-			@$directory 	= "uploads/$newfilename";
-		    if (MOVE_UPLOADED_FILE($temp,$directory)){
-		    	$im_src = imagecreatefromjpeg($directory);
-				$src_width = imagesx($im_src);
-				$src_height = imagesy($im_src);
-				$dst_width = 30;
-				$dst_height = ($dst_width/$src_width)*$src_height;
-				$im = imagecreatetruecolor($dst_width,$dst_height);
-				imagecopyresampled($im, $im_src, 0, 0, 0, 0, $dst_width, $dst_height, $src_width, $src_height);
-				imagejpeg($im,$vdir_upload."small_".$newfilename);
-				imagedestroy($im_src);
-				imagedestroy($im);
-
-				$im_src2 = imagecreatefromjpeg($directory);
-				$src_width2 = imagesx($im_src2);
-				$src_height2 = imagesy($im_src2);
-				// start
-				$actualHeight  =  imagesy($im_src2);
-				$actualWidth   = imagesx($im_src2);
-				$maxHeight = 1280;
-				$maxWidth = 1280;
-				$imgRatio = $actualWidth / $actualHeight;
-				$maxRatio = $maxWidth/$maxHeight;
-				if($actualHeight>$maxHeight || $actualWidth > $maxWidth){
-					if($imgRatio < $maxRatio){
-						//menyesuaikan lebar menurut maxHeight
-						$imgRatio = $maxHeight / $actualHeight;
-						$actualWidth = $imgRatio * $actualWidth;
-						$actualHeight = $maxHeight;
-					}else if($imgRatio > $maxRatio){
-						//menyesuaikan tinggi menurut maxWidth
-						$imgRatio = $maxWidth / $actualWidth;
-						$actualHeight = $imgRatio * $actualHeight;
-						$actualWidth = $maxWidth;
-					}else{
-						$actualHeight = $maxHeight;
-						$actualWidth = $maxWidth;
-					}
-				}
-				//end
-				$im2 = imagecreatetruecolor($actualWidth,$actualHeight);
-				imagecopyresampled($im2, $im_src2, 0, 0, 0, 0, $actualWidth, $actualHeight, $src_width2, $src_height2);
-				imagejpeg($im2,$vdir_upload."medium_".$newfilename);
-				imagedestroy($im_src2);
-				imagedestroy($im2);
-				unlink("uploads/$newfilename");
-		        $status = 1;
-		    	$msg ="Upload Success";
-		    }
-		    else{
-		        $status = 2;
-		    	$msg ="Upload Error";
-		 	}
-		}
-		else{
-			$status = 2;
-		    $msg ="Upload Null";
-		}
-
-	 	$hasil = array(
-	        'status' => $status,
-	        'msg' => $msg
-	    );
-	    echo json_encode($hasil);
-	}
-
-	function export($file){
+	/**
+     * Fungsi export tb
+     * @AclName export tb
+     */
+	public function export($file){
 		$excel = $_SESSION['exceltb'];
 		$splitexcel = explode("|",$excel);
 		$sord = $splitexcel[0];
@@ -561,8 +245,11 @@ class Tb extends MY_Controller {
 		FROM tblmember " . $where.$where2 . " ORDER BY $sidx $sord");
 		$this->load->view('jemaat/'.$file,$data);
 	}
-
-	function report(){
+	/**
+     * Fungsi report tb
+     * @AclName report tb
+     */
+	public function report(){
 		$excel = $_SESSION['exceljemaat'];
 		$splitexcel = explode("|",$excel);
 		$sord = $splitexcel[0];

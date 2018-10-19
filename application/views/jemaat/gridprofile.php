@@ -9,7 +9,7 @@
                 singleSelect:true,
                 remoteSort:true,
                 clientPaging: false,
-                url:"<?php echo base_url()?>profile/grid/<?php echo $member_key; ?>",
+                url:"<?php echo base_url()?>profile/gridJemaat/<?php echo $member_key; ?>",
                 method:'get',
                 onClickRow:function(index,row){
                 },onBeforeLoad:function(){
@@ -102,7 +102,7 @@
         }
     }
     function callProfile(){
-        $('#fm').form('submit',{
+        $('#fmProfile').form('submit',{
             url: url,
             onSubmit: function(){
                 return $(this).form('validate');

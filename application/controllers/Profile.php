@@ -10,12 +10,20 @@ class profile extends MY_Controller {
             'mbesuk'
         ]);
     }
+    /**
+     * Fungsi awal activity
+     * @AclName awal activity
+     */
     public function index(){
         $link = base_url()."profile/gridprofile";
         $data['link']=$link;
         $data['activity'] = getComboParameter('ACTIVITY');
         $this->render('profile/gridprofile',$data);
     }
+    /**
+     * Fungsi load activity jemaat
+     * @AclName load jemaat
+     */
     public function jemaat(){
         if(empty($_SESSION['member_key'])){
             echo" Empty";
@@ -74,8 +82,8 @@ class profile extends MY_Controller {
 
     }
     /**
-     * Fungsi delete profile
-     * @AclName Delete profile
+     * Fungsi delete activity
+     * @AclName Delete activity
      */
     public function delete($id,$member_key=null){
         $data = $this->mprofile->getById('tblprofile','profile_key',$id);
@@ -99,8 +107,8 @@ class profile extends MY_Controller {
         return $this->mprofile->save($data);
     }
     /**
-     * Fungsi view profile
-     * @AclName View profile
+     * Fungsi view activity
+     * @AclName View activity
      */
     public function view($id,$member_key=null){
         $data = $this->mprofile->getById('tblprofile','profile_key',$id);
@@ -118,55 +126,11 @@ class profile extends MY_Controller {
     public function excel(){
         excel('excelprofile','tblprofile','profile/excel');
     }
-    function form($form,$profile_key,$member_key,$tabs=1){
-        $data["profile_key"] = $profile_key;
-        $data["member_key"] = $member_key;
-        $data['sqlactivity'] = getParameter('ACTIVITY');
-        $data['sql'] = $this->mprofile->getwhere($member_key);
-        $view = $tabs==0?'profile/':'jemaat/profile/';
-        $this->load->view($view.$form,$data);
-    }
-    function crud(){
-        @$oper=@$_POST['oper'];
-        $_POST = array_map("strtoupper", $_POST);
-        @$activityid=@$_POST['activityid'];
-        @$profile_key = @$_POST['profile_key'];
-        @$activitydate = $_POST['activitydate'];
-        @$exp1 = explode('/',$activitydate);
-        @$activitydate = $exp1[2]."-".$exp1[0]."-".$exp1[1]." ".date("H:i:s");
-        @$data = array(
-            'member_key' => @$_POST['member_key'],
-            'activityid' => @$activityid,
-            'activitydate' => @$activitydate,
-            'remark' => @$_POST['remark'],
-            'modifiedby' => $_SESSION['username'],
-            'modifiedon' => date("Y-m-d H:i:s")
-            );
-        switch ($oper) {
-            case 'add':
-                $this->mprofile->add("tblprofile",$data);
-                $hasil = array(
-                    'status' => 'sukses'
-                );
-                echo json_encode($hasil);
-                break;
-            case 'edit':
-                $this->mprofile->edit("tblprofile",$data,$profile_key);
-                $hasil = array(
-                    'status' => 'sukses'
-                );
-                echo json_encode($hasil);
-                break;
-             case 'del':
-                $this->mprofile->del("tblprofile",$profile_key);
-                $hasil = array(
-                    'status' => 'sukses'.$profile_key.$oper
-                );
-                echo json_encode($hasil);
-                break;
-        }
-    }
-    function grid($member_key){
+    /**
+     * Fungsi grid profil di jemaat
+     * @AclName grid jemaat
+     */
+    public function gridJemaat($member_key){
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
         $sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'profile_key';
@@ -221,7 +185,11 @@ class profile extends MY_Controller {
         $_SESSION['excel']= "asc|profile_key|";
         echo json_encode($response);
     }
-    function grid2(){
+    /**
+     * Fungsi grid profil
+     * @AclName grid
+     */
+    public function grid(){
         $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
         $rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
         $sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'profile_key';

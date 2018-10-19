@@ -19,7 +19,7 @@
                 buttons:[{
                     iconCls:'icon-add',
                     handler:function(){
-                        newData();
+                        newBesuk();
                     }
                 },{
                     text:'Export excel',
@@ -106,7 +106,7 @@
         }
     }
     function callBesuk(){
-        $('#fm').form('submit',{
+        $('#fmBesuk').form('submit',{
             url: url,
             onSubmit: function(){
                 return $(this).form('validate');

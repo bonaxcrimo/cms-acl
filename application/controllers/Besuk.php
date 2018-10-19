@@ -7,22 +7,12 @@ class Besuk extends MY_Controller {
 		session_start();
 		$this->load->model([
 			'mbesuk',
-			'mgender',
-			'mpstatus',
-			'mblood',
-			'mkebaktian',
-			'mpersekutuan',
-			'mrayon',
 			'mjemaat',
 			'mparameter',
-			'mserving',
 			'mmenu'
 		]);
 	}
 
-	public function set(){
-		$_SESSION['member_key'] = $_GET['member_key'];
-	}
 	/**
      * Fungsi awal besuk
      * @AclName Awal besuk
@@ -32,8 +22,8 @@ class Besuk extends MY_Controller {
 		$this->render('besuk/gridbesuk',['link'=>$link]);
 	}
 	/**
-     * Fungsi tab besuk
-     * @AclName tab besuk di jemaat
+     * Fungsi tab besuk di jemaat
+     * @AclName tab besuk
      */
 	public function jemaat(){
 		if(empty($_SESSION['member_key'])){
@@ -207,11 +197,24 @@ class Besuk extends MY_Controller {
 
 	}
 	/**
+     * Fungsi view besuk
+     * @AclName View besuk
+     */
+	public function view($id,$member_key=null){
+		$data = $this->mbesuk->getById('tblbesuk','besukid',$id);
+        if(empty($data)){
+            redirect('besuk');
+        }
+        $check=$member_key==null?0:$member_key;
+		$this->load->view('besuk/view',['data'=>$data,'check'=>$check]);
+	}
+	/**
      * Fungsi delete besuk
      * @AclName Delete besuk
      */
 	public function delete($id,$member_key=null){
 		$data = $this->mbesuk->getById('tblbesuk','besukid',$id);
+
 		if(empty($data)){
 			redirect('besuk');
 		}
@@ -232,18 +235,7 @@ class Besuk extends MY_Controller {
 		$data = array_map("strtoupper", $data);
         $this->mbesuk->save($data);
     }
-	/**
-     * Fungsi view besuk
-     * @AclName View besuk
-     */
-	public function view($id,$member_key=null){
-		$data = $this->mbesuk->getById('tblbesuk','besukid',$id);
-        if(empty($data)){
-            redirect('besuk');
-        }
-        $check=$member_key==null?0:$member_key;
-		$this->load->view('besuk/view',['data'=>$data,'check'=>$check]);
-	}
+
 
 	/**
      * Fungsi export excel
