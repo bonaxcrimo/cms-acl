@@ -1,6 +1,25 @@
 <style>
 	input{text-transform: none;}
 </style>
+<script>
+     $(document).ready(function(){
+        $("#acoid").textbox({
+             icons:[{
+                iconCls:'icon-pengguna',
+                handler:function(){
+                    $("#dlgViewLookup").dialog({
+                        closed:false,
+                        title:"Pilih Member Data",
+                        height:350,
+                        resizable:true,
+                        autoResize:true,
+                        width:800
+                    });
+                }
+            }]
+        })
+    });
+</script>
 <form method="post" id="fm" style="margin:0;padding:20px">
 	<input type="hidden" name="menuid" value="<?= @$data->menuid ?>">
 	<div style="margin-bottom:10px">
@@ -16,7 +35,7 @@
 	    <input name="menuicon" class="easyui-textbox" required="true" labelPosition="left"  value="<?= @$data->menuicon ?>"  label="menuicon:" style="width:100%">
 	</div>
 	<div style="margin-bottom:10px">
-	    <input name="acoid" class="easyui-textbox" required="true" labelPosition="left"  value="<?= @$data->acoid ?>"  label="routeid:" style="width:100%">
+	    <input name="acoid" class="easyui-textbox" id="acoid" required="true" labelPosition="left"  value="<?= @$data->acoid ?>"  label="routeid:" style="width:100%">
 	</div>
 	<div style="margin-bottom:10px">
 	    <input name="link" class="easyui-textbox" required="true" labelPosition="left"  value="<?= @$data->link ?>"  label="link:" style="width:100%">

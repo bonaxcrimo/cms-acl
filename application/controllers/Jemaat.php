@@ -11,7 +11,6 @@ class Jemaat extends MY_Controller {
 			'mmenu'
 		]);
         $this->load->library('pinyin');
-
 	}
 
 	/**

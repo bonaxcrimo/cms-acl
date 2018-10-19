@@ -160,6 +160,9 @@
                 </tr>
             </thead>
         </table>
+        <div id="dlgViewLookup" class="easyui-dialog" style="width:600px;" data-options="closed:true,modal:true,border:'thin'">
+            <?php $this->load->view('partials/lookupacos') ?>
+        </div>
         <div id="dlg" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons'"></div>
         <div id="dlgView" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons1'"></div>
         <div id="dlg-buttons1">

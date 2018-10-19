@@ -3,11 +3,47 @@ class Extension extends MY_Controller {
     public function __construct(){
         parent::__construct();
         session_start();
+        $this->load->model([
+            'Macos'
+        ]);
     }
     public function download($filename){
         $this->load->helper('download');
         $data = file_get_contents('uploads/'.$filename);
         force_download($filename,$data);
+    }
+    public function lookup_aco(){
+        $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+        $rows = isset($_GET['rows']) ? intval($_GET['rows']) : 10;
+        $sort = isset($_GET['sort']) ? strval($_GET['sort']) : 'acosid';
+        $order = isset($_GET['order']) ? strval($_GET['order']) : 'asc';
+        $filterRules = isset($_GET['filterRules']) ? ($_GET['filterRules']) : '';
+        $cond = '';
+        if (!empty($filterRules)){
+            $cond = ' where 1=1 ';
+            $filterRules = json_decode($filterRules);
+            foreach($filterRules as $rule){
+                $rule = get_object_vars($rule);
+                $field = $rule['field'];
+                $op = $rule['op'];
+                $value = $rule['value'];
+                if (!empty($value)){
+                    if ($op == 'contains'){
+                        $cond .= " and ($field like '%$value%')";
+                    }
+                }
+            }
+        }
+        $sql = $this->Macos->count($cond);
+        $total = $sql->num_rows();
+        $offset = ($page - 1) * $rows;
+        $data = $this->Macos->get($cond,$sort,$order,$rows,$offset)->result();
+
+        $response = new stdClass;
+        $response->total=$total;
+        $response->rows = $data;
+        $response->allData = $this->Macos->get($cond,$sort,$order,$total,$offset)->result();
+        echo json_encode($response);
     }
     public function set(){
         $_SESSION['member_key'] = $_GET['member_key'];

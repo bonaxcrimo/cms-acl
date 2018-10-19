@@ -5,7 +5,6 @@ class User extends MY_Controller {
         session_start();
 		$this->load->model([
 			'muser',
-			'musermenu',
             'mroles'
 		]);
 	}
