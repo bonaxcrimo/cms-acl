@@ -19,6 +19,7 @@ class Besuk extends MY_Controller {
 			'mmenu'
 		]);
 	}
+
 	public function set(){
 		$_SESSION['member_key'] = $_GET['member_key'];
 	}

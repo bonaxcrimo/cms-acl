@@ -33,7 +33,7 @@
                 iconCls:'icon-add',
                 handler:function(){
                   var key = 0;
-                  newData();
+                  newProfile();
                 }
             }]
         });
@@ -43,7 +43,7 @@
         }]);
         dgProfile.datagrid('columnMoving');
     });
-    function newData(){
+    function newProfile(){
         $('#dlgSaveProfile').dialog({
             closed:false,
             title:'Tambah data',
@@ -55,8 +55,8 @@
             }
         });
     }
-    function editData(besukid){
-        var row = besukid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').besukid:besukid;
+    function editProfile(profile_key){
+        var row = profile_key==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').profile_key:profile_key;
         if (row!=''){
             $('#dlgSaveProfile').dialog({
                 closed:false,
@@ -72,8 +72,8 @@
              $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
         }
     }
-    function viewData(besukid){
-        var row = besukid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').besukid:besukid;
+    function viewProfile(profile_key){
+        var row = profile_key==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').profile_key:profile_key;
         if (row!=''){
             $('#dlgView').dialog({
                 closed:false,
@@ -85,8 +85,8 @@
              $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
         }
     }
-    function deleteData(besukid){
-        var row = besukid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').besukid:besukid;
+    function deleteProfile(profile_key){
+        var row = profile_key==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').profile_key:profile_key;
         if (row!=''){
             $('#dlgSaveProfile').dialog({
                 closed:false,
@@ -102,18 +102,18 @@
              $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
         }
     }
-    function saveData(){
+    function saveProfile(){
         if(oper=="del"){
             $.messager.confirm('Confirm','Yakin akan menghapus data ?',function(r){
                 if (r){
-                    callSubmit();
+                    callProfile();
                 }
             });
         }else{
-            callSubmit();
+            callProfile();
         }
     }
-    function callSubmit(){
+    function callProfile(){
         $('#fm').form('submit',{
             url: url,
             onSubmit: function(){
@@ -161,7 +161,7 @@
         <div id="dlgSaveProfile" class="easyui-dialog" style="width:640px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-profile'">
         </div>
         <div id="dlg-buttons-profile">
-            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveData()" style="width:90px" id="btnSave">Save</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveProfile()" style="width:90px" id="btnSave">Save</a>
             <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
         </div>
     </div>

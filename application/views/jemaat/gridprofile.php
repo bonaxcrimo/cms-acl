@@ -25,84 +25,98 @@
                 iconCls:'icon-add',
                 handler:function(){
                   var key = "<?php echo $member_key; ?>";
-                  saveProfile("add",null,key);
+                  newProfile();
                 }
             }]
         });
 
     });
-    function viewProfile(form,profile_key,member_key){
-        page="<?php echo base_url(); ?>profile/form/"+form+"/"+profile_key+"/"+member_key;
-         $("#dlgView").dialog({
+    function newProfile(){
+        $('#dlgSaveProfile').dialog({
             closed:false,
-            title:"View Activity",
-            href:page,
-            height:350,
-            resizable:true,
-            autoResize:true
-        });
-    }
-    function saveProfile(form,profile_key,member_key){
-        page="<?php echo base_url(); ?>profile/form/"+form+"/"+profile_key+"/"+member_key;
-         var opr = form;
-        if(opr=="add"){
-            var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/add.png'><ul class='title'>Add Data</ul>";
-        }
-        else{
-            var oprtr = "<img class='icon' src='<?php echo base_url(); ?>libraries/icon/24x24/edit.png'><ul class='title'>Edit Data</ul>";
-        }
-         $("#dlgSaveProfile").dialog({
-            closed:false,
-            title:oprtr,
-            href:page,
-            height:350,
-            resizable:true,
-            autoResize:true
-        });
-    }
-    function saveProsesProfile(){
-            return $.ajax({
-                type: $("#formdataprofile").attr("method"),
-                url: $("#formdataprofile").attr("action"),
-                enctype: 'multipart/form-data',
-                data : $("#formdataprofile").serialize(),
-                dataType: "json",
-                async: true,
-                success: function(data) {
-                    $("#dlgSaveProfile").dialog('close');
-                    $("#dgProfile").datagrid('reload');
-                }
-            }).responseText
-    }
-    function delProfile(form,profile_key,member_key){
-        page="<?php echo base_url(); ?>profile/form/"+form+"/"+profile_key+"/"+member_key;
-        $("#dlgDeleteProfile").dialog({
-            closed:false,
-            title:"Delete Data",
-            href:page,
-            height:350,
-            resizable:true,
-            autoResize:true
-        });
-    }
-    function deleteProsesProfile(){
-        $.messager.confirm('Confirm','Yakin ingin menghapus data?',function(r){
-        if (r){
-               return $.ajax({
-                type: $("#formdeletedataprofile").attr("method"),
-                url: $("#formdeletedataprofile").attr("action"),
-                enctype: 'multipart/form-data',
-                data : $("#formdeletedataprofile").serialize(),
-                dataType: "json",
-                async: true,
-                success: function(data) {
-                    $("#dlgDeleteProfile").dialog('close');
-                    $("#dgProfile").datagrid('reload');
-                }
-                }).responseText
+            title:'Tambah data',
+            href:'<?php echo base_url(); ?>profile/add/<?= @$member_key ?>',
+            onLoad:function(){
+                url = '<?= base_url() ?>profile/add/<?= @$member_key ?>';
+                oper="";
+                $("#btnProfile span span.l-btn-text").text("Save");
             }
         });
     }
+    function editProfile(besukid){
+        var row = besukid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').besukid:besukid;
+        if (row!=''){
+            $('#dlgSaveProfile').dialog({
+                closed:false,
+                title:'Edit Data',
+                href:'<?php echo base_url(); ?>profile/edit/'+row+'/<?= @$member_key ?>',
+                onLoad:function(){
+                    url = '<?= base_url() ?>profile/edit/'+row+'/<?= @$member_key ?>';
+                    oper="";
+                    $("#btnProfile span span.l-btn-text").text("Save");
+                }
+            });
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
+    function viewProfile(besukid){
+        var row = besukid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').besukid:besukid;
+        if (row!=''){
+            $('#dlgViewProfile').dialog({
+                closed:false,
+                title:'View data',
+                href:'<?php echo base_url(); ?>profile/view/'+row+'/<?= @$member_key ?>'
+            });
+
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
+    function deleteProfile(besukid){
+        var row = besukid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').besukid:besukid;
+        if (row!=''){
+            $('#dlgSaveProfile').dialog({
+                closed:false,
+                title:'Delete data',
+                href:'<?php echo base_url(); ?>profile/delete/'+row+'/<?= @$member_key ?>',
+                onLoad:function(){
+                    url = '<?= base_url() ?>profile/delete/'+row+'/<?= @$member_key ?>';
+                    oper="del";
+                    $("#btnProfile span span.l-btn-text").text("Delete");
+                }
+            });
+        }else{
+             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+        }
+    }
+    function saveProfile(){
+        if(oper=="del"){
+            $.messager.confirm('Confirm','Yakin akan menghapus data ?',function(r){
+                if (r){
+                    callProfile();
+                }
+            });
+        }else{
+            callProfile();
+        }
+    }
+    function callProfile(){
+        $('#fm').form('submit',{
+            url: url,
+            onSubmit: function(){
+                return $(this).form('validate');
+            },
+            success: function(result){
+                $('#dlgSaveProfile').dialog('close');
+                $('#dgProfile').datagrid('reload');
+
+            },error:function(error){
+                 console.log($(this).serialize());
+            }
+        });
+    }
+
 
 </script>
 <?php  $this->load->view('partials/infojemaat'); ?>
@@ -120,15 +134,12 @@
         </tr>
     </thead>
 </table>
+<div id="dlgViewProfile" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons1'">
+</div>
+
 <div id="dlgSaveProfile" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-profile'">
 </div>
 <div id="dlg-buttons-profile">
-    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveProsesProfile()" style="width:90px">Save</a>
-    <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
-</div>
-<div id="dlgDeleteProfile" class="easyui-dialog" style="width:400px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-profile1'">
-</div>
-<div id="dlg-buttons-profile1">
-    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="deleteProsesProfile()" style="width:90px">Delete</a>
+    <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveProfile()" style="width:90px" id="btnProfile">Save</a>
     <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('.easyui-dialog').dialog('close')" style="width:90px">Cancel</a>
 </div>

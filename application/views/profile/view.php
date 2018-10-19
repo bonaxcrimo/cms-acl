@@ -1,11 +1,11 @@
+<?php
+    if($check==0){
+?>
 <div style="margin:0;padding:20px">
     <div  class="row">
         <div class="col-md-8 noPadding">
             <input type="hidden" name="member_key" value="<?php echo @$member_key ?>">
         <?php
-            @$query=("SELECT *, DATE_FORMAT(activitydate,'%d-%m-%Y') activitydate,
-                DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon FROM tblprofile WHERE profile_key=".$profile_key." LIMIT 0,1");
-            @$row=queryCustom($query);
             @$row->activityid = getParameterKey($row->activityid)->parameterid;
             @$query2 ="select membername,chinesename,address,photofile from tblmember where member_key='".@$row->member_key."'";
             @$sql = queryCustom($query2);
@@ -40,3 +40,4 @@
         </div>
     </div>
 </div>
+<?php }else{ $this->load->view('jemaat/profile/view'); }?>

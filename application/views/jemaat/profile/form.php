@@ -2,9 +2,6 @@
     <input type="hidden" name="member_key" value="<?php echo @$member_key ?>">
     <div  class="row">
 <?php
-    @$query=("SELECT *, DATE_FORMAT(activitydate,'%d-%m-%Y') activitydate,
-        DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon FROM tblprofile WHERE profile_key=".$profile_key." LIMIT 0,1");
-    @$row=queryCustom($query);
     @$activity = getParameterKey($row->activityid)->parameterid;
     @$exp1 = explode('-',$row->activitydate);
     @$activitydate = $exp1[1]."/".$exp1[0]."/".$exp1[2];

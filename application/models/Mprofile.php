@@ -36,7 +36,7 @@ Class Mprofile extends MY_Model{
         }
     }
     public function delete($id){
-        $this->db->where(['besukid'=>$id]);
+        $this->db->where(['profile_key'=>$id]);
         return $this->db->delete($this->table);
     }
     private function _preFormat($data){
