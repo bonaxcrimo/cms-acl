@@ -23,9 +23,6 @@
         <div class="col-md-8 noPadding">
 <?php
 
-    @$query=("SELECT *, DATE_FORMAT(activitydate,'%d-%m-%Y') activitydate,
-        DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon FROM tblprofile WHERE profile_key=".$profile_key." LIMIT 0,1");
-    @$row=queryCustom($query);
     @$activity = getParameterKey($row->activityid)->parameterid;
     @$exp1 = explode('-',$datarow->activitydate);
     @$activitydate = $exp1[1]."/".$exp1[0]."/".$exp1[2];
@@ -63,7 +60,7 @@
             </div>
             <div style="margin-bottom:10px">
                 <label class="textbox-label textbox-label-left">Remark:</label><span class="textbox easyui-fluid" style="width: 226px;">
-                    <textarea name="remark"   class="textbox-text validatebox-text " style="width: 226px;white-space: pre-line;height: 100px;"><?=@$row->remark?></textarea>
+                    <textarea name="remark"   class="textbox-text  " style="width: 226px;white-space: pre-line;height: 100px;"><?=@$row->remark?></textarea>
                 </span>
             </div>
         </div>

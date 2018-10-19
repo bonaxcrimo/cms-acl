@@ -44,7 +44,6 @@ class MY_Model extends CI_Model{
     }
     protected function update($update,$id,$field){
         $condition = [$field=>$id];
-        print_r($condition);
         if($this->db->update($this->table,$update,$condition)){
             return true;
         }else{

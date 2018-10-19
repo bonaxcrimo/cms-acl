@@ -10,13 +10,13 @@ class profile extends MY_Controller {
             'mbesuk'
         ]);
     }
-    function index(){
+    public function index(){
         $link = base_url()."profile/gridprofile";
         $data['link']=$link;
         $data['activity'] = getComboParameter('ACTIVITY');
         $this->render('profile/gridprofile',$data);
     }
-    function jemaat(){
+    public function jemaat(){
         if(empty($_SESSION['member_key'])){
             echo" Empty";
         }
@@ -25,6 +25,99 @@ class profile extends MY_Controller {
             $data['activity'] = getComboParameter('ACTIVITY');
             $this->load->view('jemaat/gridprofile',$data);
         }
+    }
+    /**
+     * Fungsi add activity
+     * @AclName Tambah activity
+     */
+    public function add($member_key=null){
+        $data=[];
+        $sqlactivity = getParameter('ACTIVITY');
+        if($this->input->server('REQUEST_METHOD') == 'POST' ){
+            $data = $this->input->post();
+            $cek = $this->_save($data);
+            $status = $cek?"sukses":"gagal";
+            $hasil = array(
+                'status' => $status
+            );
+            echo json_encode($hasil);
+        }else{
+            $data = $this->input->post();
+            $check=$member_key==null?0:$member_key;
+            $this->load->view('profile/add',['data'=>$data,'check'=>$check,'sqlactivity'=>$sqlactivity]);
+        }
+
+    }
+    /**
+     * Fungsi edit activity
+     * @AclName Edit activity
+     */
+    public function edit($id,$member_key=null){
+        $data = $this->mprofile->getById('tblprofile','profile_key',$id);
+        $sqlactivity = getParameter('ACTIVITY');
+        if(empty($data)){
+            redirect('profile');
+        }
+        if($this->input->server('REQUEST_METHOD') == 'POST' ){
+            $data = $this->input->post();
+            $data['profile_key'] = $this->input->post('profile_key');
+            $cek = $this->_save($data);
+            $status = $cek?"sukses":"gagal";
+            $hasil = array(
+                'status' => $status
+            );
+            echo json_encode($hasil);
+        }else{
+            $check=$member_key==null?0:$member_key;
+            $this->load->view('profile/edit',['row'=>$data,'check'=>$check,'sqlactivity'=>$sqlactivity]);
+        }
+
+    }
+    /**
+     * Fungsi delete profile
+     * @AclName Delete profile
+     */
+    public function delete($id,$member_key=null){
+        $data = $this->mprofile->getById('tblprofile','profile_key',$id);
+        if(empty($data)){
+            redirect('profile');
+        }
+        if($this->input->server('REQUEST_METHOD') == 'POST'){
+            $cek = $this->mprofile->delete($id);
+            $status = $cek?"sukses":"gagal";
+            $hasil = array(
+                'status' => $status
+            );
+            echo json_encode($hasil);
+        }else{
+            $check=$member_key==null?0:$member_key;
+            $this->load->view('profile/delete',['data'=>$data,'check'=>$check]);
+        }
+
+    }
+    private function _save($data){
+        $data = array_map("strtoupper", $data);
+        return $this->mprofile->save($data);
+    }
+    /**
+     * Fungsi view profile
+     * @AclName View profile
+     */
+    public function view($id,$member_key=null){
+        $data = $this->mprofile->getById('tblprofile','profile_key',$id);
+        if(empty($data)){
+            redirect('profile');
+        }
+        $check=$member_key==null?0:$member_key;
+        $this->load->view('profile/view',['data'=>$data,'check'=>$check]);
+    }
+
+    /**
+     * Fungsi export excel
+     * @AclName Export excel
+     */
+    public function excel(){
+        excel('excelprofile','tblprofile','profile/excel');
     }
     function form($form,$profile_key,$member_key,$tabs=1){
         $data["profile_key"] = $profile_key;
@@ -114,11 +207,11 @@ class profile extends MY_Controller {
             $view='';
             $edit='';
             $del='';
-                $view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewProfile(\'view\',\''.$row->profile_key.'\',\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ';
+                $view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewData(\''.$row->profile_key.'\')" style="width:16px;height:16px;border:0"></button> ';
 
-                $edit = '<button id='.$row->member_key.' class="icon-edit" onclick="saveProfile(\'edit\',\''.$row->profile_key.'\',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ';
+                $edit = '<button id='.$row->member_key.' class="icon-edit" onclick="editData(\''.$row->profile_key.'\');" style="width:16px;height:16px;border:0"></button> ';
 
-                $del = '<button id='.$row->member_key.' class="icon-remove" onclick="delProfile(\'del\','.$row->profile_key.',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button>';
+                $del = '<button id='.$row->member_key.' class="icon-remove" onclick="deleteData('.$row->profile_key.');" style="width:16px;height:16px;border:0"></button>';
 
             $row->aksi =$view.$edit.$del;
             $row->activityid =  $row->activityid==0?'-':getParameterKey($row->activityid)->parametertext;
@@ -168,13 +261,9 @@ class profile extends MY_Controller {
             $view='';
             $edit='';
             $del='';
-
-                $view = '<button id='.$row->member_key.' class="icon-view_detail" onclick="viewProfile(\'view\',\''.$row->profile_key.'\',\''.$row->member_key.'\')" style="width:16px;height:16px;border:0"></button> ';
-
-                $edit = '<button id='.$row->member_key.' class="icon-edit" onclick="saveProfile(\'edit\',\''.$row->profile_key.'\',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button> ';
-
-                $del = '<button id='.$row->member_key.' class="icon-remove" onclick="delProfile(\'del\','.$row->profile_key.',\''.$row->member_key.'\');" style="width:16px;height:16px;border:0"></button>';
-
+            $view = '<button  class="icon-view_detail" onclick="viewData(\''.$row->profile_key.'\')" style="width:16px;height:16px;border:0"></button> ';
+            $edit = '<button class="icon-edit" onclick="editData(\''.$row->profile_key.'\');" style="width:16px;height:16px;border:0"></button> ';
+            $del = '<button  class="icon-remove" onclick="deleteData('.$row->profile_key.');" style="width:16px;height:16px;border:0"></button>';
             $row->aksi =$view.$edit.$del;
             $row->activityid =  $row->activityid==0?'-':getParameterKey($row->activityid)->parameterid;
         }

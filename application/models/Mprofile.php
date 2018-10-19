@@ -1,6 +1,54 @@
 <?php
 Class Mprofile extends MY_Model{
+    protected $table = 'tblprofile';
+    public function save($data) {
+        $this->db->trans_start();
+        $activitydate=$data['activitydate'];
+        @$exp1 = explode('/',$activitydate);
+        @$activitydate = $exp1[2]."-".$exp1[0]."-".$exp1[1]." ".date("H:i:s");
+        $data['activitydate']=$activitydate;
+        $data['modifiedon'] =  date("Y-m-d H:i:s");
+        $data['modifiedby'] = $_SESSION['username'];
+        if (isset($data['profile_key']) && !empty($data['profile_key'])) {
+            $id = $data['profile_key'];
+            unset($data['profile_key']);
+            $save = $this->_preFormat($data); //format the fields
+            $result = $this->update($save, $id,'profile_key');
+            if($result === true ){
+            } else {
+                $this->db->trans_rollback();
+            }
+        } else {
+            $save = $this->_preFormat($data);//format untuk field
+            $result = $this->insert($save);
+            if($result === true){
 
+            } else {
+                $this->db->trans_rollback();
+            }
+        }
+        if ($this->db->trans_status() === false) {
+            $this->db->trans_rollback();
+            return false;
+        } else {
+            $this->db->trans_commit();
+            return true;
+        }
+    }
+    public function delete($id){
+        $this->db->where(['besukid'=>$id]);
+        return $this->db->delete($this->table);
+    }
+    private function _preFormat($data){
+        $fields = ['member_key','activityid','activitydate','remark','modifiedon','modifiedby'];
+        $save = [];
+        foreach($fields as $val){
+            if(isset($data[$val])){
+                $save[$val] = $data[$val];
+            }
+        }
+        return $save;
+    }
     function count($where){
         $sql = "SELECT profile_key FROM tblprofile " . $where;
         return $this->db->query($sql);
