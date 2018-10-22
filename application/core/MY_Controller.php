@@ -14,8 +14,9 @@ class MY_Controller extends CI_Controller{
             $this->load->view('partials/header');
             $this->load->view('navbar',$data);
         }
+        @$format_tgl = queryCustom("select * from tblparameter where parametergrpid='FORMAT_TGL' and parameterid='UMUM' ")->parametertext;
         $this->load->view($this->getLayout(),['template'=>$page,'data'=>$data]);
-        $this->load->view('partials/footer');
+        $this->load->view('partials/footer',['format_tgl'=>@$format_tgl]);
     }
     public function set(){
         $_SESSION['userpk'] = $_GET['userpk'];

@@ -40,10 +40,8 @@
     <div class="row">
         <div class="col-md-8 noPadding">
 <?php
-    @$exp1 = explode('-',$row->transdate);
-    @$transdate = $exp1[1]."/".$exp1[0]."/".$exp1[2];
-    @$exp2 = explode('-',$row->inputdate);
-    @$inputdate = $exp2[1]."/".$exp2[0]."/".$exp2[2];
+    @$transdate = Date("d-m-Y",strtotime($row->transdate));
+    @$inputdate = Date("d-m-Y",strtotime($row->inputdate));
 
 ?>
             <input type="hidden" name="offering_key" value="<?php echo @$row->offering_key ?>">
@@ -87,7 +85,7 @@
             </div>
             <div style="margin-bottom:10px">
                 <label class="textbox-label textbox-label-left">transdate:</label>
-                <input name="transdate" labelPosition="left" required="" class="easyui-datebox"  value="<?= @$transdate ?>"   style="width:226px;">
+                <input name="transdate" labelPosition="left" required="" id="transdate" class="easyui-datebox"  value="<?= @$transdate ?>"   style="width:226px;">
             </div>
             <div style="margin-bottom:10px;display: none;">
                 <label class="textbox-label textbox-label-left">inputdate:</label>

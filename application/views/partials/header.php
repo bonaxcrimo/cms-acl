@@ -19,5 +19,6 @@
         <script type="text/javascript" src="<?= base_url() ?>libraries/jquery-easyui/155/datagrid-filter.js"></script>
         <script type="text/javascript" src="<?= base_url() ?>libraries/jquery-easyui/155/columns-ext.js"></script>
         <script type="text/javascript" src="<?= base_url() ?>libraries/js/main.js"></script>
+        <script type="text/javascript" src="<?= base_url() ?>libraries/js/moment.min.js"></script>
         <script type="text/javascript" src="<?= base_url()?>libraries/ajaxfileupload/ajaxfileupload.js"></script>
     </head>

@@ -42,7 +42,10 @@
                     });
                  }
             });
-
+       $("#dgAcos").datagrid('enableFilter', [{
+            field:'aksi',
+            type:'label'
+        }]);
     })
 </script>
 <br>
@@ -52,11 +55,9 @@
         <tr>
             <th field="ck" checkbox="true"></th>
             <th field="acosid"  hidden="true"></th>
-            <th field="class" width="10%" sortable="true">class</th>
-            <th field="method" width="10%" sortable="true">method</th>
-            <th field="displayname" width="20%" sortable="true">display name</th>
-            <th field="modifiedby" width="15%" sortable="true">modifiedby</th>
-            <th field="modifiedon" width="25%" sortable="true">modifiedon</th>
+            <th field="class" width="20%" sortable="true">class</th>
+            <th field="method" width="20%" sortable="true">method</th>
+            <th field="displayname" width="40%" sortable="true">display name</th>
         </tr>
     </thead>
 </table>

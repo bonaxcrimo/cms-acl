@@ -198,6 +198,7 @@
                 return $(this).form('validate');
             },
             success: function(result){
+                console.log(result);
                 $('#dlg').dialog('close');
                 $('#dgOffering').datagrid('reload');
                 $('#dgOfferingDeleted').datagrid('reload');

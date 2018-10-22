@@ -56,6 +56,7 @@ class offering extends MY_Controller {
                 'status' => $status
             );
             echo json_encode($hasil);
+            // print_r($this->input->post());
         }else{
             $data = $this->input->post();
             $check=$member_key==null?0:$member_key;

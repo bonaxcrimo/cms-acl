@@ -9,5 +9,5 @@
     <input name="parametertext" class="easyui-textbox" required="true" labelPosition="left"  value="<?= @$data->parametertext ?>"  label="parametertext:" style="width:100%">
 </div>
 <div style="margin-bottom:10px">
-    <input name="parametermemo" class="easyui-textbox" required="true" labelPosition="left"  value="<?= @$data->parametermemo ?>"  label="parametermemo:" style="width:100%">
+    <input name="parametermemo" class="easyui-textbox" labelPosition="left"  value="<?= @$data->parametermemo ?>"  label="parametermemo:" style="width:100%">
 </div>

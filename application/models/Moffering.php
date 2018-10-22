@@ -3,16 +3,14 @@ Class Moffering extends MY_Model{
     protected $table = 'tbloffering';
     public function save($data) {
         $this->db->trans_start();
-        $data['modifiedon'] =  date("Y-m-d H:i:s");
+        $data['modifiedon'] =  date("Y-m-d H:i:s A");
         $data['modifiedby'] = $_SESSION['username'];
         $offering_value = str_replace(".","",$data['offeringvalue']);
         $data['offeringvalue']=$offering_value;
         $transdate= $data['transdate'];
-        @$exp1 = explode('/',$transdate);
-        @$transdate = $exp1[2]."-".$exp1[0]."-".$exp1[1]." ".date("H:i:s");
+        @$transdate =date("Y-m-d H:i:s A",strtotime($transdate));
         $inputdate =  $data['inputdate'];
-        @$exp2 = explode('/',$inputdate);
-        @$inputdate = $exp2[2]."-".$exp2[0]."-".$exp2[1]." ".date("H:i:s");
+        @$inputdate = date("Y-m-d H:i:s A",strtotime($inputdate));
         $data['transdate'] = $transdate;
         $data['inputdate'] = $inputdate;
         if (isset($data['offering_key']) && !empty($data['offering_key'])) {
