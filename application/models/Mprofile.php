@@ -4,8 +4,7 @@ Class Mprofile extends MY_Model{
     public function save($data) {
         $this->db->trans_start();
         $activitydate=$data['activitydate'];
-        @$exp1 = explode('/',$activitydate);
-        @$activitydate = $exp1[2]."-".$exp1[0]."-".$exp1[1]." ".date("H:i:s");
+        @$activitydate = date("Y-m-d H:i:s",strtotime($activitydate));
         $data['activitydate']=$activitydate;
         $data['modifiedon'] =  date("Y-m-d H:i:s");
         $data['modifiedby'] = $_SESSION['username'];

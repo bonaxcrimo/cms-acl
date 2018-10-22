@@ -24,9 +24,7 @@
 <?php
 
     @$activity = getParameterKey($row->activityid)->parameterid;
-    @$exp1 = explode('-',$datarow->activitydate);
-    @$activitydate = $exp1[1]."/".$exp1[0]."/".$exp1[2];
-    @$activitydate = @$activitydate == "00/00/0000"?"":@$activitydate;
+    @$activitydate = Date("d-m-Y",strtotime($row->activitydate));
     @$query2 ="select membername,chinesename,address,photofile from tblmember where member_key='".@$row->member_key."'";
     @$sql = queryCustom($query2);
 ?>
