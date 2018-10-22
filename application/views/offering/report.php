@@ -9,7 +9,7 @@
                     </select>
                 </div>
                 <div style="margin-bottom:20px">
-                    <input class="easyui-datebox" name="mulai" id="mulai" label="Tgl Awal:" labelPosition="left" required style="width:400px">
+                    <input class="easyui-datebox" name="mulai" id="mulai" label="Tgl Awal:" labelPosition="left" required style="width:400px" data-options="formatter:formatTgl,parser:parserTgl">
                 </div>
                 <div style="margin-bottom:20px">
                     <input class="easyui-datebox" name="selesai" id="selesai" label="Tgl Akhir:" labelPosition="left" required  style="width:400px;">
@@ -22,6 +22,12 @@
     </div>
 </div>
 <script>
+    function formatTgl(date){
+        return moment(date).format("<?= $format_tgl ?>");
+    }
+    function parserTgl(date){
+
+    }
     function prosesFilter(){
         $('#fmfilter').form('submit',{
             onSubmit: function(){
@@ -38,11 +44,7 @@
 
     $('#mulai').datebox({
         onSelect: function(date){
-            var y = date.getFullYear();
-            var m = date.getMonth()+1;
-            var d = date.getDate();
-            var tgl=m+'/'+d+'/'+y;
-            // var tgl=$("#mulai").datebox('getValue');
+            var tgl=moment(date).format("<?= $format_tgl ?>");
             $("#selesai").datebox({
                 validType:"md['"+tgl+"']"
             })
@@ -51,9 +53,9 @@
     $.extend($.fn.validatebox.defaults.rules, {
         md: {
             validator: function(value, param){
-                var d1 = $.fn.datebox.defaults.parser(param[0]);
-                var d2 = $.fn.datebox.defaults.parser(value);
-                return d2>=d1;
+                var a=moment(param[0]);
+                var b =moment(value);
+                return b.isSameOrAfter(a);
             },
             message: 'The date must be greater than or equals {0}.'
         }
