@@ -47,14 +47,10 @@ $(document).ready(function(){
             DATE_FORMAT(tglbesuk,'%d-%m-%Y') tglbesuk,
             DATE_FORMAT(baptismdate,'%d-%m-%Y') baptismdate,
             DATE_FORMAT(modifiedon,'%d-%m-%Y %T') modifiedon FROM tblmember WHERE member_key=".@$member_key." LIMIT 0,1");
-        // echo $query;
+
         @$datarow=queryCustom($query);
-        @$exp1 = explode('-',$datarow->dob);
-        @$dob = $exp1[1]."/".$exp1[0]."/".$exp1[2];
-        @$dob = @$dob == "00/00/0000"?"":@$dob;
-        @$exp2 = explode('-',$datarow->baptismdate);
-        @$baptismdate = $exp2[1]."/".$exp2[0]."/".$exp2[2];
-        @$baptismdate= @$baptismdate == "00/00/0000"?"":@$baptismdate;
+        @$dob =Date("d-m-Y",strtotime(@$datarow->dob));
+        @$baptismdate= Date("d-m-Y",strtotime(@$datarow->baptismdate));
     }
 
 ?>

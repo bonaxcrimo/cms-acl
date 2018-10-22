@@ -4,8 +4,7 @@ Class Mbesuk extends MY_Model{
 	public function save($data) {
         $this->db->trans_start();
         $besukdate=$data['besukdate'];
-        @$exp1 = explode('/',$besukdate);
-		@$besukdate = $exp1[2]."-".$exp1[0]."-".$exp1[1]." ".date("H:i:s");
+		@$besukdate = date("Y-m-d H:i:s",strtotime($besukdate));
 		$data['besukdate']=$besukdate;
         $data['modifiedon'] =  date("Y-m-d H:i:s");
         $data['modifiedby'] = $_SESSION['username'];

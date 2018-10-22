@@ -18,7 +18,7 @@
     });
 </script>
 <?php
-    @$besukdate = Date("m/d/Y",strtotime($data->besukdate));
+    @$besukdate = Date("d-m-Y",strtotime($data->besukdate));
     @$member_key = $check==0?@$data->member_key:$check;
 ?>
 <input type="hidden" name="besukid" value="<?php echo @$data->besukid ?>">

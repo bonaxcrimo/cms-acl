@@ -43,19 +43,14 @@ Class Mjemaat extends MY_Model{
 	    }
 	    $data['serving'] = @$servingid;
 	    @$dob = $data['dob'];
-	    @$exp1 = explode('-',$dob);
-		@$dob = $exp1[2]."-".$exp1[1]."-".$exp1[0];
-		$data['dob'] = @$dob;
+		$data['dob'] = date("Y-m-d H:i:s",strtotime(@$dob));
 
 
 		@$baptismdate = $data['baptismdate'];
-		@$exp2 = explode('-',$baptismdate);
-		@$baptismdate = $exp2[2]."-".$exp2[1]."-".$exp2[0];
-		$data['baptismdate'] = @$baptismdate;
+		$data['baptismdate'] =date("Y-m-d H:i:s",strtotime(@$baptismdate));
 
 		@$tglbesuk = $data['tglbesuk'];
-		@$exp3 = explode('-',$tglbesuk);
-		@$tglbesuk = $exp3[2]."-".$exp3[1]."-".$exp3[0];
+		@$tglbesuk =  date("Y-m-d H:i:s",strtotime(@$tglbesuk));
 		$data['tglbesuk']=@$tglbesuk;
 		$data['photofile'] = @$photofile;
         $data['modifiedon'] =  date("Y-m-d H:i:s");
