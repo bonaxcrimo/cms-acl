@@ -35,6 +35,22 @@
                   var key = 0;
                   newProfile();
                 }
+            },{
+                iconCls:'icon-edit',
+                handler:function(){
+                   editProfile();
+                }
+            },{
+                iconCls:'icon-remove',
+                handler:function(){
+                   deleteProfile();
+                }
+            },{
+                text:'Export Excel',
+                iconCls:'icon-print',
+                handler:function(){
+                   excelProfile();
+                }
             }]
         });
         dgProfile.datagrid('enableFilter', [{
@@ -56,7 +72,7 @@
         });
     }
     function editProfile(profile_key){
-        var row = profile_key==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').profile_key:profile_key;
+        var row = profile_key==undefined?$('#dgProfile').datagrid('getSelected')==undefined?'':$('#dgProfile').datagrid('getSelected').profile_key:profile_key;
         if (row!=''){
             $('#dlgSaveProfile').dialog({
                 closed:false,
@@ -73,7 +89,7 @@
         }
     }
     function viewProfile(profile_key){
-        var row = profile_key==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').profile_key:profile_key;
+        var row = profile_key==undefined?$('#dgProfile').datagrid('getSelected')==undefined?'':$('#dgProfile').datagrid('getSelected').profile_key:profile_key;
         if (row!=''){
             $('#dlgView').dialog({
                 closed:false,
@@ -86,7 +102,7 @@
         }
     }
     function deleteProfile(profile_key){
-        var row = profile_key==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').profile_key:profile_key;
+        var row = profile_key==undefined?$('#dgProfile').datagrid('getSelected')==undefined?'':$('#dgProfile').datagrid('getSelected').profile_key:profile_key;
         if (row!=''){
             $('#dlgSaveProfile').dialog({
                 closed:false,
@@ -128,8 +144,6 @@
             }
         });
     }
-
-
 </script>
 <div class="easyui-tabs" style="height:auto">
     <div title="Data Activity" style="padding:10px">

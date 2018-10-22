@@ -296,7 +296,6 @@ class offering extends MY_Controller {
         }else{
             $this->render('offering/report');
         }
-
     }
 
 }

@@ -22,10 +22,20 @@
                         newBesuk();
                     }
                 },{
-                    text:'Export excel',
+                    iconCls:'icon-edit',
+                    handler:function(){
+                       editBesuk();
+                    }
+                },{
+                    iconCls:'icon-remove',
+                    handler:function(){
+                       deleteBesuk();
+                    }
+                },{
+                    text:'Export Excel',
                     iconCls:'icon-print',
                     handler:function(){
-                        window.location = "besuk/excel";
+                       excelBesuk();
                     }
                 }]
             });
@@ -48,7 +58,7 @@
         });
     }
     function editBesuk(besukid){
-        var row = besukid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').besukid:besukid;
+        var row = besukid==undefined?$('#dgBesuk').datagrid('getSelected')==undefined?'':$('#dgBesuk').datagrid('getSelected').besukid:besukid;
         if (row!=''){
             $('#dlgSaveBesuk').dialog({
                 closed:false,
@@ -65,7 +75,7 @@
         }
     }
     function viewBesuk(besukid){
-        var row = besukid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').besukid:besukid;
+        var row = besukid==undefined?$('#dgBesuk').datagrid('getSelected')==undefined?'':$('#dgBesuk').datagrid('getSelected').besukid:besukid;
         if (row!=''){
             $('#dlgView').dialog({
                 closed:false,
@@ -78,7 +88,7 @@
         }
     }
     function deleteBesuk(besukid){
-        var row = besukid==undefined?$('#dg').datagrid('getSelected')==undefined?'':$('#dg').datagrid('getSelected').besukid:besukid;
+        var row = besukid==undefined?$('#dgBesuk').datagrid('getSelected')==undefined?'':$('#dgBesuk').datagrid('getSelected').besukid:besukid;
         if (row!=''){
             $('#dlgSaveBesuk').dialog({
                 closed:false,

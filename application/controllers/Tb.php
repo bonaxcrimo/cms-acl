@@ -12,7 +12,10 @@ class Tb extends MY_Controller {
 		]);
 	}
 
-
+	/**
+     * Fungsi index tb
+     * @AclName index tb
+     */
 	public function index(){
 		$data = array_merge( $this->_parameter(),$this->_combo());
 		$this->render('tb/gridjemaat',$data);

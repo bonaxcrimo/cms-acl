@@ -112,6 +112,22 @@
                 handler:function(){
                     newData();
                 }
+            },{
+                iconCls:'icon-edit',
+                handler:function(){
+                   editData();
+                }
+            },{
+                iconCls:'icon-remove',
+                handler:function(){
+                   deleteData();
+                }
+            },{
+                text:'Export Excel',
+                iconCls:'icon-print',
+                handler:function(){
+                   excelData();
+                }
             }]
         });
         dgUser.datagrid('enableFilter', [{

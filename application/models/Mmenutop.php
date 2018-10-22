@@ -8,7 +8,7 @@ class Mmenutop extends MY_Model
 		$data = array();
 		$query="SELECT  t1.menuid,t1.menuname,t1.menuicon,t3.class,t3.method,t1.link
 			FROM tblmenu t1 left join tblacos t3 on t1.acoid = t3.acosid
-						WHERE t1.menuparent='$induk' and (t1.acoid = t3.acosid or t1.menuparent=0 or t1.menuparent=40 or t1.menuid=40 or t1.link!='')   ORDER BY menuseq ASC";
+						WHERE t1.menuparent='$induk' and (t1.acoid = t3.acosid or t1.menuparent=0 or t1.link!='')   ORDER BY menuseq ASC";
 		$result = $this->db->query($query);
 
 		foreach($result->result() as $row)

@@ -419,7 +419,20 @@ class Jemaat extends MY_Controller {
 		DATE_FORMAT(NOW(), '%Y') - DATE_FORMAT(dob, '%Y') as umur
 		FROM tblmember " . $where . " ORDER BY $sidx $sord");
 		$this->load->view('jemaat/report',$data);
-
+	}
+	/**
+     * Fungsi report rayon jemaat
+     * @AclName report  rayon
+     */
+	public function report_rayon(){
+		if($this->input->server('REQUEST_METHOD') == 'POST' ){
+            $filter = $this->input->post('rayon');
+            $link = base_url()."rptjs_new/rptmember_rayon.php?filter=".$filter;
+            echo $link;
+        }else{
+        	$data['rayon']  = getParameter('RAYON');
+            $this->render('jemaat/report_rayon',$data);
+        }
 	}
 	public function konversiRelation(){
 		$data = $this->db->query("select relationno from tblmember2 where relationno!='' group by relationno");

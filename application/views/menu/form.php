@@ -38,6 +38,6 @@
 	    <input name="acoid" class="easyui-textbox" id="acoid" required="true" labelPosition="left"  value="<?= @$data->acoid ?>"  label="routeid:" style="width:100%">
 	</div>
 	<div style="margin-bottom:10px">
-	    <input name="link" class="easyui-textbox" required="true" labelPosition="left"  value="<?= @$data->link ?>"  label="link:" style="width:100%">
+	    <input name="link" class="easyui-textbox" labelPosition="left"  value="<?= @$data->link ?>"  label="link:" style="width:100%">
 	</div>
 </form>

@@ -176,6 +176,16 @@
                 handler:function(){
                     editData();
                 }
+            },{
+                iconCls:'icon-remove',
+                handler:function(){
+                    deleteData();
+                }
+            },{
+                iconCls:'icon-print',
+                handler:function(){
+                    excel();
+                }
             }]
         });
 

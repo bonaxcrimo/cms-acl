@@ -104,9 +104,20 @@
                       newOffer();
                     }
                 },{
-                    text:'Cetak Laporan',
+                    iconCls:'icon-edit',
                     handler:function(){
-                        window.open("<?= base_url() ?>offering/report","_blank");
+                       editOffer();
+                    }
+                },{
+                    iconCls:'icon-remove',
+                    handler:function(){
+                       deleteOffer();
+                    }
+                },{
+                    text:'Export Excel',
+                    iconCls:'icon-print',
+                    handler:function(){
+                       excelOffer();
                     }
                 }]
             });

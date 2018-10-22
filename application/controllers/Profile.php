@@ -230,9 +230,9 @@ class profile extends MY_Controller {
             $view='';
             $edit='';
             $del='';
-            $view = '<button  class="icon-view_detail" onclick="viewProfile(\''.$row->profile_key.'\')" style="width:16px;height:16px;border:0"></button> ';
-            $edit = '<button class="icon-edit" onclick="editProfile(\''.$row->profile_key.'\');" style="width:16px;height:16px;border:0"></button> ';
-            $del = '<button  class="icon-remove" onclick="deleteProfile('.$row->profile_key.');" style="width:16px;height:16px;border:0"></button>';
+            $view = hasPermission('profile','view')?'<button  class="icon-view_detail" onclick="viewProfile(\''.$row->profile_key.'\')" style="width:16px;height:16px;border:0"></button>':'';
+            $edit = hasPermission('profile','edit')?'<button class="icon-edit" onclick="editProfile(\''.$row->profile_key.'\');" style="width:16px;height:16px;border:0"></button> ':'';
+            $del = hasPermission('profile','delete')?'<button  class="icon-remove" onclick="deleteProfile('.$row->profile_key.');" style="width:16px;height:16px;border:0"></button>':'';
             $row->aksi =$view.$edit.$del;
             $row->activityid =  $row->activityid==0?'-':getParameterKey($row->activityid)->parameterid;
         }
