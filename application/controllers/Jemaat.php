@@ -434,15 +434,16 @@ class Jemaat extends MY_Controller {
             $this->render('jemaat/report_rayon',$data);
         }
 	}
+	//konversi perubahan
 	public function konversiRelation(){
-		$data = $this->db->query("select relationno from tblmember2 where relationno!='' group by relationno");
+		$data = $this->db->query("select relationno from tblmember where relationno!='' group by relationno");
 		$no=1;
 		foreach($data->result() as $d){
 
-			$members = $this->db->query("select * from tblmember2 where relationno='".$d->relationno."'")->result();
+			$members = $this->db->query("select * from tblmember where relationno='".$d->relationno."'")->result();
 			foreach($members as $member){
 				$id = $member->member_key;
-				$sql="update tblmember2 set relationno='".$no."' where member_key = ".$id;
+				$sql="update tblmember set relationno='".$no."' where member_key = ".$id;
 				$check = $this->db->query($sql);
 				if($check){
 					echo "berhasil";
@@ -455,7 +456,7 @@ class Jemaat extends MY_Controller {
 			$no++;
 		}
 	}
-	public function konversi(){
+	public function konversiServing(){
 		$data = $this->db->query("SELECT member_key,TRIM(serving) AS serving FROM tblmember WHERE serving!=''")->result();
 		// $total=0;
 		// $totalInsert = 0;
@@ -465,9 +466,11 @@ class Jemaat extends MY_Controller {
 			array_pop($pecah);
 			// $total+=count($pecah);
 			foreach($pecah as $p){
-				$check = $this->mblood->getListAll('tblparameter',['parametergrpid'=>'SERVING','parameterid'=>$p]);
+				$check = $this->mjemaat->getListAll('tblparameter',['parametergrpid'=>'SERVING','parameterid'=>$p]);
 				if(count($check)==0){
-					$insert= $this->db->query("INSERT INTO tblparameter values (NULL,'SERVING','".$p."','".$p."','','".$_SESSION['username']."',NOW())");
+					$sql="INSERT INTO tblparameter values (NULL,'SERVING','".$p."','".$p."','','".$_SESSION['username']."',NOW())";
+					// echo $sql."<br>";
+					$insert= $this->db->query($sql);
 					$parkey=$this->db->insert_id();
 					// if($insert){
 					// 	$totalParam+=1;
@@ -480,32 +483,47 @@ class Jemaat extends MY_Controller {
 				}else{
 					$parkey = !empty($check)?$check[0]->parameter_key:0;
 					$sql="insert into tblprofile values (NULL,'".$row->member_key."','".$parkey."',NOW(),'',NOW(),'".$_SESSION['username']."')";
+					// echo $sql."<br>";
 					$insert = $this->db->query($sql);
 					// if($insert){
 					// 	$totalInsert+=1;
 					// }
 				}
 			}
+			echo "<br><br>";
 		}
+		echo "selesai";
 		// echo "Total Data Serving = ".$total."<br>Total Data Insert Activity = ".$totalInsert."<br>Total Data Parameter = ".$totalParam;
 	}
+	public function konversiSemua(){
+		$this->konversiParameter('BLOOD','blood_key');
+		$this->konversiParameter('RAYON','rayon_key');
+		$this->konversiParameter('PSTATUS','pstatus_key');
+		$this->konversiParameter('GENDER','gender_key');
+		$this->konversiParameter('PERSEKUTUAN','persekutuan_key');
+		$this->konversiParameter('STATUS','status_key');
+		$this->konversiParameter('KEBAKTIAN','kebaktian_key');
+	}
 	public function konversiParameter($param,$field_awal){
-		$data = $this->db->query("SELECT member_key,TRIM($field_awal) AS field FROM tblmemberlama WHERE $field_awal!='' and $field_awal!='-'")->result();
+		$data = $this->db->query("SELECT member_key,TRIM($field_awal) AS field FROM tblmember WHERE $field_awal!='' and $field_awal!='-'")->result();
 		foreach($data as $row){
-			$check = $this->mblood->getListAll('tblparameter',['parametergrpid'=>$param,'parameterid'=>$row->field]);
+			$check = $this->mjemaat->getListAll('tblparameter',['parametergrpid'=>$param,'parameterid'=>$row->field]);
 			if(count($check)==0){
-				$insert= $this->db->query("INSERT INTO tblparameter values (NULL,'".$param."','".$row->field."','".$row->field."','','".$_SESSION['username']."',NOW())");
+				$sql="INSERT INTO tblparameter values (NULL,'".$param."','".$row->field."','".$row->field."','','".$_SESSION['username']."',NOW())";
+				// echo $sql."<br>";
+				$insert= $this->db->query($sql);
 				$parkey=$this->db->insert_id();
-				$sql="update tblmemberlama set $field_awal='$parkey' where member_key = ".$row->member_key;
-				// $insert = $this->db->query($sql);
-				echo $sql."=1<br>";
+				$sql="update tblmember set $field_awal='$parkey' where member_key = ".$row->member_key;
+				$insert = $this->db->query($sql);
+				// echo $sql."=1<br>";
 			}else{
 				$parkey = !empty($check)?$check[0]->parameter_key:0;
-				$sql="update tblmemberlama set $field_awal='$parkey' where member_key = ".$row->member_key;
-				// $insert = $this->db->query($sql);
-				echo $sql."=2<br>";
+				$sql="update tblmember set $field_awal='$parkey' where member_key = ".$row->member_key;
+				$insert = $this->db->query($sql);
+				// echo $sql."=2<br>";
 			}
 		}
+		echo $param." => seleasai";
 	}
 }
 

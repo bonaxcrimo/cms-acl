@@ -1,0 +1,251 @@
+--
+-- Set default database
+--
+USE cmstas;
+
+DELIMITER $$
+
+--
+-- Create procedure `cekUmur`
+--
+CREATE PROCEDURE cekUmur(IN `var1` INT)
+BEGIN
+    SET @dob = (select dob from tblmember where member_key = var1);
+    select (YEAR(CURDATE())-YEAR(@dob)) AS age;
+END
+$$
+
+--
+-- Create procedure `p_terbilang`
+--
+CREATE PROCEDURE p_terbilang(IN `angka` BIGINT, OUT `retval` TEXT)
+BEGIN
+      DECLARE tmp1 TEXT;
+    DECLARE tmp2 TEXT;
+
+    SET max_sp_recursion_depth := 20;
+
+    IF(angka = 0) THEN
+        SET retval = '';
+  ELSEIF(angka < 12) THEN
+        SET retval = ELT(angka,'satu','dua','tiga','empat','lima','enam','tujuh','delapan','sembilan','sepuluh','sebelas');
+  ELSEIF (angka < 20) THEN
+        CALL p_terbilang((angka-10),tmp1);
+        SET retval = CONCAT(tmp1,' belas');
+  ELSEIF (angka < 100) THEN
+        CALL p_terbilang(FLOOR(angka/10),tmp1);
+        CALL p_terbilang((angka%10),tmp2);
+        SET retval = CONCAT(tmp1,' puluh ',tmp2);
+  ELSEIf (angka < 200) THEN
+        CALL p_terbilang((angka-100),tmp1);
+        SET retval = CONCAT('seratus ',tmp1);
+  ELSEIF (angka < 1000) THEN
+        CALL p_terbilang(FLOOR(angka/100),tmp1);
+        CALL p_terbilang((angka%100),tmp2);
+        SET retval = CONCAT(tmp1,' ratus ',tmp2);
+  ELSEIF (angka < 2000) THEN
+        CALL p_terbilang((angka-1000),tmp1);
+        SET retval = CONCAT('seribu ',tmp1);
+  ELSEIF (angka < 1000000) THEN
+        CALL p_terbilang(FLOOR(angka/1000),tmp1);
+        CALL p_terbilang((angka%1000),tmp2);
+        SET retval = CONCAT(tmp1,' ribu ',tmp2);
+  ELSEIF (angka < 1000000000) THEN
+        CALL p_terbilang(FLOOR(angka/1000000),tmp1);
+        CALL p_terbilang((angka%1000000),tmp2);
+        SET retval = CONCAT(tmp1,' juta ',tmp2);
+  ELSEIF (angka < 1000000000000) THEN
+        CALL p_terbilang(FLOOR(angka/1000000000),tmp1);
+        CALL p_terbilang((angka%1000000000),tmp2);
+        SET retval = CONCAT(tmp1,' milyar ',tmp2);
+  ELSE SET retval = 'GIA';
+  END IF;
+END
+$$
+
+--
+-- Create function `f_terbilang`
+--
+CREATE FUNCTION f_terbilang(angka BIGINT)
+  RETURNS text CHARSET latin1
+BEGIN
+    DECLARE v_result TEXT;
+    CALL p_terbilang(angka, v_result);
+    RETURN REPLACE(v_result,'  ',' ');
+END
+$$
+
+DELIMITER ;
+
+--
+-- Create table `tbluserroles`
+--
+CREATE TABLE tbluserroles (
+  userrolesid INT(11) NOT NULL AUTO_INCREMENT,
+  userpk INT(11) NOT NULL DEFAULT 0,
+  roleid INT(11) NOT NULL DEFAULT 0,
+  modifiedby VARCHAR(50) NOT NULL DEFAULT '0',
+  modifiedon DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (userrolesid)
+)
+ENGINE = INNODB,
+CHARACTER SET latin1,
+COLLATE latin1_swedish_ci;
+
+--
+-- Create table `tbluseracl`
+--
+CREATE TABLE tbluseracl (
+  useraclid INT(11) NOT NULL AUTO_INCREMENT,
+  acoid INT(11) NOT NULL DEFAULT 0,
+  userpk INT(11) NOT NULL DEFAULT 0,
+  modifiedby VARCHAR(50) DEFAULT '0',
+  modifiedon DATETIME DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (useraclid)
+)
+ENGINE = INNODB,
+CHARACTER SET latin1,
+COLLATE latin1_swedish_ci;
+
+--
+-- Create table `tblroles`
+--
+CREATE TABLE tblroles (
+  roleid INT(11) NOT NULL AUTO_INCREMENT,
+  rolename VARCHAR(50) NOT NULL,
+  modifiedby VARCHAR(50) NOT NULL,
+  modifiedon TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (roleid)
+)
+ENGINE = INNODB,
+CHARACTER SET latin1,
+COLLATE latin1_swedish_ci;
+
+--
+-- Create table `tblprofile`
+--
+CREATE TABLE tblprofile (
+  profile_key INT(11) NOT NULL AUTO_INCREMENT,
+  member_key INT(11) DEFAULT NULL,
+  activityid INT(11) DEFAULT NULL,
+  activitydate DATETIME DEFAULT NULL,
+  remark TEXT DEFAULT NULL,
+  modifiedon DATETIME DEFAULT NULL,
+  modifiedby VARCHAR(15) DEFAULT NULL,
+  PRIMARY KEY (profile_key)
+)
+ENGINE = INNODB,
+CHARACTER SET utf8,
+COLLATE utf8_general_ci;
+
+--
+-- Create table `tbloffering`
+--
+CREATE TABLE tbloffering (
+  offering_key INT(11) NOT NULL AUTO_INCREMENT,
+  member_key INT(11) DEFAULT NULL,
+  offeringid INT(11) DEFAULT NULL,
+  offeringno VARCHAR(50) DEFAULT NULL,
+  transdate DATETIME DEFAULT NULL,
+  inputdate DATETIME DEFAULT NULL,
+  remark TEXT DEFAULT NULL,
+  offeringvalue DOUBLE DEFAULT NULL,
+  row_status CHAR(1) DEFAULT NULL,
+  modifiedon DATETIME DEFAULT NULL,
+  modifiedby VARCHAR(15) DEFAULT NULL,
+  aliasname2 VARCHAR(50) DEFAULT NULL,
+  printedon DATETIME DEFAULT NULL,
+  printedby VARCHAR(15) DEFAULT NULL,
+  membername VARCHAR(50) DEFAULT NULL,
+  chinesename VARCHAR(50) DEFAULT NULL,
+  address VARCHAR(50) DEFAULT NULL,
+  handphone VARCHAR(50) DEFAULT NULL,
+  PRIMARY KEY (offering_key)
+)
+ENGINE = INNODB,
+CHARACTER SET utf8,
+COLLATE utf8_general_ci;
+
+--
+-- Create table `tblmember2`
+--
+CREATE TABLE tblmember2 (
+  member_key INT(11) NOT NULL AUTO_INCREMENT,
+  grp_pi TINYINT(1) NOT NULL,
+  relationno VARCHAR(10) NOT NULL,
+  memberno VARCHAR(50) NOT NULL,
+  membername VARCHAR(50) NOT NULL,
+  chinesename VARCHAR(50) NOT NULL,
+  phoneticname VARCHAR(30) NOT NULL,
+  aliasname VARCHAR(50) NOT NULL,
+  tel_h VARCHAR(50) NOT NULL,
+  tel_o VARCHAR(50) NOT NULL,
+  handphone VARCHAR(50) NOT NULL,
+  address VARCHAR(100) NOT NULL,
+  add2 VARCHAR(50) NOT NULL,
+  city VARCHAR(30) NOT NULL,
+  gender_key VARCHAR(50) NOT NULL,
+  pstatus_key VARCHAR(50) NOT NULL,
+  pob VARCHAR(50) NOT NULL,
+  dob DATETIME NOT NULL,
+  blood_key VARCHAR(50) NOT NULL,
+  kebaktian_key VARCHAR(50) NOT NULL,
+  persekutuan_key VARCHAR(50) NOT NULL,
+  rayon_key VARCHAR(50) NOT NULL,
+  status_id VARCHAR(5) NOT NULL,
+  serving LONGTEXT NOT NULL,
+  fax VARCHAR(50) NOT NULL,
+  email VARCHAR(50) NOT NULL,
+  website VARCHAR(50) NOT NULL,
+  baptis TINYINT(1) NOT NULL,
+  baptismdocno VARCHAR(10) NOT NULL,
+  baptismdate DATETIME NOT NULL,
+  remark LONGTEXT NOT NULL,
+  relation VARCHAR(50) NOT NULL,
+  oldgrp VARCHAR(50) NOT NULL,
+  kebaktian VARCHAR(50) NOT NULL,
+  tglbesuk DATETIME NOT NULL,
+  teambesuk VARCHAR(50) NOT NULL,
+  description VARCHAR(50) NOT NULL,
+  photofile LONGTEXT NOT NULL,
+  modifiedby VARCHAR(15) NOT NULL,
+  modifiedon DATETIME NOT NULL,
+  tgl_hadir DATETIME DEFAULT NULL,
+  PRIMARY KEY (member_key)
+)
+ENGINE = MYISAM,
+CHARACTER SET utf8,
+CHECKSUM = 0,
+COLLATE utf8_general_ci;
+
+--
+-- Create table `tblacos`
+--
+CREATE TABLE tblacos (
+  acosid INT(11) NOT NULL AUTO_INCREMENT,
+  class VARCHAR(50) NOT NULL DEFAULT '0',
+  method VARCHAR(50) NOT NULL DEFAULT '0',
+  displayname VARCHAR(50) NOT NULL DEFAULT '0',
+  modifiedby VARCHAR(50) NOT NULL DEFAULT '0',
+  modifiedon DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (acosid)
+)
+ENGINE = INNODB,
+CHARACTER SET latin1,
+COLLATE latin1_swedish_ci;
+
+--
+-- Create table `tblacl`
+--
+CREATE TABLE tblacl (
+  aclid INT(11) NOT NULL AUTO_INCREMENT,
+  acoid INT(11) NOT NULL DEFAULT 0,
+  roleid INT(11) NOT NULL DEFAULT 0,
+  modifiedby VARCHAR(50) NOT NULL DEFAULT '0',
+  modifiedon DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00',
+  PRIMARY KEY (aclid)
+)
+ENGINE = INNODB,
+CHARACTER SET latin1,
+COLLATE latin1_swedish_ci;
+

@@ -47,6 +47,8 @@ require_once 'stimulsoft/helper.php';
 
 		// Process SQL data source
 		viewer.onBeginProcessData = function (event, callback) {
+            event.connection= "rayon";
+            console.log(event);
 			<?php StiHelper::createHandler(); ?>
 		}
 		viewer.onBeginExportReport = function (args) {
@@ -92,6 +94,7 @@ require_once 'stimulsoft/helper.php';
         report.dictionary.variables.list.forEach(function(item, i, arr) {
             if (typeof vars[item.name] != "undefined") item.valueObject = vars[item.name];
         });
+
         viewer.report = report;
         viewer.renderHtml("viewerContent");
 

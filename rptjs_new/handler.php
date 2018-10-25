@@ -25,9 +25,9 @@ $handler->onBeginProcessData = function ($event) {
 	// SQL query string for the current data source
 	$queryString = $event->queryString;
 	// You can change the connection string
-	// if(@$_GET['laporan']=="offering"){
-	// 	$event->connectionString = "server=localhost;database=cms3a;port=3306;Convert Zero Datetime=True;uid=root;pwd=root;";
-	// }
+	$event->connectionString = "server=localhost;database=cms3;port=3306;Convert Zero Datetime=True;uid=root;pwd=root;";
+
+	// $event->parameters['filter']='{filter}';
 	// You can change the SQL query
 	//if ($dataSource == "MyDataSource")
 	// $event->queryString = "select tbloffering.*,NOW() as tglcetak,UPPER(f_terbilang(offeringvalue)) as terbilang,tblparameter.parameterid from tbloffering left join tblparameter on tblparameter.parameter_key = tbloffering.offeringid order by offeringid desc limit 1";

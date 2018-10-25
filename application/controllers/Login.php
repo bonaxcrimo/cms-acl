@@ -14,7 +14,7 @@ class Login extends MY_Controller {
 	public function index(){
         $adminId = @$_SESSION['logged_in'];
         if(!empty($adminId)){
-    		redirect('home');
+    		redirect('home/index');
         }
         $error = '';
         if($this->input->server('REQUEST_METHOD') == 'POST'){
@@ -39,11 +39,10 @@ class Login extends MY_Controller {
                 'msg'=>$msg
             );
             // echo json_encode($hasil);
-            redirect("home");
+            redirect("home/index");
         }else{
             $this->render('login',['error'=>$error]);
         }
-
 	}
     /**
      * Fungsi logout
