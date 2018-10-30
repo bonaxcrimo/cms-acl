@@ -21,7 +21,7 @@ $handler->onBeginProcessData = function ($event) {
 	$queryString = $event->queryString;
 
 	if($connection=="offering"){
-		$event->connectionString = "server=localhost;database=cms3;port=3306;Convert Zero Datetime=True;uid=root;pwd=root;";
+		$event->connectionString = "server=localhost;database=cmstas;port=3306;Convert Zero Datetime=True;uid=root;pwd=root;";
 	}
 	// if($queryString=="")
 	// $event->parameters["limit"] = 2;

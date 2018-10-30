@@ -40,9 +40,10 @@
     <div class="row">
         <div class="col-md-8 noPadding">
 <?php
-    @$transdate = Date("d-m-Y",strtotime($row->transdate));
-    @$inputdate = Date("d-m-Y",strtotime($row->inputdate));
-
+    @$transdate=@$row->transdate==""?Date("d-m-Y"):$row->transdate;
+    @$inputdate=@$row->inputdate==""?Date("d-m-Y"):$row->inputdate;
+    @$transdate = Date("d-m-Y",strtotime($transdate));
+    @$inputdate = Date("d-m-Y",strtotime($inputdate));
 ?>
             <input type="hidden" name="offering_key" value="<?php echo @$row->offering_key ?>">
             <input type="hidden" name="row_status" value="<?= @$row->row_status ?>">
@@ -85,7 +86,7 @@
             </div>
             <div style="margin-bottom:10px">
                 <label class="textbox-label textbox-label-left">transdate:</label>
-                <input name="transdate" labelPosition="left" required="" id="transdate" class="easyui-datebox"  value="<?= @$transdate ?>"   style="width:226px;">
+                <input name="transdate" labelPosition="left" required="" id="transdate" class="easyui-datebox"  value="<?= @$transdate ?>"  style="width:226px;">
             </div>
             <div style="margin-bottom:10px;display: none;">
                 <label class="textbox-label textbox-label-left">inputdate:</label>

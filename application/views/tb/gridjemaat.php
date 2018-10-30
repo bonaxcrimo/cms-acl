@@ -32,6 +32,16 @@
                     }else{
                         $("#removeAll").find('span.icon-cancel').removeClass('icon-cancel').addClass('icon-remove');
                     }
+                    var data = $(this).datagrid('getData');
+                    total = data.total;
+                    var pager = $(this).datagrid('getPager');
+                    var arrlist =[10,30,50];
+                    if(total>50){
+                        arrlist.push(total)
+                    }
+                    pager.pagination({
+                        pageList:arrlist
+                    });
                  }
             });
         dg.datagrid('options').rowHeight = 40;

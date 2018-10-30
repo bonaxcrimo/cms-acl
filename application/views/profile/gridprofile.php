@@ -13,10 +13,15 @@
                 method:'get',
                 onClickRow:function(index,row){
                 },onLoadSuccess:function(){
-                    var data = dgProfile.datagrid('getData');
+                    var data = $(this).datagrid('getData');
                     total = data.total;
+                    var pagerProfile = $(this).datagrid('getPager');
+                    var arrlist =[10,30,50];
+                    if(total>50){
+                        arrlist.push(total)
+                    }
                     pagerProfile.pagination({
-                        pageList:[10,20,total]
+                        pageList:arrlist
                     });
                 },
                 onBeforeDropColumn: function(){

@@ -42,6 +42,12 @@
                     }else{
                         $("#removeAll").find('span.icon-cancel').removeClass('icon-cancel').addClass('icon-remove');
                     }
+                    var data = $(this).datagrid('getData');
+                    total = data.total;
+                    var pager = $(this).datagrid('getPager');
+                    pager.pagination({
+                        pageList:[10,30,50,total]
+                    });
                  }
             });
         dg.datagrid('options').rowHeight = 40;
@@ -68,7 +74,7 @@
                         }
                         temp=index;
 
-                    }else{
+                  }else{
                         dg.datagrid('selectRow',0);
                     }
                 break;
@@ -81,63 +87,63 @@
                 handler:function(){
                     newData();
                 }
-            },{
-                iconCls:'icon-edit',
-                handler:function(){
-                   var recno = $('#dgJemaat').datagrid('getSelected');
+                },{
+                    iconCls:'icon-edit',
+                    handler:function(){
+                       var recno = $('#dgJemaat').datagrid('getSelected');
 
-                    if(recno!=null){
-                        editData(recno.member_key);
-                    }else{
-                         $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+                        if(recno!=null){
+                            editData(recno.member_key);
+                        }else{
+                             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+                        }
+                    }
+                },{
+                    iconCls:'icon-remove',
+                    handler:function(){
+                        var recno = $('#dgJemaat').datagrid('getSelected');
+                        if(recno!=null){
+                            deleteData(recno.member_key);
+                        }else{
+                             $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
+                        }
+                    }
+                },{
+                    text:'Export Excel',
+                    iconCls:'icon-print',
+                    handler:function(){
+                       excel();
+                    }
+                },{
+                    text:'Hp Excel',
+                    iconCls:'icon-print',
+                    handler:function(){
+                       hpexcel();
+                    }
+                },{
+                    text:'Hp Text',
+                    iconCls:'icon-print',
+                    handler:function(){
+                       hptext();
+                    }
+                },{
+                    text:'Create Relation',
+                    iconCls:'icon-mini-add',
+                    handler:function(){
+                        $("#dlgViewRelation").dialog({
+                            closed:false,
+                            title:'Create Relation',
+                            resizable:true,autoResize:true
+                        });
+                    }
+                },{
+                    text:'Konversi Serving',
+                    handler:function(){
+                        // window.open("jemaat/konversi");
+                        window.open("jemaat/konversiParameter/BLOOD/bloodid")
                     }
                 }
-            },{
-                iconCls:'icon-remove',
-                handler:function(){
-                    var recno = $('#dgJemaat').datagrid('getSelected');
-                    if(recno!=null){
-                        deleteData(recno.member_key);
-                    }else{
-                         $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
-                    }
-                }
-            },{
-                text:'Export Excel',
-                iconCls:'icon-print',
-                handler:function(){
-                   excel();
-                }
-            },{
-                text:'Hp Excel',
-                iconCls:'icon-print',
-                handler:function(){
-                   hpexcel();
-                }
-            },{
-                text:'Hp Text',
-                iconCls:'icon-print',
-                handler:function(){
-                   hptext();
-                }
-            },{
-                text:'Create Relation',
-                iconCls:'icon-mini-add',
-                handler:function(){
-                    $("#dlgViewRelation").dialog({
-                        closed:false,
-                        title:'Create Relation',
-                        resizable:true,autoResize:true
-                    });
-                }
-
-            },{
-                text:'Konversi Serving',
-                handler:function(){
-                    // window.open("jemaat/konversi");
-                    window.open("jemaat/konversiParameter/BLOOD/bloodid")
-                }
-            }]
+            ]
         });
         dg.datagrid('enableFilter', [{
             field:'member_key',

@@ -4,7 +4,7 @@
             <form method="post" id="fmfilter">
                 <div style="margin-bottom:10px">
                     <select name="rayon"  labelPosition="left" label="Pilih rayon" required="" class="easyui-combobox"  style="width:400px;">
-                     <option value=""></option>
+                     <option value="0">All</option>
                 <?php
                     foreach ($rayon as $rowform) {
                         ?>

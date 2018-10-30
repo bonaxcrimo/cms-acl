@@ -20,6 +20,17 @@
                     onDropColumn: function(){
                         $(this).datagrid('enableFilter');
                         $(this).datagrid('doFilter');
+                    },onLoadSuccess:function(){
+                        var data = $(this).datagrid('getData');
+                        total = data.total;
+                        var pagerOffering = $(this).datagrid('getPager');
+                        var arrlist =[10,30,50];
+                        if(total>50){
+                            arrlist.push(total)
+                        }
+                        pagerOffering.pagination({
+                            pageList:arrlist
+                        });
                     }
                 });
             dgOffering.datagrid('columnMoving');
@@ -36,6 +47,17 @@
                     url:"<?php echo base_url()?>offering/grid/D",
                     method:'get',
                     onClickRow:function(index,row){
+                    },onLoadSuccess:function(){
+                        var data = $(this).datagrid('getData');
+                        total = data.total;
+                        var pagerOfferingDeleted = $(this).datagrid('getPager');
+                        var arrlist =[10,30,50];
+                        if(total>50){
+                            arrlist.push(total)
+                        }
+                        pagerOfferingDeleted.pagination({
+                            pageList:arrlist
+                        });
                     }
                 });
             dgOfferingDeleted.datagrid('enableFilter', [{

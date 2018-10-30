@@ -107,6 +107,17 @@
                 onDropColumn: function(){
                     $(this).datagrid('enableFilter');
                     $(this).datagrid('doFilter');
+                },onLoadSuccess:function(){
+                    var data = $(this).datagrid('getData');
+                    total = data.total;
+                    var pager = $(this).datagrid('getPager');
+                    var arrlist =[10,30,50];
+                    if(total>50){
+                        arrlist.push(total)
+                    }
+                    pager.pagination({
+                        pageList:arrlist
+                    });
                 }
             });
         dg.datagrid('columnMoving');

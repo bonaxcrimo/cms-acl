@@ -25,8 +25,8 @@ Class Moffering extends MY_Model{
         } else {
             $data['row_status'] = '';
             $noOffering = getTableWhere('tblparameter',array('parametergrpid'=>'FORMAT_NO','parameterid'=>'OFFERING'))[0];
-            $period = getTableWhere('tblparameter',array('parameter_key'=>$noOffering->parametermemo))[0];
-            $offerData = getDataPeriodly($period->parameterid,'tbloffering','inputdate','offeringno','desc');
+            // $period = getTableWhere('tblparameter',array('parameter_key'=>$noOffering->parametermemo))[0];
+            $offerData = getDataPeriodly($noOffering->parametermemo,'tbloffering','inputdate','offeringno','desc');
             if(count($offerData)==0){
                 $offeringno = bacaFormat($noOffering->parametertext,1);
             }else{

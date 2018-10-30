@@ -38,7 +38,7 @@ require_once 'stimulsoft/helper.php';
         StiJsViewer.prototype.InitializePrintMenu = function() {
 
             var A = [];
-            A.push(this.Item("PrintWitPreview", this.collections.loc.PrintWithPreview, "PrintWithPreview.png", "PrintWithPreview"));
+            A.push(this.Item("PrintWithPreview", this.collections.loc.PrintWithPreview, "PrintWithPreview.png", "PrintWithPreview"));
             var t = this.VerticalMenu("printMenu", this.controls.toolbar.controls.Print, "Down", A);
             t.action = function(A) {
                 t.changeVisibleState(!1), t.jsObject.postPrint(A.key)
@@ -105,7 +105,7 @@ require_once 'stimulsoft/helper.php';
             window.open('','_parent','');window.close();
         }
         printButton.action = function(){
-            viewer.jsObject.postPrint("PrintWithPreview");
+            viewer.jsObject.postPrint("PrintWithoutPreview");
         }
         var toolbarTable = viewer.jsObject.controls.toolbar.firstChild.firstChild;
         var buttonsTable = toolbarTable.rows[0].firstChild.firstChild;

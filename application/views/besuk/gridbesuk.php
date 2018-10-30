@@ -12,6 +12,18 @@
                 url:"<?php echo base_url()?>besuk/grid",
                 method:'get',
                 onClickRow:function(index,row){
+                },onLoadSuccess:function(data){
+                    var data = $(this).datagrid('getData');
+                    total = data.total;
+
+                    var pagerBesuk = $(this).datagrid('getPager');
+                    var arrBesuk =[10,30,50];
+                    if(total>50){
+                        arrBesuk.push(total)
+                    }
+                    pagerBesuk.pagination({
+                        pageList:arrBesuk
+                    });
                 }
             });
             var pagerBesuk = $("#dgBesuk").datagrid('getPager');

@@ -93,6 +93,7 @@
             singleSelect:true,
             remoteSort:true,
             clientPaging:false,
+            height:400,
             url:"<?php echo base_url()?>user/grid",
             method:'get',
             onClickRow:function(index,row){
@@ -102,7 +103,18 @@
                     success:function(data){
                     }
                 });
-             }
+             },onLoadSuccess:function(){
+                    var data = $(this).datagrid('getData');
+                    total = data.total;
+                    var pager = $(this).datagrid('getPager');
+                    var arrlist =[10,30,50];
+                    if(total>50){
+                        arrlist.push(total)
+                    }
+                    pager.pagination({
+                        pageList:arrlist
+                    });
+                }
         });
         dgUser.datagrid('columnMoving');
         var pager = dgUser.datagrid('getPager');

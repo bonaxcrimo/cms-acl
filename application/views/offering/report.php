@@ -53,8 +53,8 @@
     $.extend($.fn.validatebox.defaults.rules, {
         md: {
             validator: function(value, param){
-                var a=moment(param[0]);
-                var b =moment(value);
+                var a=moment(param[0],"DD-MM-YYYY");
+                var b =moment(value,"DD-MM-YYYY");
                 return b.isSameOrAfter(a);
             },
             message: 'The date must be greater than or equals {0}.'
