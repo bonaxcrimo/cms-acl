@@ -1,3 +1,6 @@
+<style>
+    input{text-transform: none;}
+</style>
 <script type="text/javascript">
         function saveData(){
             $('#fmpassword').form('submit',{
@@ -23,6 +26,9 @@
 <div class="easyui-tabs" style="height:auto">
     <div title="Edit Password" >
         <form method="post" id="fmpassword" style="padding:20px;" novalidate>
+            <div style="margin-bottom:10px">
+                <input class="easyui-textbox" value="<?= $row->username ?>" labelPosition="left"  label="Userid" readonly style="width:40%">
+            </div>
             <div style="margin-bottom:10px">
                 <input name="password" class="easyui-textbox" required="true" labelPosition="left"  label="Password Lama:" style="width:40%">
             </div>

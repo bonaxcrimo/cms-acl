@@ -189,7 +189,7 @@ class Jemaat extends MY_Controller {
 		foreach($data as $row){
 			$relation='<a href="#" id="'.$row->relationno.'" title="View Relation" class="relation"><span class="ui-icon ui-icon-note"></span></a>';
 			if($row->photofile!=""){
-				$photofile="<img style='width:20px;height:16px;' src='".base_url()."uploads/small_".$row->photofile."' class='btnzoom' onclick='zoom(\"medium_".$row->photofile."\")'>";
+				$photofile="<img style='width:20px;height:16px;' src='".base_url()."uploads/small_".$row->photofile."' class='btnzoom' id='btnzoom' fimage='".$row->photofile."' onclick='zoom(\"medium_".$row->photofile."\")'>";
 			}
 			else{
 				$data_photo="medium_nofoto.jpg";
@@ -297,7 +297,7 @@ class Jemaat extends MY_Controller {
 		$data = $this->mjemaat->getM($cond,$sort,$order,$rows,$offset)->result();
 		$_SESSION['exceljemaat']= $order."|".$sort."|".$cond;
 		foreach($data as $row){
-						if($row->photofile!=""){
+			if($row->photofile!=""){
 				$photofile="<img style='margin:0 17px;width:20px;' src='".base_url()."uploads/small_".$row->photofile."' class='btnzoom' onclick='zoom(\"medium_".$row->photofile."\")'>";
 			}
 			else{

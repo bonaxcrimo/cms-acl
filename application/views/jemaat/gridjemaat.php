@@ -136,12 +136,6 @@
                             resizable:true,autoResize:true
                         });
                     }
-                },{
-                    text:'Konversi Serving',
-                    handler:function(){
-                        // window.open("jemaat/konversi");
-                        window.open("jemaat/konversiParameter/BLOOD/bloodid")
-                    }
                 }
             ]
         });
@@ -473,12 +467,22 @@
 
 
     function zoom(image){
-        $('#dlgView').dialog({
-            closed:false,
-            title:'Zoom Photo',
-            href:'<?php echo base_url(); ?>extension/image/'+image,
-            onLoad:function(){
-            }
+        // $('#dlgView2').dialog({
+        //     closed:false,
+        //     title:'Zoom Photo',
+        //     width:210,
+        //     href:'<?php echo base_url(); ?>extension/image/'+image,
+        //     onLoad:function(){
+        //     }
+        // });
+        $('#foto').html('<img width="200" src="<?php echo base_url(); ?>libraries/img/loading.gif">');
+        $('#foto').html('<img width="200" src="<?php echo base_url(); ?>uploads/'+image+'">');
+        $("#foto").dialog({
+            top:50,
+            title:"Zoom Image",
+            height: 'auto',
+            width: 'auto',
+            modal:false
         });
     }
 
@@ -541,7 +545,7 @@
                     <th sortable="true" field="kebaktian_key" width="5%">kebaktianid</th>
                     <th sortable="true" field="persekutuan_key" width="5%">persekutuanid</th>
                     <th sortable="true" field="rayon_key" width="5%">rayonid</th>
-                    <th sortable="true" field="serving" width="8%">serving</th>
+                    <!-- <th sortable="true" field="serving" width="8%">serving</th> -->
                     <th sortable="true" field="fax" width="8%">fax</th>
                     <th sortable="true" field="email" width="8%">email</th>
                     <th sortable="true" field="website" width="8%">website</th>
@@ -567,7 +571,7 @@
         </div>
         <div id="dlgSave" class="easyui-dialog" style="width:600px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons'">
         </div>
-        <div id="dlgView2" class="easyui-dialog" style="width:600px" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons1'" >
+        <div id="dlgView2" class="easyui-dialog" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons1'" >
         </div>
         <div id="dlgViewRelation" class="easyui-dialog" style="width:400px;padding:10px;" data-options="closed:true,modal:true,border:'thin',buttons:'.dlg-buttons-relation'" >
             <div style="margin-bottom:10px">

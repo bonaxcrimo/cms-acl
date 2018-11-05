@@ -7,7 +7,12 @@ class Mroles extends MY_Model{
         return $sql;
     }
     public function get($where, $sidx, $sord, $limit, $start){
-        $query = "select * from tblroles " . $where." ORDER BY $sidx $sord LIMIT $start , $limit";
+        if(trim($where)==''){
+            $cond = ' where rolename != "GUEST" ';
+        }else{
+            $cond = ' and rolename != "GUEST" ';
+        }
+        $query = "select * from tblroles " . $where.$cond." ORDER BY $sidx $sord LIMIT $start , $limit";
         return $this->db->query($query);
     }
     public function getList($conditions=[],$count=false,$limit=0,$offset=0){
@@ -71,12 +76,13 @@ class Mroles extends MY_Model{
     public function save($data){
         $this->db->trans_begin();
         $save=[
-            'rolename'=>$data['rolename'],
+            'rolename'=>strtoupper($data['rolename']),
             'modifiedby'=>$_SESSION['username']
         ];
         if(isset($data['roleid']) && !empty($data['roleid'])){
             $id = $data['roleid'];
             $result = $this->update($save,$id,'roleid');
+            // if($result===true && isset($data['role_permission'])){
             if($result===true && isset($data['role_permission'])){
                 $this->saveRolePermission($id,$data['role_permission']);
             }else{

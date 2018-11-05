@@ -2,6 +2,9 @@
 input{
   text-transform: none;
 }
+#_easyui_textbox_input2,#_easyui_textbox_input3{
+text-transform: uppercase;
+}
 </style>
 <?php echo form_open('',['id'=>'fm','style'=>'padding:20px']); ?>
 <input type="hidden" name="userpk" value="<?= @$data->userpk ?>">

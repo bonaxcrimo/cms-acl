@@ -42,7 +42,8 @@ Class Muser extends MY_Model{
         if(isset($data['password']) && !empty($data['password'])){
             $data['password'] = $this->_hashPassword($data['password']);
         }
-
+        $data['userid']=strtoupper($data['userid']);
+        $data['username']=strtoupper($data['username']);
         if (isset($data['userpk']) && !empty($data['userpk'])) {
             $id = $data['userpk'];
             unset($data['userpk']);

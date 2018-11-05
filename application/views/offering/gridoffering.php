@@ -151,7 +151,7 @@
     }
 
     function reportOffering(key,no){
-        window.open("<?php echo base_url(); ?>rptjs/rptcoba.php?offering_key="+key+"&no="+no,'_blank');
+        window.open("<?php echo base_url(); ?>rptjs_new/rptcoba.php?offering_key="+key+"&no="+no,'_blank');
     }
     function newOffer(){
         $('#dlg').dialog({

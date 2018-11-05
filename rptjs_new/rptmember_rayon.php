@@ -105,7 +105,7 @@ require_once 'stimulsoft/helper.php';
             window.open('','_parent','');window.close();
         }
         printButton.action = function(){
-            viewer.jsObject.postPrint("PrintWithoutPreview");
+            viewer.jsObject.postPrint("PrintWithPreview");
         }
         var toolbarTable = viewer.jsObject.controls.toolbar.firstChild.firstChild;
         var buttonsTable = toolbarTable.rows[0].firstChild.firstChild;

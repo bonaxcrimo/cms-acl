@@ -1,5 +1,7 @@
+
 <?php
     echo form_open('','style="padding:20px;" id="fm"');
+    echo form_hidden('roleid',isset($data->roleid)?$data->roleid:'');
     echo form_input('rolename',isset($data->rolename)?$data->rolename:'',['placeholder'=>'Role Name','class'=>'easyui-textbox','label'=>'rolename : ','style'=>'width:300px;']);
 
 ?>

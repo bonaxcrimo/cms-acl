@@ -80,6 +80,7 @@
             dataType: "text",
             async: true,
             success: function(result) {
+                console.log(result);
                 var result = JSON.parse(result);
                 if(result.error==0){
                     $('#dlg').dialog('close');

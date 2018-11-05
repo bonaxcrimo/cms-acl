@@ -1,1 +1,1 @@
-<img src="<?= base_url() ?>uploads/<?= $image ?>" width="100%">
+<img src="<?= base_url() ?>uploads/<?= $image ?>" width="200">

@@ -1,6 +1,5 @@
 <script>
 // moment().format("MM-YYYY");
-
 $.extend($.fn.datebox.defaults,{
     formatter:function(date){
         return moment(date).format("<?= $format_tgl ?>");
