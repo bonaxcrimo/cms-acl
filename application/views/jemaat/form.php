@@ -1,81 +1,81 @@
 <style>
 
-.myAltRowClass {
-    background-color: rgba(250,250,250,.1); background-image: none;
-}
+    .myAltRowClass {
+        background-color: rgba(250,250,250,.1); background-image: none;
+    }
 
-div.upload {
-    width: 157px;
-    overflow: hidden;
-    -moz-box-shadow:inset 0px 1px 0px 0px #dcecfb;
-    -webkit-box-shadow:inset 0px 1px 0px 0px #dcecfb;
-    box-shadow:inset 0px 1px 0px 0px #dcecfb;
-    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #bddbfa), color-stop(1, #80b5ea) );
-    background:-moz-linear-gradient( center top, #bddbfa 5%, #80b5ea 100% );
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#bddbfa', endColorstr='#80b5ea');
-    background-color:#bddbfa;
-    text-indent:0;
-    border:1px solid #84bbf3;
-    display:inline-block;
-    color:#ffffff;
-    font-size:15px;
-    font-weight:bold;
-    font-style:normal;
-    text-decoration:none;
-    text-align:center;
-    text-shadow:1px 1px 0px #528ecc;
-}
-div.upload:hover {
-    background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #80b5ea), color-stop(1, #bddbfa) );
-    background:-moz-linear-gradient( center top, #80b5ea 5%, #bddbfa 100% );
-    filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#80b5ea', endColorstr='#bddbfa');
-    background-color:#80b5ea;
-    cursor: pointer;
-}
+    div.upload {
+        width: 157px;
+        overflow: hidden;
+        -moz-box-shadow:inset 0px 1px 0px 0px #dcecfb;
+        -webkit-box-shadow:inset 0px 1px 0px 0px #dcecfb;
+        box-shadow:inset 0px 1px 0px 0px #dcecfb;
+        background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #bddbfa), color-stop(1, #80b5ea) );
+        background:-moz-linear-gradient( center top, #bddbfa 5%, #80b5ea 100% );
+        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#bddbfa', endColorstr='#80b5ea');
+        background-color:#bddbfa;
+        text-indent:0;
+        border:1px solid #84bbf3;
+        display:inline-block;
+        color:#ffffff;
+        font-size:15px;
+        font-weight:bold;
+        font-style:normal;
+        text-decoration:none;
+        text-align:center;
+        text-shadow:1px 1px 0px #528ecc;
+    }
+    div.upload:hover {
+        background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #80b5ea), color-stop(1, #bddbfa) );
+        background:-moz-linear-gradient( center top, #80b5ea 5%, #bddbfa 100% );
+        filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#80b5ea', endColorstr='#bddbfa');
+        background-color:#80b5ea;
+        cursor: pointer;
+    }
 
-div.upload input {
-    margin-top: -25px;
-    display: block !important;
-    width: 157px !important;
-    opacity: 0 !important;
-    overflow: hidden !important;
-}
+    div.upload input {
+        margin-top: -25px;
+        display: block !important;
+        width: 157px !important;
+        opacity: 0 !important;
+        overflow: hidden !important;
+    }
 
-div.upload:hover{
-    cursor: pointer;
-}
+    div.upload:hover{
+        cursor: pointer;
+    }
 
 
-div#resetFilterOptions{
-    font-family:arial;
-    padding: 5px;
-}
-span#resetFilterOptions:hover{
-    border: 1px solid;
-    cursor: pointer;
-    border-radius: 4px;
-}
+    div#resetFilterOptions{
+        font-family:arial;
+        padding: 5px;
+    }
+    span#resetFilterOptions:hover{
+        border: 1px solid;
+        cursor: pointer;
+        border-radius: 4px;
+    }
 
-.ui-jqgrid table.ui-jqgrid-htable th.ui-th-column input:focus,
-input:focus,
-textarea:focus,
-select:focus,
-input[type="radio"]:focus{
- border-color: rgba(82, 168, 236, 0.8);
- background-color: rgb(240,227,134);
-  outline: 0;
-  outline: thin dotted \9;
-  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-          box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
-}
-#titlesearch,#searchText{
-    font-size: 12px;
-}
-#searchText{
-    width: 200px;
-    font-size: 12px;
-}
+    .ui-jqgrid table.ui-jqgrid-htable th.ui-th-column input:focus,
+    input:focus,
+    textarea:focus,
+    select:focus,
+    input[type="radio"]:focus{
+     border-color: rgba(82, 168, 236, 0.8);
+     background-color: rgb(240,227,134);
+      outline: 0;
+      outline: thin dotted \9;
+      -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+         -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+              box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+    }
+    #titlesearch,#searchText{
+        font-size: 12px;
+    }
+    #searchText{
+        width: 200px;
+        font-size: 12px;
+    }
 
 </style>
 <script type="text/javascript">

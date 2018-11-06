@@ -73,8 +73,9 @@ class offering extends MY_Controller {
         if(empty($data)){
             redirect('offering');
         }
+        $data_detail = $this->moffering->getListAll('tbldetailoffering',['offeringno'=>$data->offeringno]);
         $check=$member_key==null?0:$member_key;
-        $this->load->view('offering/view',['row'=>$data,'check'=>$check,'member_key'=>$member_key]);
+        $this->load->view('offering/view',['row'=>$data,'row_detail'=>$data_detail,'check'=>$check,'member_key'=>$member_key]);
     }
     /**
      * Fungsi edit offering
@@ -86,6 +87,7 @@ class offering extends MY_Controller {
         if(empty($data)){
             redirect('offering');
         }
+        $data_detail = $this->moffering->getListAll('tbldetailoffering',['offeringno'=>$data->offeringno]);
         if($this->input->server('REQUEST_METHOD') == 'POST' ){
             $data = $this->input->post();
             $data['offering_key'] = $this->input->post('offering_key');
@@ -97,7 +99,7 @@ class offering extends MY_Controller {
             echo json_encode($hasil);
         }else{
             $check=$member_key==null?0:$member_key;
-            $this->load->view('offering/edit',['row'=>$data,'sqloffering'=>$sqloffering,'check'=>$check,'member_key'=>$member_key]);
+            $this->load->view('offering/edit',['row'=>$data,'row_detail'=>$data_detail,'sqloffering'=>$sqloffering,'check'=>$check,'member_key'=>$member_key]);
         }
 
     }
@@ -124,7 +126,14 @@ class offering extends MY_Controller {
 
     }
     private function _save($data){
+        $temp=$data;
+        unset($data['offeringid']);
+        unset($data['offeringvalue']);
+        unset($data['offeringdetail_key']);
         $data = array_map("strtoupper", $data);
+        $data['offeringid'] = $temp['offeringid'];
+        $data['offeringvalue'] = $temp['offeringvalue'];
+        $data['offeringdetail_key'] = $temp['offeringdetail_key'];
         return $this->moffering->save($data);
     }
 
@@ -256,7 +265,7 @@ class offering extends MY_Controller {
             $print2 ='<button id='.$row->member_key.' class="icon-print" onclick="report(\''.$row->offering_key.'\',\''.$row->offeringno.'\')" style="width:16px;height:16px;border:0"></button> ';
             $print2='';
             $row->aksi =$print.$print2.$view.$edit.$del;
-            $row->offeringid =  $row->offeringid==0?'-':getParameterKey($row->offeringid)->parameterid;
+            // $row->offeringid =  $row->offeringid==0?'-':getParameterKey($row->offeringid)->parameterid;
             $row->remark2 = nl2br($row->remark);
         }
         $response = new stdClass;

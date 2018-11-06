@@ -1,6 +1,7 @@
 <?php
 Class Moffering extends MY_Model{
     protected $table = 'tbloffering';
+    protected $tabledetail = 'tbldetailoffering';
     public function save($data) {
         $this->db->trans_start();
         $data['modifiedon'] =  date("Y-m-d H:i:s A");
@@ -19,6 +20,24 @@ Class Moffering extends MY_Model{
             $save = $this->_preFormat($data); //format the fields
             $result = $this->update($save, $id,'offering_key');
             if($result === true ){
+                foreach($data['offeringdetail_key'] as $k => $v){
+                    if($v!=''){
+                        $arr = array(
+                                'offeringid' => $data['offeringid'][$k],
+                                'offeringvalue' => $data['offeringvalue'][$k]
+                        );
+                        $this->db->where('offeringdetail_key', $v);
+                        $this->db->update($this->tabledetail, $arr);
+                    }else{
+                        $arr = array(
+                                'offeringno' => $data['offeringno'],
+                                'offeringid' => $data['offeringid'][$k],
+                                'offeringvalue' => $data['offeringvalue'][$k]
+                        );
+                        $this->db->insert($this->tabledetail, $arr);
+                    }
+
+                }
             } else {
                 $this->db->trans_rollback();
             }
@@ -38,7 +57,14 @@ Class Moffering extends MY_Model{
             $save = $this->_preFormat($data);//format untuk field
             $result = $this->insert($save);
             if($result === true){
-
+                foreach($data['offeringid'] as $k => $v){
+                    $arr = array(
+                            'offeringno' => $offeringno,
+                            'offeringid' => $v,
+                            'offeringvalue' => $data['offeringvalue'][$k]
+                    );
+                    $this->db->insert($this->tabledetail, $arr);
+                }
             } else {
                 $this->db->trans_rollback();
             }
@@ -60,7 +86,7 @@ Class Moffering extends MY_Model{
         return $sql;
     }
     private function _preFormat($data){
-        $fields = ['member_key','offeringid','membername','chinesename','address','handphone','offeringno','transdate','inputdate','aliasname2','remark','offeringvalue','row_status','modifiedon','modifiedby'];
+        $fields = ['member_key','membername','chinesename','address','handphone','offeringno','transdate','inputdate','aliasname2','remark','row_status','modifiedon','modifiedby'];
         $save = [];
         foreach($fields as $val){
             if(isset($data[$val])){

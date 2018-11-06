@@ -221,9 +221,9 @@
             },
             success: function(result){
                 console.log(result);
-                $('#dlg').dialog('close');
-                $('#dgOffering').datagrid('reload');
-                $('#dgOfferingDeleted').datagrid('reload');
+                // $('#dlg').dialog('close');
+                // $('#dgOffering').datagrid('reload');
+                // $('#dgOfferingDeleted').datagrid('reload');
             },error:function(error){
                  console.log($(this).serialize());
             }
@@ -231,7 +231,7 @@
     }
     function saveOffer(){
         if(oper=="del"){
-            $.messager.confirm('Confirm','Yakin akan menghapus data ?',function(r){
+            $.messager.confirm('Confirm','Yakin akan dihapus?',function(r){
                 if (r){
                     callOffer();
                 }
@@ -254,12 +254,12 @@
                         <th sortable="true" field="chinesename" width="10%">chinesename</th>
                         <th sortable="true" field="address" width="10%">address</th>
                         <th sortable="true" field="handphone" width="10%">handphone</th>
-                        <th sortable="true" field="offeringid" width="10%">offeringid</th>
+                        <!-- <th sortable="true" field="offeringid" width="10%">offeringid</th> -->
                         <th sortable="true" field="offeringno" width="10%">offeringno</th>
                         <th sortable="true" field="aliasname2" width="10%">aliasname</th>
                         <th sortable="true" field="transdate" width="10%">transdate</th>
                         <th sortable="true" field="inputdate" width="10%">inputdate</th>
-                        <th sortable="true" field="offeringvalue" width="10%" data-options="formatter:function(value, row){ return new Intl.NumberFormat({ style: 'currency', currency: 'IDR' }).format(value);}" align="right">offeringvalue</th>
+                        <!-- <th sortable="true" field="offeringvalue" width="10%" data-options="formatter:function(value, row){ return new Intl.NumberFormat({ style: 'currency', currency: 'IDR' }).format(value);}" align="right">offeringvalue</th> -->
                         <th sortable="true" field="remark" width="10%">remark</th>
                         <th sortable="true" field="modifiedby" width="6%">modifiedby</th>
                         <th sortable="true" field="modifiedon" width="10%">modifiedon</th>
@@ -276,7 +276,7 @@
              <div id="dlg-buttons-view">
                 <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-cancel" onclick="javascript:$('#dlgView').dialog('close')" style="width:90px">Cancel</a>
             </div>
-            <div id="dlg" class="easyui-dialog" style="width:640px" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-offering'">
+            <div id="dlg" class="easyui-dialog" style="width:640px;height: 400px;" data-options="closed:true,modal:true,border:'thin',buttons:'#dlg-buttons-offering'">
             </div>
             <div id="dlg-buttons-offering">
                 <a href="javascript:void(0)" class="easyui-linkbutton c6" iconCls="icon-ok" onclick="saveOffer()" style="width:90px" id="btnSave">Save</a>

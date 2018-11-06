@@ -46,14 +46,14 @@ function excel($nama_session,$tabel,$route){
     FROM $tabel " . $where . " ORDER BY $sidx $sord");
     $CI->load->view($route,$data);
 }
-function getDataPeriodly($period='DAILY',$table,$field,$sfield,$sort){
+function getDataPeriodly($period='0',$table,$field,$sfield,$sort){
     $db = get_instance()->db;
     $where = ' where ';
-    if($period=='DAILY'){
+    if($period=='1'){
         $where .=' DATE_FORMAT(NOW(), "%Y-%m-%d") = DATE_FORMAT('.$field.',"%Y-%m-%d")';
-    }else if($period=='MONTHLY'){
+    }else if($period=='2'){
         $where .=' DATE_FORMAT(NOW(), "%Y-%m") = DATE_FORMAT('.$field.',"%Y-%m")';
-    }else if($period=='YEARLY'){
+    }else if($period=='3'){
         $where .=' DATE_FORMAT(NOW(), "%Y") = DATE_FORMAT('.$field.',"%Y")';
     }
     $sql= $db->query("select * from ".$table.$where." order by $sfield $sort ")->result();
