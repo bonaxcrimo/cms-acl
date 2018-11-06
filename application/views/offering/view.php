@@ -23,6 +23,7 @@
                 @$row->offeringid = getParameterKey($row->offeringid)->parameterid;
             ?>
             <input type="hidden" name="offering_key" value="<?php echo @$row->offering_key ?>">
+            <input type="hidden" name="offeringno" value="<?php echo @$row->offeringno ?>">
           <!--   <div style="margin-bottom:10px">
                 <label class="textbox-label textbox-label-left">offering:</label>
                 <input name="offering"  class="easyui-textbox" readonly=""  value="<?= @$row->offeringid ?>"   style="width:198px">

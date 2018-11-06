@@ -77,7 +77,7 @@ Class Moffering extends MY_Model{
             return true;
         }
     }
-    public function delete($id){
+    public function delete($id,$no){
         $query = $this->db->where("offering_key",$id);
         $data = array(
             'row_status' => 'D'

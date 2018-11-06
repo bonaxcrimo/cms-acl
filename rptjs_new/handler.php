@@ -25,7 +25,7 @@ $handler->onBeginProcessData = function ($event) {
 	// SQL query string for the current data source
 	$queryString = $event->queryString;
 	// You can change the connection string
-	$event->connectionString = "server=localhost;database=cms3;port=3306;Convert Zero Datetime=True;uid=root;pwd=root;";
+	$event->connectionString = "server=localhost;database=cmstas;port=3306;Convert Zero Datetime=True;uid=root;pwd=root;";
 
 	// $event->parameters['filter']='{filter}';
 	// You can change the SQL query

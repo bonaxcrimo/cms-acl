@@ -112,6 +112,7 @@ class offering extends MY_Controller {
         if(empty($data)){
             redirect('offering');
         }
+        $data_detail = $this->moffering->getListAll('tbldetailoffering',['offeringno'=>$data->offeringno]);
         if($this->input->server('REQUEST_METHOD') == 'POST'){
             $cek = $this->moffering->delete($this->input->post('offering_key'));
             $status = $cek?"sukses":"gagal";
@@ -121,7 +122,7 @@ class offering extends MY_Controller {
             echo json_encode($hasil);
         }else{
             $check=$member_key==null?0:$member_key;
-            $this->load->view('offering/delete',['row'=>$data,'check'=>$check,'member_key'=>$member_key]);
+            $this->load->view('offering/delete',['row'=>$data,'row_detail'=>$data_detail,'check'=>$check,'member_key'=>$member_key]);
         }
 
     }
