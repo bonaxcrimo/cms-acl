@@ -107,14 +107,14 @@ class offering extends MY_Controller {
      * Fungsi delete offering
      * @AclName Delete offering
      */
-    public function delete($id,$member_key=null){
+    public function delete($id,$member_key=null,$status1='D'){
         $data = $this->moffering->getById('tbloffering','offering_key',$id);
         if(empty($data)){
             redirect('offering');
         }
         $data_detail = $this->moffering->getListAll('tbldetailoffering',['offeringno'=>$data->offeringno]);
         if($this->input->server('REQUEST_METHOD') == 'POST'){
-            $cek = $this->moffering->delete($this->input->post('offering_key'));
+            $cek = $this->moffering->delete($this->input->post('offering_key'),$status1);
             $status = $cek?"sukses":"gagal";
             $hasil = array(
                 'status' => $status
@@ -203,7 +203,6 @@ class offering extends MY_Controller {
             $edit = hasPermission('offering','edit')?'<button class="icon-edit" onclick="editOffer(\''.$row->offering_key.'\');" style="width:16px;height:16px;border:0"></button> ':'';
             $del = hasPermission('offering','delete')?'<button  class="icon-remove" onclick="deleteOffer('.$row->offering_key.');" style="width:16px;height:16px;border:0"></button>':'';
             $print =hasPermission('offering','print')?'<button id='.$row->member_key.' class="icon-print" onclick="reportOffering(\''.$row->offering_key.'\',\''.$row->offeringno.'\')" style="width:16px;height:16px;border:0"></button> ':'';
-
             $row->aksi =$print.$view.$edit.$del;
             $row->offeringid =  $row->offeringid==0?'-':getParameterKey($row->offeringid)->parameterid;
         }
@@ -256,18 +255,23 @@ class offering extends MY_Controller {
             $view='';
             $edit='';
             $del='';
+            $btl='';
             $jumlah=0;
-            if($status==""){
+            if($row->row_status==""){
                 $view =hasPermission('offering','view')?'<button  class="icon-view_detail" onclick="viewOffer(\''.$row->offering_key.'\')" style="width:16px;height:16px;border:0"></button> ':'';
                 $edit = hasPermission('offering','edit')?'<button  class="icon-edit" onclick="editOffer(\''.$row->offering_key.'\');" style="width:16px;height:16px;border:0"></button> ':'';
-                $del = hasPermission('offering','delete')?'<button  class="icon-remove" onclick="deleteOffer('.$row->offering_key.');" style="width:16px;height:16px;border:0"></button>':'';
+                $del = hasPermission('offering','delete')?'<button  class="icon-remove" onclick="deleteOffer('.$row->offering_key.',\'D\');" style="width:16px;height:16px;border:0"></button>':'';
+                $btl = hasPermission('offering','delete')?' <button  class="icon-undo" onclick="deleteOffer('.$row->offering_key.',\'B\');" style="width:16px;height:16px;border:0"></button>':'';
+            }else if($row->row_status=="B"){
+                $view =hasPermission('offering','view')?'<button  class="icon-view_detail" onclick="viewOffer(\''.$row->offering_key.'\')" style="width:16px;height:16px;border:0"></button> ':'';
             }
-            $print = hasPermission('offering','print')?'<button id='.$row->member_key.' class="icon-print" onclick="reportOffering(\''.$row->offering_key.'\',\''.$row->offeringno.'\')" style="width:16px;height:16px;border:0"></button> ':'';
+            $print = hasPermission('offering','print')?' <button id='.$row->member_key.' class="icon-print" onclick="reportOffering(\''.$row->offering_key.'\',\''.$row->offeringno.'\')" style="width:16px;height:16px;border:0"></button> ':'';
             $print2 ='<button id='.$row->member_key.' class="icon-print" onclick="report(\''.$row->offering_key.'\',\''.$row->offeringno.'\')" style="width:16px;height:16px;border:0"></button> ';
             $print2='';
-            $row->aksi =$print.$print2.$view.$edit.$del;
+            $row->aksi =$print.$print2.$view.$edit.$del.$btl;
             // $row->offeringid =  $row->offeringid==0?'-':getParameterKey($row->offeringid)->parameterid;
             $row->remark2 = nl2br($row->remark);
+            $row->row_status=$row->row_status=='B'?'Dibatalkan':'-';
         }
         $response = new stdClass;
         $response->total=$total;

@@ -77,10 +77,10 @@ Class Moffering extends MY_Model{
             return true;
         }
     }
-    public function delete($id,$no){
+    public function delete($id,$status){
         $query = $this->db->where("offering_key",$id);
         $data = array(
-            'row_status' => 'D'
+            'row_status' => $status
         );
         $sql = $this->db->update($this->table,$data);
         return $sql;
@@ -100,7 +100,9 @@ Class Moffering extends MY_Model{
         return $sql;
     }
     function get($where, $sidx, $sord, $limit, $start,$status){
-        $row_status = $where==''?' where row_status="'.$status.'"':' and row_status="'.$status.'"';
+        $row_status = $where==''?' where row_status!="D"':' and row_status!="D"';
+        if($status=='D')
+            $row_status = $where==''?' where row_status="'.$status.'"':' and row_status="'.$status.'"';
         $query = "select *,
         DATE_FORMAT(transdate,'%d-%m-%Y') transdate,
         DATE_FORMAT(inputdate,'%d-%m-%Y') inputdate,

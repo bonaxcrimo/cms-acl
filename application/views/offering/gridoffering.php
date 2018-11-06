@@ -68,17 +68,17 @@
                 field:'aksi',
                 type:'label'
             },{
-            field:'offeringid',
+            field:'row_status',
             type:'combobox',
             options:{
                     panelHeight:'auto',
-                    data:[<?= $offering ?>],
+                    data:[{value:'',text:'All'},{value:'B',text:'Batal'}],
                     onChange:function(value){
                         if (value == ''){
-                            dgOffering.datagrid('removeFilterRule', 'offeringid');
+                            dgOffering.datagrid('removeFilterRule', 'row_status');
                         } else {
                             dgOffering.datagrid('addFilterRule', {
-                                field: 'offeringid',
+                                field: 'row_status',
                                 op: 'equal',
                                 value: value
                             });
@@ -195,17 +195,23 @@
              $.messager.alert('Peringatan','Pilih salah satu baris!','warning');
         }
     }
-    function deleteOffer(offering_key){
+    function deleteOffer(offering_key,status){
         var row = offering_key==undefined?$('#dgOffering').datagrid('getSelected')==undefined?'':$('#dgOffering').datagrid('getSelected').offering_key:offering_key;
+        status=status==''?'D':status;
         if (row!=''){
             $('#dlg').dialog({
                 closed:false,
-                title:'Delete data',
-                href:'<?php echo base_url(); ?>offering/delete/'+row,
+                title:status=='D'?'Delete data':'Batalkan offering',
+                href:'<?php echo base_url(); ?>offering/delete/'+row+"/0/"+status,
                 onLoad:function(){
-                    url = '<?= base_url() ?>offering/delete/'+row;
+                    url = '<?= base_url() ?>offering/delete/'+row+"/0/"+status;
                     oper="del";
-                    $("#btnSave span span.l-btn-text").text("Delete");
+                    if(status=='D'){
+                        $("#btnSave span span.l-btn-text").text("Delete");
+                    }
+                    else{
+                        $("#btnSave span span.l-btn-text").text("Batalkan");
+                    }
                 }
             });
         }else{
@@ -221,9 +227,9 @@
             },
             success: function(result){
                 console.log(result);
-                // $('#dlg').dialog('close');
-                // $('#dgOffering').datagrid('reload');
-                // $('#dgOfferingDeleted').datagrid('reload');
+                $('#dlg').dialog('close');
+                $('#dgOffering').datagrid('reload');
+                $('#dgOfferingDeleted').datagrid('reload');
             },error:function(error){
                  console.log($(this).serialize());
             }
@@ -231,7 +237,7 @@
     }
     function saveOffer(){
         if(oper=="del"){
-            $.messager.confirm('Confirm','Yakin akan dihapus?',function(r){
+            $.messager.confirm('Confirm','Yakin akan dilakukan?',function(r){
                 if (r){
                     callOffer();
                 }
@@ -247,9 +253,10 @@
             <table id="dgOffering" class=" noPadding noMargin" style="width:100%;height:250px">
                 <thead>
                     <tr>
-                        <th field="aksi" width="8%">Aksi</th>
+                        <th field="aksi" width="9%">Aksi</th>
                         <th  field="member_key" width="8%" hidden="true">Member Key</th>
                         <th field="offering_key" hidden="true"></th>
+                        <th sortable="true" field="row_status" width="10%">status</th>
                         <th sortable="true" field="membername" width="10%">membername</th>
                         <th sortable="true" field="chinesename" width="10%">chinesename</th>
                         <th sortable="true" field="address" width="10%">address</th>
@@ -294,12 +301,11 @@
                         <th sortable="true" field="membername" width="10%">membername</th>
                         <th sortable="true" field="chinesename" width="10%">chinesename</th>
                         <th sortable="true" field="address" width="10%">address</th>
-                        <th sortable="true" field="offeringid" width="10%">offeringid</th>
                         <th sortable="true" field="offeringno" width="10%">offeringno</th>
                         <th sortable="true" field="aliasname2" width="10%">aliasname</th>
                         <th sortable="true" field="transdate" width="10%">transdate</th>
                         <th sortable="true" field="inputdate" width="10%">inputdate</th>
-                        <th sortable="true" field="offeringvalue" width="10%" data-options="formatter:function(value, row){ return new Intl.NumberFormat({ style: 'currency', currency: 'IDR' }).format(value);}" align="right">offeringvalue</th>
+           <!--              <th sortable="true" field="offeringvalue" width="10%" data-options="formatter:function(value, row){ return new Intl.NumberFormat({ style: 'currency', currency: 'IDR' }).format(value);}" align="right">offeringvalue</th> -->
                         <th sortable="true" field="remark" width="10%">remark</th>
                         <th sortable="true" field="modifiedby" width="6%">modifiedby</th>
                         <th sortable="true" field="modifiedon" width="10%">modifiedon</th>
